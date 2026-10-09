@@ -1,0 +1,222 @@
+<section class="relative overflow-hidden bg-white">
+  <!-- Fondo compartido (llega hasta las cards) -->
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(87,81,225,0.06),transparent_55%),radial-gradient(ellipse_at_80%_25%,rgba(255,194,36,0.08),transparent_50%)]"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    class="pointer-events-none absolute inset-y-0 right-0 hidden w-[48%] opacity-[0.12] lg:block"
+    aria-hidden="true"
+  >
+    <img
+      src="/assets/hero/city.jpg"
+      alt=""
+      class="h-full w-full object-cover object-left [mask-image:linear-gradient(90deg,transparent,black_35%)]"
+    />
+  </div>
+
+  <div class="relative mx-auto max-w-[1320px] px-4 pt-8 sm:px-6 sm:pt-10 lg:px-6 lg:pt-16">
+    <!-- Hero principal -->
+    <div class="grid items-center gap-8 pb-8 sm:gap-10 sm:pb-10 lg:grid-cols-2 lg:gap-8 lg:pb-12 xl:gap-12">
+      <div class="relative z-10 mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
+        <svg
+          class="mx-auto mb-3 size-8 text-ink/80 sm:mb-4 sm:size-9 lg:mx-0"
+          viewBox="0 0 32 32"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M3.5 15.2 28 3.5 19.8 28.5l-4.8-8.2L3.5 15.2Z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M14.8 20.4 28 3.5 10.2 17.8"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <p class="mb-3 text-xs font-medium tracking-[0.18em] text-[#b0b0bc] uppercase sm:text-[13px]">
+          Formamos talento tech
+        </p>
+
+        <h1
+          class="text-[2rem] leading-[1.12] font-bold tracking-tight text-ink sm:text-4xl sm:leading-[1.1] md:text-5xl xl:text-[3.15rem]"
+        >
+          De cero a Full Stack<br class="hidden sm:block" />
+          con
+          <span class="hero-marker px-1">automatización</span>
+        </h1>
+
+        <p
+          class="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-[#7a7a8c] sm:mt-6 sm:text-base lg:mx-0"
+        >
+          Aprende a construir software profesional y conectar sistemas reales: flujos
+          automáticos, integración con correo, recordatorios y procesos que ahorran
+          horas de trabajo manual.
+        </p>
+
+        <a
+          routerLink="/cursos"
+          class="mt-7 inline-flex items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] active:translate-y-1 active:shadow-[0_2px_0_var(--color-brand-dark)] sm:mt-8 sm:px-7 sm:text-[15px]"
+        >
+          Ver el programa
+          <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <div
+        class="relative mx-auto flex min-h-[300px] w-full max-w-[560px] items-center justify-center sm:min-h-[400px] lg:min-h-[440px] lg:max-w-none lg:justify-self-end"
+        aria-hidden="true"
+      >
+        <div
+          class="absolute top-[6%] left-0 z-30 flex max-w-[min(100%,11.5rem)] items-center gap-2 rounded-full bg-white px-2.5 py-1.5 shadow-[0_10px_28px_rgba(22,20,57,0.12)] sm:top-[10%] sm:max-w-none sm:px-3 sm:py-2"
+        >
+          <span class="size-2 shrink-0 rounded-full bg-brand"></span>
+          <span class="truncate text-[10px] font-semibold text-ink sm:text-[11px]"
+            >320h · Formación intensiva</span
+          >
+        </div>
+
+        <div
+          class="absolute right-0 bottom-[10%] z-30 w-[140px] rounded-2xl bg-white p-2.5 shadow-[0_14px_40px_rgba(22,20,57,0.14)] sm:bottom-[14%] sm:w-[200px] sm:p-4"
+        >
+          <div class="flex flex-wrap justify-center gap-1 sm:gap-1.5">
+            <span
+              class="rounded-md bg-brand-soft px-1.5 py-0.5 text-[9px] font-semibold text-brand sm:px-2 sm:text-[11px]"
+              >Desarrollo Frontend</span
+            >
+            <span
+              class="rounded-md bg-[#fff6d6] px-1.5 py-0.5 text-[9px] font-semibold text-[#b8860b] sm:px-2 sm:text-[11px]"
+              >Backend & APIs</span
+            >
+            <span
+              class="rounded-md bg-[#e8f8f6] px-1.5 py-0.5 text-[9px] font-semibold text-[#0f8f82] sm:px-2 sm:text-[11px]"
+              >IA aplicada</span
+            >
+            <span
+              class="rounded-md bg-[#f3e8ff] px-1.5 py-0.5 text-[9px] font-semibold text-[#7c3aed] sm:px-2 sm:text-[11px]"
+              >Automatización</span
+            >
+          </div>
+        </div>
+
+        <div
+          class="relative z-10 w-[92%] max-w-[420px] overflow-hidden rounded-xl border border-[#e6e6ef] bg-[#161439] shadow-[0_24px_60px_rgba(22,20,57,0.28)] sm:w-[88%] sm:rounded-2xl"
+        >
+          <div class="flex items-center gap-2 border-b border-white/10 px-3 py-2.5 sm:px-4 sm:py-3">
+            <span class="size-2 rounded-full bg-[#ff5f57] sm:size-2.5"></span>
+            <span class="size-2 rounded-full bg-[#febc2e] sm:size-2.5"></span>
+            <span class="size-2 rounded-full bg-[#28c840] sm:size-2.5"></span>
+            <span class="ml-1 truncate text-[10px] font-medium text-white/45 sm:ml-2 sm:text-[11px]"
+              >santamaria · bootcamp.ts</span
+            >
+          </div>
+          <pre
+            class="overflow-x-auto p-3 font-mono text-[10px] leading-5 text-[#c8c7e0] sm:p-5 sm:text-[12.5px] sm:leading-6"
+          ><code><span class="text-[#8b8a9e]">// Tu siguiente nivel empieza aquí</span>
+<span class="text-[#c792ea]">const</span> <span class="text-[#82aaff]">goals</span> = [<span class="text-[#c3e88d]">'aprender'</span>, <span class="text-[#c3e88d]">'construir'</span>, <span class="text-[#c3e88d]">'crecer'</span>];
+
+<span class="text-[#c792ea]">async function</span> <span class="text-[#82aaff]">levelUp</span>() &#123;
+  <span class="text-[#c792ea]">await</span> <span class="text-[#82aaff]">practice</span>(goals);
+  <span class="text-[#c792ea]">await</span> <span class="text-[#82aaff]">ship</span>(<span class="text-[#c3e88d]">'real-projects'</span>);
+  <span class="text-[#c792ea]">return</span> <span class="text-[#c3e88d]">'career-ready'</span>;
+&#125;
+
+<span class="text-[#82aaff]">levelUp</span>();</code></pre>
+        </div>
+
+        <div
+          class="absolute top-[8%] right-[2%] z-20 hidden items-center gap-2 rounded-full bg-white px-3 py-2 shadow-[0_10px_28px_rgba(22,20,57,0.12)] sm:flex"
+        >
+          <span class="size-2 rounded-full bg-brand"></span>
+          <span class="text-[11px] font-semibold text-ink">Frontend → Backend → IA</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature cards (mismo fondo / misma sección) -->
+    <div class="relative z-10 grid gap-3 pb-12 sm:grid-cols-2 sm:gap-4 sm:pb-16 lg:pb-20 xl:grid-cols-4">
+      @for (item of features; track item.title) {
+        <article
+          class="rounded-2xl border border-[#ececf3] bg-white/95 p-4 shadow-[0_8px_30px_rgba(22,20,57,0.06)] backdrop-blur-sm transition-shadow hover:shadow-[0_12px_36px_rgba(22,20,57,0.1)] sm:p-5 md:p-6"
+        >
+          <div class="mb-3 sm:mb-4">
+            @switch (item.icon) {
+              @case ('cap') {
+                <svg class="size-8 text-[#f5c518] sm:size-9" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <path
+                    d="M18 8 4 14.5 18 21l14-6.5L18 8Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9 17.5v6c0 2.2 4 4 9 4s9-1.8 9-4v-6"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                  <path d="M32 14.5V22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              }
+              @case ('doc') {
+                <svg class="size-8 text-brand sm:size-9" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <path
+                    d="M11 6h10l6 6v18a2 2 0 0 1-2 2H11a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                  <path d="M21 6v6h6M14 18h10M14 23h7" stroke="currentColor" stroke-width="1.8" />
+                </svg>
+              }
+              @case ('book') {
+                <svg class="size-8 text-[#f16d9a] sm:size-9" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <path
+                    d="M8 8.5c0-.8.7-1.5 1.5-1.5H18v22H9.5A1.5 1.5 0 0 1 8 27.5v-19Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                  <path
+                    d="M28 8.5c0-.8-.7-1.5-1.5-1.5H18v22h8.5a1.5 1.5 0 0 0 1.5-1.5v-19Z"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                </svg>
+              }
+              @case ('screen') {
+                <svg class="size-8 text-[#20b8a8] sm:size-9" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <rect
+                    x="5"
+                    y="7"
+                    width="26"
+                    height="17"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  />
+                  <path
+                    d="M14 29h8M18 24v5"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              }
+            }
+          </div>
+          <h3 class="text-[15px] font-bold text-ink sm:text-base md:text-lg">{{ item.title }}</h3>
+          <p class="mt-1.5 text-sm leading-relaxed text-[#7a7a8c] sm:mt-2">{{ item.text }}</p>
+        </article>
+      }
+    </div>
+  </div>
+</section>

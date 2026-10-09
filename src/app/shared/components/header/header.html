@@ -1,0 +1,233 @@
+<header class="sticky top-0 z-50">
+  <!-- Top bar -->
+  <div class="hidden bg-topbar text-white md:block">
+    <div
+      class="mx-auto flex max-w-[1320px] items-center justify-between gap-3 px-4 py-2.5 text-[13px] leading-none lg:gap-6 lg:px-6"
+    >
+      <div class="flex min-w-0 items-center gap-4 lg:gap-5">
+        <span class="inline-flex items-center gap-1.5 whitespace-nowrap">
+          <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"
+            />
+          </svg>
+          <span>España</span>
+        </span>
+
+        <a
+          href="mailto:hola@santamariabootcaps.com"
+          class="hidden items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-80 xl:inline-flex"
+        >
+          <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+            />
+          </svg>
+          <span>hola@santamariabootcaps.com</span>
+        </a>
+      </div>
+
+      <!-- Countdown en el banner negro -->
+      <p class="shrink-0 whitespace-nowrap text-[12px] font-medium tracking-wide" aria-live="polite">
+        @if (countdown().finished) {
+          <span class="text-badge">Curso en marcha</span>
+        } @else {
+          <span class="text-[#9b96ff]">Inicio 1 dic</span>
+          <span class="mx-1.5 text-white/30">·</span>
+          <span class="font-mono font-semibold tabular-nums text-white">
+            {{ pad(countdown().days) }}d
+            {{ pad(countdown().hours) }}h
+            {{ pad(countdown().minutes) }}m
+            {{ pad(countdown().seconds) }}s
+          </span>
+        }
+      </p>
+
+      <div class="flex items-center gap-3">
+        <span class="hidden whitespace-nowrap lg:inline">Síguenos :</span>
+        <ul class="flex items-center gap-3.5" aria-label="Redes sociales">
+          @for (social of socialLinks; track social.label) {
+            <li>
+              <a
+                [href]="social.href"
+                [attr.aria-label]="social.label"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="grid size-3.5 place-items-center transition-opacity hover:opacity-75"
+              >
+                @switch (social.icon) {
+                  @case ('instagram') {
+                    <svg class="size-full" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                      />
+                    </svg>
+                  }
+                  @case ('tiktok') {
+                    <svg class="size-full" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.18 8.18 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1-.1Z"
+                      />
+                    </svg>
+                  }
+                  @case ('youtube') {
+                    <svg class="size-full" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      />
+                    </svg>
+                  }
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main navbar -->
+  <div class="border-b border-[#e6e6ef] bg-white shadow-[0_1px_0_rgba(22,20,57,0.04)]">
+    <div class="mx-auto flex max-w-[1320px] items-center gap-4 px-4 py-3.5 lg:gap-6 lg:px-6">
+      <!-- Brand -->
+      <a routerLink="/" class="inline-flex shrink-0 items-center gap-2.5" (click)="closeMenu()">
+        <span class="size-11 text-brand" aria-hidden="true">
+          <svg class="size-full" viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="22" fill="currentColor" />
+            <!-- graduation cap -->
+            <path
+              fill="#fff"
+              d="M22 11.5 10.5 17.2l11.5 5.7 10.2-5.05V24.5h1.6V17.2L22 11.5zm0 2.35 7.55 3.75L22 21.35l-7.55-3.75L22 13.85z"
+            />
+            <path fill="#fff" d="M31.7 18.4v5.2c0 .9-4.35 2.2-9.7 2.2s-9.7-1.3-9.7-2.2v-5.2l9.7 4.8 9.7-4.8z" />
+            <!-- person -->
+            <circle cx="22" cy="27.2" r="2.1" fill="#fff" />
+            <path
+              fill="#fff"
+              d="M22 29.6c-3.1 0-5.6 1.85-5.6 3.55v.85h11.2v-.85c0-1.7-2.5-3.55-5.6-3.55z"
+            />
+          </svg>
+        </span>
+        <span class="flex flex-col leading-none">
+          <span class="text-[1.35rem] font-bold tracking-tight text-ink sm:text-[1.45rem]">
+            Santamaria
+          </span>
+          <span class="mt-1 text-[10px] font-medium tracking-[0.18em] text-[#a0a0b0] uppercase">
+            {{ tagline }}
+          </span>
+        </span>
+      </a>
+
+      <!-- Desktop nav + actions -->
+      <div class="ml-auto flex items-center gap-1 sm:gap-2">
+        <nav class="hidden items-center gap-1 lg:flex" aria-label="Principal">
+          @for (item of navItems; track item.label) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="text-brand"
+              [routerLinkActiveOptions]="{ exact: item.exact === true }"
+              class="px-3 py-2 text-[15px] font-semibold text-ink transition-colors hover:text-brand"
+            >
+              {{ item.label }}
+            </a>
+          }
+          <a
+            routerLink="/contacto"
+            routerLinkActive="text-brand"
+            class="px-3 py-2 text-[15px] font-semibold text-ink transition-colors hover:text-brand"
+          >
+            Contacto
+          </a>
+          <a
+            routerLink="/acceso"
+            routerLinkActive="text-brand"
+            class="px-3 py-2 text-[15px] font-semibold text-ink transition-colors hover:text-brand"
+          >
+            Acceso
+          </a>
+        </nav>
+
+        <a
+          routerLink="/acceso"
+          class="ml-1 hidden items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] active:translate-y-1 active:shadow-[0_2px_0_var(--color-brand-dark)] sm:inline-flex lg:ml-3"
+        >
+          Inscribirme
+          <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+        </a>
+
+        <button
+          type="button"
+          class="grid size-10 place-items-center rounded-lg border border-[#e6e6ef] bg-white text-ink lg:hidden"
+          [attr.aria-expanded]="menuOpen"
+          aria-label="Menú"
+          (click)="toggleMenu()"
+        >
+          @if (menuOpen) {
+            <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              />
+            </svg>
+          } @else {
+            <svg class="size-5" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z" />
+            </svg>
+          }
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    @if (menuOpen) {
+      <nav class="border-t border-[#e6e6ef] bg-white px-4 py-3 lg:hidden" aria-label="Móvil">
+        @for (item of navItems; track item.label) {
+          <a
+            [routerLink]="item.path"
+            class="block border-b border-[#f0f0f5] py-3 text-[15px] font-semibold text-ink"
+            (click)="closeMenu()"
+          >
+            {{ item.label }}
+          </a>
+        }
+        <a
+          routerLink="/contacto"
+          class="block border-b border-[#f0f0f5] py-3 text-[15px] font-semibold text-ink"
+          (click)="closeMenu()"
+        >
+          Contacto
+        </a>
+        <a
+          routerLink="/acceso"
+          class="block border-b border-[#f0f0f5] py-3 text-[15px] font-semibold text-ink"
+          (click)="closeMenu()"
+        >
+          Acceso
+        </a>
+        <a
+          routerLink="/acceso"
+          class="mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white shadow-[0_5px_0_var(--color-brand-dark)]"
+          (click)="closeMenu()"
+        >
+          Inscribirme
+          <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+        </a>
+      </nav>
+    }
+  </div>
+</header>

@@ -1,3 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+@theme {
+  --color-brand: #5751e1;
+  --color-brand-hover: #4a44c9;
+  --color-brand-dark: #3f3a9f;
+  --color-brand-soft: #f0effc;
+  --color-brand-muted: #e8e7fa;
+  --color-ink: #161439;
+  --color-topbar: #161613;
+  --color-badge: #ffc224;
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply m-0 min-h-dvh bg-white font-sans text-ink antialiased;
+  }
+
+  img {
+    @apply block max-w-full;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+}
