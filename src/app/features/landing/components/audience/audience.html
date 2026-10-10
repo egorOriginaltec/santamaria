@@ -1,0 +1,49 @@
+<section id="para-quien" class="audience-section relative overflow-hidden">
+  <div
+    class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:px-6 lg:py-20"
+  >
+    <header class="max-w-2xl text-left">
+      <p
+        class="mb-2.5 text-[11px] font-medium tracking-[0.18em] text-white/45 uppercase sm:text-xs md:text-[13px]"
+      >
+        {{ eyebrow }}
+      </p>
+      <h2
+        class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
+      >
+        <span class="audience-marker">{{ title }}</span>
+      </h2>
+      <p
+        class="mt-4 max-w-prose text-pretty text-[14px] leading-relaxed text-[#9a9aa3] sm:text-[15px] md:text-base"
+      >
+        {{ intro }}
+      </p>
+    </header>
+
+    <ul
+      class="mt-10 grid grid-cols-1 gap-10 min-[480px]:grid-cols-2 sm:mt-12 sm:gap-x-6 sm:gap-y-12 md:mt-14 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-5 xl:gap-x-8"
+    >
+      @for (reason of reasons; track reason.id) {
+        <li class="text-left min-[480px]:text-center lg:text-center">
+          <p
+            class="text-[3.5rem] leading-none font-extrabold tracking-tight tabular-nums sm:text-[4rem] md:text-[4.5rem]"
+            [class.text-brand]="reason.highlight"
+            [class.text-[#2e2e34]]="!reason.highlight"
+          >
+            {{ reason.code }}
+          </p>
+          <h3
+            class="mt-4 text-[15px] leading-snug font-bold tracking-tight text-white sm:mt-5 sm:text-base"
+          >
+            {{ reason.title }}
+          </h3>
+          <p
+            class="mx-auto mt-2.5 max-w-[16rem] text-pretty text-[13px] leading-relaxed text-[#9a9aa3] min-[480px]:mt-3 sm:text-sm"
+          >
+            {{ reason.text }}
+          </p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

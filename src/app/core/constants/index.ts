@@ -14,3 +14,27 @@ export { COURSE_BLOCKS } from './course-blocks/course-blocks.constants';
 export { HERO_FEATURES } from './hero-features/hero-features.constants';
 export { SOCIAL_LINKS } from './social-links/social-links.constants';
 export { COURSE_START_DATE, COURSE_START_MS } from './course-start/course-start.constants';
+export {
+  COURSE_OVERVIEW_EYEBROW,
+  COURSE_OVERVIEW_TITLE,
+  COURSE_OVERVIEW_INTRO,
+  COURSE_OVERVIEW_WEEKS,
+  COURSE_OVERVIEW_HOURS,
+  COURSE_MAP,
+} from './course-overview/course-overview.constants';
+export {
+  COURSE_MODULES,
+  PROJECTS_SUMMARY,
+} from './course-modules/course-modules.constants';
+export {
+  AUDIENCE_EYEBROW,
+  AUDIENCE_TITLE,
+  AUDIENCE_INTRO,
+  AUDIENCE_REASONS,
+} from './audience/audience.constants';
+export {
+  PRICING_TITLE,
+  PRICING_INTRO,
+  PRICING_PLANS,
+  PRICING_CTA_PATH,
+} from './pricing/pricing.constants';

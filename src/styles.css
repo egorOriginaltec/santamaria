@@ -10,6 +10,7 @@
   --color-topbar: #161613;
   --color-badge: #ffc224;
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
 }
 
 @layer base {

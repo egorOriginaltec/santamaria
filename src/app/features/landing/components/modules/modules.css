@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.modules-marker {
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+}
+
+.modules-card {
+  transition: box-shadow 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modules-card:hover {
+    box-shadow: 0 12px 36px rgba(22, 20, 57, 0.08);
+  }
+}
+
+.modules-trigger {
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.modules-trigger:hover {
+  background-color: rgba(87, 81, 225, 0.03);
+}
+
+.modules-trigger:focus-visible {
+  outline: 2px solid var(--color-brand, #5751e1);
+  outline-offset: -2px;
+}
+
+.modules-chevron {
+  transition: transform 0.3s ease;
+}
+
+.modules-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.modules-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
+}
+
+.modules-panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.modules-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modules-card,
+  .modules-trigger,
+  .modules-chevron,
+  .modules-panel {
+    transition: none;
+  }
+}
