@@ -11,6 +11,13 @@
   --color-badge: #ffc224;
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
+  --site-header-height: 4.75rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --site-header-height: 7.75rem;
+  }
 }
 
 @layer base {

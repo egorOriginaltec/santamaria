@@ -3,6 +3,33 @@
   margin: 0;
 }
 
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--site-header-height, 4.75rem));
+}
+
+.hero-shell {
+  min-height: inherit;
+  padding-top: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .hero-shell {
+    padding-top: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-shell {
+    padding-top: 1.75rem;
+  }
+
+  .hero-main {
+    min-height: 0;
+  }
+}
+
 .hero-marker {
   background-image: linear-gradient(transparent 62%, #ffc224 62%);
 }

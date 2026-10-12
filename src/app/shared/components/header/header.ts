@@ -1,7 +1,9 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   HostListener,
   OnInit,
   effect,
@@ -28,6 +30,7 @@ import { interval, map, startWith } from 'rxjs';
 })
 export class Header implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
+  private readonly host = inject(ElementRef<HTMLElement>);
 
   readonly tagline = APP_TAGLINE;
   readonly navItems = PRIMARY_NAV;
@@ -49,6 +52,13 @@ export class Header implements OnInit {
       document.body.style.overflow = open ? 'hidden' : '';
     });
 
+    afterNextRender(() => {
+      this.syncHeaderHeight();
+      const observer = new ResizeObserver(() => this.syncHeaderHeight());
+      observer.observe(this.host.nativeElement);
+      this.destroyRef.onDestroy(() => observer.disconnect());
+    });
+
     this.destroyRef.onDestroy(() => {
       document.body.style.overflow = '';
     });
@@ -62,6 +72,14 @@ export class Header implements OnInit {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe((parts) => this.countdown.set(parts));
+  }
+
+  private syncHeaderHeight(): void {
+    const height = this.host.nativeElement.getBoundingClientRect().height;
+    document.documentElement.style.setProperty(
+      '--site-header-height',
+      `${Math.ceil(height)}px`,
+    );
   }
 
   @HostListener('document:keydown.escape')
