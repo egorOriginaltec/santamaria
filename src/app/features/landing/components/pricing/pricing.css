@@ -2,16 +2,33 @@
   display: block;
 }
 
+.pricing-marker {
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+}
+
 .pricing-card {
-  border: 1px solid #e8e8f0;
+  border: 1px solid #ececf3;
   background: #fff;
-  box-shadow: 0 10px 30px rgba(22, 20, 57, 0.05);
+  color: var(--color-ink, #161439);
+  box-shadow: 0 10px 30px rgba(22, 20, 57, 0.08);
+  transition:
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pricing-card:not(.is-featured):hover {
+    box-shadow: 0 14px 36px rgba(22, 20, 57, 0.12);
+  }
 }
 
 .pricing-card.is-featured {
   border-color: transparent;
-  background: var(--color-brand);
-  box-shadow: 0 18px 48px rgba(87, 81, 225, 0.28);
+  background: var(--color-brand, #5751e1);
+  color: #fff;
+  box-shadow: 0 18px 48px rgba(87, 81, 225, 0.35);
 }
 
 @media (min-width: 640px) {
@@ -21,13 +38,82 @@
   }
 }
 
+.pricing-name {
+  color: var(--color-ink, #161439);
+}
+
+.pricing-name.is-on-brand {
+  color: #fff;
+}
+
+.pricing-desc {
+  color: #6b6b80;
+}
+
+.pricing-desc.is-on-brand {
+  color: rgb(255 255 255 / 0.75);
+}
+
+.pricing-price {
+  color: var(--color-ink, #161439);
+}
+
+.pricing-price.is-on-brand {
+  color: #fff;
+}
+
+.pricing-note {
+  color: #8a8a9c;
+}
+
+.pricing-note.is-on-brand {
+  color: rgb(255 255 255 / 0.7);
+}
+
+.pricing-check {
+  background: var(--color-brand-soft, #f0effc);
+}
+
+.pricing-check.is-on-brand {
+  background: rgb(255 255 255 / 0.2);
+}
+
+.pricing-check-icon {
+  color: var(--color-brand, #5751e1);
+}
+
+.pricing-check-icon.is-on-brand {
+  color: #fff;
+}
+
+.pricing-feature {
+  color: #4a4a5c;
+}
+
+.pricing-feature.is-on-brand {
+  color: rgb(255 255 255 / 0.9);
+}
+
 .pricing-cta--outline {
   border: 1.5px solid #d8d8e4;
   background: #fff;
-  color: var(--color-ink);
+  color: var(--color-ink, #161439);
 }
 
-.pricing-cta--inverse {
+.pricing-cta--outline:hover {
+  border-color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #5751e1);
+}
+
+.pricing-cta--solid {
   background: #fff;
-  color: var(--color-brand);
+  color: var(--color-brand, #5751e1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pricing-card,
+  .pricing-card.is-featured {
+    transition: none;
+    transform: none;
+  }
 }

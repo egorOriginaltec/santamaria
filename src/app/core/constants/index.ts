@@ -20,6 +20,7 @@ export {
   COURSE_OVERVIEW_INTRO,
   COURSE_OVERVIEW_WEEKS,
   COURSE_OVERVIEW_HOURS,
+  COURSE_OVERVIEW_DAYS,
   COURSE_MAP,
 } from './course-overview/course-overview.constants';
 export {
@@ -38,3 +39,22 @@ export {
   PRICING_PLANS,
   PRICING_CTA_PATH,
 } from './pricing/pricing.constants';
+export {
+  OUTCOMES_EYEBROW,
+  OUTCOMES_TITLE,
+  OUTCOMES_INTRO,
+  OUTCOMES_ITEMS,
+} from './outcomes/outcomes.constants';
+export {
+  FAQ_EYEBROW,
+  FAQ_TITLE,
+  FAQ_INTRO,
+  FAQ_ITEMS,
+} from './faq/faq.constants';
+export {
+  CONTACT_FORM_EYEBROW,
+  CONTACT_FORM_TITLE,
+  CONTACT_FORM_INTRO,
+  CONTACT_FORM_EMAIL,
+  CONTACT_FORM_SUCCESS,
+} from './contact-form/contact-form.constants';

@@ -1,6 +1,6 @@
 export const SUB_NAV = [
   { label: 'Descubre', href: '#discover' },
-  { label: 'Programa', href: '#courses' },
+  { label: 'Programa', href: '#program' },
   { label: 'Por qué Santamaria', href: '#why' },
   { label: 'Eventos', href: '#events' },
   { label: 'Financiación', href: '#financing' },

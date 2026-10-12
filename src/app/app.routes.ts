@@ -12,11 +12,6 @@ export const routes: Routes = [
           import('@features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
       },
       {
-        path: 'cursos',
-        loadChildren: () =>
-          import('@features/courses/courses.routes').then((m) => m.COURSES_ROUTES),
-      },
-      {
         path: 'contacto',
         loadChildren: () =>
           import('@features/contact/contact.routes').then((m) => m.CONTACT_ROUTES),

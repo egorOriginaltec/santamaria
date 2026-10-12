@@ -13,3 +13,5 @@ export type {
 } from './course-module/course-module.model';
 export type { AudienceReason } from './audience/audience.model';
 export type { PricingPlan } from './pricing/pricing.model';
+export type { OutcomeItem } from './outcomes/outcomes.model';
+export type { FaqItem } from './faq/faq.model';

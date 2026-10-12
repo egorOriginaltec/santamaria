@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.outcomes-marker {
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+}
+
+@media (min-width: 1024px) {
+  .outcomes-row.is-reversed .outcomes-media {
+    order: 2;
+  }
+
+  .outcomes-row.is-reversed .outcomes-copy {
+    order: 1;
+    text-align: right;
+  }
+
+  .outcomes-row.is-reversed .outcomes-text {
+    margin-left: auto;
+  }
+}

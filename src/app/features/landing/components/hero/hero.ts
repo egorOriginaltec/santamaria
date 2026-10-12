@@ -1,12 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HERO_FEATURES } from '@core/index';
 
 @Component({
   selector: 'app-hero',
-  imports: [RouterLink],
   templateUrl: './hero.html',
   styleUrl: './hero.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Hero {
   readonly features = HERO_FEATURES;

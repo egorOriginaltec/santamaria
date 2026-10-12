@@ -1,17 +1,21 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
   COURSE_MODULES,
+  COURSE_OVERVIEW_DAYS,
   COURSE_OVERVIEW_EYEBROW,
   COURSE_OVERVIEW_HOURS,
   COURSE_OVERVIEW_INTRO,
   COURSE_OVERVIEW_TITLE,
   COURSE_OVERVIEW_WEEKS,
+  type CourseModule,
+  type ModuleProject,
 } from '@core/index';
 
 @Component({
   selector: 'app-modules',
   templateUrl: './modules.html',
   styleUrl: './modules.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Modules {
   readonly eyebrow = COURSE_OVERVIEW_EYEBROW;
@@ -19,6 +23,7 @@ export class Modules {
   readonly intro = COURSE_OVERVIEW_INTRO;
   readonly weeks = COURSE_OVERVIEW_WEEKS;
   readonly hours = COURSE_OVERVIEW_HOURS;
+  readonly days = COURSE_OVERVIEW_DAYS;
   readonly modules = COURSE_MODULES;
 
   readonly openModuleId = signal<number | null>(null);
@@ -38,6 +43,19 @@ export class Modules {
 
   projectsLabel(count: number): string {
     return `${count} proyecto${count === 1 ? '' : 's'}`;
+  }
+
+  projectNames(projects: readonly ModuleProject[]): string {
+    return projects.map((project) => project.name).join(' · ');
+  }
+
+  isProjectDay(module: CourseModule, day: number): boolean {
+    return module.projects.some((project) => {
+      const [fromRaw, toRaw] = project.developmentDays.split('–');
+      const from = Number(fromRaw);
+      const to = toRaw === undefined ? from : Number(toRaw);
+      return day >= from && day <= to;
+    });
   }
 
   toggleModule(id: number): void {

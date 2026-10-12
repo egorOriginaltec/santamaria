@@ -1,0 +1,85 @@
+<section id="faq" class="relative overflow-hidden bg-[#18191a] text-white">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_80%_0%,rgba(87,81,225,0.12),transparent_50%),radial-gradient(ellipse_at_10%_70%,rgba(255,194,36,0.06),transparent_45%)]"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20"
+  >
+    <header class="mx-auto max-w-2xl min-w-0 text-center">
+      <p
+        class="mb-4 text-[11px] font-medium tracking-[0.18em] text-white/45 uppercase sm:text-xs md:text-[13px]"
+      >
+        {{ eyebrow }}
+      </p>
+      <h2
+        class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-white sm:text-3xl md:text-4xl"
+      >
+        <span class="faq-marker">{{ title }}</span>
+      </h2>
+      <p
+        class="mx-auto mt-4 max-w-prose text-pretty text-[14px] leading-relaxed text-[#9a9aa3] sm:text-[15px] md:text-base"
+      >
+        {{ intro }}
+      </p>
+    </header>
+
+    <div class="mx-auto mt-8 w-full max-w-3xl sm:mt-10 md:mt-12">
+      <div class="flex flex-col gap-2 sm:gap-2.5" role="list">
+        @for (item of items; track item.id) {
+          <article
+            class="faq-card overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] backdrop-blur-sm sm:rounded-2xl"
+            role="listitem"
+          >
+            <button
+              type="button"
+              class="faq-trigger flex w-full min-h-12 cursor-pointer items-center gap-3 px-4 py-3.5 text-left sm:min-h-14 sm:gap-4 sm:px-5 sm:py-4"
+              [attr.aria-expanded]="isOpen(item.id)"
+              [attr.aria-controls]="'faq-panel-' + item.id"
+              [id]="'faq-trigger-' + item.id"
+              (click)="toggle(item.id)"
+            >
+              <span
+                class="min-w-0 flex-1 text-pretty text-[14px] leading-snug font-semibold text-white sm:text-[15px]"
+              >
+                {{ item.question }}
+              </span>
+              <span
+                class="faq-chevron flex size-8 shrink-0 items-center justify-center rounded-full border border-white/10 text-brand"
+                [class.is-open]="isOpen(item.id)"
+                aria-hidden="true"
+              >
+                <svg class="size-3.5 sm:size-4" viewBox="0 0 16 16" fill="none">
+                  <path
+                    d="M4 6.5 8 10.5 12 6.5"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+
+            <div
+              class="faq-panel"
+              [class.is-open]="isOpen(item.id)"
+              [id]="'faq-panel-' + item.id"
+              role="region"
+              [attr.aria-labelledby]="'faq-trigger-' + item.id"
+            >
+              <div class="faq-panel-inner">
+                <p
+                  class="border-t border-white/10 px-4 pt-3 pb-4 text-pretty text-[13px] leading-relaxed text-[#9a9aa3] sm:px-5 sm:pt-3.5 sm:pb-5 sm:text-sm"
+                >
+                  {{ item.answer }}
+                </p>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  </div>
+</section>

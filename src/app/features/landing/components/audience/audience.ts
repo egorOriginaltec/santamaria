@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   AUDIENCE_EYEBROW,
   AUDIENCE_INTRO,
@@ -10,6 +10,7 @@ import {
   selector: 'app-audience',
   templateUrl: './audience.html',
   styleUrl: './audience.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Audience {
   readonly eyebrow = AUDIENCE_EYEBROW;

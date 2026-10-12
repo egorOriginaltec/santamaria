@@ -12,8 +12,8 @@ export const HERO_FEATURES: readonly FeatureCard[] = [
     icon: 'doc',
   },
   {
-    title: '+10 proyectos reales',
-    text: 'Entregables publicables: apps, flujos automatizados y soluciones con IA.',
+    title: '10 proyectos reales',
+    text: 'Mapa urbano, portal inmobiliario, reservas, apps con IA, recepcionista virtual y más.',
     icon: 'book',
   },
   {

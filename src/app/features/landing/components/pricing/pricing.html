@@ -1,12 +1,17 @@
-<section id="precio" class="relative overflow-hidden bg-[#f7f7fb]">
+<section id="pricing" class="relative overflow-hidden bg-white">
   <div
-    class="relative mx-auto w-full max-w-[1320px] px-4 py-14 sm:px-6 sm:py-16 lg:px-6 lg:py-20"
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_0%,rgba(87,81,225,0.05),transparent_55%),radial-gradient(ellipse_at_20%_80%,rgba(255,194,36,0.04),transparent_45%)]"
+    aria-hidden="true"
+  ></div>
+
+  <div
+    class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20"
   >
-    <header class="mx-auto max-w-2xl text-center">
+    <header class="mx-auto max-w-2xl min-w-0 text-center">
       <h2
         class="text-balance text-[1.65rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl md:text-4xl"
       >
-        {{ title }}
+        <span class="pricing-marker">{{ title }}</span>
       </h2>
       <p
         class="mx-auto mt-4 max-w-xl text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base"
@@ -20,8 +25,8 @@
     >
       @for (plan of plans; track plan.id) {
         <article
-          class="pricing-card relative flex h-full flex-col overflow-hidden rounded-[1.35rem]"
-          [class.is-featured]="plan.featured"
+          class="pricing-card relative flex h-full min-w-0 flex-col overflow-hidden rounded-[1.35rem]"
+          [class.is-featured]="!!plan.featured"
         >
           <div class="flex flex-1 flex-col p-6 sm:p-7">
             @if (plan.badge) {
@@ -30,35 +35,33 @@
               >
                 {{ plan.badge }}
               </span>
+            } @else {
+              <span class="mb-4 block h-[1.625rem]" aria-hidden="true"></span>
             }
 
             <h3
-              class="text-[1.05rem] font-bold tracking-tight sm:text-lg"
-              [class.text-white]="plan.featured"
-              [class.text-ink]="!plan.featured"
+              class="pricing-name text-pretty text-[1.05rem] font-bold tracking-tight sm:text-lg"
+              [class.is-on-brand]="!!plan.featured"
             >
               {{ plan.name }}
             </h3>
             <p
-              class="mt-2 text-[13px] leading-relaxed sm:text-sm"
-              [class.text-white/75]="plan.featured"
-              [class.text-[#6b6b80]]="!plan.featured"
+              class="pricing-desc mt-2 text-pretty text-[13px] leading-relaxed sm:text-sm"
+              [class.is-on-brand]="!!plan.featured"
             >
               {{ plan.description }}
             </p>
 
-            <p class="mt-6 flex items-end gap-1.5">
+            <p class="mt-6 flex flex-wrap items-end gap-1.5">
               <span
-                class="text-[2.35rem] leading-none font-bold tracking-tight tabular-nums sm:text-[2.6rem]"
-                [class.text-white]="plan.featured"
-                [class.text-ink]="!plan.featured"
+                class="pricing-price text-[2.35rem] leading-none font-bold tracking-tight tabular-nums sm:text-[2.6rem]"
+                [class.is-on-brand]="!!plan.featured"
               >
                 {{ plan.priceLabel }}
               </span>
               <span
-                class="pb-1 text-[13px] font-medium"
-                [class.text-white/70]="plan.featured"
-                [class.text-[#8a8a9c]]="!plan.featured"
+                class="pricing-note pb-1 text-[13px] font-medium"
+                [class.is-on-brand]="!!plan.featured"
               >
                 {{ plan.priceNote }}
               </span>
@@ -67,9 +70,9 @@
             <a
               [routerLink]="ctaPath"
               [queryParams]="{ plan: plan.id }"
-              class="pricing-cta mt-6 inline-flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+              class="pricing-cta mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
               [class.pricing-cta--outline]="plan.ctaStyle === 'outline'"
-              [class.pricing-cta--inverse]="plan.ctaStyle === 'inverse'"
+              [class.pricing-cta--solid]="plan.ctaStyle === 'inverse'"
             >
               {{ plan.ctaLabel }}
             </a>
@@ -78,15 +81,13 @@
               @for (feature of plan.features; track feature) {
                 <li class="flex items-start gap-2.5 text-[13px] leading-snug sm:text-sm">
                   <span
-                    class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full"
-                    [class.bg-white/20]="plan.featured"
-                    [class.bg-brand-soft]="!plan.featured"
+                    class="pricing-check mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full"
+                    [class.is-on-brand]="!!plan.featured"
                     aria-hidden="true"
                   >
                     <svg
-                      class="size-3"
-                      [class.text-white]="plan.featured"
-                      [class.text-brand]="!plan.featured"
+                      class="pricing-check-icon size-3"
+                      [class.is-on-brand]="!!plan.featured"
                       viewBox="0 0 12 12"
                       fill="none"
                     >
@@ -100,8 +101,8 @@
                     </svg>
                   </span>
                   <span
-                    [class.text-white/90]="plan.featured"
-                    [class.text-[#4a4a5c]]="!plan.featured"
+                    class="pricing-feature min-w-0 text-pretty"
+                    [class.is-on-brand]="!!plan.featured"
                   >
                     {{ feature }}
                   </span>

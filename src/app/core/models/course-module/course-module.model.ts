@@ -11,6 +11,9 @@ export interface CourseHighlight {
 export interface ModuleProject {
   readonly name: string;
   readonly summary: string;
+  readonly startDay: number;
+  readonly developmentDays: string;
+  readonly hours: string;
 }
 
 export interface ModuleClass {
@@ -18,17 +21,21 @@ export interface ModuleClass {
   readonly classNumber: number;
   readonly title: string;
   readonly contents: readonly string[];
-  readonly practice: string;
+  readonly practice?: string;
   readonly result?: string;
+  readonly isProjectStart?: boolean;
 }
 
 export interface CourseModule {
   readonly id: number;
   readonly title: string;
   readonly weeks: string;
+  readonly daysRange: string;
   readonly hours: string;
   readonly projectsCount: number;
+  readonly learning: string;
   readonly objective: string;
+  readonly projectStartNote: string;
   readonly technologies: readonly string[];
   readonly projects: readonly ModuleProject[];
   readonly note?: string;

@@ -7,12 +7,13 @@
 }
 
 .modules-card {
-  transition: box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .modules-card:hover {
-    box-shadow: 0 12px 36px rgba(22, 20, 57, 0.08);
+    border-color: #d8d8e4;
+    box-shadow: 0 8px 24px rgba(22, 20, 57, 0.06);
   }
 }
 
@@ -28,6 +29,28 @@
 .modules-trigger:focus-visible {
   outline: 2px solid var(--color-brand, #5751e1);
   outline-offset: -2px;
+}
+
+.modules-day-badge {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 0.375rem;
+  background: var(--color-ink, #161439);
+  padding: 0.2rem 0.4rem;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .modules-day-badge {
+    padding: 0.2rem 0.5rem;
+    font-size: 10px;
+  }
 }
 
 .modules-chevron {

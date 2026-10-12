@@ -1,3 +1,122 @@
 :host {
   display: block;
 }
+
+.topbar-countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.topbar-start {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffc224 0%, #ffd56a 100%);
+  padding: 0.35rem 0.7rem 0.35rem 0.55rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: #161439;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 1px rgba(255, 194, 36, 0.35), 0 0 18px rgba(255, 194, 36, 0.35);
+}
+
+.topbar-start-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #161439;
+  animation: topbar-pulse 1.4s ease-in-out infinite;
+}
+
+.topbar-sep {
+  width: 1px;
+  height: 1rem;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.topbar-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.topbar-unit {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.28rem 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.topbar-unit--live {
+  background: rgba(87, 81, 225, 0.35);
+  border-color: rgba(155, 150, 255, 0.45);
+}
+
+.topbar-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.topbar-label {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.topbar-live {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: #ffc224;
+  padding: 0.35rem 0.75rem;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #161439;
+}
+
+@keyframes topbar-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-start-dot {
+    animation: none;
+  }
+}
+
+.header-menu-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.header-menu-btn:focus-visible {
+  outline: 2px solid var(--color-brand, #5751e1);
+  outline-offset: 2px;
+}
+
+.header-mobile-nav a:focus-visible {
+  outline: 2px solid var(--color-brand, #5751e1);
+  outline-offset: -2px;
+}

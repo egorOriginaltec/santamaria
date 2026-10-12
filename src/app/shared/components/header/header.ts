@@ -1,4 +1,13 @@
-import { Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  HostListener,
+  OnInit,
+  effect,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
@@ -15,6 +24,7 @@ import { interval, map, startWith } from 'rxjs';
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
@@ -31,7 +41,18 @@ export class Header implements OnInit {
     finished: false,
   });
 
-  menuOpen = false;
+  readonly menuOpen = signal(false);
+
+  constructor() {
+    effect(() => {
+      const open = this.menuOpen();
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+
+    this.destroyRef.onDestroy(() => {
+      document.body.style.overflow = '';
+    });
+  }
 
   ngOnInit(): void {
     interval(1000)
@@ -43,12 +64,19 @@ export class Header implements OnInit {
       .subscribe((parts) => this.countdown.set(parts));
   }
 
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.menuOpen()) {
+      this.closeMenu();
+    }
+  }
+
   toggleMenu(): void {
-    this.menuOpen = !this.menuOpen;
+    this.menuOpen.update((open) => !open);
   }
 
   closeMenu(): void {
-    this.menuOpen = false;
+    this.menuOpen.set(false);
   }
 
   pad(value: number): string {

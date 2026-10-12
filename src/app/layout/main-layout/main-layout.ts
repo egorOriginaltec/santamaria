@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Footer, Header } from '@shared/index';
 
@@ -7,5 +7,6 @@ import { Footer, Header } from '@shared/index';
   imports: [RouterOutlet, Header, Footer],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainLayout {}

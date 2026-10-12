@@ -1,0 +1,137 @@
+<section id="contact" class="contact-section relative overflow-hidden">
+  <div class="contact-glow pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+  <div
+    class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20"
+  >
+    <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
+      <header class="min-w-0 lg:pt-2">
+        <p class="contact-eyebrow mb-4 text-[11px] font-medium tracking-[0.18em] uppercase sm:text-xs md:text-[13px]">
+          {{ eyebrow }}
+        </p>
+        <h2
+          class="contact-heading text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight sm:text-3xl md:text-4xl"
+        >
+          <span class="contact-marker">{{ title }}</span>
+        </h2>
+        <p
+          class="contact-intro mt-4 max-w-md text-pretty text-[14px] leading-relaxed sm:text-[15px] md:text-base"
+        >
+          {{ intro }}
+        </p>
+        <a
+          [href]="'mailto:' + email"
+          class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
+        >
+          {{ email }}
+        </a>
+      </header>
+
+      <div class="contact-card min-w-0 rounded-2xl border bg-white p-5 text-ink sm:p-7">
+        @if (submitted()) {
+          <div class="py-6 text-center sm:py-8" role="status">
+            <p class="text-lg font-bold text-ink">Mensaje listo</p>
+            <p class="mx-auto mt-3 max-w-sm text-pretty text-sm leading-relaxed text-[#6b6b80]">
+              {{ successMessage }}
+            </p>
+            <button
+              type="button"
+              class="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              (click)="submitted.set(false)"
+            >
+              Enviar otro mensaje
+            </button>
+          </div>
+        } @else {
+          <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            <div>
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="contact-name">
+                Nombre
+              </label>
+              <input
+                id="contact-name"
+                type="text"
+                formControlName="name"
+                autocomplete="name"
+                class="contact-input"
+                [class.is-invalid]="fieldInvalid('name')"
+                placeholder="Tu nombre"
+              />
+              @if (fieldInvalid('name')) {
+                <p class="mt-1.5 text-[12px] text-red-500">Indica tu nombre.</p>
+              }
+            </div>
+
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label
+                  class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                  for="contact-email"
+                >
+                  Email
+                </label>
+                <input
+                  id="contact-email"
+                  type="email"
+                  formControlName="email"
+                  autocomplete="email"
+                  class="contact-input"
+                  [class.is-invalid]="fieldInvalid('email')"
+                  placeholder="tu@email.com"
+                />
+                @if (fieldInvalid('email')) {
+                  <p class="mt-1.5 text-[12px] text-red-500">Email no válido.</p>
+                }
+              </div>
+
+              <div>
+                <label
+                  class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                  for="contact-phone"
+                >
+                  Teléfono <span class="text-[#b0b0bc]">(opcional)</span>
+                </label>
+                <input
+                  id="contact-phone"
+                  type="tel"
+                  formControlName="phone"
+                  autocomplete="tel"
+                  class="contact-input"
+                  placeholder="+34 600 000 000"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                for="contact-message"
+              >
+                Mensaje
+              </label>
+              <textarea
+                id="contact-message"
+                formControlName="message"
+                rows="4"
+                class="contact-input min-h-[7rem] resize-y"
+                [class.is-invalid]="fieldInvalid('message')"
+                placeholder="¿Qué te gustaría saber del bootcamp?"
+              ></textarea>
+              @if (fieldInvalid('message')) {
+                <p class="mt-1.5 text-[12px] text-red-500">Escribe al menos unas líneas.</p>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="mt-1 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
+              [disabled]="submitting()"
+            >
+              {{ submitting() ? 'Preparando…' : 'Enviar consulta' }}
+            </button>
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</section>

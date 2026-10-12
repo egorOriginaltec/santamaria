@@ -1,20 +1,120 @@
-<footer class="border-t border-neutral-200 bg-white">
-  <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:px-6 lg:grid-cols-[1.3fr_1fr] lg:px-8">
-    <div>
-      <p class="text-lg font-bold lowercase text-ink">{{ brand }}</p>
-      <p class="mt-2 max-w-md text-sm text-neutral-500">
-        {{ fullName }} — Un programa intensivo de programación, IA y automatización.
-      </p>
-    </div>
-    <nav class="flex flex-wrap gap-x-5 gap-y-2" aria-label="Pie">
-      @for (item of links; track item.label) {
-        <a [routerLink]="item.path" class="text-sm text-neutral-500 hover:text-brand">
-          {{ item.label }}
+<footer class="border-t border-[#ececf3] bg-white text-ink">
+  <div class="mx-auto w-full max-w-[1320px] px-4 pt-12 pb-8 sm:px-6 sm:pt-14 sm:pb-10 lg:pt-16">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div class="min-w-0 sm:col-span-2 lg:col-span-1">
+        <a routerLink="/" class="inline-flex items-center gap-2.5">
+          <span class="size-10 shrink-0 text-brand" aria-hidden="true">
+            <svg class="size-full" viewBox="0 0 44 44" fill="none">
+              <circle cx="22" cy="22" r="22" fill="currentColor" />
+              <path
+                fill="#fff"
+                d="M22 11.5 10.5 17.2l11.5 5.7 10.2-5.05V24.5h1.6V17.2L22 11.5zm0 2.35 7.55 3.75L22 21.35l-7.55-3.75L22 13.85z"
+              />
+              <path
+                fill="#fff"
+                d="M31.7 18.4v5.2c0 .9-4.35 2.2-9.7 2.2s-9.7-1.3-9.7-2.2v-5.2l9.7 4.8 9.7-4.8z"
+              />
+              <circle cx="22" cy="27.2" r="2.1" fill="#fff" />
+              <path
+                fill="#fff"
+                d="M22 29.6c-3.1 0-5.6 1.85-5.6 3.55v.85h11.2v-.85c0-1.7-2.5-3.55-5.6-3.55z"
+              />
+            </svg>
+          </span>
+          <span class="flex flex-col leading-none">
+            <span class="text-[1.2rem] font-bold tracking-tight text-ink">Santamaria</span>
+            <span class="mt-1 text-[10px] font-medium tracking-[0.18em] text-[#b0b0bc] uppercase">
+              {{ tagline }}
+            </span>
+          </span>
         </a>
-      }
-    </nav>
-    <p class="text-xs text-neutral-400 lg:col-span-2">
-      © {{ year }} {{ fullName }}. Todos los derechos reservados.
-    </p>
+        <p class="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-[#6b6b80]">
+          Bootcamp intensivo de programación, inteligencia artificial y automatización.
+        </p>
+      </div>
+
+      <div class="min-w-0">
+        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Explorar</p>
+        <nav class="mt-4 flex flex-col gap-1" aria-label="Footer navigation">
+          @for (item of links; track item.label) {
+            <a
+              [routerLink]="item.path"
+              [fragment]="item.fragment"
+              class="inline-flex min-h-10 items-center text-sm text-[#4a4a5c] transition-colors hover:text-brand"
+            >
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+      </div>
+
+      <div class="min-w-0">
+        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Contacto</p>
+        <ul class="mt-4 flex flex-col gap-2">
+          <li>
+            <a
+              [href]="'mailto:' + email"
+              class="inline-flex min-h-10 items-center text-sm text-[#4a4a5c] transition-colors hover:text-brand"
+            >
+              {{ email }}
+            </a>
+          </li>
+          <li class="text-sm leading-relaxed text-[#6b6b80]">España · Inicio 1 de diciembre</li>
+        </ul>
+      </div>
+
+      <div class="min-w-0">
+        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Síguenos</p>
+        <ul class="mt-4 flex items-center gap-3" aria-label="Social networks">
+          @for (social of socialLinks; track social.label) {
+            <li>
+              <a
+                [href]="social.href"
+                [attr.aria-label]="social.label"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="grid size-10 place-items-center rounded-full border border-[#ececf3] text-[#6b6b80] transition-colors hover:border-brand/30 hover:text-brand"
+              >
+                @switch (social.icon) {
+                  @case ('instagram') {
+                    <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                      />
+                    </svg>
+                  }
+                  @case ('tiktok') {
+                    <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 0 0-.79-.05A6.34 6.34 0 0 0 3.15 15.3a6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.34-6.34V8.73a8.18 8.18 0 0 0 4.76 1.52V6.79a4.85 4.85 0 0 1-1-.1Z"
+                      />
+                    </svg>
+                  }
+                  @case ('youtube') {
+                    <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        fill="currentColor"
+                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"
+                      />
+                    </svg>
+                  }
+                }
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div
+      class="mt-10 flex flex-col gap-3 border-t border-[#ececf3] pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p class="text-xs text-[#b0b0bc]">
+        © {{ year }} {{ fullName }}. Todos los derechos reservados.
+      </p>
+      <p class="text-xs text-[#b0b0bc]">Programación · IA · Automatización</p>
+    </div>
   </div>
 </footer>
