@@ -1,0 +1,212 @@
+<section class="courses-card">
+  <header class="courses-header">
+    <div class="courses-heading">
+      <div>
+        <p class="courses-eyebrow">Gestión</p>
+        <h2 class="courses-title">Cursos</h2>
+        <p class="courses-subtitle">
+          @if (loading() && initialLoad()) {
+            Cargando…
+          } @else if (total() === 0) {
+            Sin resultados con estos filtros
+          } @else {
+            {{ from() }}–{{ to() }} de {{ total() }} cursos
+          }
+        </p>
+      </div>
+      <a routerLink="/dashboard/courses/new" class="courses-btn courses-btn--primary">
+        Nuevo curso
+      </a>
+    </div>
+
+    <div class="courses-filters">
+      <label class="courses-field courses-field--search">
+        <span class="courses-field-label">Buscar</span>
+        <input
+          type="search"
+          class="courses-input"
+          placeholder="Título o descripción…"
+          [formControl]="searchControl"
+        />
+      </label>
+
+      <label class="courses-field">
+        <span class="courses-field-label">Periodo</span>
+        <select class="courses-input" [formControl]="statusControl">
+          <option value="">Todos</option>
+          @for (status of options().statuses; track status) {
+            <option [value]="status">{{ statusLabel(status) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="courses-field">
+        <span class="courses-field-label">Estado</span>
+        <select class="courses-input" [formControl]="activeControl">
+          <option value="">Todos</option>
+          <option value="true">Activos</option>
+          <option value="false">Inactivos</option>
+        </select>
+      </label>
+
+      <label class="courses-field">
+        <span class="courses-field-label">Orden</span>
+        <select class="courses-input" [formControl]="sortControl">
+          @for (sort of options().sorts; track sort) {
+            <option [value]="sort">{{ sortLabel(sort) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="courses-field courses-field--page">
+        <span class="courses-field-label">Pág.</span>
+        <select class="courses-input" [formControl]="perPageControl">
+          @for (size of options().per_page_options; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="courses-btn courses-btn--ghost"
+        (click)="reload(currentPage())"
+        [disabled]="loading()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="courses-alert" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/login" class="courses-alert-link">Ir a acceso</a>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="courses-success" role="status">{{ successMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="courses-loader" aria-busy="true" aria-live="polite">
+      <div class="courses-loader-line" aria-hidden="true"></div>
+      <div class="courses-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="courses-skeleton-row">
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-20"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (courses().length === 0 && !errorMessage()) {
+    <div class="courses-empty courses-reveal">
+      <p class="courses-empty-title">No hay cursos con estos filtros</p>
+      <p class="courses-empty-text">
+        Cambia el periodo o el estado, o crea un curso nuevo.
+      </p>
+      <a routerLink="/dashboard/courses/new" class="courses-btn courses-btn--primary">
+        Crear curso
+      </a>
+    </div>
+  } @else {
+    <div class="courses-reveal">
+      <div class="courses-table-wrap">
+        <table class="courses-table">
+          <thead>
+            <tr>
+              <th>Curso</th>
+              <th>Fechas</th>
+              <th>Horario</th>
+              <th>Estado</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (course of courses(); track course.uuid) {
+              <tr>
+                <td>
+                  <span class="courses-name">{{ course.title }}</span>
+                  <p class="courses-description">{{ course.description }}</p>
+                </td>
+                <td class="courses-dates">
+                  {{ course.start_date | date: 'd MMM yyyy' }}
+                  –
+                  {{ course.end_date | date: 'd MMM yyyy' }}
+                </td>
+                <td>
+                  <span class="schedule-pill">{{ course.schedule }}</span>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    class="active-pill"
+                    [attr.data-active]="course.is_active"
+                    (click)="toggleActive(course)"
+                  >
+                    {{ course.is_active ? 'Activo' : 'Inactivo' }}
+                  </button>
+                </td>
+                <td class="courses-actions">
+                  <a
+                    class="courses-btn courses-btn--small"
+                    [routerLink]="['/dashboard/courses', course.uuid, 'edit']"
+                  >
+                    Editar
+                  </a>
+                  <button
+                    type="button"
+                    class="courses-btn courses-btn--danger courses-btn--small"
+                    (click)="onDelete(course)"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="courses-pager">
+        <p class="courses-pager-meta">
+          Página {{ currentPage() }} de {{ lastPage() }}
+        </p>
+        <div class="courses-pager-controls">
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() <= 1 || loading()"
+            (click)="goToPage(currentPage() - 1)"
+          >
+            Anterior
+          </button>
+          @for (page of pageNumbers(); track page) {
+            <button
+              type="button"
+              class="pager-btn"
+              [class.is-active]="page === currentPage()"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() >= lastPage() || loading()"
+            (click)="goToPage(currentPage() + 1)"
+          >
+            Siguiente
+          </button>
+        </div>
+      </footer>
+    </div>
+  }
+</section>

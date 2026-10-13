@@ -42,4 +42,4 @@ export const PRICING_PLANS: readonly PricingPlan[] = [
   },
 ] as const;
 
-export const PRICING_CTA_PATH = '/acceso';
+export const PRICING_CTA_PATH = '/login';

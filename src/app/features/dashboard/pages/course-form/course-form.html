@@ -1,0 +1,121 @@
+<section class="course-form-card">
+  <header class="course-form-header">
+    <div>
+      <p class="course-form-eyebrow">Gestión · Cursos</p>
+      <h2 class="course-form-title">
+        {{ isEdit() ? 'Editar curso' : 'Nuevo curso' }}
+      </h2>
+      <p class="course-form-subtitle">
+        Título, fechas del programa y horario diario (ej. 09:00–13:00).
+      </p>
+    </div>
+    <a routerLink="/dashboard/courses" class="course-form-back">Volver al listado</a>
+  </header>
+
+  @if (loading()) {
+    <div class="course-form-loading">
+      <span class="course-form-spinner" aria-hidden="true"></span>
+      Cargando curso…
+    </div>
+  } @else {
+    <form class="course-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      @if (errorMessage()) {
+        <p class="course-form-alert" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="course-form-grid">
+        <label class="course-field course-field--full">
+          <span class="course-field-label">Título</span>
+          <input
+            type="text"
+            class="course-input"
+            formControlName="title"
+            maxlength="150"
+            placeholder="Ej. Bootcamp Full Stack"
+            [class.is-invalid]="fieldInvalid('title')"
+          />
+          @if (fieldInvalid('title')) {
+            <span class="course-field-error">Indica un título válido (mín. 2).</span>
+          }
+        </label>
+
+        <label class="course-field course-field--full">
+          <span class="course-field-label">Descripción</span>
+          <textarea
+            class="course-input course-textarea"
+            formControlName="description"
+            rows="4"
+            maxlength="5000"
+            placeholder="Qué incluye el curso, nivel y objetivos…"
+            [class.is-invalid]="fieldInvalid('description')"
+          ></textarea>
+          @if (fieldInvalid('description')) {
+            <span class="course-field-error">La descripción debe tener al menos 10 caracteres.</span>
+          }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Fecha inicio</span>
+          <input
+            type="date"
+            class="course-input"
+            formControlName="start_date"
+            [class.is-invalid]="fieldInvalid('start_date') || hasDateRangeError()"
+          />
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Fecha fin</span>
+          <input
+            type="date"
+            class="course-input"
+            formControlName="end_date"
+            [class.is-invalid]="fieldInvalid('end_date') || hasDateRangeError()"
+          />
+          @if (hasDateRangeError()) {
+            <span class="course-field-error">La fecha fin debe ser posterior o igual al inicio.</span>
+          }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Horario desde</span>
+          <input
+            type="time"
+            class="course-input"
+            formControlName="schedule_start"
+            [class.is-invalid]="fieldInvalid('schedule_start') || hasScheduleRangeError()"
+          />
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Horario hasta</span>
+          <input
+            type="time"
+            class="course-input"
+            formControlName="schedule_end"
+            [class.is-invalid]="fieldInvalid('schedule_end') || hasScheduleRangeError()"
+          />
+          @if (hasScheduleRangeError()) {
+            <span class="course-field-error">La hora fin debe ser posterior a la de inicio.</span>
+          }
+        </label>
+
+        <label class="course-field course-field--check">
+          <input type="checkbox" formControlName="is_active" />
+          <span>Curso activo</span>
+        </label>
+      </div>
+
+      <div class="course-form-actions">
+        <a routerLink="/dashboard/courses" class="course-btn course-btn--ghost">Cancelar</a>
+        <button
+          type="submit"
+          class="course-btn course-btn--primary"
+          [disabled]="saving()"
+        >
+          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear curso' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

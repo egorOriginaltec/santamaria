@@ -1,0 +1,33 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.donut-card {
+  height: 100%;
+  border: 1px solid #ececf3;
+  border-radius: 1.25rem;
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
+}
+
+.donut {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+}
+
+.donut::after {
+  content: '';
+  position: absolute;
+  inset: 22%;
+  border-radius: inherit;
+  background: #fff;
+}
+
+.donut-center {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}

@@ -12,16 +12,24 @@ export const routes: Routes = [
           import('@features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
       },
       {
-        path: 'contacto',
+        path: 'contact',
         loadChildren: () =>
           import('@features/contact/contact.routes').then((m) => m.CONTACT_ROUTES),
       },
       {
-        path: 'acceso',
+        path: 'login',
         loadChildren: () =>
           import('@features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
+      // Legacy Spanish paths
+      { path: 'contacto', redirectTo: 'contact', pathMatch: 'full' },
+      { path: 'acceso', redirectTo: 'login', pathMatch: 'full' },
     ],
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('@features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
   },
   { path: '**', redirectTo: '' },
 ];

@@ -1,0 +1,26 @@
+:host {
+  display: block;
+}
+
+.dashboard-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.5rem;
+  border-bottom: 1px solid #ececf3;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 0.85rem 1rem;
+  backdrop-filter: blur(10px);
+}
+
+@media (min-width: 640px) {
+  .dashboard-topbar {
+    padding: 0.85rem 1.5rem;
+  }
+}
+
+.dashboard-topbar button,
+.dashboard-topbar a {
+  cursor: pointer;
+}

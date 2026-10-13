@@ -1,0 +1,221 @@
+<section class="holidays-card">
+  <header class="holidays-header">
+    <div class="holidays-heading">
+      <div>
+        <p class="holidays-eyebrow">Gestión</p>
+        <h2 class="holidays-title">Festivos nacionales</h2>
+        <p class="holidays-subtitle">
+          @if (loading() && initialLoad()) {
+            Cargando…
+          } @else if (total() === 0) {
+            Sin resultados con estos filtros
+          } @else {
+            {{ from() }}–{{ to() }} de {{ total() }} · ES
+          }
+        </p>
+      </div>
+      <a routerLink="/dashboard/holidays/new" class="holidays-btn holidays-btn--primary">
+        Nuevo festivo
+      </a>
+    </div>
+
+    <div class="holidays-filters">
+      <label class="holidays-field holidays-field--search">
+        <span class="holidays-field-label">Buscar</span>
+        <input
+          type="search"
+          class="holidays-input"
+          placeholder="Nombre…"
+          [formControl]="searchControl"
+        />
+      </label>
+
+      <label class="holidays-field">
+        <span class="holidays-field-label">Año</span>
+        <select class="holidays-input" [formControl]="yearControl">
+          <option value="all">Todos</option>
+          @for (year of options().years; track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="holidays-field">
+        <span class="holidays-field-label">Mes</span>
+        <select class="holidays-input" [formControl]="monthControl">
+          <option value="">Todos</option>
+          @for (month of options().months; track month) {
+            <option [value]="month">{{ monthLabels[month - 1] }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="holidays-field">
+        <span class="holidays-field-label">Estado</span>
+        <select class="holidays-input" [formControl]="activeControl">
+          <option value="">Todos</option>
+          <option value="true">Activos</option>
+          <option value="false">Inactivos</option>
+        </select>
+      </label>
+
+      <label class="holidays-field">
+        <span class="holidays-field-label">Orden</span>
+        <select class="holidays-input" [formControl]="sortControl">
+          @for (sort of options().sorts; track sort) {
+            <option [value]="sort">{{ sortLabel(sort) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="holidays-field holidays-field--page">
+        <span class="holidays-field-label">Pág.</span>
+        <select class="holidays-input" [formControl]="perPageControl">
+          @for (size of options().per_page_options; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="holidays-btn holidays-btn--ghost"
+        (click)="reload(currentPage())"
+        [disabled]="loading()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="holidays-alert" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/login" class="holidays-alert-link">Ir a acceso</a>
+    </div>
+  }
+
+  @if (successMessage()) {
+    <div class="holidays-success" role="status">{{ successMessage() }}</div>
+  }
+
+  @if (loading()) {
+    <div class="holidays-loader" aria-busy="true" aria-live="polite">
+      <div class="holidays-loader-line" aria-hidden="true"></div>
+      <div class="holidays-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="holidays-skeleton-row">
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-line sk-w-20"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (holidays().length === 0 && !errorMessage()) {
+    <div class="holidays-empty holidays-reveal">
+      <p class="holidays-empty-title">No hay festivos con estos filtros</p>
+      <p class="holidays-empty-text">
+        Cambia el año o el mes, o crea un festivo nacional nuevo.
+      </p>
+      <a routerLink="/dashboard/holidays/new" class="holidays-btn holidays-btn--primary">
+        Crear festivo
+      </a>
+    </div>
+  } @else {
+    <div class="holidays-reveal">
+    <div class="holidays-table-wrap">
+      <table class="holidays-table">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Notas</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (holiday of holidays(); track holiday.uuid) {
+            <tr>
+              <td class="holidays-date">
+                {{ holiday.date | date: 'EEE d MMM yyyy' }}
+              </td>
+              <td>
+                <span class="holidays-name">{{ holiday.name }}</span>
+              </td>
+              <td>
+                <span class="type-pill">Nacional</span>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="active-pill"
+                  [attr.data-active]="holiday.is_active"
+                  (click)="toggleActive(holiday)"
+                >
+                  {{ holiday.is_active ? 'Activo' : 'Inactivo' }}
+                </button>
+              </td>
+              <td class="holidays-notes">{{ holiday.notes || '—' }}</td>
+              <td class="holidays-actions">
+                <a
+                  class="holidays-btn holidays-btn--small"
+                  [routerLink]="['/dashboard/holidays', holiday.uuid, 'edit']"
+                >
+                  Editar
+                </a>
+                <button
+                  type="button"
+                  class="holidays-btn holidays-btn--danger holidays-btn--small"
+                  (click)="onDelete(holiday)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="holidays-pager">
+      <p class="holidays-pager-meta">
+        Página {{ currentPage() }} de {{ lastPage() }}
+      </p>
+      <div class="holidays-pager-controls">
+        <button
+          type="button"
+          class="pager-btn"
+          [disabled]="currentPage() <= 1 || loading()"
+          (click)="goToPage(currentPage() - 1)"
+        >
+          Anterior
+        </button>
+        @for (page of pageNumbers(); track page) {
+          <button
+            type="button"
+            class="pager-btn"
+            [class.is-active]="page === currentPage()"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+        <button
+          type="button"
+          class="pager-btn"
+          [disabled]="currentPage() >= lastPage() || loading()"
+          (click)="goToPage(currentPage() + 1)"
+        >
+          Siguiente
+        </button>
+      </div>
+    </footer>
+    </div>
+  }
+</section>

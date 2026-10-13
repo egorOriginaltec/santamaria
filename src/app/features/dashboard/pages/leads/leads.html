@@ -1,0 +1,247 @@
+<section class="leads-card">
+  <header class="leads-header">
+    <div>
+      <h2 class="leads-title">Leads</h2>
+      <p class="leads-subtitle">
+        @if (loading() && initialLoad()) {
+          Cargando consultas…
+        } @else if (total() === 0) {
+          Sin resultados con estos filtros
+        } @else {
+          {{ from() }}–{{ to() }} de {{ total() }} consultas
+        }
+      </p>
+    </div>
+
+    <div class="leads-filters">
+      <label class="leads-field">
+        <span class="leads-field-label">Buscar</span>
+        <input
+          type="search"
+          class="leads-input"
+          placeholder="Nombre, email, teléfono…"
+          [formControl]="searchControl"
+        />
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Periodo</span>
+        <select class="leads-input" [formControl]="periodControl">
+          @for (period of options().periods; track period) {
+            <option [value]="period">{{ periodLabel(period) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Estado</span>
+        <select class="leads-input" [formControl]="statusControl">
+          <option value="">Todos</option>
+          @for (status of options().statuses; track status) {
+            <option [value]="status">{{ statusLabel(status) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Origen</span>
+        <select class="leads-input" [formControl]="sourceControl">
+          <option value="">Todos</option>
+          @for (source of options().sources; track source) {
+            <option [value]="source">{{ sourceLabel(source) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Orden</span>
+        <select class="leads-input" [formControl]="sortControl">
+          @for (sort of options().sorts; track sort) {
+            <option [value]="sort">{{ sortLabel(sort) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field leads-field--narrow">
+        <span class="leads-field-label">Por página</span>
+        <select class="leads-input" [formControl]="perPageControl">
+          @for (size of options().per_page_options; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="leads-btn leads-btn--ghost"
+        (click)="reload(currentPage())"
+        [disabled]="loading()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="leads-alert" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/login" class="leads-alert-link">Ir a acceso</a>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="leads-loader" aria-busy="true" aria-live="polite">
+      <div class="leads-loader-line" aria-hidden="true"></div>
+      <div class="leads-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="leads-skeleton-row">
+            <span class="sk sk-avatar"></span>
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-line sk-w-20"></span>
+            <span class="sk sk-pill"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (leads().length === 0 && !errorMessage()) {
+    <div class="leads-empty leads-reveal">
+      <p class="leads-empty-title">No hay leads en este periodo</p>
+      <p class="leads-empty-text">
+        Prueba “Último mes” o “Todo”, o envía el formulario de la landing /contact.
+      </p>
+    </div>
+  } @else {
+    <div class="leads-reveal">
+    <div class="leads-table-wrap">
+      <table class="leads-table">
+        <thead>
+          <tr>
+            <th>Contacto</th>
+            <th>Teléfono</th>
+            <th>Origen</th>
+            <th>Mensaje</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (lead of leads(); track lead.uuid) {
+            <tr [class.is-updating]="updatingUuid() === lead.uuid">
+              <td>
+                <div class="leads-contact">
+                  <span class="leads-avatar">{{ initials(lead.name) }}</span>
+                  <span class="min-w-0">
+                    <span class="leads-name">{{ lead.name }}</span>
+                    <span class="leads-email">{{ lead.email }}</span>
+                  </span>
+                </div>
+              </td>
+              <td class="leads-muted whitespace-nowrap">{{ lead.phone || '—' }}</td>
+              <td>
+                <span class="source-pill">{{ sourceLabel(lead.source) }}</span>
+              </td>
+              <td class="leads-message-cell">
+                <p class="leads-message" [title]="lead.message">{{ lead.message }}</p>
+              </td>
+              <td class="leads-muted whitespace-nowrap">
+                {{ lead.created_at | date: 'dd MMM yyyy · HH:mm' }}
+              </td>
+              <td>
+                <div class="status-menu" [class.is-open]="openStatusMenuUuid() === lead.uuid">
+                  <button
+                    type="button"
+                    class="status-trigger"
+                    [attr.data-status]="lead.status"
+                    [disabled]="updatingUuid() === lead.uuid"
+                    (click)="toggleStatusMenu(lead.uuid, $event)"
+                  >
+                    <span class="status-dot" aria-hidden="true"></span>
+                    {{ statusLabel(lead.status) }}
+                    <svg class="status-chevron" viewBox="0 0 12 12" aria-hidden="true">
+                      <path
+                        d="M3 4.5 6 7.5 9 4.5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  @if (openStatusMenuUuid() === lead.uuid) {
+                    <div class="status-dropdown" role="menu" (click)="$event.stopPropagation()">
+                      @for (status of options().statuses; track status) {
+                        <button
+                          type="button"
+                          class="status-option"
+                          [attr.data-status]="status"
+                          [class.is-active]="lead.status === status"
+                          role="menuitem"
+                          (click)="setStatus(lead, status, $event)"
+                        >
+                          <span class="status-dot" aria-hidden="true"></span>
+                          {{ statusLabel(status) }}
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  class="delete-btn"
+                  [disabled]="updatingUuid() === lead.uuid"
+                  (click)="onDelete(lead)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="leads-pager">
+      <p class="leads-pager-meta">
+        Página {{ currentPage() }} de {{ lastPage() }}
+      </p>
+      <div class="leads-pager-controls">
+        <button
+          type="button"
+          class="pager-btn"
+          [disabled]="currentPage() <= 1 || loading()"
+          (click)="goToPage(currentPage() - 1)"
+        >
+          Anterior
+        </button>
+        @for (page of pageNumbers(); track page) {
+          <button
+            type="button"
+            class="pager-btn"
+            [class.is-active]="page === currentPage()"
+            [disabled]="loading()"
+            (click)="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        }
+        <button
+          type="button"
+          class="pager-btn"
+          [disabled]="currentPage() >= lastPage() || loading()"
+          (click)="goToPage(currentPage() + 1)"
+        >
+          Siguiente
+        </button>
+      </div>
+    </footer>
+    </div>
+  }
+</section>

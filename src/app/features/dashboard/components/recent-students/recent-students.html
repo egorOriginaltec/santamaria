@@ -1,0 +1,50 @@
+<section class="table-card">
+  <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
+    <div>
+      <h2 class="text-base font-bold text-ink sm:text-lg">Recent students</h2>
+      <p class="mt-1 text-sm text-[#8a8a9a]">Latest enrollments in the bootcamp</p>
+    </div>
+    <button type="button" class="export-btn">Export</button>
+  </header>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full text-left">
+      <thead>
+        <tr class="text-[11px] font-semibold tracking-[0.08em] text-[#8a8a9a] uppercase">
+          <th class="pb-3 pr-4 font-semibold">Student</th>
+          <th class="pb-3 pr-4 font-semibold">Course</th>
+          <th class="pb-3 pr-4 font-semibold">Joined</th>
+          <th class="pb-3 pr-4 font-semibold">Status</th>
+          <th class="pb-3 font-semibold">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of rows; track row.id) {
+          <tr class="border-t border-[#f0f0f5]">
+            <td class="py-3.5 pr-4">
+              <div class="flex min-w-0 items-center gap-3">
+                <span
+                  class="grid size-9 shrink-0 place-items-center rounded-full bg-brand-soft text-[11px] font-bold text-brand"
+                >
+                  {{ row.name.slice(0, 2).toUpperCase() }}
+                </span>
+                <span class="min-w-0">
+                  <span class="block truncate text-sm font-semibold text-ink">{{ row.name }}</span>
+                  <span class="block truncate text-xs text-[#8a8a9a]">{{ row.email }}</span>
+                </span>
+              </div>
+            </td>
+            <td class="py-3.5 pr-4 text-sm text-[#4a4a5c]">{{ row.course }}</td>
+            <td class="py-3.5 pr-4 text-sm text-[#4a4a5c]">{{ row.joinedAt }}</td>
+            <td class="py-3.5 pr-4">
+              <span class="status-pill" [attr.data-status]="row.status">
+                {{ statusLabel(row.status) }}
+              </span>
+            </td>
+            <td class="py-3.5 text-sm font-semibold text-ink">{{ row.amount }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

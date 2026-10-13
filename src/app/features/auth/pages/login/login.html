@@ -1,4 +1,165 @@
-<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-  <h1 class="text-3xl font-extrabold tracking-tight text-ink">Acceso</h1>
-  <p class="mt-2 text-neutral-500">Contenido en preparación.</p>
+<section class="login-section relative overflow-hidden bg-white">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_0%,rgba(87,81,225,0.06),transparent_55%),radial-gradient(ellipse_at_90%_80%,rgba(255,194,36,0.05),transparent_45%)]"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+    <div class="mx-auto w-full max-w-md">
+      <header class="text-center">
+        <p
+          class="mb-3 text-[11px] font-medium tracking-[0.18em] text-[#8a8a9a] uppercase sm:text-xs"
+        >
+          {{ eyebrow }}
+        </p>
+        <h1
+          class="text-balance text-[1.65rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl"
+        >
+          <span class="login-marker">{{ title }}</span>
+        </h1>
+        <p
+          class="mx-auto mt-3 max-w-sm text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px]"
+        >
+          {{ intro }}
+        </p>
+      </header>
+
+      <div
+        class="mt-8 rounded-2xl border border-[#e4e4ec] bg-white p-5 shadow-[0_10px_32px_rgba(22,20,57,0.06)] sm:mt-10 sm:p-7"
+      >
+        @if (submitted()) {
+          <div class="py-6 text-center sm:py-8" role="status">
+            <p class="text-lg font-bold text-ink">Credenciales recibidas</p>
+            <p class="mx-auto mt-3 max-w-sm text-pretty text-sm leading-relaxed text-[#6b6b80]">
+              El acceso al campus se activará cuando el área de alumnos esté disponible.
+              Si necesitas ayuda ahora, escríbenos.
+            </p>
+            <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <a
+                [routerLink]="helpPath"
+                class="inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              >
+                Ir a contacto
+              </a>
+              <button
+                type="button"
+                class="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#e4e4ec] px-5 text-sm font-semibold text-ink transition-colors hover:border-brand/30 hover:bg-brand-soft"
+                (click)="resetForm()"
+              >
+                Volver al formulario
+              </button>
+            </div>
+          </div>
+        } @else {
+          <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            @if (errorMessage()) {
+              <p class="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[13px] text-red-600" role="alert">
+                {{ errorMessage() }}
+              </p>
+            }
+            <div>
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="login-email">
+                Email
+              </label>
+              <input
+                id="login-email"
+                type="email"
+                formControlName="email"
+                autocomplete="email"
+                class="login-input"
+                [class.is-invalid]="fieldInvalid('email')"
+                placeholder="tu@email.com"
+              />
+              @if (fieldInvalid('email')) {
+                <p class="mt-1.5 text-[12px] text-red-500">Indica un email válido.</p>
+              }
+            </div>
+
+            <div>
+              <div class="mb-1.5 flex items-center justify-between gap-3">
+                <label class="block text-[12px] font-medium text-[#6b6b80]" for="login-password">
+                  Contraseña
+                </label>
+                <a
+                  [routerLink]="helpPath"
+                  class="text-[12px] font-medium text-brand transition-opacity hover:opacity-80"
+                >
+                  ¿No la tienes?
+                </a>
+              </div>
+              <div class="relative">
+                <input
+                  id="login-password"
+                  [type]="showPassword() ? 'text' : 'password'"
+                  formControlName="password"
+                  autocomplete="current-password"
+                  class="login-input pr-12"
+                  [class.is-invalid]="fieldInvalid('password')"
+                  placeholder="Tu contraseña"
+                />
+                <button
+                  type="button"
+                  class="absolute top-1/2 right-2 grid size-9 -translate-y-1/2 place-items-center rounded-lg text-[#8a8a9a] transition-colors hover:text-ink"
+                  [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                  (click)="togglePassword()"
+                >
+                  @if (showPassword()) {
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M3 3l18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.1A9.8 9.8 0 0 1 12 5c5 0 9.3 3.1 11 7.5a11.4 11.4 0 0 1-4.1 4.9M6.1 6.1A11.4 11.4 0 0 0 1 12.5C2.7 16.9 7 20 12 20c1.4 0 2.7-.2 4-.7"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  } @else {
+                    <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path
+                        d="M1 12.5C2.7 8.1 7 5 12 5s9.3 3.1 11 7.5C21.3 16.9 17 20 12 20S2.7 16.9 1 12.5Z"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linejoin="round"
+                      />
+                      <circle cx="12" cy="12.5" r="3" stroke="currentColor" stroke-width="1.7" />
+                    </svg>
+                  }
+                </button>
+              </div>
+              @if (fieldInvalid('password')) {
+                <p class="mt-1.5 text-[12px] text-red-500">Mínimo 6 caracteres.</p>
+              }
+            </div>
+
+            <label class="flex min-h-10 cursor-pointer items-center gap-2.5">
+              <input
+                type="checkbox"
+                formControlName="remember"
+                class="login-check size-4 rounded border-[#d0d0da] text-brand focus:ring-brand/30"
+              />
+              <span class="text-[13px] text-[#6b6b80]">Mantener sesión iniciada</span>
+            </label>
+
+            <button
+              type="submit"
+              class="mt-1 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
+              [disabled]="submitting()"
+            >
+              {{ submitting() ? 'Entrando…' : 'Entrar' }}
+            </button>
+          </form>
+        }
+      </div>
+
+      <p class="mt-6 text-center text-pretty text-[13px] leading-relaxed text-[#6b6b80]">
+        {{ help }}
+        <a
+          [routerLink]="helpPath"
+          class="font-semibold text-brand transition-opacity hover:opacity-80"
+        >
+          Contacto
+        </a>
+      </p>
+    </div>
+  </div>
 </section>

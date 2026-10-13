@@ -1,0 +1,26 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.chart-card {
+  height: 100%;
+  border: 1px solid #ececf3;
+  border-radius: 1.25rem;
+  background: #fff;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
+}
+
+.chart-tooltip {
+  position: absolute;
+  transform: translateX(-50%);
+  border-radius: 0.55rem;
+  background: #161439;
+  padding: 0.35rem 0.55rem;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  pointer-events: none;
+  white-space: nowrap;
+}

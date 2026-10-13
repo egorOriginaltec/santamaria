@@ -70,7 +70,7 @@
             <a
               [routerLink]="ctaPath"
               [queryParams]="{ plan: plan.id }"
-              class="pricing-cta mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
+              class="pricing-cta mt-6 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition-opacity hover:opacity-90"
               [class.pricing-cta--outline]="plan.ctaStyle === 'outline'"
               [class.pricing-cta--solid]="plan.ctaStyle === 'inverse'"
             >

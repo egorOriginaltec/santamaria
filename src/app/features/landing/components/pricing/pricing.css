@@ -94,6 +94,10 @@
   color: rgb(255 255 255 / 0.9);
 }
 
+.pricing-cta {
+  cursor: pointer;
+}
+
 .pricing-cta--outline {
   border: 1.5px solid #d8d8e4;
   background: #fff;

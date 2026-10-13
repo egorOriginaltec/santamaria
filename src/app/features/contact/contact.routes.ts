@@ -5,6 +5,6 @@ export const CONTACT_ROUTES: Routes = [
   {
     path: '',
     component: Contact,
-    title: 'Contacto · Santamaria Bootcaps',
+    title: 'Contact · Santamaria Bootcaps',
   },
 ];

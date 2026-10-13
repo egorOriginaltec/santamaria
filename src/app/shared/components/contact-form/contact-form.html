@@ -30,13 +30,13 @@
       <div class="contact-card min-w-0 rounded-2xl border bg-white p-5 text-ink sm:p-7">
         @if (submitted()) {
           <div class="py-6 text-center sm:py-8" role="status">
-            <p class="text-lg font-bold text-ink">Mensaje listo</p>
+            <p class="text-lg font-bold text-ink">Mensaje enviado</p>
             <p class="mx-auto mt-3 max-w-sm text-pretty text-sm leading-relaxed text-[#6b6b80]">
               {{ successMessage }}
             </p>
             <button
               type="button"
-              class="mt-6 inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              class="mt-6 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
               (click)="submitted.set(false)"
             >
               Enviar otro mensaje
@@ -44,6 +44,11 @@
           </div>
         } @else {
           <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            @if (errorMessage()) {
+              <p class="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[13px] text-red-600" role="alert">
+                {{ errorMessage() }}
+              </p>
+            }
             <div>
               <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="contact-name">
                 Nombre
@@ -53,12 +58,16 @@
                 type="text"
                 formControlName="name"
                 autocomplete="name"
+                maxlength="100"
                 class="contact-input"
                 [class.is-invalid]="fieldInvalid('name')"
                 placeholder="Tu nombre"
+                (input)="onNameInput($event)"
               />
               @if (fieldInvalid('name')) {
-                <p class="mt-1.5 text-[12px] text-red-500">Indica tu nombre.</p>
+                <p class="mt-1.5 text-[12px] text-red-500">
+                  Usa solo letras (mín. 2 caracteres).
+                </p>
               }
             </div>
 
@@ -75,9 +84,11 @@
                   type="email"
                   formControlName="email"
                   autocomplete="email"
+                  maxlength="255"
                   class="contact-input"
                   [class.is-invalid]="fieldInvalid('email')"
                   placeholder="tu@email.com"
+                  (input)="onEmailInput($event)"
                 />
                 @if (fieldInvalid('email')) {
                   <p class="mt-1.5 text-[12px] text-red-500">Email no válido.</p>
@@ -96,9 +107,19 @@
                   type="tel"
                   formControlName="phone"
                   autocomplete="tel"
+                  inputmode="tel"
+                  maxlength="22"
                   class="contact-input"
-                  placeholder="+34 600 000 000"
+                  [class.is-invalid]="fieldInvalid('phone')"
+                  placeholder="696 91 92 28"
+                  (input)="onPhoneInput($event)"
+                  (keydown)="onPhoneKeydown($event)"
                 />
+                @if (fieldInvalid('phone')) {
+                  <p class="mt-1.5 text-[12px] text-red-500">
+                    Teléfono ES o LATAM no válido.
+                  </p>
+                }
               </div>
             </div>
 
@@ -113,21 +134,23 @@
                 id="contact-message"
                 formControlName="message"
                 rows="4"
+                maxlength="5000"
                 class="contact-input min-h-[7rem] resize-y"
                 [class.is-invalid]="fieldInvalid('message')"
                 placeholder="¿Qué te gustaría saber del bootcamp?"
+                (input)="onMessageInput($event)"
               ></textarea>
               @if (fieldInvalid('message')) {
-                <p class="mt-1.5 text-[12px] text-red-500">Escribe al menos unas líneas.</p>
+                <p class="mt-1.5 text-[12px] text-red-500">Escribe al menos 10 caracteres.</p>
               }
             </div>
 
             <button
               type="submit"
-              class="mt-1 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
+              class="mt-1 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
               [disabled]="submitting()"
             >
-              {{ submitting() ? 'Preparando…' : 'Enviar consulta' }}
+              {{ submitting() ? 'Enviando…' : 'Enviar consulta' }}
             </button>
           </form>
         }

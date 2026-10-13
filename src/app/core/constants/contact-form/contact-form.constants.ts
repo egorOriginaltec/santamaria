@@ -8,4 +8,4 @@ export const CONTACT_FORM_INTRO =
 export const CONTACT_FORM_EMAIL = 'hola@santamariabootcaps.com';
 
 export const CONTACT_FORM_SUCCESS =
-  'Mensaje preparado. Revisa tu cliente de correo para enviarlo, o escríbenos directamente.';
+  'Hemos recibido tu mensaje. Te responderemos en breve con los siguientes pasos.';

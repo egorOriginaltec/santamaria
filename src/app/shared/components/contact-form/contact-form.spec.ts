@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { ContactForm } from './contact-form';
 
@@ -5,6 +7,7 @@ describe('ContactForm', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ContactForm],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
   });
 
