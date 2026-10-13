@@ -1,10 +1,148 @@
-<div class="flex flex-col gap-4 sm:gap-5">
-  <app-dashboard-stats-cards />
+<div class="flex flex-col gap-4 sm:gap-5" [class.opacity-70]="loading() && summary()">
+  <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+    <div class="min-w-0">
+      <h2 class="text-base font-semibold text-ink">Facturación y actividad</h2>
+      <p class="mt-1 text-[13px] text-[#8a8a9a]">{{ rangeLabel() || 'Elige las fechas' }}</p>
+    </div>
 
-  <div class="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
-    <app-dashboard-revenue-chart />
-    <app-dashboard-enrollment-breakdown />
-  </div>
+    <div class="flex flex-wrap items-end gap-2">
+      <label class="flex w-[8.25rem] flex-col gap-1">
+        <span class="text-[10px] font-bold tracking-[0.08em] text-[#9a9aab] uppercase">Año</span>
+        <select
+          class="h-10 rounded-xl border border-[#e4e4ec] bg-white px-3 text-base text-ink sm:text-[13px]"
+          [value]="year()"
+          (change)="setYear($any($event.target).value)"
+        >
+          @for (option of years; track option) {
+            <option [value]="option">{{ option }}</option>
+          }
+        </select>
+      </label>
 
-  <app-dashboard-recent-students />
+      <label class="flex w-40 flex-col gap-1">
+        <span class="text-[10px] font-bold tracking-[0.08em] text-[#9a9aab] uppercase">Desde</span>
+        <input
+          type="date"
+          class="h-10 rounded-xl border border-[#e4e4ec] bg-white px-3 text-base text-ink sm:text-[13px]"
+          [value]="from()"
+          (change)="setFrom($any($event.target).value)"
+        />
+      </label>
+
+      <label class="flex w-40 flex-col gap-1">
+        <span class="text-[10px] font-bold tracking-[0.08em] text-[#9a9aab] uppercase">Hasta</span>
+        <input
+          type="date"
+          class="h-10 rounded-xl border border-[#e4e4ec] bg-white px-3 text-base text-ink sm:text-[13px]"
+          [value]="to()"
+          (change)="setTo($any($event.target).value)"
+        />
+      </label>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <p class="rounded-2xl border border-[#fecaca] bg-[#fef2f2] px-4 py-3 text-sm text-[#b91c1c]" role="alert">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  @if (loading() && !summary()) {
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-hidden="true">
+      @for (item of [0, 1, 2]; track item) {
+        <div class="h-28 animate-pulse rounded-2xl bg-[#f4f4f8]"></div>
+      }
+    </div>
+  }
+
+  @if (summary(); as data) {
+    <app-dashboard-stats-cards [stats]="cards()" />
+
+    <div class="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
+      <app-dashboard-revenue-chart
+        [points]="data.series"
+        [currentLabel]="data.comparison.current"
+        [previousLabel]="data.comparison.previous"
+      />
+      <app-dashboard-enrollment-breakdown [total]="euro(data.billing.paid)" [slices]="courseSlices()" />
+    </div>
+
+    <div class="grid gap-4 xl:grid-cols-2">
+      <section class="rounded-2xl border border-[#ececf3] bg-white p-4 shadow-[0_8px_24px_rgba(22,20,57,0.04)] sm:p-5">
+        <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold text-ink sm:text-lg">Pagos</h2>
+            <p class="mt-1 text-sm text-[#8a8a9a]">Movimientos del periodo. El cobrado usa la fecha de pago.</p>
+          </div>
+          <a
+            routerLink="/dashboard/payments"
+            class="inline-flex items-center rounded-xl border border-[#ececf3] bg-white px-3 py-2 text-[13px] font-semibold text-ink"
+          >
+            Ver todos
+          </a>
+        </header>
+
+        @if (data.recent_payments.length === 0) {
+          <p class="py-10 text-center text-sm text-[#8a8a9a]">No hay pagos en este periodo.</p>
+        } @else {
+          <div class="overflow-x-auto max-[720px]:overflow-visible">
+            <table class="w-full border-collapse text-left text-[13px] max-[720px]:block max-[720px]:min-w-0">
+              <thead class="max-[720px]:hidden">
+                <tr class="text-[11px] font-semibold tracking-[0.08em] text-[#8a8a9a] uppercase">
+                  <th class="pr-4 pb-3 font-semibold">Estudiante</th>
+                  <th class="pr-4 pb-3 font-semibold">Curso</th>
+                  <th class="pr-4 pb-3 font-semibold">Estado</th>
+                  <th class="pr-4 pb-3 font-semibold">Fecha</th>
+                  <th class="pb-3 text-right font-semibold">Importe</th>
+                </tr>
+              </thead>
+              <tbody class="max-[720px]:block">
+                @for (payment of data.recent_payments; track payment.uuid) {
+                  <tr class="border-t border-[#f0f0f5] max-[720px]:mb-3 max-[720px]:block max-[720px]:rounded-2xl max-[720px]:border max-[720px]:border-[#efeff3] max-[720px]:px-3.5 max-[720px]:py-3 max-[720px]:last:mb-0">
+                    <td
+                      data-label="Estudiante"
+                      class="py-3.5 pr-4 font-semibold text-ink max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                    >
+                      {{ payment.email || 'Sin email' }}
+                    </td>
+                    <td
+                      data-label="Curso"
+                      class="py-3.5 pr-4 text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                    >
+                      {{ payment.course || 'Sin curso' }}
+                    </td>
+                    <td
+                      data-label="Estado"
+                      class="py-3.5 pr-4 max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                    >
+                      <span
+                        class="inline-flex rounded-full px-2 py-1 text-[11px] font-bold data-[status=paid]:bg-[#ecfdf3] data-[status=paid]:text-[#15803d] data-[status=pending]:bg-[#fffbeb] data-[status=pending]:text-[#b45309] data-[status=refunded]:bg-[#f4f4f8] data-[status=refunded]:text-[#6b6b80]"
+                        [attr.data-status]="payment.status"
+                      >
+                        {{ paymentStatus(payment.status) }}
+                      </span>
+                    </td>
+                    <td
+                      data-label="Fecha"
+                      class="py-3.5 pr-4 text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                    >
+                      {{ formatDate(payment.paid_on) }}
+                    </td>
+                    <td
+                      data-label="Importe"
+                      class="py-3.5 text-right font-semibold text-ink max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:text-left max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                    >
+                      {{ euro(payment.amount) }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </section>
+
+      <app-dashboard-recent-students [rows]="studentRows()" />
+    </div>
+  }
 </div>

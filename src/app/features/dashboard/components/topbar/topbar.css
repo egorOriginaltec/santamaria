@@ -20,6 +20,14 @@
   }
 }
 
+@media (max-width: 639px) {
+  .dashboard-topbar {
+    gap: 0.65rem;
+    min-height: 3.75rem;
+    padding-inline: 0.75rem;
+  }
+}
+
 .dashboard-topbar button,
 .dashboard-topbar a {
   cursor: pointer;

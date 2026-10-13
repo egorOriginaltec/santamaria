@@ -1,20 +1,23 @@
-<section class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-label="Key metrics">
-  @for (stat of stats; track stat.id) {
+<section class="grid gap-3 sm:grid-cols-3" aria-label="Indicadores">
+  @for (stat of stats(); track stat.id) {
     <article class="stat-card">
       <div class="flex items-start justify-between gap-3">
-        <div>
+        <div class="min-w-0">
           <p class="text-[12px] font-medium tracking-[0.04em] text-[#8a8a9a]">{{ stat.label }}</p>
           <p class="mt-2 text-2xl font-bold tracking-tight text-ink">{{ stat.value }}</p>
+          <p class="mt-1 text-[12px] text-[#8a8a9a]">{{ stat.hint }}</p>
         </div>
-        <span
-          class="inline-flex items-center rounded-full px-2 py-1 text-[11px] font-bold"
-          [class.trend-up]="stat.trend === 'up'"
-          [class.trend-down]="stat.trend === 'down'"
-        >
-          {{ stat.delta }}
-        </span>
+        @if (stat.delta) {
+          <span
+            class="inline-flex shrink-0 items-center rounded-full px-2 py-1 text-[11px] font-bold"
+            [class.trend-up]="stat.trend === 'up'"
+            [class.trend-down]="stat.trend === 'down'"
+            [class.trend-flat]="stat.trend === 'flat'"
+          >
+            {{ stat.delta }}
+          </span>
+        }
       </div>
-      <div class="stat-bar" [style.--accent]="stat.accent" aria-hidden="true"></div>
     </article>
   }
 </section>

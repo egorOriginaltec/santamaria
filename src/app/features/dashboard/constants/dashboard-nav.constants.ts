@@ -8,8 +8,10 @@ export interface DashboardNavItem {
   readonly icon:
     | 'dashboard'
     | 'students'
+    | 'payments'
     | 'courses'
     | 'calendar'
+    | 'planner'
     | 'analytics'
     | 'messages'
     | 'settings'
@@ -21,32 +23,39 @@ export interface DashboardNavGroup {
   readonly items: readonly DashboardNavItem[];
 }
 
+export const STUDENT_NAV: readonly DashboardNavGroup[] = [
+  {
+    title: 'Principal',
+    items: [
+      { id: 'calendar', label: 'Calendario', path: '/calendario', icon: 'planner' },
+    ],
+  },
+] as const;
+
 export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
   {
-    title: 'Main',
+    title: 'Principal',
     items: [
-      { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
-      { id: 'students', label: 'Students', path: '/dashboard/students', icon: 'students' },
-      { id: 'courses', label: 'Courses', path: '/dashboard/courses', icon: 'courses' },
-      { id: 'calendar', label: 'Calendar', path: '/dashboard/calendar', icon: 'calendar' },
-      { id: 'analytics', label: 'Analytics', path: '/dashboard/analytics', icon: 'analytics' },
+      { id: 'dashboard', label: 'Panel', path: '/dashboard', icon: 'dashboard' },
     ],
   },
   {
     title: 'Gestión',
     items: [
+      { id: 'students', label: 'Estudiantes', path: '/dashboard/students', icon: 'students' },
+      { id: 'payments', label: 'Pagos', path: '/dashboard/payments', icon: 'payments' },
       { id: 'leads', label: 'Leads', path: '/dashboard/leads', icon: 'messages' },
       { id: 'holidays', label: 'Festivos', path: '/dashboard/holidays', icon: 'calendar' },
       { id: 'courses-manage', label: 'Cursos', path: '/dashboard/courses', icon: 'courses' },
+      { id: 'calendar', label: 'Calendario', path: '/dashboard/calendar', icon: 'planner' },
     ],
   },
   {
-    title: 'Operations',
+    title: 'Operaciones',
     items: [
-      { id: 'settings', label: 'Settings', path: '/dashboard/settings', icon: 'settings' },
       {
         id: 'swagger',
-        label: 'API Docs',
+        label: 'Documentación',
         externalUrl: SWAGGER_DOCS_URL,
         icon: 'swagger',
       },

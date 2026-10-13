@@ -1,0 +1,152 @@
+<section class="payment-form-card">
+  <header class="payment-form-header">
+    <div>
+      <p class="payment-form-eyebrow">Gestión · Pagos</p>
+      <h2 class="payment-form-title">
+        {{ isEdit() ? 'Editar pago' : 'Nuevo pago' }}
+      </h2>
+      <p class="payment-form-subtitle">
+        @if (loading()) {
+          Cargando…
+        } @else {
+          Elige el estudiante y uno de los cursos en los que está matriculado.
+        }
+      </p>
+    </div>
+    <a routerLink="/dashboard/payments" class="payment-form-back">Volver al listado</a>
+  </header>
+
+  @if (loading()) {
+    <div class="payment-form-loader" aria-busy="true" aria-live="polite">
+      <div class="payment-form-loader-line" aria-hidden="true"></div>
+      <div class="payment-form-skeleton">
+        @for (field of skeletonFields; track field) {
+          <div class="payment-sk-field">
+            <span class="sk sk-label"></span>
+            <span class="sk sk-input"></span>
+          </div>
+        }
+        <div class="payment-sk-field payment-sk-field--full">
+          <span class="sk sk-label"></span>
+          <span class="sk sk-textarea"></span>
+        </div>
+        <div class="payment-sk-actions">
+          <span class="sk sk-btn"></span>
+          <span class="sk sk-btn sk-btn--primary"></span>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <form class="payment-form payment-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      @if (errorMessage()) {
+        <p class="payment-form-alert" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="payment-form-grid">
+        <label class="payment-field">
+          <span class="payment-field-label">Estudiante</span>
+          <select
+            class="payment-input"
+            formControlName="student_uuid"
+            [class.is-invalid]="fieldInvalid('student_uuid')"
+          >
+            <option value="">Selecciona…</option>
+            @for (student of students(); track student.uuid) {
+              <option [value]="student.uuid">{{ student.email }}</option>
+            }
+          </select>
+          @if (fieldInvalid('student_uuid')) {
+            <span class="payment-field-error">Selecciona un estudiante.</span>
+          }
+        </label>
+
+        <label class="payment-field">
+          <span class="payment-field-label">Curso</span>
+          <select
+            class="payment-input"
+            formControlName="course_uuid"
+            [class.is-invalid]="fieldInvalid('course_uuid')"
+          >
+            <option value="">
+              {{ form.controls.student_uuid.value ? 'Selecciona un curso…' : 'Primero el estudiante' }}
+            </option>
+            @for (course of courseOptions(); track course.uuid) {
+              <option [value]="course.uuid">{{ course.title }}</option>
+            }
+          </select>
+          @if (form.controls.student_uuid.value && courseOptions().length === 0) {
+            <span class="payment-field-error">Este estudiante no tiene cursos asignados.</span>
+          } @else if (fieldInvalid('course_uuid')) {
+            <span class="payment-field-error">Selecciona un curso del estudiante.</span>
+          }
+        </label>
+
+        <label class="payment-field">
+          <span class="payment-field-label">Importe (€)</span>
+          <input
+            type="number"
+            class="payment-input"
+            formControlName="amount"
+            min="0.01"
+            max="99999.99"
+            step="0.01"
+            placeholder="1200.00"
+            [class.is-invalid]="fieldInvalid('amount')"
+          />
+          @if (fieldInvalid('amount')) {
+            <span class="payment-field-error">Indica un importe válido.</span>
+          }
+        </label>
+
+        <label class="payment-field">
+          <span class="payment-field-label">Estado</span>
+          <select class="payment-input" formControlName="status">
+            @for (status of statuses; track status) {
+              <option [value]="status">{{ statusLabel(status) }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="payment-field">
+          <span class="payment-field-label">Método</span>
+          <select class="payment-input" formControlName="method">
+            @for (method of methods; track method) {
+              <option [value]="method">{{ methodLabel(method) }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="payment-field">
+          <span class="payment-field-label">Fecha de pago</span>
+          <input
+            type="date"
+            class="payment-input"
+            formControlName="paid_on"
+            [class.is-invalid]="fieldInvalid('paid_on')"
+          />
+          @if (fieldInvalid('paid_on')) {
+            <span class="payment-field-error">Si está pagado, indica la fecha.</span>
+          }
+        </label>
+
+        <label class="payment-field payment-field--full">
+          <span class="payment-field-label">Notas (opcional)</span>
+          <textarea
+            class="payment-input payment-textarea"
+            formControlName="notes"
+            rows="3"
+            maxlength="1000"
+            placeholder="Matrícula, primer plazo…"
+          ></textarea>
+        </label>
+      </div>
+
+      <div class="payment-form-actions">
+        <a routerLink="/dashboard/payments" class="payment-btn payment-btn--ghost">Cancelar</a>
+        <button type="submit" class="payment-btn payment-btn--primary" [disabled]="saving()">
+          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear pago' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

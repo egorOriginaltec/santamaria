@@ -1,12 +1,17 @@
 import { Routes } from '@angular/router';
+import { DashboardCalendar } from './pages/calendar/calendar';
 import { DashboardLayout } from './layout/dashboard-layout';
+import { DashboardCourseClasses } from './pages/course-classes/course-classes';
 import { DashboardCourseForm } from './pages/course-form/course-form';
 import { DashboardCourses } from './pages/courses/courses';
 import { DashboardHome } from './pages/dashboard-home/dashboard-home';
 import { DashboardHolidayForm } from './pages/holiday-form/holiday-form';
 import { DashboardHolidays } from './pages/holidays/holidays';
 import { DashboardLeads } from './pages/leads/leads';
-import { DashboardSectionPage } from './pages/section-page/section-page';
+import { DashboardPaymentForm } from './pages/payment-form/payment-form';
+import { DashboardPayments } from './pages/payments/payments';
+import { DashboardStudentForm } from './pages/student-form/student-form';
+import { DashboardStudents } from './pages/students/students';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -16,52 +21,65 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: '',
         component: DashboardHome,
-        title: 'Dashboard · Santamaria Bootcaps',
+        title: 'Panel · Santamaria Bootcaps',
       },
       {
         path: 'students',
-        component: DashboardSectionPage,
-        title: 'Students · Santamaria Bootcaps',
-        data: {
-          title: 'Students',
-          description: 'Manage enrolled students, roles and progress across cohorts.',
-        },
+        component: DashboardStudents,
+        title: 'Estudiantes · Santamaria Bootcaps',
       },
+      {
+        path: 'students/new',
+        component: DashboardStudentForm,
+        title: 'Nuevo estudiante · Santamaria Bootcaps',
+      },
+      {
+        path: 'students/:uuid/edit',
+        component: DashboardStudentForm,
+        title: 'Editar estudiante · Santamaria Bootcaps',
+      },
+      { path: 'students/nuevo', redirectTo: 'students/new', pathMatch: 'full' },
+      { path: 'students/:uuid/editar', redirectTo: 'students/:uuid/edit' },
+      {
+        path: 'payments',
+        component: DashboardPayments,
+        title: 'Pagos · Santamaria Bootcaps',
+      },
+      {
+        path: 'payments/new',
+        component: DashboardPaymentForm,
+        title: 'Nuevo pago · Santamaria Bootcaps',
+      },
+      {
+        path: 'payments/:uuid/edit',
+        component: DashboardPaymentForm,
+        title: 'Editar pago · Santamaria Bootcaps',
+      },
+      { path: 'payments/nuevo', redirectTo: 'payments/new', pathMatch: 'full' },
+      { path: 'payments/:uuid/editar', redirectTo: 'payments/:uuid/edit' },
       {
         path: 'courses',
         component: DashboardCourses,
-        title: 'Courses · Santamaria Bootcaps',
+        title: 'Cursos · Santamaria Bootcaps',
       },
       {
         path: 'courses/new',
         component: DashboardCourseForm,
-        title: 'New course · Santamaria Bootcaps',
+        title: 'Nuevo curso · Santamaria Bootcaps',
       },
       {
         path: 'courses/:uuid/edit',
         component: DashboardCourseForm,
-        title: 'Edit course · Santamaria Bootcaps',
+        title: 'Editar curso · Santamaria Bootcaps',
       },
-      { path: 'courses/nuevo', redirectTo: 'courses/new', pathMatch: 'full' },
-      { path: 'courses/:uuid/editar', redirectTo: 'courses/:uuid/edit' },
       {
         path: 'calendar',
-        component: DashboardSectionPage,
-        title: 'Calendar · Santamaria Bootcaps',
-        data: {
-          title: 'Calendar',
-          description: 'Track live sessions, project milestones and exams.',
-        },
+        component: DashboardCalendar,
+        title: 'Calendario · Santamaria Bootcaps',
       },
-      {
-        path: 'analytics',
-        component: DashboardSectionPage,
-        title: 'Analytics · Santamaria Bootcaps',
-        data: {
-          title: 'Analytics',
-          description: 'Deep-dive metrics for enrollment, retention and revenue.',
-        },
-      },
+      { path: 'calendario', redirectTo: 'calendar', pathMatch: 'full' },
+      { path: 'courses/nuevo', redirectTo: 'courses/new', pathMatch: 'full' },
+      { path: 'courses/:uuid/editar', redirectTo: 'courses/:uuid/edit' },
       {
         path: 'leads',
         component: DashboardLeads,
@@ -75,29 +93,20 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: 'holidays',
         component: DashboardHolidays,
-        title: 'Holidays · Santamaria Bootcaps',
+        title: 'Festivos · Santamaria Bootcaps',
       },
       {
         path: 'holidays/new',
         component: DashboardHolidayForm,
-        title: 'New holiday · Santamaria Bootcaps',
+        title: 'Nuevo festivo · Santamaria Bootcaps',
       },
       {
         path: 'holidays/:uuid/edit',
         component: DashboardHolidayForm,
-        title: 'Edit holiday · Santamaria Bootcaps',
+        title: 'Editar festivo · Santamaria Bootcaps',
       },
       { path: 'holidays/nuevo', redirectTo: 'holidays/new', pathMatch: 'full' },
       { path: 'holidays/:uuid/editar', redirectTo: 'holidays/:uuid/edit' },
-      {
-        path: 'settings',
-        component: DashboardSectionPage,
-        title: 'Settings · Santamaria Bootcaps',
-        data: {
-          title: 'Settings',
-          description: 'Workspace preferences, billing and access controls.',
-        },
-      },
     ],
   },
 ];

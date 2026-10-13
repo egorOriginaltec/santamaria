@@ -1,25 +1,26 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { DASHBOARD_RECENT_STUDENTS } from '../../constants';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+export interface DashboardStudentRow {
+  readonly uuid: string;
+  readonly email: string;
+  readonly courses: string;
+  readonly joinedAt: string;
+  readonly active: boolean;
+  readonly paid: string;
+}
 
 @Component({
   selector: 'app-dashboard-recent-students',
+  imports: [RouterLink],
   templateUrl: './recent-students.html',
   styleUrl: './recent-students.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardRecentStudents {
-  readonly rows = DASHBOARD_RECENT_STUDENTS;
+  readonly rows = input<readonly DashboardStudentRow[]>([]);
 
-  statusLabel(status: string): string {
-    switch (status) {
-      case 'active':
-        return 'Active';
-      case 'pending':
-        return 'Pending';
-      case 'completed':
-        return 'Completed';
-      default:
-        return status;
-    }
+  statusLabel(active: boolean): string {
+    return active ? 'Activo' : 'Inactivo';
   }
 }

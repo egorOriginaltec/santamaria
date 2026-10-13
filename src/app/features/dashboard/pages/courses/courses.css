@@ -1,4 +1,4 @@
-﻿:host {
+:host {
   display: block;
 }
 
@@ -291,7 +291,7 @@
 
 .courses-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 40rem;
   border-collapse: collapse;
   text-align: left;
 }
@@ -439,11 +439,21 @@
 }
 
 @media (max-width: 720px) {
+  .courses-card {
+    padding: 1rem;
+  }
+
   .courses-field,
   .courses-field--search,
-  .courses-field--page {
+  .courses-field--page,
+  .courses-heading .courses-btn,
+  .courses-filters > .courses-btn {
     width: 100%;
     max-width: none;
+  }
+
+  .courses-input {
+    font-size: 16px;
   }
 
   .courses-skeleton-row {
@@ -453,6 +463,91 @@
   .courses-skeleton-row .sk-line:nth-child(n + 3),
   .courses-skeleton-row .sk-pill:nth-child(n + 3) {
     display: none;
+  }
+
+  .courses-table-wrap {
+    overflow: visible;
+  }
+
+  .courses-table {
+    min-width: 0;
+  }
+
+  .courses-table thead {
+    display: none;
+  }
+
+  .courses-table,
+  .courses-table tbody,
+  .courses-table tr,
+  .courses-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .courses-table tr {
+    margin-bottom: 0.75rem;
+    border: 1px solid #efeff3;
+    border-radius: 0.9rem;
+    padding: 0.7rem 0.85rem 0.55rem;
+  }
+
+  .courses-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .courses-table td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 0;
+    padding: 0.4rem 0;
+    text-align: right;
+    white-space: normal;
+  }
+
+  .courses-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a8a9a;
+    text-align: left;
+  }
+
+  .courses-table td:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .courses-name,
+  .courses-description,
+  .courses-dates,
+  .courses-notes {
+    max-width: none;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .schedule-pill {
+    white-space: normal;
+  }
+
+  .courses-actions {
+    justify-content: stretch;
+    padding-top: 0.45rem;
+  }
+
+  .courses-actions::before {
+    content: none;
+  }
+
+  .courses-actions .courses-btn {
+    flex: 1;
   }
 }
 

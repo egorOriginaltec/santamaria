@@ -22,3 +22,14 @@
   font-weight: 600;
   color: #fff;
 }
+
+@media (max-width: 720px) {
+  .placeholder-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .placeholder-link {
+    display: flex;
+    width: 100%;
+  }
+}

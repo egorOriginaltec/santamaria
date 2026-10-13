@@ -1,8 +1,12 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  DASHBOARD_ENROLLMENT_SLICES,
-  DASHBOARD_ENROLLMENT_TOTAL,
-} from '../../constants';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
+export interface DashboardCourseShare {
+  readonly title: string;
+  readonly paid: number;
+  readonly students: number;
+  readonly color: string;
+  readonly share: string;
+}
 
 @Component({
   selector: 'app-dashboard-enrollment-breakdown',
@@ -11,16 +15,24 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardEnrollmentBreakdown {
-  readonly total = DASHBOARD_ENROLLMENT_TOTAL;
-  readonly slices = DASHBOARD_ENROLLMENT_SLICES;
+  readonly total = input('0,00 €');
+  readonly slices = input<readonly DashboardCourseShare[]>([]);
 
   get gradient(): string {
+    const slices = this.slices();
+    const sum = slices.reduce((total, slice) => total + slice.paid, 0);
+
+    if (sum <= 0) {
+      return 'conic-gradient(#efeff3 0% 100%)';
+    }
+
     let cursor = 0;
-    const stops = this.slices.map((slice) => {
+    const stops = slices.map((slice) => {
       const start = cursor;
-      cursor += slice.value;
+      cursor += (slice.paid / sum) * 100;
       return `${slice.color} ${start}% ${cursor}%`;
     });
+
     return `conic-gradient(${stops.join(', ')})`;
   }
 }

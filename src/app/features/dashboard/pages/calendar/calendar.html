@@ -1,0 +1,211 @@
+﻿<section class="calendar-card">
+  <header class="calendar-header">
+    <select class="calendar-input" [formControl]="courseControl" [disabled]="loading() || courses().length === 0" aria-label="Curso">
+      @if (!loading() && courses().length === 0) {
+        <option value="">Sin cursos</option>
+      }
+      @for (course of courses(); track course.uuid) {
+        <option [value]="course.uuid">
+          {{ course.title }}{{ course.is_active ? '' : ' Â· inactivo' }}
+        </option>
+      }
+    </select>
+  </header>
+
+  @if (!loading() && courses().length > 0) {
+    <p class="calendar-hint">
+      {{
+        studentView()
+          ? 'Selecciona un día de clase para ver el enlace y el material.'
+          : 'Selecciona un día de clase para añadir el enlace y el material.'
+      }}
+    </p>
+  }
+
+  @if (errorMessage()) {
+    <div class="calendar-alert" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/login" class="calendar-alert-link">Ir a acceso</a>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="calendar-loader" aria-busy="true" aria-live="polite">
+      <div class="calendar-loader-line" aria-hidden="true"></div>
+      <div class="calendar-skeleton-month" aria-hidden="true">
+        <span class="sk sk-month"></span>
+        <div class="calendar-scroll">
+          <div class="calendar-skeleton-weekdays">
+            @for (day of skeletonWeekdays; track day) {
+              <span class="sk sk-weekday"></span>
+            }
+          </div>
+          <div class="calendar-skeleton-grid">
+            @for (cell of skeletonCells; track cell) {
+              <span class="calendar-skeleton-day">
+                <span class="sk sk-day-num"></span>
+              </span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else if (!errorMessage() && courses().length === 0) {
+    <div class="calendar-empty">
+      <p>{{ studentView() ? 'Todavía no estás matriculado en ningún curso.' : 'Todavía no hay cursos para montar el calendario.' }}</p>
+    </div>
+  } @else if (calendar(); as view) {
+    <div class="calendar-body calendar-reveal">
+      <div class="calendar-months">
+        @for (month of view.months; track month.key) {
+          <article class="calendar-month">
+            <h3 class="calendar-month-title">{{ month.label }}</h3>
+
+            <div class="calendar-scroll">
+            <div class="calendar-weekdays" aria-hidden="true">
+              @for (label of weekdayLabels; track label; let index = $index) {
+                <span [class.is-current]="index === todayWeekIndex">{{ label }}</span>
+              }
+            </div>
+
+            <div class="calendar-grid">
+              @for (week of month.weeks; track week[0].iso) {
+                @for (day of week; track day.iso) {
+                  @if (day.kind === 'class') {
+                    <button
+                      type="button"
+                      class="calendar-day"
+                      [attr.data-kind]="day.kind"
+                      [class.is-today]="day.isToday"
+                      [class.is-selected]="day.iso === selectedIso()"
+                      [attr.aria-pressed]="day.iso === selectedIso()"
+                      (click)="selectDay(day.iso)"
+                    >
+                      <span class="calendar-day-num">{{ day.day }}</span>
+                      <span class="calendar-mark calendar-mark--class">Día de clase</span>
+                      @if (sessionFor(day.iso); as session) {
+                        @if (session.meet_url) {
+                          <span class="calendar-extra calendar-extra--meet" [attr.title]="session.meet_url">{{ meetLabel(session.meet_url) }}</span>
+                        }
+                        @if (session.materials.length > 0) {
+                          <span class="calendar-extra calendar-extra--files">{{ filesLabel(session.materials) }}</span>
+                        }
+                      }
+                    </button>
+                  } @else {
+                    <div
+                      class="calendar-day"
+                      [attr.data-kind]="day.kind"
+                      [class.is-festive]="!!day.holidayName"
+                      [class.is-today]="day.isToday"
+                      [attr.title]="day.holidayName"
+                    >
+                      <span class="calendar-day-num">{{ day.day }}</span>
+                      @if (day.holidayName && day.inMonth) {
+                        <span class="calendar-mark calendar-mark--holiday">{{ day.holidayName }}</span>
+                      }
+                    </div>
+                  }
+                }
+              }
+            </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+  }
+</section>
+
+@if (selectedIso(); as iso) {
+  <div class="calendar-modal" [@sessionModal] (click)="closeDay()">
+    <section
+      class="calendar-dialog"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="calendar-session-title"
+      [@sessionDialog]
+      (click)="$event.stopPropagation()"
+    >
+      <button type="button" class="calendar-dialog-close" aria-label="Cerrar" (click)="closeDay()">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+
+      <section class="calendar-session">
+        <p class="calendar-dialog-kicker">Clase</p>
+        <h3 class="calendar-session-title" id="calendar-session-title">{{ formatIso(iso) }}</h3>
+
+        @if (panelError()) {
+          <p class="calendar-session-alert" role="alert">{{ panelError() }}</p>
+        }
+        @if (panelSuccess()) {
+          <p class="calendar-session-ok" role="status">{{ panelSuccess() }}</p>
+        }
+        <form class="calendar-session-form" (submit)="$event.preventDefault(); saveSession()">
+          <div class="calendar-block">
+            <div class="calendar-block-head">
+              <span>Reunión</span>
+              @if (selectedSession()?.meet_url; as meetUrl) {
+                <a [href]="meetUrl" target="_blank" rel="noopener noreferrer">Abrir Meet</a>
+              }
+            </div>
+            <input
+              type="url"
+              class="calendar-meet"
+              placeholder="https://meet.google.com/abc-defg-hij"
+              [formControl]="meetControl"
+            />
+          </div>
+
+          <div class="calendar-block">
+            <div class="calendar-block-head">
+              <span>Material</span>
+              <span class="calendar-block-meta">ZIP, PDF o imagen · 50 MB</span>
+            </div>
+            <label class="calendar-drop" [class.is-busy]="uploading()">
+              <input
+                type="file"
+                accept=".zip,.pdf,.png,.jpg,.jpeg,.webp,application/pdf,application/zip,image/png,image/jpeg,image/webp"
+                (change)="onSessionFile($event)"
+              />
+              <strong>{{ uploading() ? 'Subiendo…' : 'Añadir archivo' }}</strong>
+              <span>Se guarda en privado para los alumnos matriculados.</span>
+            </label>
+
+            @if (selectedSession(); as session) {
+              @if (session.materials.length > 0) {
+                <ul class="calendar-files">
+                  @for (file of session.materials; track file.uuid) {
+                    <li>
+                      <span class="calendar-file-name">
+                        {{ file.name }}
+                        <small>{{ formatSize(file.size) }}</small>
+                      </span>
+                      <span class="calendar-file-actions">
+                        <button type="button" class="calendar-btn" (click)="download(file)">Descargar</button>
+                        <button type="button" class="calendar-btn calendar-btn--danger" (click)="deleteMedia(file)">Eliminar</button>
+                      </span>
+                    </li>
+                  }
+                </ul>
+              }
+            }
+          </div>
+
+          <div class="calendar-dialog-foot">
+            @if (selectedSession()) {
+              <button type="button" class="calendar-btn calendar-btn--danger" (click)="deleteSession()">
+                Eliminar clase
+              </button>
+            }
+            <button type="button" class="calendar-btn calendar-btn--primary" [disabled]="saving()" (click)="saveSession()">
+              {{ selectedSession() ? 'Guardar' : 'Añadir clase' }}
+            </button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </div>
+}

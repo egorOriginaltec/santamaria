@@ -1,12 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
 import { DashboardSidebar } from './sidebar';
 
 describe('DashboardSidebar', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [DashboardSidebar],
-      providers: [provideRouter([])],
+      providers: [provideRouter([]), provideHttpClient()],
     }).compileComponents();
   });
 
@@ -17,7 +18,7 @@ describe('DashboardSidebar', () => {
 
   it('should expose navigation groups', () => {
     const fixture = TestBed.createComponent(DashboardSidebar);
-    expect(fixture.componentInstance.groups.length).toBeGreaterThan(0);
+    expect(fixture.componentInstance.groups().length).toBeGreaterThan(0);
   });
 
   it('should emit closed when close is called', () => {

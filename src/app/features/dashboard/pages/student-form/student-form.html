@@ -1,0 +1,122 @@
+<section class="student-form-card">
+  <header class="student-form-header">
+    <div>
+      <p class="student-form-eyebrow">Gestión · Estudiantes</p>
+      <h2 class="student-form-title">
+        {{ isEdit() ? 'Editar estudiante' : 'Nuevo estudiante' }}
+      </h2>
+      <p class="student-form-subtitle">
+        @if (loading()) {
+          Cargando…
+        } @else {
+          Email, teléfono y los cursos en los que está matriculado. Puede estar en varios.
+        }
+      </p>
+    </div>
+    <a routerLink="/dashboard/students" class="student-form-back">Volver al listado</a>
+  </header>
+
+  @if (loading()) {
+    <div class="student-form-loader" aria-busy="true" aria-live="polite">
+      <div class="student-form-loader-line" aria-hidden="true"></div>
+      <div class="student-form-skeleton">
+        @for (field of skeletonFields; track field) {
+          <div class="student-sk-field">
+            <span class="sk sk-label"></span>
+            <span class="sk sk-input"></span>
+          </div>
+        }
+        <span class="sk sk-check"></span>
+        <div class="student-sk-actions">
+          <span class="sk sk-btn"></span>
+          <span class="sk sk-btn sk-btn--primary"></span>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <form class="student-form student-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      @if (errorMessage()) {
+        <p class="student-form-alert" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="student-form-grid">
+        <label class="student-field">
+          <span class="student-field-label">Email</span>
+          <input
+            type="email"
+            class="student-input"
+            formControlName="email"
+            maxlength="255"
+            autocomplete="off"
+            placeholder="ana@email.com"
+            [class.is-invalid]="fieldInvalid('email')"
+            (input)="onEmailInput($event)"
+          />
+          @if (fieldInvalid('email')) {
+            <span class="student-field-error">Indica un email válido.</span>
+          }
+        </label>
+
+        <label class="student-field">
+          <span class="student-field-label">Teléfono</span>
+          <input
+            type="tel"
+            class="student-input"
+            formControlName="phone"
+            inputmode="tel"
+            autocomplete="tel"
+            maxlength="20"
+            placeholder="600 11 12 22"
+            [class.is-invalid]="fieldInvalid('phone')"
+            (input)="onPhoneInput($event)"
+            (keydown)="onPhoneKeydown($event)"
+          />
+          @if (fieldInvalid('phone')) {
+            <span class="student-field-error">Teléfono de España o Latinoamérica.</span>
+          }
+        </label>
+
+        <div class="student-courses">
+          <span class="student-field-label">Cursos</span>
+          @if (courses().length === 0) {
+            <p class="student-course-empty">No hay cursos creados todavía.</p>
+          } @else {
+            <div class="student-course-list">
+              @for (course of courses(); track course.uuid) {
+                <label class="student-course-option">
+                  <input
+                    type="checkbox"
+                    [checked]="isCourseSelected(course.uuid)"
+                    (change)="toggleCourse(course.uuid, $event)"
+                  />
+                  <span>
+                    {{ course.title }}
+                    @if (!course.is_active) {
+                      <span class="student-course-muted">· inactivo</span>
+                    }
+                  </span>
+                </label>
+              }
+            </div>
+          }
+        </div>
+
+        <label class="student-field student-field--check">
+          <input type="checkbox" formControlName="is_active" />
+          <span>Cuenta activa</span>
+        </label>
+      </div>
+
+      <div class="student-form-actions">
+        <a routerLink="/dashboard/students" class="student-btn student-btn--ghost">Cancelar</a>
+        <button
+          type="submit"
+          class="student-btn student-btn--primary"
+          [disabled]="saving()"
+        >
+          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear estudiante' }}
+        </button>
+      </div>
+    </form>
+  }
+</section>

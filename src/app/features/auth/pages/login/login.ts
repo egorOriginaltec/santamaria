@@ -78,8 +78,15 @@ export class Login {
       .login(email.trim().toLowerCase(), password, remember)
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
-        next: () => {
-          void this.router.navigateByUrl('/dashboard/leads');
+        next: (user) => {
+          const roles = user.roles ?? [];
+          const destination = roles.includes('administrator')
+            ? '/dashboard'
+            : roles.includes('student')
+              ? '/calendario'
+              : '/login';
+
+          void this.router.navigateByUrl(destination);
         },
         error: (err: { status?: number; error?: { message?: string } }) => {
           if (err.status === 422) {

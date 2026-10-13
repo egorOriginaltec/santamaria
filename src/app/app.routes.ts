@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from '@core/guards/admin.guard';
+import { studentGuard } from '@core/guards/student.guard';
 import { MainLayout } from '@layout/main-layout/main-layout';
 
 export const routes: Routes = [
@@ -28,8 +30,16 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [adminGuard],
     loadChildren: () =>
       import('@features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
   },
+  {
+    path: 'calendario',
+    canActivate: [studentGuard],
+    loadChildren: () => import('@features/student/student.routes').then((m) => m.STUDENT_ROUTES),
+  },
+  { path: 'alumno', redirectTo: 'calendario', pathMatch: 'full' },
+  { path: 'alumno/calendario', redirectTo: 'calendario', pathMatch: 'full' },
   { path: '**', redirectTo: '' },
 ];

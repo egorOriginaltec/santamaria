@@ -1,26 +1,30 @@
 <section class="donut-card">
   <header class="mb-5">
-    <h2 class="text-base font-bold text-ink sm:text-lg">Enrollment mix</h2>
-    <p class="mt-1 text-sm text-[#8a8a9a]">Where new students come from</p>
+    <h2 class="text-base font-bold text-ink sm:text-lg">Facturación por curso</h2>
+    <p class="mt-1 text-sm text-[#8a8a9a]">Cobros del periodo, repartidos por curso</p>
   </header>
 
   <div class="relative mx-auto grid size-44 place-items-center sm:size-48">
     <div class="donut" [style.background]="gradient" aria-hidden="true"></div>
     <div class="donut-center">
-      <p class="text-[11px] font-medium tracking-[0.08em] text-[#8a8a9a] uppercase">Total</p>
-      <p class="mt-1 text-xl font-bold text-ink">{{ total }}</p>
+      <p class="text-[11px] font-medium tracking-[0.08em] text-[#8a8a9a] uppercase">Cobrado</p>
+      <p class="mt-1 text-base font-bold text-ink">{{ total() }}</p>
     </div>
   </div>
 
-  <ul class="mt-6 grid gap-2.5">
-    @for (slice of slices; track slice.id) {
-      <li class="flex items-center justify-between gap-3 text-sm">
-        <span class="inline-flex items-center gap-2 text-[#4a4a5c]">
-          <span class="size-2.5 rounded-full" [style.background]="slice.color"></span>
-          {{ slice.label }}
-        </span>
-        <span class="font-semibold text-ink">{{ slice.value }}%</span>
-      </li>
-    }
-  </ul>
+  @if (slices().length === 0) {
+    <p class="mt-6 text-center text-sm text-[#8a8a9a]">Sin cobros en este periodo.</p>
+  } @else {
+    <ul class="mt-6 grid gap-2.5">
+      @for (slice of slices(); track slice.title) {
+        <li class="flex items-center justify-between gap-3 text-sm">
+          <span class="inline-flex min-w-0 items-center gap-2 text-[#4a4a5c]">
+            <span class="size-2.5 shrink-0 rounded-full" [style.background]="slice.color"></span>
+            <span class="truncate">{{ slice.title }}</span>
+          </span>
+          <span class="shrink-0 font-semibold text-ink">{{ slice.share }}</span>
+        </li>
+      }
+    </ul>
+  }
 </section>

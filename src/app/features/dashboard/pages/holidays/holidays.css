@@ -291,7 +291,7 @@
 
 .holidays-table {
   width: 100%;
-  min-width: 760px;
+  min-width: 40rem;
   border-collapse: collapse;
   text-align: left;
 }
@@ -419,12 +419,34 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .holidays-table {
+    min-width: 0;
+  }
+
+  .holidays-date,
+  .holidays-notes {
+    max-width: none;
+    white-space: normal;
+  }
+}
+
 @media (max-width: 720px) {
+  .holidays-card {
+    padding: 1rem;
+  }
+
   .holidays-field,
   .holidays-field--search,
-  .holidays-field--page {
+  .holidays-field--page,
+  .holidays-heading .holidays-btn,
+  .holidays-filters > .holidays-btn {
     width: 100%;
     max-width: none;
+  }
+
+  .holidays-input {
+    font-size: 16px;
   }
 
   .holidays-skeleton-row {
@@ -434,5 +456,79 @@
   .holidays-skeleton-row .sk-line:nth-child(n + 3),
   .holidays-skeleton-row .sk-pill:nth-child(n + 3) {
     display: none;
+  }
+
+  .holidays-table-wrap {
+    overflow: visible;
+  }
+
+  .holidays-table {
+    min-width: 0;
+  }
+
+  .holidays-table thead {
+    display: none;
+  }
+
+  .holidays-table,
+  .holidays-table tbody,
+  .holidays-table tr,
+  .holidays-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .holidays-table tr {
+    margin-bottom: 0.75rem;
+    border: 1px solid #efeff3;
+    border-radius: 0.9rem;
+    padding: 0.7rem 0.85rem 0.55rem;
+  }
+
+  .holidays-table tr:last-child {
+    margin-bottom: 0;
+  }
+
+  .holidays-table td {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 0;
+    padding: 0.4rem 0;
+    text-align: right;
+    white-space: normal;
+  }
+
+  .holidays-table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a8a9a;
+    text-align: left;
+  }
+
+  .holidays-name,
+  .holidays-date,
+  .holidays-notes {
+    max-width: none;
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
+
+  .holidays-actions {
+    justify-content: stretch;
+    padding-top: 0.45rem;
+  }
+
+  .holidays-actions::before {
+    content: none;
+  }
+
+  .holidays-actions .holidays-btn {
+    flex: 1;
   }
 }

@@ -48,22 +48,108 @@
   text-decoration: none;
 }
 
-.holiday-form-loading {
+.holiday-form-loader {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.75rem;
-  padding: 2rem 0;
-  font-size: 0.875rem;
-  color: #8a8a9a;
 }
 
-.holiday-form-spinner {
-  width: 1.2rem;
-  height: 1.2rem;
+.holiday-form-loader-line {
+  height: 2px;
+  overflow: hidden;
   border-radius: 999px;
-  border: 2.5px solid rgba(87, 81, 225, 0.2);
-  border-top-color: var(--color-brand, #5751e1);
-  animation: holiday-spin 0.75s linear infinite;
+  background: #ececf3;
+}
+
+.holiday-form-loader-line::after {
+  content: '';
+  display: block;
+  width: 35%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-brand, #5751e1);
+  animation: holiday-form-progress 1s ease-in-out infinite;
+}
+
+.holiday-form-skeleton {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.holiday-sk-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.holiday-sk-field--full {
+  grid-column: 1 / -1;
+}
+
+.holiday-sk-meta {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 0.45rem;
+  margin-top: 0.1rem;
+}
+
+.holiday-sk-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.55rem;
+  margin-top: 0.35rem;
+}
+
+.sk {
+  display: block;
+  border-radius: 0.4rem;
+  background: #f0f0f5;
+}
+
+.sk-label {
+  height: 0.55rem;
+  width: 4.5rem;
+}
+
+.sk-input {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 0.75rem;
+}
+
+.sk-textarea {
+  height: 6rem;
+  width: 100%;
+  border-radius: 0.75rem;
+}
+
+.sk-check {
+  height: 1rem;
+  width: 9rem;
+  align-self: center;
+  border-radius: 999px;
+}
+
+.sk-pill {
+  height: 1.4rem;
+  width: 5.5rem;
+  border-radius: 999px;
+}
+
+.sk-btn {
+  height: 2.5rem;
+  width: 6.5rem;
+  border-radius: 0.75rem;
+}
+
+.sk-btn--primary {
+  width: 8.5rem;
+}
+
+.holiday-form-reveal {
+  animation: holiday-form-reveal 0.45s ease both;
 }
 
 .holiday-form-alert {
@@ -208,14 +294,45 @@
   opacity: 0.55;
 }
 
-@keyframes holiday-spin {
+@keyframes holiday-form-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(320%);
+  }
+}
+
+@keyframes holiday-form-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 720px) {
-  .holiday-form-grid {
+  .holiday-form-card {
+    padding: 1rem;
+  }
+
+  .holiday-form-grid,
+  .holiday-form-skeleton {
     grid-template-columns: 1fr;
+  }
+
+  .holiday-input {
+    font-size: 16px;
+  }
+
+  .holiday-form-actions {
+    flex-direction: column;
+  }
+
+  .holiday-form-actions .holiday-btn {
+    width: 100%;
   }
 }

@@ -1,29 +1,37 @@
 <aside
   class="dashboard-sidebar"
   [class.is-open]="open()"
-  aria-label="Dashboard navigation"
+  [class.is-collapsed]="collapsed()"
+  aria-label="Navegación del panel"
 >
   <div class="flex h-full flex-col">
-    <div class="flex items-center justify-between gap-3 px-5 pt-5 pb-4">
-      <a routerLink="/dashboard" class="flex min-w-0 items-center gap-2.5" (click)="close()">
-        <span
-          class="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-xs font-bold text-white"
-          aria-hidden="true"
-        >
-          SB
-        </span>
-        <span class="min-w-0">
-          <span class="block truncate text-sm font-bold text-white">Santamaria</span>
-          <span class="block text-[10px] font-medium tracking-[0.16em] text-white/45 uppercase">
-            {{ tagline }}
-          </span>
-        </span>
+    <div class="sidebar-head">
+      <a [routerLink]="homePath()" class="sidebar-brand" (click)="close()">
+        <span class="sidebar-brand-name">Santamaria</span>
+        <span class="sidebar-brand-line">Bootcamp</span>
       </a>
 
       <button
         type="button"
+        class="sidebar-collapse"
+        [attr.aria-label]="collapsed() ? 'Expandir menú' : 'Comprimir menú'"
+        (click)="toggleCollapsed()"
+      >
+        <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            [attr.d]="collapsed() ? 'M9 6l6 6-6 6' : 'M15 6l-6 6 6 6'"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <button
+        type="button"
         class="grid size-9 place-items-center rounded-lg text-white/60 transition-colors hover:bg-white/10 hover:text-white lg:hidden"
-        aria-label="Close menu"
+        aria-label="Cerrar menú"
         (click)="close()"
       >
         <svg class="size-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -38,10 +46,8 @@
     </div>
 
     <nav class="flex-1 overflow-y-auto px-3 pb-6">
-      @for (group of groups; track group.title) {
-        <p
-          class="mt-5 mb-2 px-3 text-[10px] font-semibold tracking-[0.16em] text-white/35 uppercase"
-        >
+      @for (group of groups(); track group.title) {
+        <p class="dashboard-nav-group">
           {{ group.title }}
         </p>
         <ul class="flex flex-col gap-0.5">
@@ -53,10 +59,11 @@
                   target="_blank"
                   rel="noopener noreferrer"
                   class="dashboard-nav-link"
+                  [attr.title]="item.label"
                   (click)="close()"
                 >
                   <ng-container *ngTemplateOutlet="iconTpl; context: { $implicit: item.icon }" />
-                  <span>{{ item.label }}</span>
+                  <span class="dashboard-nav-label">{{ item.label }}</span>
                 </a>
               } @else {
                 <a
@@ -64,10 +71,11 @@
                   routerLinkActive="is-active"
                   [routerLinkActiveOptions]="{ exact: item.path === '/dashboard' }"
                   class="dashboard-nav-link"
+                  [attr.title]="item.label"
                   (click)="close()"
                 >
                   <ng-container *ngTemplateOutlet="iconTpl; context: { $implicit: item.icon }" />
-                  <span>{{ item.label }}</span>
+                  <span class="dashboard-nav-label">{{ item.label }}</span>
                 </a>
               }
             </li>
@@ -75,6 +83,39 @@
         </ul>
       }
     </nav>
+
+    <div class="border-t border-white/10 px-4 py-4">
+      <div class="sidebar-user flex min-w-0 items-center gap-2.5 px-1">
+        <span
+          class="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-[11px] font-bold text-white"
+          aria-hidden="true"
+        >
+          {{ initials() }}
+        </span>
+        <span class="min-w-0 sidebar-user-copy">
+          <span class="block truncate text-sm font-semibold text-white">{{ displayName() }}</span>
+          <span class="mt-0.5 block truncate text-[11px] text-white/45">{{ displayEmail() }}</span>
+        </span>
+      </div>
+
+      <button
+        type="button"
+        class="dashboard-logout"
+        [disabled]="loggingOut()"
+        (click)="logout()"
+      >
+        <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M9 6H6.5A1.5 1.5 0 0 0 5 7.5v9A1.5 1.5 0 0 0 6.5 18H9M10 12h9M16 9l3 3-3 3"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="dashboard-nav-label">{{ loggingOut() ? 'Cerrando…' : 'Cerrar sesión' }}</span>
+      </button>
+    </div>
   </div>
 </aside>
 
@@ -100,6 +141,12 @@
           />
         </svg>
       }
+      @case ('payments') {
+        <svg class="size-4" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.6" />
+          <path d="M3 10h18" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      }
       @case ('courses') {
         <svg class="size-4" viewBox="0 0 24 24" fill="none">
           <path
@@ -108,6 +155,12 @@
             stroke-width="1.6"
           />
           <path d="M8 8h8M8 12h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      }
+      @case ('planner') {
+        <svg class="size-4" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" stroke-width="1.6" />
+          <path d="M3 9h18M8 3v4M16 3v4M8 13h3M8 16h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
         </svg>
       }
       @case ('calendar') {

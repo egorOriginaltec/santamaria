@@ -52,6 +52,7 @@ export class DashboardCourseForm implements OnInit {
   readonly loading = signal(false);
   readonly saving = signal(false);
   readonly errorMessage = signal<string | null>(null);
+  readonly skeletonFields = [0, 1, 2, 3] as const;
 
   readonly form = this.fb.nonNullable.group(
     {

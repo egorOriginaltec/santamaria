@@ -12,6 +12,12 @@
   box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
 }
 
+@media (max-width: 720px) {
+  .donut-card {
+    padding: 1rem;
+  }
+}
+
 .donut {
   position: absolute;
   inset: 0;

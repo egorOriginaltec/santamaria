@@ -115,42 +115,65 @@
     </div>
   } @else {
     <div class="leads-reveal">
-    <div class="leads-table-wrap">
-      <table class="leads-table">
-        <thead>
+    <div class="overflow-x-auto max-[1200px]:overflow-visible">
+      <table class="w-full min-w-168 border-collapse text-left text-[13px] max-[1200px]:block max-[1200px]:min-w-0">
+        <thead class="max-[1200px]:hidden">
           <tr>
-            <th>Contacto</th>
-            <th>Teléfono</th>
-            <th>Origen</th>
-            <th>Mensaje</th>
-            <th>Fecha</th>
-            <th>Estado</th>
-            <th></th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Contacto</th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Teléfono</th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Origen</th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Mensaje</th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Fecha</th>
+            <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Estado</th>
+            <th class="pb-3"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="max-[1200px]:block">
           @for (lead of leads(); track lead.uuid) {
-            <tr [class.is-updating]="updatingUuid() === lead.uuid">
-              <td>
-                <div class="leads-contact">
-                  <span class="leads-avatar">{{ initials(lead.name) }}</span>
+            <tr
+              class="max-[1200px]:mb-3 max-[1200px]:block max-[1200px]:rounded-2xl max-[1200px]:border max-[1200px]:border-[#efeff3] max-[1200px]:px-3.5 max-[1200px]:pt-3 max-[1200px]:pb-2 max-[1200px]:last:mb-0"
+              [class.opacity-60]="updatingUuid() === lead.uuid"
+            >
+              <td
+                data-label="Contacto"
+                class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-[1200px]:flex max-[1200px]:w-full max-[1200px]:flex-col max-[1200px]:items-stretch max-[1200px]:gap-1 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:text-left max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
+                <div class="flex min-w-0 items-center gap-3">
+                  <span class="grid size-9 shrink-0 place-items-center rounded-full bg-brand-soft text-[11px] font-bold text-brand">{{ initials(lead.name) }}</span>
                   <span class="min-w-0">
-                    <span class="leads-name">{{ lead.name }}</span>
-                    <span class="leads-email">{{ lead.email }}</span>
+                    <span class="block truncate text-[13px] leading-snug font-semibold text-ink max-[1200px]:whitespace-normal">{{ lead.name }}</span>
+                    <span class="block truncate text-[13px] text-[#8a8a9a] max-[1200px]:whitespace-normal">{{ lead.email }}</span>
                   </span>
                 </div>
               </td>
-              <td class="leads-muted whitespace-nowrap">{{ lead.phone || '—' }}</td>
-              <td>
-                <span class="source-pill">{{ sourceLabel(lead.source) }}</span>
+              <td
+                data-label="Teléfono"
+                class="border-t border-[#f0f0f5] py-4 pr-4 align-top text-[13px] whitespace-nowrap text-[#8a8a9a] max-[1200px]:flex max-[1200px]:w-full max-[1200px]:items-center max-[1200px]:justify-between max-[1200px]:gap-3 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:whitespace-normal max-[1200px]:before:shrink-0 max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
+                {{ lead.phone || '—' }}
               </td>
-              <td class="leads-message-cell">
-                <p class="leads-message" [title]="lead.message">{{ lead.message }}</p>
+              <td
+                data-label="Origen"
+                class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-[1200px]:flex max-[1200px]:w-full max-[1200px]:items-center max-[1200px]:justify-between max-[1200px]:gap-3 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:before:shrink-0 max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
+                <span class="inline-flex items-center rounded-full bg-[#f4f4f8] px-2.5 py-1 text-[11px] font-bold text-[#4a4a5c]">{{ sourceLabel(lead.source) }}</span>
               </td>
-              <td class="leads-muted whitespace-nowrap">
+              <td
+                data-label="Mensaje"
+                class="max-w-64 border-t border-[#f0f0f5] py-4 pr-4 align-top max-[1200px]:flex max-[1200px]:w-full max-[1200px]:max-w-none max-[1200px]:flex-col max-[1200px]:items-stretch max-[1200px]:gap-1 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:text-left max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
+                <p class="m-0 line-clamp-2 text-[13px] leading-snug text-[#4a4a5c] max-[1200px]:line-clamp-none" [title]="lead.message">{{ lead.message }}</p>
+              </td>
+              <td
+                data-label="Fecha"
+                class="border-t border-[#f0f0f5] py-4 pr-4 align-top text-[13px] whitespace-nowrap text-[#8a8a9a] max-[1200px]:flex max-[1200px]:w-full max-[1200px]:items-center max-[1200px]:justify-between max-[1200px]:gap-3 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:whitespace-normal max-[1200px]:before:shrink-0 max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
                 {{ lead.created_at | date: 'dd MMM yyyy · HH:mm' }}
               </td>
-              <td>
+              <td
+                data-label="Estado"
+                class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-[1200px]:flex max-[1200px]:w-full max-[1200px]:items-center max-[1200px]:justify-between max-[1200px]:gap-3 max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:py-1.5 max-[1200px]:before:shrink-0 max-[1200px]:before:text-[10px] max-[1200px]:before:font-bold max-[1200px]:before:tracking-[0.08em] max-[1200px]:before:text-[#8a8a9a] max-[1200px]:before:uppercase max-[1200px]:before:content-[attr(data-label)]"
+              >
                 <div class="status-menu" [class.is-open]="openStatusMenuUuid() === lead.uuid">
                   <button
                     type="button"
@@ -192,10 +215,10 @@
                   }
                 </div>
               </td>
-              <td>
+              <td class="border-t border-[#f0f0f5] py-4 align-top max-[1200px]:block max-[1200px]:w-full max-[1200px]:border-0 max-[1200px]:px-0 max-[1200px]:pt-2 max-[1200px]:pb-1">
                 <button
                   type="button"
-                  class="delete-btn"
+                  class="delete-btn max-[1200px]:w-full"
                   [disabled]="updatingUuid() === lead.uuid"
                   (click)="onDelete(lead)"
                 >

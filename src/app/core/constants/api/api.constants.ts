@@ -3,4 +3,4 @@
  * Avoids cross-origin cookie / CSRF 419 issues with Sanctum.
  */
 export const API_BASE_URL = '';
-export const SWAGGER_DOCS_URL = 'http://127.0.0.1:8000/api/documentation';
+export const SWAGGER_DOCS_URL = '/api/documentation';

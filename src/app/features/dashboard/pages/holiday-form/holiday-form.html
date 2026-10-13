@@ -6,19 +6,43 @@
         {{ isEdit() ? 'Editar festivo nacional' : 'Nuevo festivo nacional' }}
       </h2>
       <p class="holiday-form-subtitle">
-        Solo festivos nacionales de España (ES).
+        @if (loading()) {
+          Cargando…
+        } @else {
+          Solo festivos nacionales de España (ES).
+        }
       </p>
     </div>
     <a routerLink="/dashboard/holidays" class="holiday-form-back">Volver al listado</a>
   </header>
 
   @if (loading()) {
-    <div class="holiday-form-loading">
-      <span class="holiday-form-spinner" aria-hidden="true"></span>
-      Cargando festivo…
+    <div class="holiday-form-loader" aria-busy="true" aria-live="polite">
+      <div class="holiday-form-loader-line" aria-hidden="true"></div>
+      <div class="holiday-form-skeleton">
+        @for (field of skeletonFields; track field) {
+          <div class="holiday-sk-field">
+            <span class="sk sk-label"></span>
+            <span class="sk sk-input"></span>
+          </div>
+        }
+        <span class="sk sk-check"></span>
+        <div class="holiday-sk-field holiday-sk-field--full">
+          <span class="sk sk-label"></span>
+          <span class="sk sk-textarea"></span>
+        </div>
+        <div class="holiday-sk-meta">
+          <span class="sk sk-pill"></span>
+          <span class="sk sk-pill"></span>
+        </div>
+        <div class="holiday-sk-actions">
+          <span class="sk sk-btn"></span>
+          <span class="sk sk-btn sk-btn--primary"></span>
+        </div>
+      </div>
     </div>
   } @else {
-    <form class="holiday-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <form class="holiday-form holiday-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       @if (errorMessage()) {
         <p class="holiday-form-alert" role="alert">{{ errorMessage() }}</p>
       }

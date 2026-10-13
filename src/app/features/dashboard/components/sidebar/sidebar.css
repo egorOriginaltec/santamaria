@@ -6,7 +6,7 @@
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 40;
-  width: 16.5rem;
+  width: min(16.5rem, calc(100vw - 2.75rem));
   transform: translateX(-100%);
   background: #161439;
   transition: transform 0.25s ease;
@@ -21,9 +21,77 @@
     position: sticky;
     top: 0;
     height: 100dvh;
+    width: 16.5rem;
     transform: none;
     flex-shrink: 0;
+    transition: width 0.25s ease;
   }
+
+  .dashboard-sidebar.is-collapsed {
+    width: 4.75rem;
+  }
+}
+
+.sidebar-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1.25rem 1.15rem 1rem;
+}
+
+.sidebar-brand {
+  min-width: 0;
+}
+
+.sidebar-brand-name {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #fff;
+}
+
+.sidebar-brand-line {
+  display: block;
+  margin-top: 0.28rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.sidebar-collapse {
+  display: none;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  border-radius: 0.7rem;
+  color: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+}
+
+.sidebar-collapse:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+@media (min-width: 1024px) {
+  .sidebar-collapse {
+    display: grid;
+  }
+}
+
+.dashboard-nav-group {
+  margin: 1.25rem 0 0.5rem;
+  padding: 0 0.75rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .dashboard-nav-link {
@@ -59,9 +127,62 @@
   color: inherit;
 }
 
+.dashboard-logout {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 2.5rem;
+  margin-top: 0.85rem;
+  border-radius: 0.75rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.62);
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.dashboard-logout:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.dashboard-logout:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-sidebar.is-collapsed .sidebar-brand,
+  .dashboard-sidebar.is-collapsed .dashboard-nav-group,
+  .dashboard-sidebar.is-collapsed .dashboard-nav-label,
+  .dashboard-sidebar.is-collapsed .sidebar-user-copy {
+    display: none;
+  }
+
+  .dashboard-sidebar.is-collapsed .sidebar-user {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .dashboard-sidebar.is-collapsed .sidebar-head {
+    justify-content: center;
+    padding-inline: 0.65rem;
+  }
+
+  .dashboard-sidebar.is-collapsed .dashboard-nav-link,
+  .dashboard-sidebar.is-collapsed .dashboard-logout {
+    justify-content: center;
+    padding-inline: 0.4rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .dashboard-sidebar,
-  .dashboard-nav-link {
+  .dashboard-nav-link,
+  .dashboard-logout {
     transition: none;
   }
 }

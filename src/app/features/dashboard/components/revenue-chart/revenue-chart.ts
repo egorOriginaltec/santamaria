@@ -1,9 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  DASHBOARD_REVENUE_HINT,
-  DASHBOARD_REVENUE_POINTS,
-  DASHBOARD_REVENUE_TITLE,
-} from '../../constants';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { DashboardSeriesPoint } from '@core/services/dashboard-api.service';
+
+type ChartMode = 'billing' | 'students';
 
 @Component({
   selector: 'app-dashboard-revenue-chart',
@@ -12,38 +10,78 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardRevenueChart {
-  readonly title = DASHBOARD_REVENUE_TITLE;
-  readonly hint = DASHBOARD_REVENUE_HINT;
-  readonly points = DASHBOARD_REVENUE_POINTS;
+  readonly points = input<readonly DashboardSeriesPoint[]>([]);
+  readonly currentLabel = input('Este periodo');
+  readonly previousLabel = input('Periodo anterior');
+
+  readonly mode = signal<ChartMode>('billing');
 
   readonly width = 640;
   readonly height = 220;
   readonly padX = 24;
   readonly padY = 20;
 
+  setMode(mode: ChartMode): void {
+    this.mode.set(mode);
+  }
+
   get currentPath(): string {
-    return this.buildPath(this.points.map((point) => point.current));
+    return this.buildPath(this.series('current'));
   }
 
   get previousPath(): string {
-    return this.buildPath(this.points.map((point) => point.previous));
+    return this.buildPath(this.series('previous'));
   }
 
   get currentArea(): string {
-    const line = this.buildPath(this.points.map((point) => point.current));
-    const last = this.project(this.points.length - 1, this.points[this.points.length - 1].current);
-    const first = this.project(0, this.points[0].current);
+    const values = this.series('current');
+    if (values.length === 0) {
+      return '';
+    }
+
+    const line = this.buildPath(values);
+    const last = this.project(values.length - 1, values[values.length - 1]);
+    const first = this.project(0, values[0]);
     return `${line} L ${last.x} ${this.height - this.padY} L ${first.x} ${this.height - this.padY} Z`;
   }
 
-  get highlight(): { x: number; y: number; value: string } {
-    const index = 3;
-    const point = this.project(index, this.points[index].current);
+  get highlight(): { x: number; y: number; value: string } | null {
+    const values = this.series('current');
+    if (values.length === 0) {
+      return null;
+    }
+
+    let index = values.length - 1;
+    for (let cursor = values.length - 1; cursor >= 0; cursor -= 1) {
+      if (values[cursor] > 0) {
+        index = cursor;
+        break;
+      }
+    }
+
+    const point = this.project(index, values[index]);
     return {
       x: point.x,
       y: point.y,
-      value: `€${(this.points[index].current * 850).toLocaleString('en-US')}`,
+      value: this.formatValue(values[index]),
     };
+  }
+
+  lineX(index: number): number {
+    const last = Math.max(this.points().length - 1, 1);
+    return this.padX + (index / last) * (this.width - this.padX * 2);
+  }
+
+  private series(which: 'current' | 'previous'): number[] {
+    const students = this.mode() === 'students';
+
+    return this.points().map((point) => {
+      if (which === 'current') {
+        return students ? point.students : point.paid;
+      }
+
+      return students ? point.previous_students : point.previous_paid;
+    });
   }
 
   private buildPath(values: number[]): string {
@@ -56,11 +94,20 @@ export class DashboardRevenueChart {
   }
 
   private project(index: number, value: number): { x: number; y: number } {
-    const max = Math.max(...this.points.flatMap((point) => [point.current, point.previous]), 1);
-    const spanX = this.width - this.padX * 2;
+    const max = Math.max(...this.series('current'), ...this.series('previous'), 1);
     const spanY = this.height - this.padY * 2;
-    const x = this.padX + (index / Math.max(this.points.length - 1, 1)) * spanX;
     const y = this.height - this.padY - (value / max) * spanY;
-    return { x, y };
+    return { x: this.lineX(index), y };
+  }
+
+  private formatValue(value: number): string {
+    if (this.mode() === 'students') {
+      return new Intl.NumberFormat('es-ES').format(value);
+    }
+
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(value);
   }
 }

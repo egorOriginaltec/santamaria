@@ -1,0 +1,172 @@
+<div class="flex flex-col gap-4">
+  <header class="flex flex-wrap items-start justify-between gap-3">
+    <div class="min-w-0">
+      <p class="text-[10px] font-bold tracking-[0.14em] text-brand uppercase">Gestión · Cursos</p>
+      <h2 class="mt-1 text-lg font-bold text-ink">
+        {{ course()?.title || 'Clases' }}
+      </h2>
+      <p class="mt-1 text-sm text-[#8a8a9a]">
+        @if (loading() && !course()) {
+          Cargando…
+        } @else if (course(); as current) {
+          {{ formatDate(current.start_date) }} – {{ formatDate(current.end_date) }} · {{ current.schedule }}
+        }
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      @if (course(); as current) {
+        <a
+          class="text-[13px] font-semibold text-brand"
+          [routerLink]="['/dashboard/calendar']"
+          [queryParams]="{ course: current.uuid }"
+        >
+          Añadir en el calendario
+        </a>
+      }
+      <a routerLink="/dashboard/courses" class="text-[13px] font-semibold text-brand">Volver a cursos</a>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <p class="rounded-2xl border border-[#fecaca] bg-[#fef2f2] px-4 py-3 text-sm text-[#b91c1c]" role="alert">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  @if (successMessage()) {
+    <p class="rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] px-4 py-3 text-sm text-[#15803d]" role="status">
+      {{ successMessage() }}
+    </p>
+  }
+
+  @if (loading() && !course()) {
+    <section class="classes-card">
+      <div class="classes-loader" aria-busy="true" aria-live="polite">
+        <div class="classes-loader-line" aria-hidden="true"></div>
+        <div class="classes-skeleton-table">
+          @for (row of skeletonRows; track row) {
+            <div class="classes-skeleton-row">
+              <span class="sk sk-line sk-w-40"></span>
+              <span class="sk sk-line sk-w-24"></span>
+              <span class="sk sk-line sk-w-24"></span>
+              <span class="sk sk-pill"></span>
+              <span class="sk sk-pill"></span>
+              <span class="sk sk-line sk-w-20"></span>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
+  } @else if (course(); as current) {
+    <section class="rounded-2xl border border-[#ececf3] bg-white p-4 shadow-[0_8px_24px_rgba(22,20,57,0.04)] sm:p-5">
+      <h3 class="text-base font-bold text-ink">Material del curso</h3>
+      <p class="mt-1 text-sm text-[#8a8a9a]">ZIP, PDF o imagen. Máximo 50 MB. Lo ven los alumnos matriculados.</p>
+
+      <label class="mt-4 block">
+        <span class="sr-only">Subir material del curso</span>
+        <input
+          type="file"
+          accept=".zip,.pdf,.png,.jpg,.jpeg,.webp,application/pdf,application/zip,image/png,image/jpeg,image/webp"
+          class="block w-full text-[13px] text-[#4a4a5c] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f0effc] file:px-3 file:py-2 file:text-[13px] file:font-semibold file:text-brand"
+          [disabled]="uploading() === 'course'"
+          (change)="onCourseFile($event)"
+        />
+      </label>
+
+      @if (materials().length === 0) {
+        <p class="mt-4 text-sm text-[#8a8a9a]">Todavía no hay archivos del curso.</p>
+      } @else {
+        <ul class="mt-4 flex flex-col gap-2">
+          @for (file of materials(); track file.uuid) {
+            <li class="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-[#efeff3] px-3 py-2">
+              <div class="min-w-0">
+                <p class="truncate text-[13px] font-semibold text-ink">{{ file.name }}</p>
+                <p class="text-[12px] text-[#8a8a9a]">{{ formatSize(file.size) }}</p>
+              </div>
+              <div class="flex gap-1.5">
+                <button type="button" class="rounded-xl border border-[#e4e4ec] bg-white px-3 py-1.5 text-[12px] font-semibold text-ink" (click)="onDownload(file)">
+                  Descargar
+                </button>
+                <button type="button" class="rounded-xl border border-[#f1d0d0] bg-[#fff7f7] px-3 py-1.5 text-[12px] font-semibold text-[#b91c1c]" (click)="onDeleteMedia(file)">
+                  Eliminar
+                </button>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <section class="rounded-2xl border border-[#ececf3] bg-white p-4 shadow-[0_8px_24px_rgba(22,20,57,0.04)] sm:p-5">
+      <h3 class="text-base font-bold text-ink">Clases</h3>
+      <p class="mt-1 text-sm text-[#8a8a9a]">
+        Se añaden en el calendario: eliges el día y ahí pones el enlace de Meet y el material.
+      </p>
+
+      @if (sessions().length === 0) {
+        <p class="mt-5 text-sm text-[#8a8a9a]">Todavía no hay clases en este curso.</p>
+      } @else {
+        <ul class="mt-5 flex flex-col gap-3">
+          @for (session of sessions(); track session.uuid) {
+            <li class="rounded-2xl border border-[#efeff3] p-3 sm:p-4">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="text-[13px] font-semibold text-ink">{{ formatDate(session.session_on) }}</p>
+                  @if (session.meet_url) {
+                    <a
+                      class="mt-1 block truncate text-[13px] font-semibold text-brand"
+                      [href]="session.meet_url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {{ session.meet_url }}
+                    </a>
+                  } @else {
+                    <p class="mt-1 text-[13px] text-[#8a8a9a]">Sin enlace de Meet</p>
+                  }
+                </div>
+                <div class="flex gap-1.5">
+                  <a
+                    class="rounded-xl border border-[#e4e4ec] bg-white px-3 py-1.5 text-[12px] font-semibold text-ink"
+                    [routerLink]="['/dashboard/calendar']"
+                    [queryParams]="{ course: current.uuid, day: session.session_on }"
+                  >
+                    Abrir día
+                  </a>
+                  <button type="button" class="rounded-xl border border-[#f1d0d0] bg-[#fff7f7] px-3 py-1.5 text-[12px] font-semibold text-[#b91c1c]" (click)="onDeleteSession(session)">
+                    Eliminar
+                  </button>
+                </div>
+              </div>
+
+              <div class="mt-3">
+                @if (session.materials.length === 0) {
+                  <p class="mt-2 text-[13px] text-[#8a8a9a]">Sin archivos este día.</p>
+                } @else {
+                  <ul class="mt-2 flex flex-col gap-2">
+                    @for (file of session.materials; track file.uuid) {
+                      <li class="flex flex-wrap items-center justify-between gap-2">
+                        <p class="min-w-0 truncate text-[13px] font-semibold text-[#4a4a5c]">
+                          {{ file.name }}
+                          <span class="font-medium text-[#8a8a9a]">· {{ formatSize(file.size) }}</span>
+                        </p>
+                        <div class="flex gap-1.5">
+                          <button type="button" class="rounded-xl border border-[#e4e4ec] bg-white px-3 py-1.5 text-[12px] font-semibold text-ink" (click)="onDownload(file)">
+                            Descargar
+                          </button>
+                          <button type="button" class="rounded-xl border border-[#f1d0d0] bg-[#fff7f7] px-3 py-1.5 text-[12px] font-semibold text-[#b91c1c]" (click)="onDeleteMedia(file)">
+                            Eliminar
+                          </button>
+                        </div>
+                      </li>
+                    }
+                  </ul>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  }
+</div>

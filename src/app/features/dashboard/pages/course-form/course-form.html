@@ -6,19 +6,43 @@
         {{ isEdit() ? 'Editar curso' : 'Nuevo curso' }}
       </h2>
       <p class="course-form-subtitle">
-        Título, fechas del programa y horario diario (ej. 09:00–13:00).
+        @if (loading()) {
+          Cargando…
+        } @else {
+          Título, fechas del programa y horario diario (ej. 09:00–13:00).
+        }
       </p>
     </div>
     <a routerLink="/dashboard/courses" class="course-form-back">Volver al listado</a>
   </header>
 
   @if (loading()) {
-    <div class="course-form-loading">
-      <span class="course-form-spinner" aria-hidden="true"></span>
-      Cargando curso…
+    <div class="course-form-loader" aria-busy="true" aria-live="polite">
+      <div class="course-form-loader-line" aria-hidden="true"></div>
+      <div class="course-form-skeleton">
+        <div class="course-sk-field course-sk-field--full">
+          <span class="sk sk-label"></span>
+          <span class="sk sk-input"></span>
+        </div>
+        <div class="course-sk-field course-sk-field--full">
+          <span class="sk sk-label"></span>
+          <span class="sk sk-textarea"></span>
+        </div>
+        @for (field of skeletonFields; track field) {
+          <div class="course-sk-field">
+            <span class="sk sk-label"></span>
+            <span class="sk sk-input"></span>
+          </div>
+        }
+        <span class="sk sk-check"></span>
+        <div class="course-sk-actions">
+          <span class="sk sk-btn"></span>
+          <span class="sk sk-btn sk-btn--primary"></span>
+        </div>
+      </div>
     </div>
   } @else {
-    <form class="course-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <form class="course-form course-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       @if (errorMessage()) {
         <p class="course-form-alert" role="alert">{{ errorMessage() }}</p>
       }

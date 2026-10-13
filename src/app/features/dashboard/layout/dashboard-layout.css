@@ -26,8 +26,10 @@
 }
 
 .dashboard-content {
+  min-width: 0;
+  max-width: 100%;
   flex: 1;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 @media (min-width: 640px) {
