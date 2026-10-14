@@ -1,5 +1,10 @@
 :host {
   display: block;
+  --color-brand: #e03131;
+  --color-brand-hover: #c42828;
+  --color-brand-dark: #a61e1e;
+  --color-brand-soft: #fdeeee;
+  --color-brand-muted: #f8e4e4;
 }
 
 .topbar-countdown {
@@ -55,8 +60,8 @@
 }
 
 .topbar-unit--live {
-  background: rgba(87, 81, 225, 0.35);
-  border-color: rgba(155, 150, 255, 0.45);
+  background: rgba(224, 49, 49, 0.35);
+  border-color: rgba(255, 160, 160, 0.45);
 }
 
 .topbar-num {
@@ -112,11 +117,11 @@
 }
 
 .header-menu-btn:focus-visible {
-  outline: 2px solid var(--color-brand, #5751e1);
+  outline: 2px solid var(--color-brand, #e03131);
   outline-offset: 2px;
 }
 
 .header-mobile-nav a:focus-visible {
-  outline: 2px solid var(--color-brand, #5751e1);
+  outline: 2px solid var(--color-brand, #e03131);
   outline-offset: -2px;
 }

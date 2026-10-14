@@ -1,0 +1,134 @@
+<section class="calc-card">
+  <header class="calc-heading">
+    <p class="calc-eyebrow">Gestión</p>
+    <h2 class="calc-title">Calculadora</h2>
+    <p class="calc-subtitle">
+      Precio del bootcamp, en tiempo real. El IVA se cobra y se ingresa en Hacienda. La retención del 15%
+      te la descuentan en la factura de servicios profesionales.
+    </p>
+  </header>
+
+  <div class="calc-layout">
+    <div class="calc-controls">
+      <label class="calc-field">
+        <span class="calc-label">
+          Duración
+          <strong>{{ months() }} {{ months() === 1 ? 'mes' : 'meses' }}</strong>
+        </span>
+        <input
+          type="range"
+          min="1"
+          max="12"
+          step="1"
+          [value]="months()"
+          (input)="setMonths($any($event.target).value)"
+        />
+      </label>
+
+      <label class="calc-field">
+        <span class="calc-label">
+          Alumnos
+          <strong>{{ students() }}</strong>
+        </span>
+        <input
+          type="range"
+          min="1"
+          max="40"
+          step="1"
+          [value]="students()"
+          (input)="setStudents($any($event.target).value)"
+        />
+      </label>
+
+      <label class="calc-field">
+        <span class="calc-label">Precio por alumno, sin IVA</span>
+        <span class="calc-money">
+          <input
+            type="number"
+            min="0"
+            max="20000"
+            step="10"
+            [value]="price()"
+            (input)="setPrice($any($event.target).value)"
+          />
+          <span>€</span>
+        </span>
+      </label>
+
+      <div class="calc-split">
+        <label class="calc-field">
+          <span class="calc-label">Gastos al mes</span>
+          <span class="calc-money">
+            <input
+              type="number"
+              min="0"
+              max="20000"
+              step="10"
+              [value]="expenses()"
+              (input)="setExpenses($any($event.target).value)"
+            />
+            <span>€</span>
+          </span>
+        </label>
+        <label class="calc-field">
+          <span class="calc-label">Marketing y ads al mes</span>
+          <span class="calc-money">
+            <input
+              type="number"
+              min="0"
+              max="20000"
+              step="10"
+              [value]="marketing()"
+              (input)="setMarketing($any($event.target).value)"
+            />
+            <span>€</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <aside class="calc-result" [class.is-profit]="profitable()" [class.is-loss]="!profitable()">
+      <p class="calc-result-kicker">Resultado del bootcamp</p>
+      <p class="calc-result-value">{{ money(profit()) }}</p>
+      <p class="calc-result-state">{{ profitable() ? 'Rentable' : 'No rentable' }}</p>
+      <p class="calc-result-note">
+        @if (profitable()) {
+          Con {{ students() }} alumnos a {{ money(price()) }} cubres los {{ months() }} meses.
+        } @else {
+          Hacen falta {{ minStudents() }} alumnos, o subir el precio a {{ money(minPrice()) }} por alumno.
+        }
+      </p>
+    </aside>
+  </div>
+
+  <dl class="calc-rows">
+    <div>
+      <dt>Facturado, sin IVA</dt>
+      <dd>{{ money(revenue()) }}</dd>
+    </div>
+    <div>
+      <dt>IVA 21%, a ingresar</dt>
+      <dd>{{ money(vat()) }}</dd>
+    </div>
+    <div>
+      <dt>Retención 15%</dt>
+      <dd>− {{ money(withholding()) }}</dd>
+    </div>
+    <div>
+      <dt>Te queda de la factura</dt>
+      <dd>{{ money(net()) }}</dd>
+    </div>
+    <div>
+      <dt>Gastos, {{ months() }} {{ months() === 1 ? 'mes' : 'meses' }}</dt>
+      <dd>− {{ money(expenseTotal()) }}</dd>
+    </div>
+    <div>
+      <dt>Marketing y ads</dt>
+      <dd>− {{ money(marketingTotal()) }}</dd>
+    </div>
+    <div class="is-total">
+      <dt>Beneficio</dt>
+      <dd>{{ money(profit()) }}</dd>
+    </div>
+  </dl>
+</section>

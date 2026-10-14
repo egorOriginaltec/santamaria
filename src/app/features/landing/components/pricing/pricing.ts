@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Reveal } from '@shared/directives/reveal.directive';
 import {
   PRICING_CTA_PATH,
   PRICING_INTRO,
@@ -9,7 +10,7 @@ import {
 
 @Component({
   selector: 'app-pricing',
-  imports: [RouterLink],
+  imports: [RouterLink, Reveal],
   templateUrl: './pricing.html',
   styleUrl: './pricing.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -2,23 +2,23 @@ import type { FeatureCard } from '../../models/feature-card/feature-card.model';
 
 export const HERO_FEATURES: readonly FeatureCard[] = [
   {
-    title: 'Mentores expertos',
-    text: 'Aprende con profesionales que construyen software e IA en producción.',
+    title: 'Grupos reducidos',
+    text: 'Máximo 10 alumnos. Una sesión online a la semana, en directo.',
     icon: 'cap',
   },
   {
-    title: 'Programa intensivo',
-    text: 'Una ruta clara: programación, IA y automatización de alto nivel.',
+    title: 'Varios cursos',
+    text: 'De los 8 a los 20 hay varios. Cada edad tiene el suyo: juegos, apps, Python o páginas web.',
     icon: 'doc',
   },
   {
-    title: '10 proyectos reales',
-    text: 'Mapa urbano, portal inmobiliario, reservas, apps con IA, recepcionista virtual y más.',
+    title: 'Extraescolar',
+    text: 'Una clase a la semana, de los 8 a los 20, para quien quiera aprender a programar.',
     icon: 'book',
   },
   {
-    title: 'Clases en vivo',
-    text: 'Sesiones prácticas, feedback continuo y comunidad enfocada en resultados.',
+    title: 'Online en toda España',
+    text: 'Entras desde casa y estás en la misma clase, en directo.',
     icon: 'screen',
   },
 ] as const;

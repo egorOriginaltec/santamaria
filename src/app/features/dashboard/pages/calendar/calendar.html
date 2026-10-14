@@ -1,4 +1,4 @@
-﻿<section class="calendar-card">
+<section class="calendar-card">
   <header class="calendar-header">
     <select class="calendar-input" [formControl]="courseControl" [disabled]="loading() || courses().length === 0" aria-label="Curso">
       @if (!loading() && courses().length === 0) {

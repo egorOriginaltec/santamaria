@@ -1,7 +1,7 @@
 export const HERO_CONTENT = {
-  title: 'Domina la programación, la IA y la automatización.',
+  title: 'Programación de 8 a 20 años.',
   description:
-    'Bootcamp intensivo de alto nivel: software profesional, inteligencia artificial aplicada y automatizaciones reales con stack moderno.',
-  primaryCta: 'Ver el programa',
+    'Extraescolares de programación online, de los 8 a los 20. Un grupo semanal, para quien quiera aprender a programar.',
+  primaryCta: 'Primera clase gratis',
   secondaryCta: 'Inscribirme',
 } as const;

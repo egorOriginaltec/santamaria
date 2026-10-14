@@ -15,7 +15,8 @@ export interface DashboardNavItem {
     | 'analytics'
     | 'messages'
     | 'settings'
-    | 'swagger';
+    | 'swagger'
+    | 'calculator';
 }
 
 export interface DashboardNavGroup {
@@ -48,6 +49,7 @@ export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
       { id: 'holidays', label: 'Festivos', path: '/dashboard/holidays', icon: 'calendar' },
       { id: 'courses-manage', label: 'Cursos', path: '/dashboard/courses', icon: 'courses' },
       { id: 'calendar', label: 'Calendario', path: '/dashboard/calendar', icon: 'planner' },
+      { id: 'calculator', label: 'Calculadora', path: '/dashboard/calculator', icon: 'calculator' },
     ],
   },
   {

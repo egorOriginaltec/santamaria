@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { DashboardCalculator } from './pages/calculator/calculator';
+
 import { DashboardCalendar } from './pages/calendar/calendar';
 import { DashboardLayout } from './layout/dashboard-layout';
 import { DashboardCourseClasses } from './pages/course-classes/course-classes';
@@ -78,6 +80,12 @@ export const DASHBOARD_ROUTES: Routes = [
         title: 'Calendario · Santamaria Bootcaps',
       },
       { path: 'calendario', redirectTo: 'calendar', pathMatch: 'full' },
+      {
+        path: 'calculator',
+        component: DashboardCalculator,
+        title: 'Calculadora · Santamaria Bootcaps',
+      },
+      { path: 'calculadora', redirectTo: 'calculator', pathMatch: 'full' },
       { path: 'courses/nuevo', redirectTo: 'courses/new', pathMatch: 'full' },
       { path: 'courses/:uuid/editar', redirectTo: 'courses/:uuid/edit' },
       {

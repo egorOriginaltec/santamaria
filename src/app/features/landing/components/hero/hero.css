@@ -1,6 +1,11 @@
 :host {
   display: block;
   margin: 0;
+  --color-brand: #e03131;
+  --color-brand-hover: #c42828;
+  --color-brand-dark: #a61e1e;
+  --color-brand-soft: #fdeeee;
+  --color-brand-muted: #f8e4e4;
 }
 
 .hero-section {
@@ -162,8 +167,8 @@
 }
 
 .hero-tag--brand {
-  background: var(--color-brand-soft, #eeedfc);
-  color: var(--color-brand, #5751e1);
+  background: var(--color-brand-soft, #fdeeee);
+  color: var(--color-brand, #e03131);
 }
 
 .hero-tag--yellow {

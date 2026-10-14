@@ -1,6 +1,6 @@
 <section class="hero-section relative overflow-hidden bg-white">
   <div
-    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(87,81,225,0.06),transparent_55%),radial-gradient(ellipse_at_80%_25%,rgba(255,194,36,0.08),transparent_50%)]"
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(224,49,49,0.06),transparent_55%),radial-gradient(ellipse_at_80%_25%,rgba(255,194,36,0.08),transparent_50%)]"
     aria-hidden="true"
   ></div>
 
@@ -17,7 +17,7 @@
 
   <div class="hero-shell relative mx-auto flex w-full max-w-[1320px] flex-1 flex-col px-4 sm:px-6">
     <div class="hero-main grid flex-1 items-center gap-6 lg:grid-cols-2 lg:gap-8 xl:gap-12">
-      <div class="relative z-10 mx-auto min-w-0 max-w-xl text-center lg:mx-0 lg:text-left">
+      <div class="relative z-10 mx-auto min-w-0 max-w-xl text-center lg:mx-0 lg:text-left" appReveal>
         <svg
           class="mx-auto mb-3 size-8 text-ink/80 sm:mb-4 sm:size-9 lg:mx-0"
           viewBox="0 0 32 32"
@@ -39,30 +39,29 @@
         </svg>
 
         <p class="mb-3 text-xs font-medium tracking-[0.18em] text-[#b0b0bc] uppercase sm:mb-4 sm:text-[13px]">
-          Formamos talento tech
+          Extraescolares de programación
         </p>
 
         <h1
           class="text-pretty text-[1.85rem] leading-[1.15] font-bold tracking-tight text-ink min-[375px]:text-[2rem] min-[375px]:leading-[1.12] sm:text-4xl sm:leading-[1.1] md:text-5xl xl:text-[3.15rem]"
         >
-          De cero a Full Stack<br class="hidden sm:block" />
-          con
-          <span class="hero-marker px-1">automatización</span>
+          Programación<br class="hidden sm:block" />
+          de 8 a
+          <span class="hero-marker px-1">20 años</span>
         </h1>
 
         <p
           class="mx-auto mt-4 max-w-md text-pretty text-[15px] leading-relaxed text-[#7a7a8c] sm:text-base lg:mx-0"
         >
-          Aprende a construir software profesional y conectar sistemas reales: flujos
-          automáticos, integración con correo, recordatorios y procesos que ahorran
-          horas de trabajo manual.
+          Extraescolares online y en directo, de los 8 a los 20. Un grupo reducido
+          cada semana, para quien quiera aprender a programar. En toda España.
         </p>
 
         <a
-          href="#program"
+          href="/contact"
           class="mt-6 inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full bg-brand px-6 py-3.5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] active:translate-y-1 active:shadow-[0_2px_0_var(--color-brand-dark)] sm:mt-7 sm:px-7 sm:text-[15px]"
         >
-          Ver el programa
+          Primera clase gratis
           <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
             <path
               fill="currentColor"
@@ -74,21 +73,23 @@
 
       <div
         class="hero-visual relative mx-auto flex min-h-[240px] w-full min-w-0 max-w-[560px] items-center justify-center min-[375px]:min-h-[280px] sm:min-h-[360px] lg:min-h-0 lg:h-full lg:max-h-[min(440px,42dvh)] lg:max-w-none lg:justify-self-end"
+        appReveal
+        [delay]="160"
         aria-hidden="true"
       >
         <div class="hero-chip hero-chip--hours">
           <span class="size-2 shrink-0 rounded-full bg-brand"></span>
           <span class="truncate text-[10px] font-semibold text-ink sm:text-[11px]"
-            >320h · Formación intensiva</span
+            >Online · En directo</span
           >
         </div>
 
         <div class="hero-chip hero-chip--tags">
           <div class="flex flex-wrap justify-center gap-1 sm:gap-1.5">
-            <span class="hero-tag hero-tag--brand">Desarrollo Frontend</span>
-            <span class="hero-tag hero-tag--yellow">Backend & APIs</span>
-            <span class="hero-tag hero-tag--teal">IA aplicada</span>
-            <span class="hero-tag hero-tag--violet">Automatización</span>
+            <span class="hero-tag hero-tag--brand">Grupos semanales</span>
+            <span class="hero-tag hero-tag--yellow">Grupo de 10</span>
+            <span class="hero-tag hero-tag--teal">De 8 a 20</span>
+            <span class="hero-tag hero-tag--violet">Extraescolar</span>
           </div>
         </div>
 
@@ -98,31 +99,29 @@
             <span class="size-2 rounded-full bg-[#febc2e] sm:size-2.5"></span>
             <span class="size-2 rounded-full bg-[#28c840] sm:size-2.5"></span>
             <span class="ml-1 min-w-0 truncate text-[10px] font-medium text-white/45 sm:ml-2 sm:text-[11px]"
-              >santamaria · bootcamp.ts</span
+              >santamaria · clase.ts</span>
             >
           </div>
           <pre
             class="overflow-x-auto p-3 font-mono text-[9.5px] leading-5 text-[#c8c7e0] min-[375px]:text-[10px] sm:p-5 sm:text-[12.5px] sm:leading-6"
-          ><code><span class="text-[#8b8a9e]">// Tu siguiente nivel empieza aquí</span>
-<span class="text-[#c792ea]">const</span> <span class="text-[#82aaff]">goals</span> = [<span class="text-[#c3e88d]">'aprender'</span>, <span class="text-[#c3e88d]">'construir'</span>, <span class="text-[#c3e88d]">'crecer'</span>];
+          ><code><span class="text-[#8b8a9e]">// Online, en directo, toda España</span>
+<span class="text-[#c792ea]">const</span> <span class="text-[#82aaff]">clase</span> = &#123;
+  edad: <span class="text-[#c3e88d]">'8-20'</span>,
+  grupo: <span class="text-[#f78c6c]">10</span>,
+  modalidad: <span class="text-[#c3e88d]">'online'</span>,
+&#125;;
 
-<span class="text-[#c792ea]">async function</span> <span class="text-[#82aaff]">levelUp</span>() &#123;
-  <span class="text-[#c792ea]">await</span> <span class="text-[#82aaff]">practice</span>(goals);
-  <span class="text-[#c792ea]">await</span> <span class="text-[#82aaff]">ship</span>(<span class="text-[#c3e88d]">'real-projects'</span>);
-  <span class="text-[#c792ea]">return</span> <span class="text-[#c3e88d]">'career-ready'</span>;
-&#125;
-
-<span class="text-[#82aaff]">levelUp</span>();</code></pre>
+<span class="text-[#82aaff]">empezar</span>(clase);</code></pre>
         </div>
 
         <div class="hero-chip hero-chip--path">
           <span class="size-2 rounded-full bg-brand"></span>
-          <span class="text-[11px] font-semibold text-ink">Frontend → Backend → IA</span>
+          <span class="text-[11px] font-semibold text-ink">Grupo semanal</span>
         </div>
       </div>
     </div>
 
-    <div class="hero-features relative z-10 mt-auto grid gap-3 pt-6 pb-5 sm:grid-cols-2 sm:gap-4 sm:pb-6 lg:pb-7 xl:grid-cols-4">
+    <div class="hero-features relative z-10 mt-auto grid gap-3 pt-6 pb-5 sm:grid-cols-2 sm:gap-4 sm:pb-6 lg:pb-7 xl:grid-cols-4" appReveal [delay]="120">
       @for (item of features; track item.title) {
         <article
           class="hero-feature min-w-0 rounded-2xl border border-[#ececf3] bg-white/95 p-4 shadow-[0_8px_30px_rgba(22,20,57,0.06)] backdrop-blur-sm sm:p-5"

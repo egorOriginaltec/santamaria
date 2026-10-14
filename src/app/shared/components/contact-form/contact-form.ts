@@ -33,6 +33,7 @@ import {
   normalizePhoneForApi,
 } from '@core/utils/phone.utils';
 import { finalize } from 'rxjs';
+import { Reveal } from '@shared/directives/reveal.directive';
 
 export type ContactFormTheme = 'dark' | 'light';
 
@@ -61,7 +62,7 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-contact-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, Reveal],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
