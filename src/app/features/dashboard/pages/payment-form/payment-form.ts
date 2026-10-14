@@ -16,7 +16,6 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   PaymentDto,
   PaymentMethod,
-  PaymentStatus,
   PaymentsApiService,
 } from '@core/services/payments-api.service';
 import { StudentCourseDto, StudentDto, StudentsApiService } from '@core/services/students-api.service';
@@ -46,16 +45,14 @@ export class DashboardPaymentForm implements OnInit {
   readonly payment = signal<PaymentDto | null>(null);
   readonly skeletonFields = [0, 1, 2, 3] as const;
 
-  readonly statuses: readonly PaymentStatus[] = ['pending', 'paid', 'refunded'];
   readonly methods: readonly PaymentMethod[] = ['transfer', 'card', 'cash'];
 
   readonly form = this.fb.nonNullable.group({
     student_uuid: ['', Validators.required],
     course_uuid: ['', Validators.required],
     amount: ['', [Validators.required, Validators.min(0.01), Validators.max(99999.99)]],
-    status: this.fb.nonNullable.control<PaymentStatus>('pending', Validators.required),
     method: this.fb.nonNullable.control<PaymentMethod>('transfer', Validators.required),
-    paid_on: [''],
+    paid_on: [this.toDateInput(new Date()), Validators.required],
     notes: ['', Validators.maxLength(1000)],
   });
 
@@ -106,9 +103,8 @@ export class DashboardPaymentForm implements OnInit {
             student_uuid: payment.student.uuid ?? '',
             course_uuid: payment.course.uuid ?? '',
             amount: String(payment.amount),
-            status: payment.status,
             method: payment.method,
-            paid_on: payment.paid_on ?? '',
+            paid_on: payment.paid_on ?? this.toDateInput(new Date()),
             notes: payment.notes ?? '',
           });
         },
@@ -138,17 +134,6 @@ export class DashboardPaymentForm implements OnInit {
     return courses;
   }
 
-  statusLabel(status: PaymentStatus): string {
-    switch (status) {
-      case 'pending':
-        return 'Pendiente';
-      case 'paid':
-        return 'Pagado';
-      case 'refunded':
-        return 'Reembolsado';
-    }
-  }
-
   methodLabel(method: PaymentMethod): string {
     switch (method) {
       case 'transfer':
@@ -171,13 +156,15 @@ export class DashboardPaymentForm implements OnInit {
     );
   }
 
+  private toDateInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   onSubmit(): void {
     const raw = this.form.getRawValue();
-
-    if (raw.status === 'paid' && !raw.paid_on) {
-      this.form.controls.paid_on.setErrors({ required: true });
-      this.form.controls.paid_on.markAsTouched();
-    }
 
     if (this.form.invalid || this.courseOptions().length === 0) {
       this.form.markAllAsTouched();
@@ -194,9 +181,9 @@ export class DashboardPaymentForm implements OnInit {
       student_uuid: raw.student_uuid,
       course_uuid: raw.course_uuid,
       amount: Number(raw.amount),
-      status: raw.status,
+      status: 'paid' as const,
       method: raw.method,
-      paid_on: raw.paid_on || null,
+      paid_on: raw.paid_on,
       notes: raw.notes.trim() || null,
     };
 

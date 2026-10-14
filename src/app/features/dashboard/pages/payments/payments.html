@@ -31,16 +31,6 @@
       </label>
 
       <label class="payments-field">
-        <span class="payments-field-label">Estado</span>
-        <select class="payments-input" [formControl]="statusControl">
-          <option value="">Todos</option>
-          @for (status of options().statuses; track status) {
-            <option [value]="status">{{ statusLabel(status) }}</option>
-          }
-        </select>
-      </label>
-
-      <label class="payments-field">
         <span class="payments-field-label">Orden</span>
         <select class="payments-input" [formControl]="sortControl">
           @for (sort of options().sorts; track sort) {
@@ -74,10 +64,6 @@
       <p>{{ errorMessage() }}</p>
       <a routerLink="/login" class="payments-alert-link">Ir a acceso</a>
     </div>
-  }
-
-  @if (successMessage()) {
-    <div class="payments-success" role="status">{{ successMessage() }}</div>
   }
 
   @if (loading()) {

@@ -32,7 +32,7 @@ export class DashboardSidebar {
   readonly homePath = computed(() => {
     const roles = this.auth.user()?.roles ?? [];
 
-    return roles.includes('student') && !roles.includes('administrator') ? '/calendario' : '/dashboard';
+    return roles.includes('student') && !roles.includes('administrator') ? '/student' : '/dashboard';
   });
   readonly open = input(false);
   readonly closed = output<void>();

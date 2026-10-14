@@ -15,6 +15,9 @@ export interface CourseDto {
   readonly end_date: string;
   readonly schedule_start: string;
   readonly schedule_end: string;
+  readonly weekdays: readonly number[];
+  readonly weekdays_label: string;
+  readonly price: number;
   readonly schedule: string;
   readonly is_active: boolean;
   readonly created_at: string | null;
@@ -37,6 +40,8 @@ export interface CoursePayload {
   readonly end_date: string;
   readonly schedule_start: string;
   readonly schedule_end: string;
+  readonly weekdays: readonly number[];
+  readonly price: number;
   readonly is_active?: boolean;
 }
 

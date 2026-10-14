@@ -37,7 +37,6 @@ export class DashboardCourseClasses implements OnInit {
   readonly loading = signal(true);
   readonly uploading = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
   readonly skeletonRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
   ngOnInit(): void {
@@ -89,10 +88,7 @@ export class DashboardCourseClasses implements OnInit {
     }
 
     this.sessionsApi.destroy(course.uuid, session.uuid).subscribe({
-      next: () => {
-        this.successMessage.set('Clase eliminada.');
-        this.reload();
-      },
+      next: () => this.reload(),
       error: () => this.errorMessage.set('No se pudo eliminar la clase.'),
     });
   }
@@ -109,7 +105,6 @@ export class DashboardCourseClasses implements OnInit {
     const problem = materialFileError(file);
     if (problem) {
       input.value = '';
-      this.successMessage.set(null);
       this.errorMessage.set(problem);
       return;
     }
@@ -120,15 +115,11 @@ export class DashboardCourseClasses implements OnInit {
         input.value = '';
         this.uploading.set('course');
         this.errorMessage.set(null);
-        this.successMessage.set(null);
         this.sessionsApi
           .uploadCourseMedia(course.uuid, upload)
           .pipe(finalize(() => this.uploading.set(null)))
           .subscribe({
-            next: () => {
-              this.successMessage.set('Archivo subido.');
-              this.reload();
-            },
+            next: () => this.reload(),
             error: (err: HttpErrorResponse) => {
               this.errorMessage.set(readApiError(err, 'No se pudo subir el archivo.'));
             },
@@ -148,10 +139,7 @@ export class DashboardCourseClasses implements OnInit {
     }
 
     this.sessionsApi.destroyMedia(material.uuid).subscribe({
-      next: () => {
-        this.successMessage.set('Archivo eliminado.');
-        this.reload();
-      },
+      next: () => this.reload(),
       error: () => this.errorMessage.set('No se pudo eliminar el archivo.'),
     });
   }

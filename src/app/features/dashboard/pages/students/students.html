@@ -75,10 +75,6 @@
     </div>
   }
 
-  @if (successMessage()) {
-    <div class="students-success" role="status">{{ successMessage() }}</div>
-  }
-
   @if (loading()) {
     <div class="students-loader" aria-busy="true" aria-live="polite">
       <div class="students-loader-line" aria-hidden="true"></div>

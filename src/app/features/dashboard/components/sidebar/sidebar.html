@@ -8,7 +8,7 @@
     <div class="sidebar-head">
       <a [routerLink]="homePath()" class="sidebar-brand" (click)="close()">
         <span class="sidebar-brand-name">Santamaria</span>
-        <span class="sidebar-brand-line">Bootcamp</span>
+        <span class="sidebar-brand-line">Extraescolares</span>
       </a>
 
       <button
@@ -135,6 +135,16 @@
         <svg class="size-4" viewBox="0 0 24 24" fill="none">
           <path
             d="M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M17 11a3 3 0 1 0 0-6M21 19v-1a3.5 3.5 0 0 0-2.5-3.35M9.5 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+        </svg>
+      }
+      @case ('subscriptions') {
+        <svg class="size-4" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M7 7h10M7 12h6M7 17h10M17 12h3"
             stroke="currentColor"
             stroke-width="1.6"
             stroke-linecap="round"

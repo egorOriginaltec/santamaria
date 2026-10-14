@@ -21,6 +21,25 @@ const SUMMARY: DashboardSummary = {
     previous_paid: 100,
     delta: 200,
   },
+  subscriptions: {
+    count: 2,
+    months: 1,
+    due: 108,
+    paid: 300,
+    outstanding: 0,
+    coverage: 277.8,
+    items: [
+      {
+        uuid: 'sub-1',
+        email: 'ana@example.com',
+        monthly_amount: 49,
+        due: 49,
+        months: 1,
+        status: 'active',
+        starts_on: '2026-10-01',
+      },
+    ],
+  },
   students: { new: 1, active: 2, inactive: 0, previous_new: 1, delta: 0 },
   enrollments: { count: 1, previous: 0, delta: 100 },
   courses_active: 1,
@@ -71,16 +90,20 @@ describe('DashboardHome', () => {
 
     const http = TestBed.inject(HttpTestingController);
     const request = http.expectOne((req) => req.url.includes('/api/v1/dashboard'));
-    const year = new Date().getFullYear();
-    expect(request.request.params.get('from')).toBe(`${year}-01-01`);
-    expect(request.request.params.get('to')).toBe(`${year}-12-31`);
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const lastDay = String(new Date(year, now.getMonth() + 1, 0).getDate()).padStart(2, '0');
+    expect(request.request.params.get('from')).toBe(`${year}-${month}-01`);
+    expect(request.request.params.get('to')).toBe(`${year}-${month}-${lastDay}`);
     request.flush({ data: SUMMARY });
     fixture.detectChanges();
 
     const native: HTMLElement = fixture.nativeElement;
-    expect(native.textContent).toContain('Alumnos');
-    expect(native.textContent).toContain('Facturado');
-    expect(native.textContent).toContain('Leads');
+    expect(native.textContent).toContain('Tendrías que facturar');
+    expect(native.textContent).toContain('A facturar');
+    expect(native.textContent).toContain('Cobrado');
+    expect(native.textContent).toContain('Pendiente');
     expect(native.textContent).not.toContain('Neto');
     expect(native.textContent).toContain('300,00');
     expect(native.textContent).toContain('ana@example.com');

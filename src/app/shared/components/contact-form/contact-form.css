@@ -56,6 +56,10 @@
 
 :host.theme-dark .contact-eyebrow {
   color: rgba(255, 255, 255, 0.45);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 :host.theme-dark .contact-heading {
@@ -78,13 +82,15 @@
 }
 
 :host.theme-light .contact-glow {
-  background:
-    radial-gradient(ellipse at 30% 0%, rgb(231 53 61 / 6%), transparent 55%),
-    radial-gradient(ellipse at 90% 80%, rgb(255 194 36 / 8%), transparent 45%);
+  background: none;
 }
 
 :host.theme-light .contact-eyebrow {
-  color: #8a8a9a;
+  color: #e7353d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 :host.theme-light .contact-heading {

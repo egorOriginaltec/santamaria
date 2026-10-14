@@ -77,9 +77,9 @@
 
 .leads-input:focus {
   outline: none;
-  border-color: rgba(87, 81, 225, 0.45);
+  border-color: rgba(231, 53, 61, 0.45);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .leads-btn,
@@ -107,8 +107,8 @@
 .leads-btn:hover:not(:disabled),
 .delete-btn:hover:not(:disabled),
 .pager-btn:hover:not(:disabled) {
-  border-color: rgba(87, 81, 225, 0.35);
-  background: var(--color-brand-soft, #f0effc);
+  border-color: rgba(231, 53, 61, 0.35);
+  background: var(--color-brand-soft, #fdeeee);
 }
 
 .leads-btn:disabled,
@@ -139,7 +139,7 @@
   margin-top: 0.25rem;
   display: inline-flex;
   font-weight: 700;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -163,7 +163,7 @@
   width: 35%;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   animation: leads-progress 1s ease-in-out infinite;
 }
 
@@ -284,10 +284,10 @@
   flex-shrink: 0;
   place-items: center;
   border-radius: 999px;
-  background: var(--color-brand-soft, #f0effc);
+  background: var(--color-brand-soft, #fdeeee);
   font-size: 11px;
   font-weight: 700;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
 }
 
 .leads-name {
@@ -465,7 +465,7 @@
 
 .pager-btn.is-active {
   border-color: transparent;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   color: #fff;
 }
 

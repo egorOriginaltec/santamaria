@@ -1,0 +1,60 @@
+<div class="student-shell">
+  <header class="student-top">
+    <div class="student-top-inner">
+      <a routerLink="/student" class="student-brand" (click)="closeMenu()">
+        <span class="student-logo" aria-hidden="true">
+          <svg viewBox="0 0 44 44" fill="none">
+            <circle cx="22" cy="22" r="22" fill="currentColor" />
+            <path
+              fill="#fff"
+              d="M22 11.5 10.5 17.2l11.5 5.7 10.2-5.05V24.5h1.6V17.2L22 11.5zm0 2.35 7.55 3.75L22 21.35l-7.55-3.75L22 13.85z"
+            />
+            <path fill="#fff" d="M31.7 18.4v5.2c0 .9-4.35 2.2-9.7 2.2s-9.7-1.3-9.7-2.2v-5.2l9.7 4.8 9.7-4.8z" />
+          </svg>
+        </span>
+        <span class="student-brand-text">
+          <span class="student-brand-name">Santamaria</span>
+          <span class="student-brand-tag">Tu espacio</span>
+        </span>
+      </a>
+
+      <nav class="student-nav" aria-label="Alumno">
+        <a routerLink="/student" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        <a routerLink="/student/calendar" routerLinkActive="is-active">Calendario</a>
+        <a routerLink="/student/classes" routerLinkActive="is-active">Clases</a>
+      </nav>
+
+      <div class="student-top-actions">
+        <p class="student-hello">Hola, {{ firstName() }}</p>
+        <button type="button" class="student-logout" (click)="logout()" [disabled]="loggingOut()">
+          {{ loggingOut() ? 'Saliendo…' : 'Salir' }}
+        </button>
+        <button
+          type="button"
+          class="student-menu-btn"
+          [attr.aria-expanded]="menuOpen()"
+          aria-label="Abrir menú"
+          (click)="toggleMenu()"
+        >
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    @if (menuOpen()) {
+      <nav class="student-nav-mobile" aria-label="Alumno">
+        <a routerLink="/student" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+          Inicio
+        </a>
+        <a routerLink="/student/calendar" routerLinkActive="is-active" (click)="closeMenu()">Calendario</a>
+        <a routerLink="/student/classes" routerLinkActive="is-active" (click)="closeMenu()">Clases</a>
+      </nav>
+    }
+  </header>
+
+  <main class="student-main">
+    <router-outlet />
+  </main>
+</div>

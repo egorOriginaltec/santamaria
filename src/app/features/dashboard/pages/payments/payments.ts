@@ -38,7 +38,6 @@ export class DashboardPayments implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly searchControl = new FormControl('', { nonNullable: true });
-  readonly statusControl = new FormControl<PaymentStatus | ''>('', { nonNullable: true });
   readonly sortControl = new FormControl<PaymentSort>('latest', { nonNullable: true });
   readonly perPageControl = new FormControl('15', { nonNullable: true });
 
@@ -46,7 +45,6 @@ export class DashboardPayments implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -54,7 +52,7 @@ export class DashboardPayments implements OnInit {
   readonly to = signal<number | null>(null);
 
   readonly options = signal<PaymentsListOptions>({
-    statuses: ['pending', 'paid', 'refunded'],
+    statuses: ['paid'],
     methods: ['transfer', 'card', 'cash'],
     sorts: ['latest', 'amount_asc', 'amount_desc'],
     per_page_options: [10, 15, 20, 50],
@@ -75,7 +73,6 @@ export class DashboardPayments implements OnInit {
 
       merge(
         this.searchControl.valueChanges.pipe(debounceTime(300), distinctUntilChanged()),
-        this.statusControl.valueChanges,
         this.sortControl.valueChanges,
         this.perPageControl.valueChanges,
       )
@@ -91,7 +88,6 @@ export class DashboardPayments implements OnInit {
     this.paymentsApi
       .list({
         search: this.searchControl.value.trim() || undefined,
-        status: this.statusControl.value,
         sort: this.sortControl.value,
         per_page: Number(this.perPageControl.value) || 15,
         page,
@@ -137,7 +133,6 @@ export class DashboardPayments implements OnInit {
 
     this.paymentsApi.destroy(payment.uuid).subscribe({
       next: () => {
-        this.successMessage.set('Pago eliminado.');
         const nextPage =
           this.payments().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1
@@ -164,15 +159,8 @@ export class DashboardPayments implements OnInit {
     }).format(amount);
   }
 
-  statusLabel(status: PaymentStatus): string {
-    switch (status) {
-      case 'pending':
-        return 'Pendiente';
-      case 'paid':
-        return 'Pagado';
-      case 'refunded':
-        return 'Reembolsado';
-    }
+  statusLabel(_status: PaymentStatus): string {
+    return 'Pagado';
   }
 
   methodLabel(method: PaymentDto['method']): string {

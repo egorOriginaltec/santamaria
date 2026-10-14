@@ -8,6 +8,7 @@ export interface DashboardNavItem {
   readonly icon:
     | 'dashboard'
     | 'students'
+    | 'subscriptions'
     | 'payments'
     | 'courses'
     | 'calendar'
@@ -28,7 +29,9 @@ export const STUDENT_NAV: readonly DashboardNavGroup[] = [
   {
     title: 'Principal',
     items: [
-      { id: 'calendar', label: 'Calendario', path: '/calendario', icon: 'planner' },
+      { id: 'home', label: 'Inicio', path: '/student', icon: 'dashboard' },
+      { id: 'calendar', label: 'Calendario', path: '/student/calendar', icon: 'planner' },
+      { id: 'classes', label: 'Clases', path: '/student/classes', icon: 'courses' },
     ],
   },
 ] as const;
@@ -44,17 +47,23 @@ export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
     title: 'Gestión',
     items: [
       { id: 'students', label: 'Estudiantes', path: '/dashboard/students', icon: 'students' },
+      { id: 'subscriptions', label: 'Suscripciones', path: '/dashboard/subscriptions', icon: 'subscriptions' },
       { id: 'payments', label: 'Pagos', path: '/dashboard/payments', icon: 'payments' },
       { id: 'leads', label: 'Leads', path: '/dashboard/leads', icon: 'messages' },
-      { id: 'holidays', label: 'Festivos', path: '/dashboard/holidays', icon: 'calendar' },
+    ],
+  },
+  {
+    title: 'Academia',
+    items: [
       { id: 'courses-manage', label: 'Cursos', path: '/dashboard/courses', icon: 'courses' },
       { id: 'calendar', label: 'Calendario', path: '/dashboard/calendar', icon: 'planner' },
-      { id: 'calculator', label: 'Calculadora', path: '/dashboard/calculator', icon: 'calculator' },
+      { id: 'holidays', label: 'Festivos', path: '/dashboard/holidays', icon: 'calendar' },
     ],
   },
   {
     title: 'Operaciones',
     items: [
+      { id: 'calculator', label: 'Calculadora', path: '/dashboard/calculator', icon: 'calculator' },
       {
         id: 'swagger',
         label: 'Documentación',

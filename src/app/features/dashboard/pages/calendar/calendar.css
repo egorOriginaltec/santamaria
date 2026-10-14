@@ -30,7 +30,7 @@
 .calendar-input:focus {
   outline: none;
   border-color: #c9c6f5;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .calendar-alert {
@@ -50,7 +50,7 @@
   display: inline-flex;
   margin-top: 0.3rem;
   font-weight: 700;
-  color: #5751e1;
+  color: #e7353d;
 }
 
 .calendar-empty {
@@ -78,7 +78,7 @@
   width: 35%;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   animation: calendar-progress 1s ease-in-out infinite;
 }
 
@@ -188,7 +188,7 @@ button.calendar-day {
 }
 
 .calendar-day.is-selected {
-  box-shadow: inset 0 0 0 2px #2f6fed;
+  box-shadow: inset 0 0 0 2px #e7353d;
 }
 
 .calendar-hint {
@@ -249,7 +249,7 @@ button.calendar-day {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #5751e1;
+  color: #e7353d;
 }
 
 .calendar-session-title {
@@ -284,7 +284,7 @@ button.calendar-day {
 .calendar-block-head a {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #5751e1;
+  color: #e7353d;
   text-decoration: none;
 }
 
@@ -404,7 +404,7 @@ button.calendar-day {
 .calendar-meet:focus {
   outline: none;
   border-color: #c9c6f5;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .calendar-meet-link {
@@ -413,7 +413,7 @@ button.calendar-day {
   min-height: 2.25rem;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #2f6fed;
+  color: #e7353d;
 }
 
 .calendar-session-note {
@@ -443,7 +443,7 @@ button.calendar-day {
 
 .calendar-btn--primary {
   border-color: transparent;
-  background: #5751e1;
+  background: #e7353d;
   color: #fff;
 }
 
@@ -496,7 +496,7 @@ button.calendar-day {
 
 .calendar-weekdays span.is-current {
   width: fit-content;
-  border-bottom: 2px solid #2f6fed;
+  border-bottom: 2px solid #e7353d;
   color: #1c1c28;
 }
 
@@ -525,7 +525,7 @@ button.calendar-day {
   overflow-wrap: anywhere;
   margin-top: 0.2rem;
   padding: 0.32rem 0 0;
-  border-top: 3px solid #2f6fed;
+  border-top: 3px solid #e7353d;
   background: transparent;
   color: #3a3a48;
   font-size: 11px;
@@ -540,7 +540,7 @@ button.calendar-day {
   margin-top: 0.22rem;
   flex: 0 0 0.38rem;
   border-radius: 999px;
-  background: #2f6fed;
+  background: #e7353d;
 }
 
 .calendar-mark--holiday {
@@ -565,7 +565,7 @@ button.calendar-day {
 }
 
 .calendar-extra--meet {
-  color: #2f6fed;
+  color: #e7353d;
 }
 
 .calendar-extra--files {
@@ -578,7 +578,7 @@ button.calendar-day {
 }
 
 .calendar-day.is-today .calendar-day-num {
-  box-shadow: inset 0 -2px 0 #2f6fed;
+  box-shadow: inset 0 -2px 0 #e7353d;
 }
 
 .calendar-reveal {

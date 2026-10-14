@@ -25,7 +25,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
 }
 
 .student-form-title {
@@ -44,7 +44,7 @@
 .student-form-back {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
   text-decoration: none;
 }
 
@@ -67,7 +67,7 @@
   width: 35%;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   animation: student-form-progress 1s ease-in-out infinite;
 }
 
@@ -192,7 +192,7 @@
   cursor: pointer;
   width: 1rem;
   height: 1rem;
-  accent-color: var(--color-brand, #5751e1);
+  accent-color: var(--color-brand, #e7353d);
 }
 
 .student-field-label {
@@ -220,9 +220,9 @@
 
 .student-input:focus {
   outline: none;
-  border-color: rgba(87, 81, 225, 0.45);
+  border-color: rgba(231, 53, 61, 0.45);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .student-input.is-invalid {
@@ -285,7 +285,7 @@
 .student-course-option input {
   width: 1rem;
   height: 1rem;
-  accent-color: var(--color-brand, #5751e1);
+  accent-color: var(--color-brand, #e7353d);
 }
 
 .student-course-empty {
@@ -320,16 +320,16 @@
 
 .student-btn--primary {
   border-color: transparent;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   color: #fff;
 }
 
 .student-btn--primary:hover:not(:disabled) {
-  background: var(--color-brand-hover, #4a44c9);
+  background: var(--color-brand-hover, #cf2932);
 }
 
 .student-btn--ghost:hover {
-  background: var(--color-brand-soft, #f0effc);
+  background: var(--color-brand-soft, #fdeeee);
 }
 
 .student-btn:disabled {

@@ -34,6 +34,21 @@ function scheduleRangeValidator(group: AbstractControl): ValidationErrors | null
   return end <= start ? { scheduleRange: true } : null;
 }
 
+function minWeekdaysValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return Array.isArray(value) && value.length > 0 ? null : { weekdays: true };
+}
+
+export const COURSE_WEEKDAYS = [
+  { id: 1, short: 'L', name: 'Lunes' },
+  { id: 2, short: 'M', name: 'Martes' },
+  { id: 3, short: 'X', name: 'Miércoles' },
+  { id: 4, short: 'J', name: 'Jueves' },
+  { id: 5, short: 'V', name: 'Viernes' },
+  { id: 6, short: 'S', name: 'Sábado' },
+  { id: 7, short: 'D', name: 'Domingo' },
+] as const;
+
 @Component({
   selector: 'app-dashboard-course-form',
   imports: [ReactiveFormsModule, RouterLink],
@@ -53,6 +68,7 @@ export class DashboardCourseForm implements OnInit {
   readonly saving = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly skeletonFields = [0, 1, 2, 3] as const;
+  readonly weekdayOptions = COURSE_WEEKDAYS;
 
   readonly form = this.fb.nonNullable.group(
     {
@@ -62,6 +78,8 @@ export class DashboardCourseForm implements OnInit {
       end_date: ['', Validators.required],
       schedule_start: ['09:00', Validators.required],
       schedule_end: ['13:00', Validators.required],
+      weekdays: this.fb.nonNullable.control<number[]>([1, 2, 3, 4, 5], minWeekdaysValidator),
+      price: ['49', [Validators.required, Validators.min(0.01), Validators.max(999.99)]],
       is_active: [true],
     },
     { validators: [dateRangeValidator, scheduleRangeValidator] },
@@ -103,6 +121,8 @@ export class DashboardCourseForm implements OnInit {
             end_date: course.end_date,
             schedule_start: course.schedule_start.slice(0, 5),
             schedule_end: course.schedule_end.slice(0, 5),
+            weekdays: course.weekdays?.length ? [...course.weekdays] : [1, 2, 3, 4, 5],
+            price: String(course.price ?? 49),
             is_active: course.is_active,
           });
         },
@@ -132,7 +152,8 @@ export class DashboardCourseForm implements OnInit {
       | 'start_date'
       | 'end_date'
       | 'schedule_start'
-      | 'schedule_end',
+      | 'schedule_end'
+      | 'price',
   ): boolean {
     const control = this.form.controls[controlName];
     return control.invalid && (control.dirty || control.touched);
@@ -144,6 +165,26 @@ export class DashboardCourseForm implements OnInit {
 
   hasScheduleRangeError(): boolean {
     return this.form.hasError('scheduleRange') && (this.form.dirty || this.form.touched);
+  }
+
+  hasWeekdaysError(): boolean {
+    const control = this.form.controls.weekdays;
+    return control.invalid && (control.dirty || control.touched);
+  }
+
+  isWeekdaySelected(day: number): boolean {
+    return this.form.controls.weekdays.value.includes(day);
+  }
+
+  toggleWeekday(day: number): void {
+    const current = this.form.controls.weekdays.value;
+    const next = current.includes(day)
+      ? current.filter((item) => item !== day)
+      : [...current, day].sort((left, right) => left - right);
+
+    this.form.controls.weekdays.setValue(next);
+    this.form.controls.weekdays.markAsDirty();
+    this.form.controls.weekdays.markAsTouched();
   }
 
   onSubmit(): void {
@@ -163,6 +204,8 @@ export class DashboardCourseForm implements OnInit {
       end_date: raw.end_date,
       schedule_start: raw.schedule_start,
       schedule_end: raw.schedule_end,
+      weekdays: raw.weekdays,
+      price: Number(raw.price),
       is_active: raw.is_active,
     };
 
@@ -178,7 +221,7 @@ export class DashboardCourseForm implements OnInit {
       error: (err: { status?: number }) => {
         this.errorMessage.set(
           err.status === 422
-            ? 'Revisa las fechas y el horario (ej. 09:00–13:00).'
+            ? 'Revisa las fechas, los días, el horario y el precio.'
             : 'No se pudo guardar el curso.',
         );
       },

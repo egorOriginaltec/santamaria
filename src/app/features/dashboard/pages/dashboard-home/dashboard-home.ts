@@ -20,8 +20,27 @@ import {
   DashboardStatsCards,
 } from '../../components/stats-cards/stats-cards';
 
-const COURSE_COLORS = ['#5751e1', '#2f6fed', '#e59a1a', '#22a06b', '#e11d48', '#0ea5e9'];
-const currentYear = new Date().getFullYear();
+const COURSE_COLORS = ['#e7353d', '#cf2932', '#e59a1a', '#22a06b', '#0ea5e9', '#161439'];
+const today = new Date();
+const currentYear = today.getFullYear();
+
+function pad(value: number): string {
+  return String(value).padStart(2, '0');
+}
+
+function monthRange(date: Date): { from: string; to: string; year: string } {
+  const year = date.getFullYear();
+  const month = date.getMonth();
+  const lastDay = new Date(year, month + 1, 0).getDate();
+
+  return {
+    from: `${year}-${pad(month + 1)}-01`,
+    to: `${year}-${pad(month + 1)}-${pad(lastDay)}`,
+    year: String(year),
+  };
+}
+
+const currentMonth = monthRange(today);
 
 @Component({
   selector: 'app-dashboard-home',
@@ -41,12 +60,16 @@ export class DashboardHome implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
 
   readonly years = Array.from({ length: 6 }, (_, index) => String(currentYear - index));
-  readonly year = signal(String(currentYear));
-  readonly from = signal(`${currentYear}-01-01`);
-  readonly to = signal(`${currentYear}-12-31`);
+  readonly year = signal(currentMonth.year);
+  readonly from = signal(currentMonth.from);
+  readonly to = signal(currentMonth.to);
   readonly summary = signal<DashboardSummary | null>(null);
   readonly loading = signal(true);
+  readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly skeletonStats = [0, 1, 2] as const;
+  readonly skeletonMini = [0, 1, 2, 3] as const;
+  readonly skeletonRows = [0, 1, 2, 3, 4] as const;
 
   private readonly range = computed(() => ({ from: this.from(), to: this.to() }));
   private readonly rangeChanges = toObservable(this.range);
@@ -57,6 +80,7 @@ export class DashboardHome implements OnInit {
         switchMap(({ from, to }) => {
           if (!from || !to || from > to) {
             this.loading.set(false);
+            this.initialLoad.set(false);
             this.errorMessage.set('La fecha inicial no puede ser posterior a la final.');
             return EMPTY;
           }
@@ -65,7 +89,10 @@ export class DashboardHome implements OnInit {
           this.errorMessage.set(null);
 
           return this.dashboardApi.summary(from, to).pipe(
-            finalize(() => this.loading.set(false)),
+            finalize(() => {
+              this.loading.set(false);
+              this.initialLoad.set(false);
+            }),
             catchError((error: HttpErrorResponse) => {
               this.errorMessage.set(
                 error.status === 401 || error.status === 403
@@ -87,6 +114,26 @@ export class DashboardHome implements OnInit {
     this.to.set(`${year}-12-31`);
   }
 
+  setThisMonth(): void {
+    const range = monthRange(new Date());
+    this.year.set(range.year);
+    this.from.set(range.from);
+    this.to.set(range.to);
+  }
+
+  setThisYear(): void {
+    this.setYear(String(new Date().getFullYear()));
+  }
+
+  isThisMonth(): boolean {
+    return this.from() === currentMonth.from && this.to() === currentMonth.to;
+  }
+
+  isThisYear(): boolean {
+    const year = String(new Date().getFullYear());
+    return this.from() === `${year}-01-01` && this.to() === `${year}-12-31`;
+  }
+
   setFrom(value: string): void {
     this.from.set(value);
     this.syncYear(value, this.to());
@@ -103,33 +150,37 @@ export class DashboardHome implements OnInit {
       return [];
     }
 
+    const due = summary.subscriptions.due;
+    const paid = summary.subscriptions.paid;
+    const outstanding = summary.subscriptions.outstanding;
+
     return [
       {
-        id: 'students',
-        label: 'Alumnos',
-        value: String(summary.students.new),
-        hint: 'Altas en las fechas',
-        delta: this.delta(summary.students.delta),
-        trend: this.trend(summary.students.delta),
-        accent: '#22a06b',
+        id: 'due',
+        label: 'A facturar',
+        value: this.euro(due),
+        hint: `${summary.subscriptions.count} suscripciones activas`,
+        delta: null,
+        trend: 'flat',
+        accent: '#e7353d',
       },
       {
         id: 'paid',
-        label: 'Facturado',
-        value: this.euro(summary.billing.paid),
-        hint: 'Cobrado en las fechas',
+        label: 'Cobrado',
+        value: this.euro(paid),
+        hint: 'Pagos del periodo',
         delta: this.delta(summary.billing.delta),
         trend: this.trend(summary.billing.delta),
-        accent: '#5751e1',
+        accent: '#22a06b',
       },
       {
-        id: 'leads',
-        label: 'Leads',
-        value: String(summary.leads.open),
-        hint: 'Sin cerrar',
-        delta: this.delta(summary.leads.delta),
-        trend: this.trend(summary.leads.delta),
-        accent: '#2f6fed',
+        id: 'outstanding',
+        label: 'Pendiente',
+        value: this.euro(outstanding),
+        hint: outstanding > 0 ? 'Falta por cobrar' : 'Periodo cubierto',
+        delta: null,
+        trend: outstanding > 0 ? 'down' : 'up',
+        accent: '#e59a1a',
       },
     ];
   }
@@ -202,17 +253,16 @@ export class DashboardHome implements OnInit {
     }).format(new Date(year, month - 1, day));
   }
 
-  paymentStatus(status: string): string {
-    switch (status) {
-      case 'paid':
-        return 'Pagado';
-      case 'pending':
-        return 'Pendiente';
-      case 'refunded':
-        return 'Reembolsado';
-      default:
-        return status;
-    }
+  paymentStatus(_status: string): string {
+    return 'Pagado';
+  }
+
+  coverageWidth(coverage: number): string {
+    return `${Math.min(100, Math.max(0, coverage))}%`;
+  }
+
+  coverageLabel(coverage: number): string {
+    return `${new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 }).format(coverage)}%`;
   }
 
   private delta(value: number | null): string | null {

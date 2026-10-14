@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { API_BASE_URL } from '@core/constants/api/api.constants';
 import { Observable, map } from 'rxjs';
 
-export type PaymentStatus = 'pending' | 'paid' | 'refunded';
+export type PaymentStatus = 'paid';
 export type PaymentMethod = 'transfer' | 'card' | 'cash';
 export type PaymentSort = 'latest' | 'amount_asc' | 'amount_desc';
 

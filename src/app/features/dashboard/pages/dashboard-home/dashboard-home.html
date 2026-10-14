@@ -1,11 +1,38 @@
-<div class="flex flex-col gap-4 sm:gap-5" [class.opacity-70]="loading() && summary()">
+<div class="flex flex-col gap-4 sm:gap-5">
   <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
     <div class="min-w-0">
       <h2 class="text-base font-semibold text-ink">Facturación y actividad</h2>
-      <p class="mt-1 text-[13px] text-[#8a8a9a]">{{ rangeLabel() || 'Elige las fechas' }}</p>
+      <p class="mt-1 text-[13px] text-[#8a8a9a]">
+        @if (loading() && initialLoad()) {
+          Cargando…
+        } @else {
+          {{ rangeLabel() || 'Elige las fechas' }}
+        }
+      </p>
     </div>
 
     <div class="flex flex-wrap items-end gap-2">
+      <div class="flex h-10 items-center rounded-xl border border-[#e4e4ec] bg-white p-1">
+        <button
+          type="button"
+          class="h-full rounded-lg px-3 text-[12px] font-semibold"
+          [class.is-period]="isThisMonth()"
+          [class.text-[#6b6b80]]="!isThisMonth()"
+          (click)="setThisMonth()"
+        >
+          Este mes
+        </button>
+        <button
+          type="button"
+          class="h-full rounded-lg px-3 text-[12px] font-semibold"
+          [class.is-period]="isThisYear()"
+          [class.text-[#6b6b80]]="!isThisYear()"
+          (click)="setThisYear()"
+        >
+          Este año
+        </button>
+      </div>
+
       <label class="flex w-[8.25rem] flex-col gap-1">
         <span class="text-[10px] font-bold tracking-[0.08em] text-[#9a9aab] uppercase">Año</span>
         <select
@@ -47,18 +74,144 @@
     </p>
   }
 
-  @if (loading() && !summary()) {
-    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4" aria-hidden="true">
-      @for (item of [0, 1, 2]; track item) {
-        <div class="h-28 animate-pulse rounded-2xl bg-[#f4f4f8]"></div>
-      }
+  @if (loading()) {
+    <div class="dash-loader" aria-busy="true" aria-live="polite">
+      <section class="dash-skel-card dash-skel-bill">
+        <div class="dash-loader-line" aria-hidden="true"></div>
+        <div class="dash-skel-bill-grid">
+          <div class="dash-skel-stack">
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-amount"></span>
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-bar"></span>
+            <div class="dash-skel-split">
+              <span class="sk sk-line sk-w-40"></span>
+              <span class="sk sk-line sk-w-40"></span>
+            </div>
+          </div>
+          <div class="dash-skel-stack">
+            @for (row of skeletonMini; track row) {
+              <div class="dash-skel-mini">
+                <span class="sk sk-line sk-w-40"></span>
+                <span class="sk sk-line sk-w-20"></span>
+              </div>
+            }
+          </div>
+        </div>
+      </section>
+
+      <div class="dash-skel-stats">
+        @for (card of skeletonStats; track card) {
+          <section class="dash-skel-card">
+            <div class="dash-loader-line" aria-hidden="true"></div>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-amount sk-amount-sm"></span>
+            <span class="sk sk-line sk-w-40"></span>
+          </section>
+        }
+      </div>
+
+      <div class="dash-skel-pair">
+        <section class="dash-skel-card">
+          <div class="dash-loader-line" aria-hidden="true"></div>
+          <span class="sk sk-line sk-w-24"></span>
+          <span class="sk sk-chart"></span>
+        </section>
+        <section class="dash-skel-card">
+          <div class="dash-loader-line" aria-hidden="true"></div>
+          <span class="sk sk-line sk-w-24"></span>
+          <span class="sk sk-donut"></span>
+          @for (row of skeletonMini; track row) {
+            <div class="dash-skel-mini">
+              <span class="sk sk-line sk-w-40"></span>
+              <span class="sk sk-line sk-w-20"></span>
+            </div>
+          }
+        </section>
+      </div>
+
+      <div class="dash-skel-pair">
+        @for (card of [0, 1]; track card) {
+          <section class="dash-skel-card">
+            <div class="dash-loader-line" aria-hidden="true"></div>
+            <span class="sk sk-line sk-w-24"></span>
+            <div class="dash-skel-table">
+              @for (row of skeletonRows; track row) {
+                <div class="dash-skel-row">
+                  <span class="sk sk-line sk-w-24"></span>
+                  <span class="sk sk-line sk-w-40"></span>
+                  <span class="sk sk-pill"></span>
+                  <span class="sk sk-line sk-w-20"></span>
+                </div>
+              }
+            </div>
+          </section>
+        }
+      </div>
     </div>
-  }
+  } @else if (summary(); as data) {
+    <section class="bill-card dash-reveal">
+      <div class="bill-main">
+        <p class="bill-kicker">Suscripciones del periodo</p>
+        <h3 class="bill-title">Tendrías que facturar</h3>
+        <p class="bill-amount">{{ euro(data.subscriptions.due) }}</p>
+        <p class="bill-copy">
+          @if (data.subscriptions.count === 0) {
+            No hay suscripciones activas en estas fechas.
+          } @else {
+            {{ data.subscriptions.count }}
+            {{ data.subscriptions.count === 1 ? 'suscripción activa' : 'suscripciones activas' }}
+            × {{ data.subscriptions.months }}
+            {{ data.subscriptions.months === 1 ? 'mes' : 'meses' }}.
+            Los pagos cubren {{ coverageLabel(data.subscriptions.coverage) }}.
+          }
+        </p>
 
-  @if (summary(); as data) {
-    <app-dashboard-stats-cards [stats]="cards()" />
+        <div class="bill-track" aria-hidden="true">
+          <span class="bill-fill" [style.width]="coverageWidth(data.subscriptions.coverage)"></span>
+        </div>
 
-    <div class="grid gap-4 xl:grid-cols-[1.6fr_1fr]">
+        <dl class="bill-split">
+          <div>
+            <dt>Cobrado</dt>
+            <dd>{{ euro(data.subscriptions.paid) }}</dd>
+          </div>
+          <div>
+            <dt>Pendiente</dt>
+            <dd>{{ euro(data.subscriptions.outstanding) }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="bill-list">
+        <div class="mb-3 flex items-center justify-between gap-3">
+          <h3 class="text-sm font-bold text-ink">Suscripciones</h3>
+          <a routerLink="/dashboard/subscriptions" class="text-[12px] font-semibold text-brand">Ver todas</a>
+        </div>
+
+        @if (data.subscriptions.items.length === 0) {
+          <p class="py-8 text-center text-sm text-[#8a8a9a]">Sin cuotas activas.</p>
+        } @else {
+          <ul class="grid gap-2">
+            @for (item of data.subscriptions.items; track item.uuid) {
+              <li class="bill-row">
+                <span class="min-w-0">
+                  <span class="block truncate text-[13px] font-semibold text-ink">{{ item.email || 'Sin email' }}</span>
+                  <span class="mt-0.5 block text-[11px] text-[#8a8a9a]">{{ euro(item.monthly_amount) }}/mes</span>
+                </span>
+                <span class="shrink-0 text-[13px] font-bold text-ink">{{ euro(item.due) }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </section>
+
+    <div class="dash-reveal dash-delay-1">
+      <app-dashboard-stats-cards [stats]="cards()" />
+    </div>
+
+    <div class="grid gap-4 xl:grid-cols-[1.6fr_1fr] dash-reveal dash-delay-2">
       <app-dashboard-revenue-chart
         [points]="data.series"
         [currentLabel]="data.comparison.current"
@@ -67,7 +220,7 @@
       <app-dashboard-enrollment-breakdown [total]="euro(data.billing.paid)" [slices]="courseSlices()" />
     </div>
 
-    <div class="grid gap-4 xl:grid-cols-2">
+    <div class="grid gap-4 xl:grid-cols-2 dash-reveal dash-delay-3">
       <section class="rounded-2xl border border-[#ececf3] bg-white p-4 shadow-[0_8px_24px_rgba(22,20,57,0.04)] sm:p-5">
         <header class="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>

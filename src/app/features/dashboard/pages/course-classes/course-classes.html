@@ -33,12 +33,6 @@
     </p>
   }
 
-  @if (successMessage()) {
-    <p class="rounded-2xl border border-[#bbf7d0] bg-[#f0fdf4] px-4 py-3 text-sm text-[#15803d]" role="status">
-      {{ successMessage() }}
-    </p>
-  }
-
   @if (loading() && !course()) {
     <section class="classes-card">
       <div class="classes-loader" aria-busy="true" aria-live="polite">
@@ -67,7 +61,7 @@
         <input
           type="file"
           accept=".zip,.pdf,.png,.jpg,.jpeg,.webp,application/pdf,application/zip,image/png,image/jpeg,image/webp"
-          class="block w-full text-[13px] text-[#4a4a5c] file:mr-3 file:rounded-lg file:border-0 file:bg-[#f0effc] file:px-3 file:py-2 file:text-[13px] file:font-semibold file:text-brand"
+          class="block w-full text-[13px] text-[#4a4a5c] file:mr-3 file:rounded-lg file:border-0 file:bg-[#fdeeee] file:px-3 file:py-2 file:text-[13px] file:font-semibold file:text-brand"
           [disabled]="uploading() === 'course'"
           (change)="onCourseFile($event)"
         />

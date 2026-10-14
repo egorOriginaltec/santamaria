@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+.section-kicker {
+  color: #e7353d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
 @theme {
   --color-brand: #e7353d;
   --color-brand-hover: #cf2932;

@@ -25,8 +25,8 @@
 }
 
 .export-btn:hover {
-  border-color: rgba(87, 81, 225, 0.35);
-  background: var(--color-brand-soft, #f0effc);
+  border-color: rgba(231, 53, 61, 0.35);
+  background: var(--color-brand-soft, #fdeeee);
 }
 
 .status-pill {

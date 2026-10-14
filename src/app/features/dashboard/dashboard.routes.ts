@@ -14,6 +14,8 @@ import { DashboardPaymentForm } from './pages/payment-form/payment-form';
 import { DashboardPayments } from './pages/payments/payments';
 import { DashboardStudentForm } from './pages/student-form/student-form';
 import { DashboardStudents } from './pages/students/students';
+import { DashboardSubscriptionForm } from './pages/subscription-form/subscription-form';
+import { DashboardSubscriptions } from './pages/subscriptions/subscriptions';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -23,67 +25,84 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: '',
         component: DashboardHome,
-        title: 'Panel · Santamaria Bootcaps',
+        title: 'Panel · Santamaria',
       },
       {
         path: 'students',
         component: DashboardStudents,
-        title: 'Estudiantes · Santamaria Bootcaps',
+        title: 'Estudiantes · Santamaria',
       },
       {
         path: 'students/new',
         component: DashboardStudentForm,
-        title: 'Nuevo estudiante · Santamaria Bootcaps',
+        title: 'Nuevo estudiante · Santamaria',
       },
       {
         path: 'students/:uuid/edit',
         component: DashboardStudentForm,
-        title: 'Editar estudiante · Santamaria Bootcaps',
+        title: 'Editar estudiante · Santamaria',
       },
       { path: 'students/nuevo', redirectTo: 'students/new', pathMatch: 'full' },
       { path: 'students/:uuid/editar', redirectTo: 'students/:uuid/edit' },
       {
+        path: 'subscriptions',
+        component: DashboardSubscriptions,
+        title: 'Suscripciones · Santamaria',
+      },
+      {
+        path: 'subscriptions/new',
+        component: DashboardSubscriptionForm,
+        title: 'Nueva suscripción · Santamaria',
+      },
+      {
+        path: 'subscriptions/:uuid/edit',
+        component: DashboardSubscriptionForm,
+        title: 'Editar suscripción · Santamaria',
+      },
+      { path: 'subscriptions/nuevo', redirectTo: 'subscriptions/new', pathMatch: 'full' },
+      { path: 'subscriptions/:uuid/editar', redirectTo: 'subscriptions/:uuid/edit' },
+      {
         path: 'payments',
         component: DashboardPayments,
-        title: 'Pagos · Santamaria Bootcaps',
+        title: 'Pagos · Santamaria',
       },
       {
         path: 'payments/new',
         component: DashboardPaymentForm,
-        title: 'Nuevo pago · Santamaria Bootcaps',
+        title: 'Nuevo pago · Santamaria',
       },
       {
         path: 'payments/:uuid/edit',
         component: DashboardPaymentForm,
-        title: 'Editar pago · Santamaria Bootcaps',
+        title: 'Editar pago · Santamaria',
       },
       { path: 'payments/nuevo', redirectTo: 'payments/new', pathMatch: 'full' },
       { path: 'payments/:uuid/editar', redirectTo: 'payments/:uuid/edit' },
       {
         path: 'courses',
         component: DashboardCourses,
-        title: 'Cursos · Santamaria Bootcaps',
+        title: 'Cursos · Santamaria',
       },
       {
         path: 'courses/new',
         component: DashboardCourseForm,
-        title: 'Nuevo curso · Santamaria Bootcaps',
+        title: 'Nuevo curso · Santamaria',
       },
       {
         path: 'courses/:uuid/edit',
         component: DashboardCourseForm,
-        title: 'Editar curso · Santamaria Bootcaps',
+        title: 'Editar curso · Santamaria',
       },
       {
         path: 'calendar',
         component: DashboardCalendar,
-        title: 'Calendario · Santamaria Bootcaps',
+        title: 'Calendario · Santamaria',
       },
       { path: 'calendario', redirectTo: 'calendar', pathMatch: 'full' },
       {
         path: 'calculator',
         component: DashboardCalculator,
-        title: 'Calculadora · Santamaria Bootcaps',
+        title: 'Calculadora · Santamaria',
       },
       { path: 'calculadora', redirectTo: 'calculator', pathMatch: 'full' },
       { path: 'courses/nuevo', redirectTo: 'courses/new', pathMatch: 'full' },
@@ -91,7 +110,7 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: 'leads',
         component: DashboardLeads,
-        title: 'Leads · Santamaria Bootcaps',
+        title: 'Leads · Santamaria',
       },
       {
         path: 'messages',
@@ -101,17 +120,17 @@ export const DASHBOARD_ROUTES: Routes = [
       {
         path: 'holidays',
         component: DashboardHolidays,
-        title: 'Festivos · Santamaria Bootcaps',
+        title: 'Festivos · Santamaria',
       },
       {
         path: 'holidays/new',
         component: DashboardHolidayForm,
-        title: 'Nuevo festivo · Santamaria Bootcaps',
+        title: 'Nuevo festivo · Santamaria',
       },
       {
         path: 'holidays/:uuid/edit',
         component: DashboardHolidayForm,
-        title: 'Editar festivo · Santamaria Bootcaps',
+        title: 'Editar festivo · Santamaria',
       },
       { path: 'holidays/nuevo', redirectTo: 'holidays/new', pathMatch: 'full' },
       { path: 'holidays/:uuid/editar', redirectTo: 'holidays/:uuid/edit' },

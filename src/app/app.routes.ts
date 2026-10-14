@@ -36,11 +36,20 @@ export const routes: Routes = [
       import('@features/dashboard/dashboard.routes').then((m) => m.DASHBOARD_ROUTES),
   },
   {
-    path: 'calendario',
+    path: 'student',
     canActivate: [studentGuard],
     loadChildren: () => import('@features/student/student.routes').then((m) => m.STUDENT_ROUTES),
   },
-  { path: 'alumno', redirectTo: 'calendario', pathMatch: 'full' },
-  { path: 'alumno/calendario', redirectTo: 'calendario', pathMatch: 'full' },
+  {
+    path: 'alumno',
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: '/student' },
+      { path: 'calendar', redirectTo: '/student/calendar' },
+      { path: 'calendario', redirectTo: '/student/calendar' },
+      { path: 'classes', redirectTo: '/student/classes' },
+      { path: 'clases', redirectTo: '/student/classes' },
+    ],
+  },
+  { path: 'calendario', redirectTo: '/student/calendar', pathMatch: 'full' },
   { path: '**', redirectTo: '' },
 ];

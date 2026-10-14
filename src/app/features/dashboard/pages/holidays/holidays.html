@@ -95,10 +95,6 @@
     </div>
   }
 
-  @if (successMessage()) {
-    <div class="holidays-success" role="status">{{ successMessage() }}</div>
-  }
-
   @if (loading()) {
     <div class="holidays-loader" aria-busy="true" aria-live="polite">
       <div class="holidays-loader-line" aria-hidden="true"></div>

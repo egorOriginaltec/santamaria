@@ -2,7 +2,7 @@
   <header class="courses-header">
     <div class="courses-heading">
       <div>
-        <p class="courses-eyebrow">Gestión</p>
+        <p class="courses-eyebrow">Academia</p>
         <h2 class="courses-title">Cursos</h2>
         <p class="courses-subtitle">
           @if (loading() && initialLoad()) {
@@ -85,10 +85,6 @@
     </div>
   }
 
-  @if (successMessage()) {
-    <div class="courses-success" role="status">{{ successMessage() }}</div>
-  }
-
   @if (loading()) {
     <div class="courses-loader" aria-busy="true" aria-live="polite">
       <div class="courses-loader-line" aria-hidden="true"></div>
@@ -124,6 +120,7 @@
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Curso</th>
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Fechas</th>
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Horario</th>
+              <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Precio</th>
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Estado</th>
               <th class="pb-3"></th>
             </tr>
@@ -150,7 +147,18 @@
                   data-label="Horario"
                   class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
                 >
-                  <span class="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[11px] font-bold whitespace-nowrap text-[#4338ca] max-[720px]:whitespace-normal">{{ course.schedule }}</span>
+                  <span class="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[11px] font-bold whitespace-nowrap text-[#4338ca] max-[720px]:whitespace-normal">
+                    @if (course.weekdays_label) {
+                      {{ course.weekdays_label }} ·
+                    }
+                    {{ course.schedule }}
+                  </span>
+                </td>
+                <td
+                  data-label="Precio"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                >
+                  {{ formatPrice(course.price) }}
                 </td>
                 <td
                   data-label="Estado"

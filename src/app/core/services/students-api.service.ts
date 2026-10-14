@@ -16,6 +16,7 @@ export interface StudentDto {
   readonly email: string;
   readonly phone: string;
   readonly is_active: boolean;
+  readonly has_subscription: boolean;
   readonly courses: readonly StudentCourseDto[];
   readonly created_at: string | null;
   readonly updated_at: string | null;

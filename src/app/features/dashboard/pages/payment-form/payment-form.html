@@ -99,15 +99,6 @@
         </label>
 
         <label class="payment-field">
-          <span class="payment-field-label">Estado</span>
-          <select class="payment-input" formControlName="status">
-            @for (status of statuses; track status) {
-              <option [value]="status">{{ statusLabel(status) }}</option>
-            }
-          </select>
-        </label>
-
-        <label class="payment-field">
           <span class="payment-field-label">Método</span>
           <select class="payment-input" formControlName="method">
             @for (method of methods; track method) {
@@ -125,7 +116,7 @@
             [class.is-invalid]="fieldInvalid('paid_on')"
           />
           @if (fieldInvalid('paid_on')) {
-            <span class="payment-field-error">Si está pagado, indica la fecha.</span>
+            <span class="payment-field-error">Indica la fecha del pago.</span>
           }
         </label>
 

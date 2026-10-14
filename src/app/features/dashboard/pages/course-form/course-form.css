@@ -25,7 +25,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
 }
 
 .course-form-title {
@@ -44,7 +44,7 @@
 .course-form-back {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
   text-decoration: none;
 }
 
@@ -67,7 +67,7 @@
   width: 35%;
   height: 100%;
   border-radius: inherit;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   animation: course-form-progress 1s ease-in-out infinite;
 }
 
@@ -165,6 +165,54 @@
   grid-column: 1 / -1;
 }
 
+.course-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.course-weekdays.is-invalid .course-weekday {
+  border-color: #fca5a5;
+}
+
+.course-weekday {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  min-height: 3.35rem;
+  border: 1px solid #e4e4ec;
+  border-radius: 0.85rem;
+  background: #fafafc;
+  padding: 0.4rem 0.2rem;
+  color: #6b6b80;
+}
+
+.course-weekday-short {
+  font-size: 0.875rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.course-weekday-name {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.course-weekday.is-selected {
+  border-color: transparent;
+  background: var(--color-brand, #e11d48);
+  color: #fff;
+}
+
+.course-weekday:hover:not(.is-selected) {
+  border-color: rgba(225, 29, 72, 0.35);
+  background: #fff;
+}
+
 .course-field--check {
   flex-direction: row;
   align-items: center;
@@ -179,7 +227,7 @@
   cursor: pointer;
   width: 1rem;
   height: 1rem;
-  accent-color: var(--color-brand, #5751e1);
+  accent-color: var(--color-brand, #e7353d);
 }
 
 .course-field-label {
@@ -207,9 +255,9 @@
 
 .course-input:focus {
   outline: none;
-  border-color: rgba(87, 81, 225, 0.45);
+  border-color: rgba(231, 53, 61, 0.45);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .course-input.is-invalid {
@@ -264,16 +312,16 @@
 
 .course-btn--primary {
   border-color: transparent;
-  background: var(--color-brand, #5751e1);
+  background: var(--color-brand, #e7353d);
   color: #fff;
 }
 
 .course-btn--primary:hover:not(:disabled) {
-  background: var(--color-brand-hover, #4a44c9);
+  background: var(--color-brand-hover, #cf2932);
 }
 
 .course-btn--ghost:hover {
-  background: var(--color-brand-soft, #f0effc);
+  background: var(--color-brand-soft, #fdeeee);
 }
 
 .course-btn:disabled {
@@ -309,6 +357,10 @@
   .course-form-grid,
   .course-form-skeleton {
     grid-template-columns: 1fr;
+  }
+
+  .course-weekdays {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .course-input,

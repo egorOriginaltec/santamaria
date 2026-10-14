@@ -1,7 +1,7 @@
 <section class="course-form-card">
   <header class="course-form-header">
     <div>
-      <p class="course-form-eyebrow">Gestión · Cursos</p>
+      <p class="course-form-eyebrow">Academia · Cursos</p>
       <h2 class="course-form-title">
         {{ isEdit() ? 'Editar curso' : 'Nuevo curso' }}
       </h2>
@@ -9,7 +9,7 @@
         @if (loading()) {
           Cargando…
         } @else {
-          Título, fechas del programa y horario diario (ej. 09:00–13:00).
+          Título, fechas, días, horario y precio mensual (49 € o 59 €).
         }
       </p>
     </div>
@@ -55,7 +55,7 @@
             class="course-input"
             formControlName="title"
             maxlength="150"
-            placeholder="Ej. Bootcamp Full Stack"
+            placeholder="Ej. Programación con Scratch"
             [class.is-invalid]="fieldInvalid('title')"
           />
           @if (fieldInvalid('title')) {
@@ -101,6 +101,33 @@
           }
         </label>
 
+        <div class="course-field course-field--full">
+          <span class="course-field-label">Días de clase</span>
+          <div
+            class="course-weekdays"
+            role="group"
+            aria-label="Días de lunes a domingo"
+            [class.is-invalid]="hasWeekdaysError()"
+          >
+            @for (day of weekdayOptions; track day.id) {
+              <button
+                type="button"
+                class="course-weekday"
+                [class.is-selected]="isWeekdaySelected(day.id)"
+                [attr.aria-pressed]="isWeekdaySelected(day.id)"
+                [attr.title]="day.name"
+                (click)="toggleWeekday(day.id)"
+              >
+                <span class="course-weekday-short">{{ day.short }}</span>
+                <span class="course-weekday-name">{{ day.name }}</span>
+              </button>
+            }
+          </div>
+          @if (hasWeekdaysError()) {
+            <span class="course-field-error">Selecciona al menos un día de lunes a domingo.</span>
+          }
+        </div>
+
         <label class="course-field">
           <span class="course-field-label">Horario desde</span>
           <input
@@ -121,6 +148,23 @@
           />
           @if (hasScheduleRangeError()) {
             <span class="course-field-error">La hora fin debe ser posterior a la de inicio.</span>
+          }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Precio (€/mes)</span>
+          <input
+            type="number"
+            class="course-input"
+            formControlName="price"
+            min="0.01"
+            max="999.99"
+            step="0.01"
+            placeholder="49"
+            [class.is-invalid]="fieldInvalid('price')"
+          />
+          @if (fieldInvalid('price')) {
+            <span class="course-field-error">Indica el precio mensual (ej. 49 o 59).</span>
           }
         </label>
 

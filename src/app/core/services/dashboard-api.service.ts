@@ -22,7 +22,7 @@ export interface DashboardRecentPayment {
   readonly email: string | null;
   readonly course: string | null;
   readonly amount: number;
-  readonly status: 'pending' | 'paid' | 'refunded';
+  readonly status: 'paid';
   readonly paid_on: string;
 }
 
@@ -33,6 +33,26 @@ export interface DashboardRecentStudent {
   readonly courses: readonly string[];
   readonly created_at: string | null;
   readonly paid: number;
+}
+
+export interface DashboardSubscriptionItem {
+  readonly uuid: string;
+  readonly email: string | null;
+  readonly monthly_amount: number;
+  readonly due: number;
+  readonly months: number;
+  readonly status: 'active' | 'paused' | 'cancelled';
+  readonly starts_on: string;
+}
+
+export interface DashboardSubscriptions {
+  readonly count: number;
+  readonly months: number;
+  readonly due: number;
+  readonly paid: number;
+  readonly outstanding: number;
+  readonly coverage: number;
+  readonly items: readonly DashboardSubscriptionItem[];
 }
 
 export interface DashboardSummary {
@@ -57,6 +77,7 @@ export interface DashboardSummary {
     readonly previous_paid: number | null;
     readonly delta: number | null;
   };
+  readonly subscriptions: DashboardSubscriptions;
   readonly students: {
     readonly new: number;
     readonly active: number;

@@ -1,69 +1,118 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { AuthApiService } from '@core/services/auth-api.service';
+import { CourseDto, CoursesApiService } from '@core/services/courses-api.service';
+import { finalize } from 'rxjs';
 
 const VAT_RATE = 0.21;
 const WITHHOLDING_RATE = 0.15;
+const MAX_STUDENTS = 20;
 
+export interface CalculatorLine {
+  readonly course: CourseDto;
+  readonly students: number;
+  readonly subtotal: number;
+}
 
 @Component({
   selector: 'app-dashboard-calculator',
+  imports: [RouterLink],
   templateUrl: './calculator.html',
   styleUrl: './calculator.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardCalculator {
-  readonly months = signal(4);
-  readonly students = signal(10);
-  readonly price = signal(1350);
-  readonly expenses = signal(600);
-  readonly marketing = signal(200);
+export class DashboardCalculator implements OnInit {
+  private readonly coursesApi = inject(CoursesApiService);
+  private readonly authApi = inject(AuthApiService);
 
   readonly vatRate = VAT_RATE;
   readonly withholdingRate = WITHHOLDING_RATE;
+  readonly maxStudents = MAX_STUDENTS;
+  readonly skeletonRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
 
-  readonly revenue = computed(() => this.price() * this.students());
-  readonly vat = computed(() => this.revenue() * VAT_RATE);
-  readonly withholding = computed(() => this.revenue() * WITHHOLDING_RATE);
-  readonly net = computed(() => this.revenue() - this.withholding());
-  readonly expenseTotal = computed(() => this.expenses() * this.months());
-  readonly marketingTotal = computed(() => this.marketing() * this.months());
-  readonly costs = computed(() => this.expenseTotal() + this.marketingTotal());
-  readonly profit = computed(() => this.net() - this.costs());
-  readonly profitable = computed(() => this.profit() >= 0);
+  readonly courses = signal<readonly CourseDto[]>([]);
+  readonly counts = signal<Readonly<Record<string, number>>>({});
+  readonly loading = signal(true);
+  readonly initialLoad = signal(true);
+  readonly errorMessage = signal<string | null>(null);
 
-  readonly minPrice = computed(() => {
-    const students = this.students();
-    if (students <= 0) {
-      return 0;
-    }
-    return this.costs() / ((1 - WITHHOLDING_RATE) * students);
+  readonly lines = computed<readonly CalculatorLine[]>(() => {
+    const counts = this.counts();
+
+    return this.courses().map((course) => {
+      const students = counts[course.uuid] ?? 0;
+
+      return {
+        course,
+        students,
+        subtotal: this.round(students * course.price),
+      };
+    });
   });
 
-  readonly minStudents = computed(() => {
-    const kept = this.price() * (1 - WITHHOLDING_RATE);
-    if (kept <= 0) {
-      return 0;
-    }
-    return Math.ceil(this.costs() / kept);
-  });
+  readonly studentTotal = computed(() =>
+    this.lines().reduce((sum, line) => sum + line.students, 0),
+  );
 
-  setMonths(value: string): void {
-    this.months.set(this.clamp(value, 1, 12));
+  readonly gross = computed(() =>
+    this.round(this.lines().reduce((sum, line) => sum + line.subtotal, 0)),
+  );
+
+  readonly vat = computed(() => this.round(this.gross() * VAT_RATE));
+  readonly withholding = computed(() => this.round(this.gross() * WITHHOLDING_RATE));
+  readonly net = computed(() => this.round(this.gross() - this.vat() - this.withholding()));
+
+  ngOnInit(): void {
+    this.authApi.me().subscribe((user) => {
+      if (!user) {
+        this.loading.set(false);
+        this.initialLoad.set(false);
+        this.errorMessage.set('Inicia sesión como administrador para usar la calculadora.');
+        return;
+      }
+
+      this.loading.set(true);
+      this.errorMessage.set(null);
+
+      this.coursesApi
+        .list({ is_active: true, per_page: 50, sort: 'title' })
+        .pipe(
+          finalize(() => {
+            this.loading.set(false);
+            this.initialLoad.set(false);
+          }),
+        )
+        .subscribe({
+          next: (response) => {
+            this.courses.set(response.data);
+            this.counts.set(
+              Object.fromEntries(response.data.map((course) => [course.uuid, 0])),
+            );
+          },
+          error: (err: { status?: number }) => {
+            this.courses.set([]);
+            this.errorMessage.set(
+              err.status === 401 || err.status === 403
+                ? 'No tienes permiso para ver los cursos.'
+                : 'No se pudieron cargar los cursos.',
+            );
+          },
+        });
+    });
   }
 
-  setStudents(value: string): void {
-    this.students.set(this.clamp(value, 1, 40));
-  }
-
-  setPrice(value: string): void {
-    this.price.set(this.clamp(value, 0, 20000));
-  }
-
-  setExpenses(value: string): void {
-    this.expenses.set(this.clamp(value, 0, 20000));
-  }
-
-  setMarketing(value: string): void {
-    this.marketing.set(this.clamp(value, 0, 20000));
+  setStudents(uuid: string, value: string): void {
+    this.counts.update((current) => ({
+      ...current,
+      [uuid]: this.clamp(value),
+    }));
   }
 
   money(value: number): string {
@@ -75,11 +124,21 @@ export class DashboardCalculator {
     }).format(value);
   }
 
-  private clamp(value: string, min: number, max: number): number {
+  percent(rate: number): string {
+    return `${Math.round(rate * 100)} %`;
+  }
+
+  private clamp(value: string): number {
     const parsed = Number(value);
+
     if (!Number.isFinite(parsed)) {
-      return min;
+      return 0;
     }
-    return Math.min(max, Math.max(min, parsed));
+
+    return Math.min(MAX_STUDENTS, Math.max(0, Math.round(parsed)));
+  }
+
+  private round(value: number): number {
+    return Math.round(value * 100) / 100;
   }
 }

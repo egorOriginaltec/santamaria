@@ -85,13 +85,23 @@
 }
 
 .dashboard-nav-group {
-  margin: 1.25rem 0 0.5rem;
-  padding: 0 0.75rem;
+  margin: 1.15rem 0 0.45rem;
+  padding: 0.7rem 0.75rem 0;
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.35);
+}
+
+.dashboard-nav-group:first-child {
+  margin-top: 0.15rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.dashboard-nav-group:not(:first-child) {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .dashboard-nav-link {
@@ -116,7 +126,7 @@
 }
 
 .dashboard-nav-link.is-active {
-  background: rgba(87, 81, 225, 0.28);
+  background: rgba(231, 53, 61, 0.28);
   color: #fff;
 }
 

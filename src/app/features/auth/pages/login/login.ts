@@ -83,7 +83,7 @@ export class Login {
           const destination = roles.includes('administrator')
             ? '/dashboard'
             : roles.includes('student')
-              ? '/calendario'
+              ? '/student'
               : '/login';
 
           void this.router.navigateByUrl(destination);

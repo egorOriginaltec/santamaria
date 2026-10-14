@@ -1,0 +1,96 @@
+<section class="cls-page">
+  <header class="cls-hero student-reveal">
+    <p class="cls-kicker">Clases</p>
+    <h1 class="cls-title">Entra y descarga los apuntes</h1>
+    <p class="cls-lead">
+      Cada tarjeta es una clase. Si hay Meet, el botón rojo te lleva a la videollamada. Si hay apuntes, salen debajo.
+    </p>
+  </header>
+
+  @if (loading()) {
+    <div class="student-loader" aria-busy="true" aria-live="polite">
+      <div class="student-loader-line" aria-hidden="true"></div>
+      @for (row of skeletonRows; track row) {
+        <div class="cls-sk-card">
+          <span class="student-sk cls-sk-kicker"></span>
+          <span class="student-sk cls-sk-title"></span>
+          <span class="student-sk cls-sk-btn"></span>
+        </div>
+      }
+    </div>
+  } @else if (errorMessage()) {
+    <p class="cls-alert" role="alert">{{ errorMessage() }}</p>
+  } @else {
+    @if (downloadError()) {
+      <p class="cls-alert" role="alert">{{ downloadError() }}</p>
+    }
+
+    @if (upcoming().length > 0) {
+      <div class="cls-list student-reveal student-reveal-2">
+        @for (item of upcoming(); track occurrenceKey(item.course.uuid, item.iso)) {
+          <article class="cls-card" [class.is-today]="item.iso === todayIso">
+            <p class="cls-when">
+              {{ item.iso === todayIso ? 'Hoy' : formatNice(item.iso) }}
+              · {{ item.course.schedule_start }}–{{ item.course.schedule_end }}
+            </p>
+            <h2 class="cls-name">{{ item.course.title }}</h2>
+            @if (item.session?.meet_url; as url) {
+              <a class="cls-meet" [href]="url" target="_blank" rel="noopener noreferrer">Entrar a Meet</a>
+            } @else {
+              <p class="cls-wait">El enlace se publica el día de clase. Vuelve a esta página cuando toque.</p>
+            }
+            @if (item.session; as session) {
+              @if (session.materials.length > 0) {
+                <ul class="cls-files">
+                  @for (file of session.materials; track file.uuid) {
+                    <li>
+                      <span>{{ file.name }}</span>
+                      <button type="button" (click)="download(file)">Descargar</button>
+                    </li>
+                  }
+                </ul>
+              }
+            }
+          </article>
+        }
+      </div>
+    } @else if (!empty()) {
+      <div class="cls-empty student-reveal">
+        <p>No quedan clases en el calendario de este curso.</p>
+        <a routerLink="/student/calendar">Mirar el calendario</a>
+      </div>
+    }
+
+    @if (recent().length > 0) {
+      <section class="cls-past student-reveal student-reveal-3">
+        <h2 class="cls-section">Clases anteriores</h2>
+        <ul class="cls-past-list">
+          @for (item of recent(); track occurrenceKey(item.course.uuid, item.iso)) {
+            <li>
+              <div>
+                <p class="cls-past-name">{{ item.course.title }}</p>
+                <p class="cls-past-meta">{{ formatNice(item.iso) }}</p>
+              </div>
+              @if (item.session; as session) {
+                @if (session.materials.length > 0) {
+                  <div class="cls-past-files">
+                    @for (file of session.materials; track file.uuid) {
+                      <button type="button" (click)="download(file)">{{ file.name }}</button>
+                    }
+                  </div>
+                }
+              }
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    @if (empty()) {
+      <div class="cls-empty student-reveal">
+        <p>Cuando te matriculen, aquí saldrán tus clases con el botón de Meet.</p>
+        <a routerLink="/student">Volver al inicio</a>
+      </div>
+    }
+  }
+</section>

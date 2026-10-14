@@ -59,8 +59,8 @@
       >
         <defs>
           <linearGradient id="revenueFill" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#5751e1" stop-opacity="0.22" />
-            <stop offset="100%" stop-color="#5751e1" stop-opacity="0" />
+            <stop offset="0%" stop-color="#e7353d" stop-opacity="0.22" />
+            <stop offset="100%" stop-color="#e7353d" stop-opacity="0" />
           </linearGradient>
         </defs>
 
@@ -77,11 +77,11 @@
 
         <path [attr.d]="previousPath" fill="none" stroke="#c7c7d4" stroke-width="2.5" stroke-dasharray="5 5" />
         <path [attr.d]="currentArea" fill="url(#revenueFill)" />
-        <path [attr.d]="currentPath" fill="none" stroke="#5751e1" stroke-width="3" stroke-linecap="round" />
+        <path [attr.d]="currentPath" fill="none" stroke="#e7353d" stroke-width="3" stroke-linecap="round" />
 
         @if (highlight) {
-          <circle [attr.cx]="highlight.x" [attr.cy]="highlight.y" r="5" fill="#5751e1" />
-          <circle [attr.cx]="highlight.x" [attr.cy]="highlight.y" r="9" fill="#5751e1" fill-opacity="0.18" />
+          <circle [attr.cx]="highlight.x" [attr.cy]="highlight.y" r="5" fill="#e7353d" />
+          <circle [attr.cx]="highlight.x" [attr.cy]="highlight.y" r="9" fill="#e7353d" fill-opacity="0.18" />
         }
       </svg>
 

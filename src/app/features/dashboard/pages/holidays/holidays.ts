@@ -51,7 +51,6 @@ export class DashboardHolidays implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -179,7 +178,6 @@ export class DashboardHolidays implements OnInit {
 
     this.holidaysApi.destroy(holiday.uuid).subscribe({
       next: () => {
-        this.successMessage.set('Festivo eliminado.');
         const nextPage =
           this.holidays().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1

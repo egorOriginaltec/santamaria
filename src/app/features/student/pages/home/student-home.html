@@ -1,0 +1,99 @@
+<section class="student-home">
+  @if (loading()) {
+    <div class="student-loader" aria-busy="true" aria-live="polite">
+      <div class="student-loader-line" aria-hidden="true"></div>
+      <div class="home-sk-hero">
+        <span class="student-sk home-sk-kicker"></span>
+        <span class="student-sk home-sk-title"></span>
+        <span class="student-sk home-sk-copy"></span>
+      </div>
+      <div class="home-actions">
+        <div class="home-sk-card"><span class="student-sk home-sk-icon"></span><span class="student-sk home-sk-line"></span><span class="student-sk home-sk-line home-sk-line--short"></span></div>
+        <div class="home-sk-card"><span class="student-sk home-sk-icon"></span><span class="student-sk home-sk-line"></span><span class="student-sk home-sk-line home-sk-line--short"></span></div>
+      </div>
+    </div>
+  } @else if (errorMessage()) {
+    <p class="home-alert" role="alert">{{ errorMessage() }}</p>
+  } @else {
+    <header class="home-hero student-reveal">
+      <p class="home-kicker">Zona de alumnos</p>
+      <h1 class="home-title">¡Hola, {{ firstName() }}!</h1>
+      <p class="home-lead">
+        Esta es tu página en Santamaria. Aquí no hay números ni paneles de administración:
+        solo dos cosas claras, para entrar a extraescolares sin lío.
+      </p>
+    </header>
+
+    @if (nextClass(); as next) {
+      <article class="home-next student-reveal student-reveal-2" [class.is-today]="next.iso === todayIso">
+        <p class="home-next-kicker">{{ next.iso === todayIso ? 'Hoy tienes clase' : 'Tu próxima clase' }}</p>
+        <h2 class="home-next-title">{{ next.course.title }}</h2>
+        <p class="home-next-meta">
+          {{ formatNice(next.iso) }} · {{ next.course.schedule_start }}–{{ next.course.schedule_end }}
+        </p>
+        <div class="home-next-actions">
+          @if (meetUrl(); as url) {
+            <a class="home-btn home-btn--white" [href]="url" target="_blank" rel="noopener noreferrer">
+              Entrar a Meet
+            </a>
+          } @else {
+            <p class="home-next-note">El enlace de Meet aparece aquí el día de clase, cuando el profesor lo publique.</p>
+          }
+          <a routerLink="/student/classes" class="home-btn home-btn--ghost">Ver mis clases</a>
+        </div>
+      </article>
+    }
+
+    <div class="home-actions student-reveal student-reveal-3">
+      <a routerLink="/student/calendar" class="home-card">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" stroke-width="1.7" />
+            <path d="M8 3.5v3M16 3.5v3M3.5 9.5h17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            <path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <h2 class="home-card-title">Calendario</h2>
+        <p class="home-card-text">
+          Mira el mes: los días en rojo son clase. Si hay fiesta, también se ve. Toca un día para leer qué toca.
+        </p>
+        <span class="home-card-cta">Abrir calendario</span>
+      </a>
+
+      <a routerLink="/student/classes" class="home-card home-card--accent">
+        <span class="home-card-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M4.5 7.5h10.5a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H4.5a2 2 0 0 1-2-2V9.5a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" />
+            <path d="M17 10.5 21 8v9l-4-2.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <h2 class="home-card-title">Mis clases</h2>
+        <p class="home-card-text">
+          Entra a la videollamada y descarga los apuntes. Un botón grande por clase, nada más.
+        </p>
+        <span class="home-card-cta">Ver clases</span>
+      </a>
+    </div>
+
+    @if (courses().length > 0) {
+      <section class="home-courses student-reveal student-reveal-3">
+        <h2 class="home-section-title">Tu grupo</h2>
+        <ul class="home-course-list">
+          @for (course of courses(); track course.uuid) {
+            <li class="home-course">
+              <p class="home-course-name">{{ course.title }}</p>
+              <p class="home-course-meta">
+                {{ course.weekdays_label || 'L–V' }} · {{ course.schedule_start }}–{{ course.schedule_end }}
+              </p>
+            </li>
+          }
+        </ul>
+      </section>
+    } @else {
+      <div class="home-empty student-reveal">
+        <p class="home-empty-title">Aún no tienes un grupo</p>
+        <p class="home-empty-text">Cuando te matriculen, aquí saldrá tu curso, el calendario y el botón de Meet.</p>
+      </div>
+    }
+  }
+</section>

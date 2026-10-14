@@ -51,7 +51,6 @@ export class DashboardCourses implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
-  readonly successMessage = signal<string | null>(null);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -151,7 +150,6 @@ export class DashboardCourses implements OnInit {
 
     this.coursesApi.destroy(course.uuid).subscribe({
       next: () => {
-        this.successMessage.set('Curso eliminado.');
         const nextPage =
           this.courses().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1
@@ -180,6 +178,13 @@ export class DashboardCourses implements OnInit {
       return;
     }
     this.reload(page);
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('es-ES', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(price) + '/mes';
   }
 
   sortLabel(sort: CourseSort): string {

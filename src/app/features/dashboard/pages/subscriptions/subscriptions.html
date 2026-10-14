@@ -1,0 +1,209 @@
+<section class="students-card">
+  <header class="students-header">
+    <div class="students-heading">
+      <div>
+        <p class="students-eyebrow">Gestión</p>
+        <h2 class="students-title">Suscripciones</h2>
+        <p class="students-subtitle">
+          @if (loading() && initialLoad()) {
+            Cargando…
+          } @else if (total() === 0) {
+            Sin resultados con estos filtros
+          } @else {
+            {{ from() }}–{{ to() }} de {{ total() }} suscripciones
+          }
+        </p>
+      </div>
+      <a routerLink="/dashboard/subscriptions/new" class="students-btn students-btn--primary">
+        Nueva suscripción
+      </a>
+    </div>
+
+    <div class="students-filters">
+      <label class="students-field students-field--search">
+        <span class="students-field-label">Buscar</span>
+        <input
+          type="search"
+          class="students-input"
+          placeholder="Email del alumno…"
+          [formControl]="searchControl"
+        />
+      </label>
+
+      <label class="students-field">
+        <span class="students-field-label">Estado</span>
+        <select class="students-input" [formControl]="statusControl">
+          <option value="">Todos</option>
+          <option value="active">Activas</option>
+          <option value="paused">Pausadas</option>
+          <option value="cancelled">Canceladas</option>
+        </select>
+      </label>
+
+      <label class="students-field">
+        <span class="students-field-label">Orden</span>
+        <select class="students-input" [formControl]="sortControl">
+          @for (sort of options().sorts; track sort) {
+            <option [value]="sort">{{ sortLabel(sort) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="students-field students-field--page">
+        <span class="students-field-label">Pág.</span>
+        <select class="students-input" [formControl]="perPageControl">
+          @for (size of options().per_page_options; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="students-btn students-btn--ghost"
+        (click)="reload(currentPage())"
+        [disabled]="loading()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (errorMessage()) {
+    <div class="students-alert" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <a routerLink="/login" class="students-alert-link">Ir a acceso</a>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="students-loader" aria-busy="true" aria-live="polite">
+      <div class="students-loader-line" aria-hidden="true"></div>
+      <div class="students-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="students-skeleton-row">
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-20"></span>
+            <span class="sk sk-line sk-w-20"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (subscriptions().length === 0 && !errorMessage()) {
+    <div class="students-empty students-reveal">
+      <p class="students-empty-title">No hay suscripciones con estos filtros</p>
+      <p class="students-empty-text">
+        Cada alumno puede tener una sola cuota mensual. Crea la primera o cambia los filtros.
+      </p>
+      <a routerLink="/dashboard/subscriptions/new" class="students-btn students-btn--primary">
+        Crear suscripción
+      </a>
+    </div>
+  } @else {
+    <div class="students-reveal">
+      <div class="overflow-x-auto max-[720px]:overflow-visible">
+        <table class="w-full min-w-160 border-collapse text-left text-[13px] max-[720px]:block max-[720px]:min-w-0">
+          <thead class="max-[720px]:hidden">
+            <tr>
+              <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Alumno</th>
+              <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Cuota</th>
+              <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Inicio</th>
+              <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Estado</th>
+              <th class="pb-3"></th>
+            </tr>
+          </thead>
+          <tbody class="max-[720px]:block">
+            @for (subscription of subscriptions(); track subscription.uuid) {
+              <tr class="max-[720px]:mb-3 max-[720px]:block max-[720px]:rounded-2xl max-[720px]:border max-[720px]:border-[#efeff3] max-[720px]:px-3.5 max-[720px]:pt-3 max-[720px]:pb-2 max-[720px]:last:mb-0">
+                <td
+                  data-label="Alumno"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:flex-col max-[720px]:items-start max-[720px]:gap-1 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:text-left max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                >
+                  <span class="block text-[13px] leading-snug font-semibold text-ink">
+                    {{ subscription.student.email || 'Sin email' }}
+                  </span>
+                </td>
+                <td
+                  data-label="Cuota"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-start max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:text-right max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                >
+                  {{ subscription.monthly_amount | currency: 'EUR' : 'symbol' : '1.0-2' }} / mes
+                </td>
+                <td
+                  data-label="Inicio"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                >
+                  {{ subscription.starts_on | date: 'd MMM yyyy' }}
+                </td>
+                <td
+                  data-label="Estado"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                >
+                  <span
+                    class="inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold data-[status=active]:bg-[#ecfdf3] data-[status=active]:text-[#15803d] data-[status=paused]:bg-[#fffbeb] data-[status=paused]:text-[#b45309] data-[status=cancelled]:bg-[#f4f4f8] data-[status=cancelled]:text-[#6b6b80]"
+                    [attr.data-status]="subscription.status"
+                  >
+                    {{ statusLabel(subscription.status) }}
+                  </span>
+                </td>
+                <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:gap-1.5 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:pt-2 max-[720px]:pb-1 max-[720px]:before:content-none">
+                  <div class="flex justify-end gap-1.5 max-[720px]:w-full">
+                    <a
+                      class="students-btn students-btn--small max-[720px]:flex-1"
+                      [routerLink]="['/dashboard/subscriptions', subscription.uuid, 'edit']"
+                    >
+                      Editar
+                    </a>
+                    <button
+                      type="button"
+                      class="students-btn students-btn--danger students-btn--small max-[720px]:flex-1"
+                      (click)="onDelete(subscription)"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="students-pager">
+        <p class="students-pager-meta">
+          Página {{ currentPage() }} de {{ lastPage() }}
+        </p>
+        <div class="students-pager-controls">
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() <= 1 || loading()"
+            (click)="goToPage(currentPage() - 1)"
+          >
+            Anterior
+          </button>
+          @for (page of pageNumbers(); track page) {
+            <button
+              type="button"
+              class="pager-btn"
+              [class.is-active]="page === currentPage()"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() >= lastPage() || loading()"
+            (click)="goToPage(currentPage() + 1)"
+          >
+            Siguiente
+          </button>
+        </div>
+      </footer>
+    </div>
+  }
+</section>
