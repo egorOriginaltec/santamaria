@@ -1,9 +1,9 @@
 :host {
   display: block;
   margin: 0;
-  --color-brand: #e03131;
-  --color-brand-hover: #c42828;
-  --color-brand-dark: #a61e1e;
+  --color-brand: #e7353d;
+  --color-brand-hover: #cf2932;
+  --color-brand-dark: #b91f2a;
   --color-brand-soft: #fdeeee;
   --color-brand-muted: #f8e4e4;
 }
@@ -168,7 +168,7 @@
 
 .hero-tag--brand {
   background: var(--color-brand-soft, #fdeeee);
-  color: var(--color-brand, #e03131);
+  color: var(--color-brand, #e7353d);
 }
 
 .hero-tag--yellow {
@@ -182,8 +182,8 @@
 }
 
 .hero-tag--violet {
-  background: #f3e8ff;
-  color: #7c3aed;
+  background: #fdeeee;
+  color: #b91f2a;
 }
 
 .hero-feature {

@@ -27,10 +27,6 @@ export {
   AUDIENCE_TITLE,
   AUDIENCE_INTRO,
   AUDIENCE_REASONS,
-  PRICING_TITLE,
-  PRICING_INTRO,
-  PRICING_PLANS,
-  PRICING_CTA_PATH,
   OUTCOMES_EYEBROW,
   OUTCOMES_TITLE,
   OUTCOMES_INTRO,
@@ -70,7 +66,6 @@ export type {
   CourseOverviewRow,
   ProjectSummary,
   AudienceReason,
-  PricingPlan,
   OutcomeItem,
   FaqItem,
 } from './models';

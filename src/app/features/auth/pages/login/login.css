@@ -39,9 +39,9 @@
 }
 
 .login-input:focus {
-  border-color: var(--color-brand, #5751e1);
+  border-color: var(--color-brand, #e7353d);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgb(231 53 61 / 14%);
 }
 
 .login-input.is-invalid {
@@ -49,7 +49,7 @@
 }
 
 .login-check {
-  accent-color: var(--color-brand, #5751e1);
+  accent-color: var(--color-brand, #e7353d);
 }
 
 @media (prefers-reduced-motion: reduce) {

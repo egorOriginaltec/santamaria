@@ -1,0 +1,85 @@
+<section
+  id="calendar"
+  class="relative overflow-hidden"
+  [class.calendar-section]="!plain()"
+>
+  @if (!plain()) {
+    <div class="calendar-glow absolute inset-0" aria-hidden="true"></div>
+  }
+
+  <div class="relative mx-auto w-full" [class.calendar-shell]="!plain()" appReveal>
+    @if (!plain()) {
+      <header class="mx-auto max-w-2xl text-center">
+        <p class="calendar-kicker">Horario semanal</p>
+        <h2 class="mt-3 text-balance text-[1.65rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
+          <span class="calendar-marker">Horario de clases</span>
+        </h2>
+        <p class="mx-auto mt-4 max-w-xl text-pretty text-sm leading-6 text-[#6b6b80] sm:text-base">
+          Clases online y en directo de lunes a viernes. Sábado y domingo, fiesta.
+        </p>
+      </header>
+    }
+
+    <div
+      class="calendar-table-wrap mx-auto overflow-x-auto rounded-2xl border bg-white"
+      [class.calendar-table-wrap--section]="!plain()"
+      [class.calendar-table-wrap--plain]="plain()"
+    >
+      <table class="calendar-table">
+        <caption class="sr-only">Horario semanal de clases, de lunes a domingo</caption>
+        <thead>
+          <tr>
+            <th scope="col">Hora</th>
+            @for (day of days; track day) {
+              <th scope="col">{{ day }}</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (slot of slots; track slot) {
+            <tr>
+              <th scope="row">
+                <strong>{{ slot }}</strong>
+              </th>
+              @for (day of days; track day) {
+                @if (isWeekend(day)) {
+                  @if (slot === '17:30') {
+                    <td class="calendar-weekend" rowspan="2">
+                      <div class="calendar-lesson" data-tone="muted">
+                        <strong>Fiesta</strong>
+                        <span>Sin clases</span>
+                      </div>
+                    </td>
+                  }
+                } @else {
+                  <td>
+                    @if (classAt(slot, day); as lesson) {
+                      <a class="calendar-lesson" [attr.data-tone]="lesson.tone" [routerLink]="['/cursos', lesson.slug]">
+                        <em>{{ lesson.hours }}</em>
+                        <strong>{{ lesson.title }}</strong>
+                        <span>{{ lesson.ages }} · {{ lesson.price }}</span>
+                      </a>
+                    }
+                  </td>
+                }
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (!plain()) {
+      <p class="mx-auto mt-5 max-w-3xl text-center text-xs leading-5 text-[#9694a4]">
+        Sábado y domingo no hay clase. Las vacaciones escolares también se respetan.
+      </p>
+      @if (showPageLink()) {
+        <p class="mt-4 text-center">
+          <a routerLink="/horarios" class="text-sm font-bold text-brand">
+            Horarios y precios <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      }
+    }
+  </div>
+</section>

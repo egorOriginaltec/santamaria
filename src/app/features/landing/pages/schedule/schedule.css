@@ -1,0 +1,29 @@
+:host {
+  display: block;
+}
+
+.schedule-page {
+  --color-brand: #e7353d;
+}
+
+.schedule-section {
+  background: #fff;
+  color: var(--color-ink, #161439);
+}
+
+.schedule-glow {
+  background:
+    radial-gradient(ellipse at 30% 0%, rgb(231 53 61 / 6%), transparent 55%),
+    radial-gradient(ellipse at 90% 80%, rgb(255 194 36 / 8%), transparent 45%);
+}
+
+.schedule-eyebrow {
+  color: #8a8a9a;
+}
+
+.schedule-marker {
+  padding-inline: 0.08em;
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

@@ -4,7 +4,7 @@
       <section class="course-hero relative">
         <div class="course-grid absolute inset-0" aria-hidden="true"></div>
         <div class="relative mx-auto w-full max-w-[1240px] px-4 pt-7 pb-12 sm:px-6 sm:pt-8 sm:pb-16">
-          <nav class="flex flex-wrap items-center gap-2 text-xs font-medium text-[#77758c]" aria-label="Migas de pan">
+          <nav class="course-hero-breadcrumb flex flex-wrap items-center gap-2 text-xs font-medium text-[#77758c]" aria-label="Migas de pan">
             <a routerLink="/" class="transition-colors hover:text-brand">Inicio</a>
             <span aria-hidden="true">/</span>
             <a routerLink="/" fragment="program" class="transition-colors hover:text-brand">Cursos</a>
@@ -13,7 +13,7 @@
           </nav>
 
           <div class="mt-8 grid items-center gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-16">
-            <div class="max-w-3xl">
+            <div class="course-hero-copy max-w-3xl">
               <span class="inline-flex items-center gap-2 rounded-full border border-brand/15 bg-white px-3.5 py-2 text-xs font-bold text-brand shadow-sm">
                 <span class="size-2 rounded-full bg-[#22b8a7]"></span>
                 Para {{ course.ages }} · {{ content.category }}
@@ -25,10 +25,14 @@
               <p class="mt-5 max-w-2xl text-pretty text-base leading-7 text-[#65647a] sm:text-lg sm:leading-8">
                 {{ course.lead }}
               </p>
-              <div class="mt-7">
+              <div class="mt-7 flex flex-wrap items-center gap-4">
                 <a href="#programa" class="course-button course-button--primary">
                   Ver el programa <span aria-hidden="true">↓</span>
                 </a>
+                <p class="course-hero-price">
+                  <strong>{{ content.price }}</strong>
+                  <span>/mes</span>
+                </p>
               </div>
             </div>
 
@@ -45,7 +49,7 @@
       </section>
 
       <section class="relative z-10 mx-auto -mt-7 w-full max-w-[1240px] px-4 sm:px-6">
-        <div class="course-summary">
+        <div class="course-summary course-summary--enter">
           <dl class="course-summary-highlights">
             <div><dt>Precio</dt><dd>{{ content.price }} <span>/mes</span></dd></div>
             <div><dt>Edad</dt><dd>{{ course.ages }}</dd></div>
@@ -156,7 +160,8 @@
           <p class="mx-auto mt-4 max-w-xl text-pretty text-sm leading-6 text-white/75 sm:text-base">
             {{ content.ctaText }}
           </p>
-          <a routerLink="/contact" class="mt-7 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#ffc224] px-7 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5">
+          <p class="mt-5 text-sm font-bold text-[#ffc224]">{{ content.price }}/mes · {{ content.schedule }}</p>
+          <a routerLink="/contact" class="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#ffc224] px-7 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5">
             Reservar primera clase gratis <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -170,8 +175,8 @@
         <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-ink sm:text-4xl"><span class="course-marker">{{ course.title }}</span></h1>
         <p class="mt-4 text-pretty leading-relaxed text-[#6b6b80]">{{ course.lead }}</p>
         <dl class="mt-8 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Con qué</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.tools }}</dd></div>
-          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Formato</dt><dd class="mt-1 text-sm font-semibold text-ink">Grupo semanal</dd></div>
+          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Precio</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.price }}/mes</dd></div>
+          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Horario</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.schedule }}</dd></div>
           <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Dónde</dt><dd class="mt-1 text-sm font-semibold text-ink">Online, en directo</dd></div>
         </dl>
         <h2 class="mt-10 text-lg font-bold text-ink">Qué se hace</h2>

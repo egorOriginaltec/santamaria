@@ -1,4 +1,4 @@
-<footer class="border-t border-[#ececf3] bg-white text-ink">
+<footer class="border-t border-white/10 bg-[#18191a] text-white">
   <div class="mx-auto w-full max-w-[1320px] px-4 pt-12 pb-8 sm:px-6 sm:pt-14 sm:pb-10 lg:pt-16">
     <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
       <div class="min-w-0 sm:col-span-2 lg:col-span-1">
@@ -22,25 +22,25 @@
             </svg>
           </span>
           <span class="flex flex-col leading-none">
-            <span class="text-[1.2rem] font-bold tracking-tight text-ink">Santamaria</span>
-            <span class="mt-1 text-[10px] font-medium tracking-[0.18em] text-[#b0b0bc] uppercase">
+            <span class="text-[1.2rem] font-bold tracking-tight text-white">Santamaria</span>
+            <span class="mt-1 text-[10px] font-medium tracking-[0.18em] text-white/45 uppercase">
               {{ tagline }}
             </span>
           </span>
         </a>
-        <p class="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-[#6b6b80]">
-          Bootcamp intensivo de programación, inteligencia artificial y automatización.
+        <p class="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-[#9a9aa3]">
+          Extraescolares de programación online, de los 7 a los 20 años.
         </p>
       </div>
 
       <div class="min-w-0">
-        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Explorar</p>
+        <p class="text-[11px] font-bold tracking-[0.16em] text-white/45 uppercase">Explorar</p>
         <nav class="mt-4 flex flex-col gap-1" aria-label="Footer navigation">
           @for (item of links; track item.label) {
             <a
               [routerLink]="item.path"
               [fragment]="item.fragment"
-              class="inline-flex min-h-10 items-center text-sm text-[#4a4a5c] transition-colors hover:text-brand"
+              class="inline-flex min-h-10 items-center text-sm text-white/70 transition-colors hover:text-brand"
             >
               {{ item.label }}
             </a>
@@ -49,22 +49,22 @@
       </div>
 
       <div class="min-w-0">
-        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Contacto</p>
+        <p class="text-[11px] font-bold tracking-[0.16em] text-white/45 uppercase">Contacto</p>
         <ul class="mt-4 flex flex-col gap-2">
           <li>
             <a
               [href]="'mailto:' + email"
-              class="inline-flex min-h-10 items-center text-sm text-[#4a4a5c] transition-colors hover:text-brand"
+              class="inline-flex min-h-10 items-center text-sm text-white/70 transition-colors hover:text-brand"
             >
               {{ email }}
             </a>
           </li>
-          <li class="text-sm leading-relaxed text-[#6b6b80]">España · Inicio 1 de diciembre</li>
+          <li class="text-sm leading-relaxed text-[#9a9aa3]">España · Inicio 1 de diciembre</li>
         </ul>
       </div>
 
       <div class="min-w-0">
-        <p class="text-[11px] font-bold tracking-[0.16em] text-[#b0b0bc] uppercase">Síguenos</p>
+        <p class="text-[11px] font-bold tracking-[0.16em] text-white/45 uppercase">Síguenos</p>
         <ul class="mt-4 flex items-center gap-3" aria-label="Social networks">
           @for (social of socialLinks; track social.label) {
             <li>
@@ -73,7 +73,7 @@
                 [attr.aria-label]="social.label"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="grid size-10 place-items-center rounded-full border border-[#ececf3] text-[#6b6b80] transition-colors hover:border-brand/30 hover:text-brand"
+                class="grid size-10 place-items-center rounded-full border border-white/12 text-white/70 transition-colors hover:border-brand/40 hover:text-brand"
               >
                 @switch (social.icon) {
                   @case ('instagram') {
@@ -109,12 +109,12 @@
     </div>
 
     <div
-      class="mt-10 flex flex-col gap-3 border-t border-[#ececf3] pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between"
+      class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between"
     >
-      <p class="text-xs text-[#b0b0bc]">
+      <p class="text-xs text-white/40">
         © {{ year }} {{ fullName }}. Todos los derechos reservados.
       </p>
-      <p class="text-xs text-[#b0b0bc]">Programación · IA · Automatización</p>
+      <p class="text-xs text-white/40">Programación · extraescolares · online</p>
     </div>
   </div>
 </footer>

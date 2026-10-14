@@ -75,7 +75,7 @@ export class ContactForm {
   private readonly fb = inject(FormBuilder);
   private readonly leadsApi = inject(LeadsApiService);
 
-  readonly theme = input<ContactFormTheme>('dark');
+  readonly theme = input<ContactFormTheme>('light');
   readonly source = input('website');
 
   readonly eyebrow = CONTACT_FORM_EYEBROW;

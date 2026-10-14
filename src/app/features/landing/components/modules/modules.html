@@ -1,6 +1,6 @@
-<section id="program" class="relative overflow-hidden bg-white">
+<section id="program" class="relative scroll-mt-[calc(var(--site-header-height)+0.75rem)] overflow-hidden bg-white">
   <div
-    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_0%,rgba(87,81,225,0.05),transparent_55%),radial-gradient(ellipse_at_15%_60%,rgba(255,194,36,0.04),transparent_45%)]"
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_0%,rgba(231,53,61,0.05),transparent_55%),radial-gradient(ellipse_at_15%_60%,rgba(255,194,36,0.04),transparent_45%)]"
     aria-hidden="true"
   ></div>
 
@@ -31,8 +31,11 @@
           <div class="flex flex-1 flex-col px-4 py-4 sm:px-5">
             <span class="text-xs font-bold tracking-[0.08em] text-brand tabular-nums">{{ course.id }}</span>
             <h3 class="mt-1 text-pretty text-[15px] leading-snug font-semibold text-ink">{{ course.title }}</h3>
-            <p class="mt-0.5 text-sm text-[#6b6b80]">{{ course.ages }}</p>
-            <a class="course-more" [routerLink]="['/cursos', course.slug]">Ver más</a>
+            <p class="mt-0.5 text-sm text-[#6b6b80]">{{ course.ages }} · {{ course.schedule }}</p>
+            <div class="course-card-footer">
+              <p class="course-card-price">{{ course.price }}<span>/mes</span></p>
+              <a class="course-more" [routerLink]="['/cursos', course.slug]">Ver más</a>
+            </div>
           </div>
         </article>
       }

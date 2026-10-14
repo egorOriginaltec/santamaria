@@ -26,6 +26,7 @@ export const routes: Routes = [
       // Legacy Spanish paths
       { path: 'contacto', redirectTo: 'contact', pathMatch: 'full' },
       { path: 'acceso', redirectTo: 'login', pathMatch: 'full' },
+      { path: 'horario', redirectTo: 'horarios', pathMatch: 'full' },
     ],
   },
   {

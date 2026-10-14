@@ -34,12 +34,6 @@ export {
   AUDIENCE_REASONS,
 } from './audience/audience.constants';
 export {
-  PRICING_TITLE,
-  PRICING_INTRO,
-  PRICING_PLANS,
-  PRICING_CTA_PATH,
-} from './pricing/pricing.constants';
-export {
   OUTCOMES_EYEBROW,
   OUTCOMES_TITLE,
   OUTCOMES_INTRO,

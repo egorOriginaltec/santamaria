@@ -33,9 +33,9 @@
 }
 
 .contact-input:focus {
-  border-color: var(--color-brand, #5751e1);
+  border-color: var(--color-brand, #e7353d);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(87, 81, 225, 0.12);
+  box-shadow: 0 0 0 3px rgb(231 53 61 / 14%);
 }
 
 .contact-input.is-invalid {
@@ -50,7 +50,7 @@
 
 :host.theme-dark .contact-glow {
   background:
-    radial-gradient(ellipse at 30% 0%, rgba(87, 81, 225, 0.14), transparent 55%),
+    radial-gradient(ellipse at 30% 0%, rgb(231 53 61 / 14%), transparent 55%),
     radial-gradient(ellipse at 90% 80%, rgba(255, 194, 36, 0.06), transparent 45%);
 }
 
@@ -79,8 +79,8 @@
 
 :host.theme-light .contact-glow {
   background:
-    radial-gradient(ellipse at 30% 0%, rgba(87, 81, 225, 0.05), transparent 55%),
-    radial-gradient(ellipse at 90% 80%, rgba(255, 194, 36, 0.04), transparent 45%);
+    radial-gradient(ellipse at 30% 0%, rgb(231 53 61 / 6%), transparent 55%),
+    radial-gradient(ellipse at 90% 80%, rgb(255 194 36 / 8%), transparent 45%);
 }
 
 :host.theme-light .contact-eyebrow {

@@ -27,7 +27,7 @@
 }
 
 .faq-trigger:focus-visible {
-  outline: 2px solid var(--color-brand, #5751e1);
+  outline: 2px solid var(--color-brand, #e7353d);
   outline-offset: -2px;
 }
 

@@ -1,8 +1,8 @@
 :host {
   display: block;
-  --color-brand: #e03131;
-  --color-brand-hover: #c42828;
-  --color-brand-dark: #a61e1e;
+  --color-brand: #e7353d;
+  --color-brand-hover: #cf2932;
+  --color-brand-dark: #b91f2a;
   --color-brand-soft: #fdeeee;
   --color-brand-muted: #f8e4e4;
 }
@@ -117,11 +117,11 @@
 }
 
 .header-menu-btn:focus-visible {
-  outline: 2px solid var(--color-brand, #e03131);
+  outline: 2px solid var(--color-brand, #e7353d);
   outline-offset: 2px;
 }
 
 .header-mobile-nav a:focus-visible {
-  outline: 2px solid var(--color-brand, #e03131);
+  outline: 2px solid var(--color-brand, #e7353d);
   outline-offset: -2px;
 }

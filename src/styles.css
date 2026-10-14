@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #5751e1;
-  --color-brand-hover: #4a44c9;
-  --color-brand-dark: #3f3a9f;
-  --color-brand-soft: #f0effc;
-  --color-brand-muted: #e8e7fa;
+  --color-brand: #e7353d;
+  --color-brand-hover: #cf2932;
+  --color-brand-dark: #b91f2a;
+  --color-brand-soft: #fdeeee;
+  --color-brand-muted: #f8e4e4;
   --color-ink: #161439;
   --color-topbar: #161613;
   --color-badge: #ffc224;
@@ -23,6 +23,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--site-header-height) + 0.75rem);
   }
 
   body {

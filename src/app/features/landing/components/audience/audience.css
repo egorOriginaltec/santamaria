@@ -1,5 +1,6 @@
 :host {
   display: block;
+  --color-brand: #e7353d;
 }
 
 .audience-marker {
@@ -11,5 +12,5 @@
 }
 
 .audience-num.is-highlight {
-  color: var(--color-brand, #5751e1);
+  color: var(--color-brand, #e7353d);
 }

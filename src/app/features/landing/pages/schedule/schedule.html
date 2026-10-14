@@ -1,0 +1,33 @@
+<article class="schedule-page">
+  <section class="schedule-section relative overflow-hidden">
+    <div class="schedule-glow pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+    <div class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+      <header class="max-w-2xl">
+        <p class="schedule-eyebrow mb-4 text-[11px] font-medium tracking-[0.18em] uppercase sm:text-xs md:text-[13px]">
+          Horarios
+        </p>
+        <h1 class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
+          <span class="schedule-marker">Horarios y precios</span>
+        </h1>
+        <p class="mt-4 max-w-xl text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
+          Ocho grupos online, de lunes a viernes. 1 hora: 49 € al mes. 1:30 h: 59 € al mes. Primera clase gratis.
+        </p>
+        <a
+          routerLink="/contact"
+          class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
+        >
+          Reservar primera clase gratis
+        </a>
+      </header>
+
+      <div class="mt-10">
+        <app-academic-calendar [plain]="true" />
+      </div>
+
+      <p class="mt-5 text-xs leading-5 text-[#9694a4]">
+        Sábado y domingo no hay clase. Las vacaciones escolares también se respetan.
+      </p>
+    </div>
+  </section>
+</article>

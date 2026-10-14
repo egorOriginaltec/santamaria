@@ -1,0 +1,221 @@
+:host {
+  display: block;
+}
+
+.calendar-section {
+  background: #f8f7f9;
+}
+
+.calendar-shell {
+  max-width: 1320px;
+  padding: 3.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .calendar-shell {
+    padding: 5rem 1.5rem;
+  }
+
+  .calendar-table-wrap--section {
+    margin-top: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .calendar-shell {
+    padding-block: 6rem;
+  }
+}
+
+.calendar-table-wrap--section {
+  margin-top: 2.25rem;
+  border-color: #e7e4e8;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 60px rgb(22 20 57 / 9%);
+}
+
+.calendar-table-wrap--plain {
+  border-color: #e4e4ec;
+  box-shadow: 0 10px 32px rgb(22 20 57 / 6%);
+}
+
+.calendar-glow {
+  background:
+    radial-gradient(circle at 88% 5%, rgb(231 53 61 / 9%), transparent 25rem),
+    radial-gradient(circle at 8% 85%, rgb(255 194 36 / 8%), transparent 22rem);
+}
+
+.calendar-kicker {
+  color: #e7353d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.calendar-marker {
+  padding-inline: 0.08em;
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.calendar-table {
+  width: 100%;
+  min-width: 80rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+}
+
+.calendar-table th,
+.calendar-table td {
+  border-right: 1px solid #efedf0;
+  border-bottom: 1px solid #efedf0;
+  padding: 0.85rem;
+  vertical-align: top;
+}
+
+.calendar-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 11%;
+  padding: 1rem 0.85rem;
+  color: #8d8a98;
+  background: #f4f2f5;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.calendar-table thead th:first-child,
+.calendar-table tbody th {
+  width: 7.5rem;
+  min-width: 7.5rem;
+  background: #faf9fb;
+}
+
+.calendar-table tbody th {
+  padding: 1rem 0.9rem;
+  color: #161439;
+  text-align: right;
+}
+
+.calendar-table tbody th strong {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.calendar-table tbody th span {
+  display: block;
+  margin-top: 0.15rem;
+  color: #9996a4;
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.calendar-table tbody td {
+  height: 7.25rem;
+  background: white;
+}
+
+.calendar-lesson {
+  display: flex;
+  height: 100%;
+  min-height: 4.6rem;
+  flex-direction: column;
+  justify-content: center;
+  border-radius: 1rem;
+  padding: 0.8rem 0.85rem;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+a.calendar-lesson:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgb(22 20 57 / 8%);
+}
+
+.calendar-lesson em {
+  margin-bottom: 0.28rem;
+  color: #9a97a6;
+  font-size: 0.62rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.calendar-lesson strong {
+  color: #161439;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.calendar-lesson span {
+  margin-top: 0.28rem;
+  color: #7a7788;
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.calendar-lesson[data-tone='red'] {
+  background: #fff1f2;
+  box-shadow: inset 3px 0 0 #e7353d;
+}
+
+.calendar-lesson[data-tone='yellow'] {
+  background: #fff8df;
+  box-shadow: inset 3px 0 0 #ffc224;
+}
+
+.calendar-lesson[data-tone='teal'] {
+  background: #eefaf7;
+  box-shadow: inset 3px 0 0 #1aa38f;
+}
+
+.calendar-lesson[data-tone='ink'] {
+  background: #f4f3fb;
+  box-shadow: inset 3px 0 0 #161439;
+}
+
+.calendar-weekend {
+  background: #f7f6f8;
+  vertical-align: middle;
+}
+
+.calendar-weekend .calendar-lesson {
+  min-height: 11rem;
+  align-items: center;
+  text-align: center;
+}
+
+.calendar-lesson[data-tone='muted'] {
+  background: #f1f0f3;
+  box-shadow: inset 3px 0 0 #cfcdd4;
+}
+
+.calendar-lesson[data-tone='muted'] strong {
+  color: #6f6c7c;
+}
+
+@media (min-width: 1280px) {
+  .calendar-table {
+    min-width: 0;
+  }
+}

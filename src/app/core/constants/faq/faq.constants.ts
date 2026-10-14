@@ -1,41 +1,53 @@
 import type { FaqItem } from '../../models/faq/faq.model';
 
-export const FAQ_EYEBROW = 'Dudas frecuentes';
+export const FAQ_EYEBROW = 'Dudas';
 
-export const FAQ_TITLE = 'Preguntas que suelen hacer';
+export const FAQ_TITLE = 'Preguntas frecuentes';
 
 export const FAQ_INTRO =
-  'Respuestas claras antes de decidir. Si necesitas más detalle, escríbenos.';
+  'Siete respuestas, las que suelen decidir. Si falta alguna, escríbenos.';
 
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     id: 1,
-    question: '¿Necesito saber programar antes de empezar?',
+    question: '¿Necesita conocimientos previos?',
     answer:
-      'No. El programa está pensado para empezar desde cero. Los primeros días construyes fundamentos y, desde el día 3, ya trabajas en tu primer proyecto real.',
+      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos Digitales (7–9), Scratch (8–10), Unity (10–14), Seguridad Digital (11–15), Apps o Python (12–16), IA (14–18) o Desarrollo Web (15–20). Si hay duda entre dos, lo vemos en la clase gratuita.',
   },
   {
     id: 2,
-    question: '¿Cuál es el horario y la duración?',
+    question: '¿Qué ordenador necesita?',
     answer:
-      'Son 16 semanas y 320 horas. Puedes elegir turno de mañana (09–13) o de tarde (16–20), con 10 plazas en cada uno.',
+      'Un portátil o un sobremesa (Windows, Mac o Linux), con teclado, cámara, micrófono y conexión estable. El móvil no sirve para programar. Scratch, Kodular y Primeros Pasos van con un portátil normal; Unity se defiende mejor con 8 GB de RAM. Los programas se indican al apuntarse: no hace falta un equipo de gaming.',
   },
   {
     id: 3,
-    question: '¿Qué saldré sabiendo hacer?',
+    question: '¿Cómo funciona la clase gratuita?',
     answer:
-      'Publicarás una web profesional, un mapa interactivo, un portal inmobiliario, una plataforma de reservas, apps con IA, una recepcionista virtual y un programa de gestión empresarial.',
+      'Es una clase real del grupo, online y en directo, sin pago ni compromiso. Se reserva por el formulario o por WhatsApp. Hay un máximo de 10 alumnos, así que depende de que quede plaza. Si después se apuntan, la cuota mensual empieza con la inscripción; la clase de prueba no se cobra.',
   },
   {
     id: 4,
-    question: '¿Cuándo empieza y cómo se paga?',
+    question: '¿Qué ocurre si falta a una clase?',
     answer:
-      'El inicio es el 1 de diciembre. Puedes pagar en 4 cuotas de 375 € (1.500 €) o en un pago único de 1.350 € y ahorrar 150 €.',
+      'La clase es en directo y no se recupera en privado ni se descuenta. Al volver, el profesor retoma lo justo para que pueda seguir con el grupo. No grabamos las sesiones.',
   },
   {
     id: 5,
-    question: '¿Las clases son en vivo?',
+    question: '¿Se paga durante las vacaciones?',
     answer:
-      'Sí. Son sesiones prácticas en vivo, con feedback directo y un ritmo semanal claro. La prioridad es terminar versiones funcionales de cada proyecto.',
+      'No hay clase en Navidad, Semana Santa ni verano, igual que el calendario escolar. La cuota es mensual de diciembre a junio; las semanas de vacaciones de esos meses no se descuentan. Julio y agosto no se cobran.',
+  },
+  {
+    id: 6,
+    question: '¿Cómo se realiza el pago y cómo puedo darme de baja?',
+    answer:
+      'La cuota es de 49 € o 59 € al mes, según el curso, por transferencia o tarjeta. No hay permanencia. Para no cobrar el mes siguiente, basta un aviso por email o WhatsApp antes del día 20.',
+  },
+  {
+    id: 7,
+    question: '¿Cuándo comienzan los cursos?',
+    answer:
+      'El curso 2026–2027 empieza el 1 de diciembre y termina en junio. Una clase a la semana, de lunes a viernes según el grupo. Sábado y domingo, fiesta.',
   },
 ] as const;
