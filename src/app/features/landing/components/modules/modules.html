@@ -8,13 +8,39 @@
         <span class="modules-marker">Nuestros cursos</span>
       </h2>
       <p class="mx-auto mt-4 max-w-prose text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
-        Ocho extraescolares, de los 8 a los 20 años. Primero el ordenador, después un juego, aplicaciones móviles y, a partir de los 15, páginas web.
+        Ocho extraescolares, de los 7 a los 18 años. Primero el ordenador, después un juego, apps y código y, a partir de los 14, web e IA.
         Grupo semanal de hasta 10.
       </p>
     </header>
 
-    <div class="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 md:mt-12 lg:grid-cols-3">
-      @for (course of courses; track course.id; let i = $index) {
+    <div class="modules-filters" data-aos="fade-up" role="group" aria-label="Filtrar por itinerario">
+      <button
+        type="button"
+        class="modules-filter"
+        [class.is-active]="activePathId() === null"
+        (click)="selectPath(null)"
+      >
+        Todos
+      </button>
+      @for (path of paths; track path.id) {
+        <button
+          type="button"
+          class="modules-filter"
+          [class.is-active]="activePathId() === path.id"
+          (click)="selectPath(path.id)"
+        >
+          <span class="modules-filter-ages">{{ path.ages }}</span>
+          {{ path.label }}
+        </button>
+      }
+    </div>
+
+    @if (activePath(); as path) {
+      <p class="modules-hint" data-aos="fade-up">{{ path.hint }}</p>
+    }
+
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+      @for (course of visibleCourses(); track course.id; let i = $index) {
         <article
           class="course-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-[#ececf3] bg-white"
           data-aos="fade-up"

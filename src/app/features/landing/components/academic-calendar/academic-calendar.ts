@@ -52,7 +52,7 @@ export class AcademicCalendar {
     '17:30': {
       Lunes: {
         title: 'Programación con Scratch',
-        ages: '8–10 años',
+        ages: '8–12 años',
         hours: '17:30–18:30',
         price: '49 €/mes',
         slug: 'scratch',
@@ -60,7 +60,7 @@ export class AcademicCalendar {
       },
       Martes: {
         title: 'Desarrollo de videojuegos con Unity',
-        ages: '10–14 años',
+        ages: '12–16 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'videojuegos',
@@ -68,7 +68,7 @@ export class AcademicCalendar {
       },
       Miércoles: {
         title: 'Primeros Pasos Digitales',
-        ages: '8–9 años',
+        ages: '7–9 años',
         hours: '17:30–18:30',
         price: '49 €/mes',
         slug: 'ordenador-e-internet',
@@ -76,7 +76,7 @@ export class AcademicCalendar {
       },
       Jueves: {
         title: 'Apps Móviles con Kodular',
-        ages: '12–16 años',
+        ages: '11–14 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'aplicaciones-moviles',
@@ -84,7 +84,7 @@ export class AcademicCalendar {
       },
       Viernes: {
         title: 'Desarrollo Web',
-        ages: '15–20 años',
+        ages: '14–18 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'paginas-web',
@@ -102,7 +102,7 @@ export class AcademicCalendar {
       },
       Martes: {
         title: 'Seguridad Digital y Ciberseguridad',
-        ages: '11–15 años',
+        ages: '10–14 años',
         hours: '19:00–20:30',
         price: '59 €/mes',
         slug: 'seguridad-digital',
@@ -110,7 +110,7 @@ export class AcademicCalendar {
       },
       Miércoles: {
         title: 'IA y Automatización',
-        ages: '14–18 años',
+        ages: '14–17 años',
         hours: '19:00–20:30',
         price: '59 €/mes',
         slug: 'inteligencia-artificial',

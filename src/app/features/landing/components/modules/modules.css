@@ -8,8 +8,62 @@
   background-image: linear-gradient(transparent 62%, #ffc224 62%);
 }
 
+.modules-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+  margin-top: 1.35rem;
+}
+
+.modules-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.35rem;
+  border: 1px solid #e8e8f0;
+  border-radius: 999px;
+  background: #fff;
+  padding: 0.4rem 0.85rem;
+  color: #5c5c70;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.modules-filter-ages {
+  color: var(--color-brand, #e7353d);
+  font-weight: 800;
+}
+
+.modules-filter.is-active {
+  border-color: transparent;
+  background: var(--color-ink, #161439);
+  color: #fff;
+}
+
+.modules-filter.is-active .modules-filter-ages {
+  color: #ffc224;
+}
+
+.modules-hint {
+  margin: 0.85rem auto 0;
+  max-width: 32rem;
+  text-align: center;
+  color: #6b6b80;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
 .course-card {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
 }
 
 .course-cover {
@@ -74,6 +128,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  .modules-filter:hover:not(.is-active) {
+    border-color: #d5d5e2;
+    background: #fafafc;
+  }
+
   .course-card:hover {
     border-color: #d8d8e4;
     box-shadow: 0 10px 28px rgba(22, 20, 57, 0.07);

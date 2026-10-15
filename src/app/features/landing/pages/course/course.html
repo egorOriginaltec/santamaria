@@ -4,28 +4,28 @@
       <section class="course-hero relative">
         <div class="course-grid absolute inset-0" aria-hidden="true"></div>
         <div class="relative mx-auto w-full max-w-[1240px] px-4 pt-7 pb-12 sm:px-6 sm:pt-8 sm:pb-16">
-          <nav class="course-hero-breadcrumb flex flex-wrap items-center gap-2 text-xs font-medium text-[#77758c]" aria-label="Migas de pan">
-            <a routerLink="/" class="transition-colors hover:text-brand">Inicio</a>
+          <nav class="course-hero-breadcrumb flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-xs font-medium text-[#77758c]" aria-label="Migas de pan">
+            <a routerLink="/" class="shrink-0 transition-colors hover:text-brand">Inicio</a>
             <span aria-hidden="true">/</span>
-            <a routerLink="/" fragment="program" class="transition-colors hover:text-brand">Cursos</a>
+            <a routerLink="/" fragment="program" class="shrink-0 transition-colors hover:text-brand">Cursos</a>
             <span aria-hidden="true">/</span>
-            <span class="text-ink">{{ course.title }}</span>
+            <span class="min-w-0 break-words text-ink">{{ course.title }}</span>
           </nav>
 
-          <div class="mt-8 grid items-center gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-16">
-            <div class="course-hero-copy max-w-3xl" data-aos="fade-up">
-              <span class="inline-flex items-center gap-2 rounded-full border border-brand/15 bg-white px-3.5 py-2 text-xs font-bold text-brand shadow-sm">
-                <span class="size-2 rounded-full bg-[#22b8a7]"></span>
-                Para {{ course.ages }} · {{ content.category }}
+          <div class="mt-6 grid min-w-0 items-center gap-8 sm:mt-8 sm:gap-10 lg:grid-cols-[1.08fr_.92fr] lg:gap-16">
+            <div class="course-hero-copy min-w-0 max-w-3xl" data-aos="fade-up">
+              <span class="inline-flex max-w-full flex-wrap items-center gap-2 rounded-full border border-brand/15 bg-white px-3 py-1.5 text-[11px] font-bold text-brand shadow-sm sm:px-3.5 sm:py-2 sm:text-xs">
+                <span class="size-2 shrink-0 rounded-full bg-[#22b8a7]"></span>
+                <span class="min-w-0 break-words">Para {{ course.ages }} · {{ content.category }}</span>
               </span>
-              <h1 class="mt-5 max-w-3xl text-balance text-4xl leading-[1.06] font-bold tracking-[-0.035em] text-ink sm:text-5xl lg:text-[3.65rem]">
+              <h1 class="course-hero-title mt-4 max-w-3xl text-balance font-bold tracking-[-0.035em] text-ink sm:mt-5">
                 {{ content.heading }}
                 <span class="course-marker">{{ content.accent }}</span>
               </h1>
-              <p class="mt-5 max-w-2xl text-pretty text-base leading-7 text-[#65647a] sm:text-lg sm:leading-8">
+              <p class="mt-4 max-w-2xl text-pretty text-[15px] leading-7 text-[#65647a] sm:mt-5 sm:text-lg sm:leading-8">
                 {{ course.lead }}
               </p>
-              <div class="mt-7 flex flex-wrap items-center gap-4">
+              <div class="course-hero-actions mt-6 sm:mt-7">
                 <a href="#programa" class="course-button course-button--primary">
                   Ver el programa <span aria-hidden="true">↓</span>
                 </a>
@@ -58,7 +58,7 @@
           <div class="course-summary-bottom">
             <p>{{ content.summary }}</p>
             <div class="course-summary-actions">
-              <a routerLink="/contact" class="course-enrol-action course-enrol-action--primary">Probar una clase <span>→</span></a>
+              <a routerLink="/contact" class="course-enrol-action course-enrol-action--primary">Inscribirme <span>→</span></a>
               <a routerLink="/contact" class="course-enrol-action course-enrol-action--whatsapp">WhatsApp</a>
             </div>
           </div>
@@ -154,15 +154,15 @@
       </section>
 
       <section class="px-4 pb-14 sm:px-6 sm:pb-20 lg:pb-24">
-        <div class="course-cta mx-auto max-w-[1240px] overflow-hidden rounded-[2rem] px-6 py-10 text-center text-white sm:px-10 sm:py-14">
-          <p class="text-xs font-bold tracking-[0.18em] text-white/65 uppercase">El mejor momento para empezar</p>
-          <h2 class="mx-auto mt-3 max-w-2xl text-balance text-3xl font-bold tracking-tight sm:text-4xl">{{ content.ctaTitle }}</h2>
+        <div class="course-cta mx-auto max-w-[1240px] overflow-hidden rounded-[1.5rem] px-5 py-9 text-center text-white sm:rounded-[2rem] sm:px-10 sm:py-14">
+          <p class="text-[11px] font-bold tracking-[0.18em] text-white/65 uppercase sm:text-xs">El mejor momento para empezar</p>
+          <h2 class="mx-auto mt-3 max-w-2xl text-balance text-[1.65rem] leading-tight font-bold tracking-tight sm:text-4xl">{{ content.ctaTitle }}</h2>
           <p class="mx-auto mt-4 max-w-xl text-pretty text-sm leading-6 text-white/75 sm:text-base">
             {{ content.ctaText }}
           </p>
-          <p class="mt-5 text-sm font-bold text-[#ffc224]">{{ content.price }}/mes · {{ content.schedule }}</p>
-          <a routerLink="/contact" class="mt-5 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#ffc224] px-7 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5">
-            Reservar primera clase gratis <span aria-hidden="true">→</span>
+          <p class="mt-5 text-pretty text-sm font-bold text-[#ffc224]">{{ content.price }}/mes · {{ content.schedule }}</p>
+          <a routerLink="/contact" class="course-cta-button mt-5 inline-flex min-h-12 w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#ffc224] px-6 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5 sm:w-auto sm:px-7">
+            Inscribirme <span aria-hidden="true">→</span>
           </a>
         </div>
       </section>
@@ -185,7 +185,7 @@
             <li class="rounded-xl bg-[#f7f7fb] px-4 py-3 text-sm leading-relaxed text-[#3c3c4e]">{{ item }}</li>
           }
         </ul>
-        <a routerLink="/contact" class="mt-7 inline-flex min-h-11 items-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white">Primera clase gratis</a>
+        <a routerLink="/contact" class="mt-7 inline-flex min-h-11 items-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white">Inscribirme</a>
       </div>
     </article>
   }

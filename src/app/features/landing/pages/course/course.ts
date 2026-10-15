@@ -736,7 +736,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · Una landing publicada',
         ctaTitle: 'Empieza a construir para la web',
         ctaText:
-          'Prueba una clase online y descubre cómo una idea se convierte en una página real mediante HTML, CSS y Tailwind.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de desarrollo web.',
       } as const;
     }
 
@@ -763,7 +763,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · Un flujo con IA',
         ctaTitle: 'Aprende a conectar ideas, datos e inteligencia artificial',
         ctaText:
-          'Prueba una clase online y descubre cómo se construye una automatización útil desde sus componentes más básicos.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de IA y automatización.',
       } as const;
     }
 
@@ -790,7 +790,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · Un programa propio',
         ctaTitle: 'Empieza a escribir código de verdad',
         ctaText:
-          'Prueba una clase online y descubre cómo aprende Python creando programas que funcionan desde el primer día.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de Python.',
       } as const;
     }
 
@@ -817,7 +817,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · App de 2–3 pantallas',
         ctaTitle: 'Su primera app puede empezar hoy',
         ctaText:
-          'Prueba una clase online y descubre cómo transforma una idea en una aplicación que funciona en un móvil real.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de apps móviles.',
       } as const;
     }
 
@@ -844,7 +844,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · Cinco hábitos finales',
         ctaTitle: 'Más autonomía digital, con menos riesgos',
         ctaText:
-          'Prueba una clase online y descubre cómo aprende a identificar amenazas y proteger su vida digital.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de seguridad digital.',
       } as const;
     }
 
@@ -871,7 +871,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · Un nivel jugable',
         ctaTitle: 'Convierte sus ideas en un videojuego',
         ctaText:
-          'Prueba una clase online y descubre cómo aprende programación, diseño y resolución de problemas creando su propio juego.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de videojuegos con Unity.',
       } as const;
     }
 
@@ -898,7 +898,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 60 min · Un juego corto',
         ctaTitle: 'Su primera creación empieza aquí',
         ctaText:
-          'Prueba una clase online y descubre cómo aprende programación mientras construye algo que puede enseñar.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de Scratch.',
       } as const;
     }
 
@@ -912,7 +912,7 @@ export class CoursePage {
         summary: '60 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'Una base digital para toda la vida',
         introText:
-          'Una hora semanal, a los 8–9 años: ordenador, guardar un trabajo, buscar, un documento, una presentación y usar la nube o una IA con ayuda.',
+          'Una hora semanal, a los 7–9 años: ordenador, guardar un trabajo, buscar, un documento, una presentación y usar la nube o una IA con ayuda.',
         introNote:
           'Sin mecanografía como curso, sin programación y sin un proyecto multimedia aparte. Cada clase se practica, no se explica y se pasa al siguiente tema.',
         skills: this.digitalSkills,
@@ -925,7 +925,7 @@ export class CoursePage {
         curriculumBadge: '24 clases · 60 min · Un trabajo final',
         ctaTitle: 'Prepara su futuro digital desde hoy',
         ctaText:
-          'Ven a conocer una clase real. Resolveremos tus dudas y comprobaremos juntos si el grupo encaja.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de Primeros Pasos Digitales.',
       } as const;
     }
 

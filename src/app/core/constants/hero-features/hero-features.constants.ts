@@ -8,12 +8,12 @@ export const HERO_FEATURES: readonly FeatureCard[] = [
   },
   {
     title: 'Varios cursos',
-    text: 'De los 8 a los 20 hay varios. Cada edad tiene el suyo: juegos, apps, Python o páginas web.',
+    text: 'De los 7 a los 18 hay varios. Cada edad tiene el suyo: juegos, apps, Python o páginas web.',
     icon: 'doc',
   },
   {
     title: 'Extraescolar',
-    text: 'Una clase a la semana, de los 8 a los 20, para quien quiera aprender a programar.',
+    text: 'Una clase a la semana, de los 7 a los 18, para quien quiera aprender a programar.',
     icon: 'book',
   },
   {

@@ -5,14 +5,14 @@ export const FAQ_EYEBROW = 'Dudas';
 export const FAQ_TITLE = 'Preguntas frecuentes';
 
 export const FAQ_INTRO =
-  'Siete respuestas, las que suelen decidir. Si falta alguna, escríbenos.';
+  'Seis respuestas, las que suelen decidir. Si falta alguna, escríbenos.';
 
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     id: 1,
     question: '¿Necesita conocimientos previos?',
     answer:
-      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos Digitales (8–9), Scratch (8–10), Unity (10–14), Seguridad Digital (11–15), Apps o Python (12–16), IA (14–18) o Desarrollo Web (15–20). Si hay duda entre dos, lo vemos en la clase gratuita.',
+      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos (7–9), Scratch (8–12), Seguridad Digital (10–14), Apps (11–14), Unity o Python (12–16), IA (14–17) o Desarrollo Web (14–18). Si hay duda entre dos, escríbenos y te orientamos.',
   },
   {
     id: 2,
@@ -22,30 +22,24 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   },
   {
     id: 3,
-    question: '¿Cómo funciona la clase gratuita?',
-    answer:
-      'Es una clase real del grupo, online y en directo, sin pago ni compromiso. Se reserva por el formulario o por WhatsApp. Hay un máximo de 10 alumnos, así que depende de que quede plaza. Si después se apuntan, la cuota mensual empieza con la inscripción; la clase de prueba no se cobra.',
-  },
-  {
-    id: 4,
     question: '¿Qué ocurre si falta a una clase?',
     answer:
       'La clase es en directo y no se recupera en privado ni se descuenta. Al volver, el profesor retoma lo justo para que pueda seguir con el grupo. No grabamos las sesiones.',
   },
   {
-    id: 5,
+    id: 4,
     question: '¿Se paga durante las vacaciones?',
     answer:
       'No hay clase en Navidad, Semana Santa ni verano, igual que el calendario escolar. La cuota es mensual de diciembre a junio; las semanas de vacaciones de esos meses no se descuentan. Julio y agosto no se cobran.',
   },
   {
-    id: 6,
+    id: 5,
     question: '¿Cómo se realiza el pago y cómo puedo darme de baja?',
     answer:
       'La cuota es de 49 € o 59 € al mes, según el curso, por transferencia o tarjeta. No hay permanencia. Para no cobrar el mes siguiente, basta un aviso por email o WhatsApp antes del día 20.',
   },
   {
-    id: 7,
+    id: 6,
     question: '¿Cuándo comienzan los cursos?',
     answer:
       'El curso 2026–2027 empieza el 1 de diciembre y termina en junio. Una clase a la semana, de lunes a viernes según el grupo. Sábado y domingo, fiesta.',

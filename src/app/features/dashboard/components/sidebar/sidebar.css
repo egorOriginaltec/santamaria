@@ -3,13 +3,16 @@
 }
 
 .dashboard-sidebar {
+  --sidebar-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --sidebar-duration: 0.38s;
   position: fixed;
   inset: 0 auto 0 0;
   z-index: 40;
   width: min(16.5rem, calc(100vw - 2.75rem));
+  overflow: hidden;
   transform: translateX(-100%);
   background: #161439;
-  transition: transform 0.25s ease;
+  transition: transform var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .dashboard-sidebar.is-open {
@@ -24,7 +27,7 @@
     width: 16.5rem;
     transform: none;
     flex-shrink: 0;
-    transition: width 0.25s ease;
+    transition: width var(--sidebar-duration) var(--sidebar-ease);
   }
 
   .dashboard-sidebar.is-collapsed {
@@ -38,6 +41,10 @@
   justify-content: space-between;
   gap: 0.5rem;
   padding: 1.25rem 1.15rem 1rem;
+  transition:
+    padding var(--sidebar-duration) var(--sidebar-ease),
+    gap var(--sidebar-duration) var(--sidebar-ease),
+    flex-direction var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-brand {
@@ -46,6 +53,7 @@
   align-items: center;
   gap: 0.65rem;
   text-decoration: none;
+  transition: gap var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-brand-icon {
@@ -54,13 +62,24 @@
   height: 2.5rem;
   flex-shrink: 0;
   color: var(--color-brand, #e7353d);
+  transition:
+    width var(--sidebar-duration) var(--sidebar-ease),
+    height var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-brand-text {
   display: flex;
   min-width: 0;
+  max-width: 9rem;
   flex-direction: column;
+  overflow: hidden;
+  opacity: 1;
   line-height: 1;
+  white-space: nowrap;
+  transition:
+    max-width var(--sidebar-duration) var(--sidebar-ease),
+    opacity calc(var(--sidebar-duration) * 0.7) var(--sidebar-ease),
+    margin var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-brand-name {
@@ -105,12 +124,22 @@
 
 .dashboard-nav-group {
   margin: 1.15rem 0 0.45rem;
+  max-height: 2.5rem;
+  overflow: hidden;
   padding: 0.7rem 0.75rem 0;
   font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.35);
+  opacity: 1;
+  white-space: nowrap;
+  transition:
+    max-height var(--sidebar-duration) var(--sidebar-ease),
+    margin var(--sidebar-duration) var(--sidebar-ease),
+    padding var(--sidebar-duration) var(--sidebar-ease),
+    opacity calc(var(--sidebar-duration) * 0.55) ease,
+    border-color var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .dashboard-nav-group:first-child {
@@ -136,7 +165,21 @@
   cursor: pointer;
   transition:
     background-color 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    padding var(--sidebar-duration) var(--sidebar-ease),
+    gap var(--sidebar-duration) var(--sidebar-ease),
+    min-height var(--sidebar-duration) var(--sidebar-ease),
+    justify-content var(--sidebar-duration) var(--sidebar-ease);
+}
+
+.dashboard-nav-label {
+  overflow: hidden;
+  max-width: 10rem;
+  opacity: 1;
+  white-space: nowrap;
+  transition:
+    max-width var(--sidebar-duration) var(--sidebar-ease),
+    opacity calc(var(--sidebar-duration) * 0.65) var(--sidebar-ease);
 }
 
 .dashboard-nav-link:hover {
@@ -155,11 +198,21 @@
   width: 1.25rem;
   flex-shrink: 0;
   color: inherit;
+  transition: width var(--sidebar-duration) var(--sidebar-ease);
+}
+
+.dashboard-nav-icon svg {
+  width: 1rem;
+  height: 1rem;
+  transition:
+    width var(--sidebar-duration) var(--sidebar-ease),
+    height var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-foot {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 1rem 1.15rem;
+  transition: padding var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-user {
@@ -168,6 +221,7 @@
   align-items: center;
   gap: 0.65rem;
   padding-inline: 0.25rem;
+  transition: padding var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-user-avatar {
@@ -181,6 +235,21 @@
   color: #fff;
   font-size: 0.6875rem;
   font-weight: 700;
+  transition:
+    width var(--sidebar-duration) var(--sidebar-ease),
+    height var(--sidebar-duration) var(--sidebar-ease),
+    font-size var(--sidebar-duration) var(--sidebar-ease);
+}
+
+.sidebar-user-copy {
+  min-width: 0;
+  max-width: 9rem;
+  overflow: hidden;
+  opacity: 1;
+  white-space: nowrap;
+  transition:
+    max-width var(--sidebar-duration) var(--sidebar-ease),
+    opacity calc(var(--sidebar-duration) * 0.65) var(--sidebar-ease);
 }
 
 .dashboard-logout {
@@ -198,13 +267,21 @@
   cursor: pointer;
   transition:
     background-color 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    width var(--sidebar-duration) var(--sidebar-ease),
+    min-height var(--sidebar-duration) var(--sidebar-ease),
+    margin var(--sidebar-duration) var(--sidebar-ease),
+    padding var(--sidebar-duration) var(--sidebar-ease),
+    gap var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .dashboard-logout-icon {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
+  transition:
+    width var(--sidebar-duration) var(--sidebar-ease),
+    height var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .dashboard-logout:hover:not(:disabled) {
@@ -218,15 +295,31 @@
 }
 
 @media (min-width: 1024px) {
+  .dashboard-sidebar nav {
+    padding-inline: 0.75rem;
+    transition: padding var(--sidebar-duration) var(--sidebar-ease);
+  }
+
   .dashboard-sidebar.is-collapsed .sidebar-brand-text,
-  .dashboard-sidebar.is-collapsed .dashboard-nav-group,
   .dashboard-sidebar.is-collapsed .dashboard-nav-label,
   .dashboard-sidebar.is-collapsed .sidebar-user-copy {
-    display: none;
+    max-width: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dashboard-sidebar.is-collapsed .dashboard-nav-group {
+    max-height: 0;
+    margin: 0.55rem 0 0.2rem;
+    padding: 0;
+    opacity: 0;
+    border-top-color: transparent;
+    pointer-events: none;
   }
 
   .dashboard-sidebar.is-collapsed .sidebar-brand {
     justify-content: center;
+    gap: 0;
   }
 
   .dashboard-sidebar.is-collapsed .sidebar-brand-icon {
@@ -248,6 +341,7 @@
 
   .dashboard-sidebar.is-collapsed .dashboard-nav-link {
     justify-content: center;
+    gap: 0;
     min-height: 2.65rem;
     padding: 0.55rem;
   }
@@ -271,6 +365,7 @@
 
   .dashboard-sidebar.is-collapsed .sidebar-user {
     justify-content: center;
+    gap: 0;
     padding: 0;
   }
 
@@ -282,6 +377,7 @@
 
   .dashboard-sidebar.is-collapsed .dashboard-logout {
     justify-content: center;
+    gap: 0;
     width: 2.65rem;
     min-height: 2.65rem;
     margin-top: 0;
@@ -296,8 +392,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .dashboard-sidebar,
+  .dashboard-sidebar *,
   .dashboard-nav-link,
   .dashboard-logout {
-    transition: none;
+    transition: none !important;
   }
 }
