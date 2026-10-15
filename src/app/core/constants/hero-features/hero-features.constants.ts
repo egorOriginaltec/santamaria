@@ -12,8 +12,8 @@ export const HERO_FEATURES: readonly FeatureCard[] = [
     icon: 'doc',
   },
   {
-    title: 'Extraescolar',
-    text: 'Una clase a la semana, de los 7 a los 18, para quien quiera aprender a programar.',
+    title: 'Clases todos los días',
+    text: 'De lunes a viernes hay grupo: eliges el curso y te toca una sesión semanal, de los 7 a los 18.',
     icon: 'book',
   },
   {
