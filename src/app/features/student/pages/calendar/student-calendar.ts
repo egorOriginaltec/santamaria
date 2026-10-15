@@ -7,9 +7,9 @@ import {
   inject,
   signal,
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { AppAlert } from '@shared/components/alert/alert';
-import { HttpErrorResponse } from '@angular/common/http';
 import {
   CalendarExerciseDto,
   CourseSessionDto,
@@ -17,6 +17,7 @@ import {
   readApiError,
 } from '@core/services/course-sessions-api.service';
 import { StudentCampusService } from '../../data/student-campus.service';
+import { studentContentEnter } from '../../student-enter.animation';
 import {
   WEEKDAYS_LONG,
   buildMonthCells,
@@ -34,6 +35,7 @@ import {
   templateUrl: './student-calendar.html',
   styleUrls: ['../../student-ui.css', './student-calendar.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [studentContentEnter],
 })
 export class StudentCalendar {
   private readonly campus = inject(StudentCampusService);

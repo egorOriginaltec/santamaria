@@ -37,21 +37,11 @@ export class StudentContentService {
   private readonly http = inject(HttpClient);
   private readonly sessionsApi = inject(CourseSessionsApiService);
   private readonly endpoint = `${API_BASE_URL}/api/v1/student/content`;
-  private started = false;
-
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
   readonly courses = signal<readonly StudentContentCourseDto[]>([]);
 
   ensure(): void {
-    if (this.started) {
-      this.fetch().subscribe({
-        error: () => this.error.set('No se pudo cargar el contenido. Prueba otra vez en un momento.'),
-      });
-      return;
-    }
-
-    this.started = true;
     this.reload().subscribe();
   }
 

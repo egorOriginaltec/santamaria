@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { readApiError } from '@core/services/course-sessions-api.service';
 import { ToastService } from '@core/services/toast.service';
@@ -33,7 +32,7 @@ import {
 
 @Component({
   selector: 'app-dashboard-leads',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [DatePipe, ReactiveFormsModule],
   templateUrl: './leads.html',
   styleUrl: './leads.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

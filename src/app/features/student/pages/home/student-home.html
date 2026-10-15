@@ -13,100 +13,102 @@
       </div>
     </div>
   } @else {
-    <div class="home-intro student-reveal">
-      <header class="home-copy">
-        <svg class="home-plane" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-          <path d="M3.5 15.2 28 3.5 19.8 28.5l-4.8-8.2L3.5 15.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-          <path d="M14.8 20.4 28 3.5 10.2 17.8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
-        </svg>
-        <p class="st-kicker">Tu espacio</p>
-        <h1 class="st-title">
-          Hola, <span class="st-marker">{{ firstName() }}</span>
-        </h1>
-        <p class="st-lead">
-          El calendario es para el Meet y las fechas. En Contenido tienes apuntes y ejercicios.
-        </p>
-      </header>
-
-      @if (errorMessage(); as err) {
-        <app-alert>
-          <p>{{ err }}</p>
-          <button type="button" (click)="retry()">Reintentar</button>
-        </app-alert>
-      }
-
-      @if (!errorMessage() && nextClass(); as next) {
-        <article class="home-next st-card">
-          <span class="st-chip">
-            <span class="st-chip-dot"></span>
-            {{ next.iso === todayIso ? 'Hoy tienes clase' : 'Próxima clase' }}
-          </span>
-          <h2 class="home-next-title">{{ next.course.title }}</h2>
-          <p class="home-next-meta">
-            {{ formatNice(next.iso) }} · {{ next.course.schedule_start }}–{{ next.course.schedule_end }}
+    <div class="home-ready" @contentEnter>
+      <div class="home-intro">
+        <header class="home-copy">
+          <svg class="home-plane" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M3.5 15.2 28 3.5 19.8 28.5l-4.8-8.2L3.5 15.2Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+            <path d="M14.8 20.4 28 3.5 10.2 17.8" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          </svg>
+          <p class="st-kicker">Tu espacio</p>
+          <h1 class="st-title">
+            Hola, <span class="st-marker">{{ firstName() }}</span>
+          </h1>
+          <p class="st-lead">
+            El calendario es para el Meet y las fechas. En Contenido tienes apuntes y ejercicios.
           </p>
-          <div class="home-next-actions">
-            @if (meetUrl(); as url) {
-              <a class="st-btn" [href]="url" target="_blank" rel="noopener noreferrer">
-                Entrar a Meet
-              </a>
-            } @else {
-              <p class="home-next-note">El Meet se publica el día de clase.</p>
-            }
-            <a routerLink="/student/contenido" class="st-btn st-btn--ghost">Apuntes</a>
-          </div>
-        </article>
-      }
-    </div>
+        </header>
 
-    @if (!errorMessage()) {
-      <div class="home-actions student-reveal student-reveal-2">
-        <a routerLink="/alumno/calendario" class="home-card st-card">
-          <span class="home-card-icon home-card-icon--gold" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" stroke-width="1.7" />
-              <path d="M8 3.5v3M16 3.5v3M3.5 9.5h17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-              <path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
-            </svg>
-          </span>
-          <h2 class="home-card-title">Calendario</h2>
-          <p class="home-card-text">Los días de clase y la fecha de cada ejercicio. Toca uno y ves Meet, archivos y ejercicios.</p>
-          <span class="home-card-cta">Abrir calendario</span>
-        </a>
+        @if (errorMessage(); as err) {
+          <app-alert>
+            <p>{{ err }}</p>
+            <button type="button" (click)="retry()">Reintentar</button>
+          </app-alert>
+        }
 
-        <a routerLink="/alumno/contenido" class="home-card st-card">
-          <span class="home-card-icon home-card-icon--teal" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M4 8.5V7a2 2 0 0 1 2-2h4.2L12 7h6a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.7" />
-              <path d="M12 11.5v5M9.8 14.2 12 16.5l2.2-2.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          </span>
-          <h2 class="home-card-title">Contenido</h2>
-          <p class="home-card-text">Apuntes para descargar y ejercicios para hacer, agrupados por curso.</p>
-          <span class="home-card-cta">Ver contenido</span>
-        </a>
+        @if (!errorMessage() && nextClass(); as next) {
+          <article class="home-next st-card">
+            <span class="st-chip">
+              <span class="st-chip-dot"></span>
+              {{ next.iso === todayIso ? 'Hoy tienes clase' : 'Próxima clase' }}
+            </span>
+            <h2 class="home-next-title">{{ next.course.title }}</h2>
+            <p class="home-next-meta">
+              {{ formatNice(next.iso) }} · {{ next.course.schedule_start }}–{{ next.course.schedule_end }}
+            </p>
+            <div class="home-next-actions">
+              @if (meetUrl(); as url) {
+                <a class="st-btn" [href]="url" target="_blank" rel="noopener noreferrer">
+                  Entrar a Meet
+                </a>
+              } @else {
+                <p class="home-next-note">El Meet se publica el día de clase.</p>
+              }
+              <a routerLink="/student/contenido" class="st-btn st-btn--ghost">Apuntes</a>
+            </div>
+          </article>
+        }
       </div>
 
-      @if (courses().length > 0) {
-        <section class="home-courses student-reveal student-reveal-3">
-          <h2 class="home-section-title">Tu grupo</h2>
-          <ul class="home-course-list">
-            @for (course of courses(); track course.uuid) {
-              <li class="home-course st-card">
-                <p class="home-course-name">{{ course.title }}</p>
-                <p class="home-course-meta">
-                  {{ course.weekdays_label || 'L–V' }} · {{ course.schedule_start }}–{{ course.schedule_end }}
-                </p>
-              </li>
-            }
-          </ul>
-        </section>
-      } @else {
-        <div class="home-empty st-card student-reveal">
-          <p class="home-empty-title">Aún no tienes un grupo</p>
-          <p class="home-empty-text">Cuando te matriculen, aquí saldrá tu curso, el calendario y el botón de Meet.</p>
+      @if (!errorMessage()) {
+        <div class="home-actions">
+          <a routerLink="/student/calendar" class="home-card st-card">
+            <span class="home-card-icon home-card-icon--gold" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" stroke="currentColor" stroke-width="1.7" />
+                <path d="M8 3.5v3M16 3.5v3M3.5 9.5h17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+                <path d="M8 13h.01M12 13h.01M16 13h.01M8 16.5h.01M12 16.5h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <h2 class="home-card-title">Calendario</h2>
+            <p class="home-card-text">Los días de clase y la fecha de cada ejercicio. Toca uno y ves Meet, archivos y ejercicios.</p>
+            <span class="home-card-cta">Abrir calendario</span>
+          </a>
+
+          <a routerLink="/student/contenido" class="home-card st-card">
+            <span class="home-card-icon home-card-icon--teal" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 8.5V7a2 2 0 0 1 2-2h4.2L12 7h6a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8.5Z" stroke="currentColor" stroke-width="1.7" />
+                <path d="M12 11.5v5M9.8 14.2 12 16.5l2.2-2.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <h2 class="home-card-title">Contenido</h2>
+            <p class="home-card-text">Apuntes para descargar y ejercicios para hacer, agrupados por curso.</p>
+            <span class="home-card-cta">Ver contenido</span>
+          </a>
         </div>
+
+        @if (courses().length > 0) {
+          <section class="home-courses">
+            <h2 class="home-section-title">Tu grupo</h2>
+            <ul class="home-course-list">
+              @for (course of courses(); track course.uuid) {
+                <li class="home-course st-card">
+                  <p class="home-course-name">{{ course.title }}</p>
+                  <p class="home-course-meta">
+                    {{ course.weekdays_label || 'L–V' }} · {{ course.schedule_start }}–{{ course.schedule_end }}
+                  </p>
+                </li>
+              }
+            </ul>
+          </section>
+        } @else {
+          <div class="home-empty st-card">
+            <p class="home-empty-title">Aún no tienes un grupo</p>
+            <p class="home-empty-text">Cuando te matriculen, aquí saldrá tu curso, el calendario y el botón de Meet.</p>
+          </div>
+        }
       }
-    }
+    </div>
   }
 </section>

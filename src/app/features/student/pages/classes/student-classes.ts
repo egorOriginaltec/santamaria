@@ -1,13 +1,13 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AppAlert } from '@shared/components/alert/alert';
-import { CalendarExerciseDto, readApiError } from '@core/services/course-sessions-api.service';
+import { CalendarExerciseDto } from '@core/services/course-sessions-api.service';
 import {
   ContentMaterialDto,
   StudentContentCourseDto,
   StudentContentService,
 } from '../../data/student-content.service';
+import { studentContentEnter } from '../../student-enter.animation';
 import { WEEKDAYS_LONG, formatNice } from '../../student-schedule';
 
 @Component({
@@ -16,6 +16,7 @@ import { WEEKDAYS_LONG, formatNice } from '../../student-schedule';
   templateUrl: './student-classes.html',
   styleUrls: ['../../student-ui.css', './student-classes.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [studentContentEnter],
 })
 export class StudentClasses {
   private readonly content = inject(StudentContentService);

@@ -1,15 +1,12 @@
 <section class="cal-page">
-  <header class="cal-hero student-reveal">
-    <p class="st-kicker">Calendario</p>
-    <h1 class="st-title">Tu mes de <span class="st-marker">clases</span></h1>
-    <p class="st-lead">
-      Los días de color tienen algo: clase, ejercicio o fiesta. Toca uno y verás qué hacer.
-    </p>
-  </header>
-
   @if (loading()) {
     <div class="student-loader" aria-busy="true" aria-live="polite">
       <div class="student-loader-line" aria-hidden="true"></div>
+      <div class="cal-hero">
+        <span class="student-sk cal-sk-title" style="width: 6rem; height: 0.7rem; display: block"></span>
+        <span class="student-sk cal-sk-title" style="width: 14rem; height: 1.6rem; display: block; margin-top: 0.5rem"></span>
+        <span class="student-sk" style="width: min(28rem, 90%); height: 0.85rem; display: block; margin-top: 0.7rem; border-radius: 0.75rem"></span>
+      </div>
       <div class="cal-stage">
         <div class="cal-card st-card">
           <span class="student-sk cal-sk-title"></span>
@@ -25,170 +22,181 @@
         </div>
       </div>
     </div>
-  } @else if (errorMessage(); as err) {
-    <app-alert>
-      <p>{{ err }}</p>
-      <button type="button" (click)="retry()">Reintentar</button>
-    </app-alert>
-  } @else if (courses().length === 0) {
-    <div class="cal-empty st-card student-reveal">
-      <span class="cal-empty-emoji" aria-hidden="true">📭</span>
-      <p>Todavía no estás en ningún grupo, así que el calendario está vacío.</p>
-      <a routerLink="/student" class="st-btn" style="margin-top: 0.9rem">Volver al inicio</a>
-    </div>
   } @else {
-    <div class="cal-stage student-reveal student-reveal-2">
-      <div class="cal-card st-card">
-        <div class="cal-toolbar">
-          <button type="button" class="cal-nav" (click)="prevMonth()" aria-label="Mes anterior">‹</button>
-          <h2 class="cal-month">{{ monthTitle() }}</h2>
-          <button type="button" class="cal-nav" (click)="nextMonth()" aria-label="Mes siguiente">›</button>
+    <div class="cal-ready" @contentEnter>
+      <header class="cal-hero">
+        <p class="st-kicker">Calendario</p>
+        <h1 class="st-title">Tu mes de <span class="st-marker">clases</span></h1>
+        <p class="st-lead">
+          Los días de color tienen algo: clase, ejercicio o fiesta. Toca uno y verás qué hacer.
+        </p>
+      </header>
+
+      @if (errorMessage(); as err) {
+        <app-alert>
+          <p>{{ err }}</p>
+          <button type="button" (click)="retry()">Reintentar</button>
+        </app-alert>
+      } @else if (courses().length === 0) {
+        <div class="cal-empty st-card">
+          <p>Todavía no estás en ningún grupo, así que el calendario está vacío.</p>
+          <a routerLink="/student" class="st-btn" style="margin-top: 0.9rem">Volver al inicio</a>
         </div>
+      } @else {
+        <div class="cal-stage">
+          <div class="cal-card st-card">
+            <div class="cal-toolbar">
+              <button type="button" class="cal-nav" (click)="prevMonth()" aria-label="Mes anterior">‹</button>
+              <h2 class="cal-month">{{ monthTitle() }}</h2>
+              <button type="button" class="cal-nav" (click)="nextMonth()" aria-label="Mes siguiente">›</button>
+            </div>
 
-        <div class="cal-weekdays" aria-hidden="true">
-          @for (label of weekdayLabels; track label) {
-            <span>{{ label }}</span>
-          }
-        </div>
-
-        <div class="cal-grid">
-          @for (week of weeks(); track week[0].iso) {
-            @for (day of week; track day.iso) {
-              <button
-                type="button"
-                class="cal-day"
-                [class.is-muted]="!day.inMonth"
-                [class.is-today]="day.isToday"
-                [class.is-class]="day.classes.length > 0"
-                [class.is-test]="day.dueTests.length > 0"
-                [class.is-holiday]="!!day.holidayName && day.classes.length === 0"
-                [class.is-selected]="selectedIso() === day.iso"
-                (click)="selectDay(day.iso)"
-              >
-                <span class="cal-num">{{ day.day }}</span>
-                <span class="cal-marks" aria-hidden="true">
-                  @if (day.classes.length > 0) {
-                    <span class="cal-mark cal-mark--class" title="Clase">📚</span>
-                  }
-                  @if (day.dueTests.length > 0) {
-                    <span class="cal-mark cal-mark--test" title="Ejercicio">✏️</span>
-                  }
-                  @if (day.holidayName && day.classes.length === 0) {
-                    <span class="cal-mark cal-mark--holiday" title="Fiesta">🎉</span>
-                  }
-                </span>
-              </button>
-            }
-          }
-        </div>
-
-        <ul class="cal-legend">
-          <li class="cal-legend-item cal-legend-item--class">
-            <span aria-hidden="true">📚</span> Clase
-          </li>
-          <li class="cal-legend-item cal-legend-item--test">
-            <span aria-hidden="true">✏️</span> Ejercicio
-          </li>
-          <li class="cal-legend-item cal-legend-item--holiday">
-            <span aria-hidden="true">🎉</span> Fiesta
-          </li>
-        </ul>
-      </div>
-
-      <aside class="cal-panel st-card" [attr.aria-label]="selected()?.title ? 'Detalle de ' + selected()?.title : 'Detalle del día'">
-        @if (selected(); as day) {
-          <header class="cal-panel-head">
-            <div>
-              @if (day.iso === today) {
-                <span class="st-chip cal-panel-chip"><span class="st-chip-dot"></span> Hoy</span>
-              }
-              <h2 class="cal-panel-title">{{ day.title }}</h2>
-              @if (summary(day); as line) {
-                <p class="cal-panel-meta">{{ line }}</p>
-              } @else if (day.holidayName) {
-                <p class="cal-panel-meta">{{ day.holidayName }}</p>
+            <div class="cal-weekdays" aria-hidden="true">
+              @for (label of weekdayLabels; track label) {
+                <span>{{ label }}</span>
               }
             </div>
-            <button type="button" class="cal-panel-close" (click)="closeDay()">Cerrar</button>
-          </header>
 
-          @if (downloadError()) {
-            <app-alert>{{ downloadError() }}</app-alert>
-          }
-
-          @if (day.classes.length === 0 && day.tests.length === 0) {
-            <p class="cal-panel-empty">
-              {{ day.holidayName ? day.holidayName + '. ' : '' }}Este día no hay clase ni ejercicios.
-            </p>
-          } @else {
-            <div class="cal-agenda">
-              @if (day.classes.length > 0) {
-                <section>
-                  <h3 class="cal-section cal-section--class">
-                    <span aria-hidden="true">📚</span> Clases
-                  </h3>
-                  <ul class="cal-rows">
-                    @for (item of day.classes; track item.course.uuid) {
-                      <li class="cal-row cal-row--class">
-                        <div class="cal-row-copy">
-                          <p class="cal-row-title">{{ item.course.title }}</p>
-                          <p class="cal-row-sub">{{ item.course.schedule_start }}–{{ item.course.schedule_end }}</p>
-                          @if (item.session; as session) {
-                            @if (session.materials.length > 0) {
-                              <div class="cal-files">
-                                @for (file of session.materials; track file.uuid) {
-                                  <button type="button" (click)="download(file)">📎 {{ file.name }}</button>
-                                }
-                              </div>
-                            }
-                          }
-                        </div>
-                        @if (meetUrl(item.session); as url) {
-                          <a class="cal-row-go cal-row-go--meet" [href]="url" target="_blank" rel="noopener noreferrer">Entrar</a>
-                        }
-                      </li>
-                    }
-                  </ul>
-                  @if (meetPending(day.classes)) {
-                    <p class="cal-footnote">El enlace de Meet aparece el mismo día de clase.</p>
-                  }
-                </section>
-              }
-
-              @if (day.tests.length > 0) {
-                <section>
-                  <h3 class="cal-section cal-section--test">
-                    <span aria-hidden="true">✏️</span> Ejercicios
-                  </h3>
-                  <ul class="cal-rows">
-                    @for (test of day.tests; track test.uuid) {
-                      <li>
-                        <a class="cal-row cal-row--link cal-row--test" [routerLink]="['/student/exercises', test.uuid]">
-                          <div class="cal-row-copy">
-                            <p class="cal-row-title">{{ test.title }}</p>
-                            <p class="cal-row-sub">{{ testMeta(test) }}</p>
-                          </div>
-                          <span class="cal-row-go">{{ testCta(test) }}</span>
-                        </a>
-                      </li>
-                    }
-                  </ul>
-                </section>
+            <div class="cal-grid">
+              @for (week of weeks(); track week[0].iso) {
+                @for (day of week; track day.iso) {
+                  <button
+                    type="button"
+                    class="cal-day"
+                    [class.is-muted]="!day.inMonth"
+                    [class.is-today]="day.isToday"
+                    [class.is-class]="day.classes.length > 0"
+                    [class.is-test]="day.dueTests.length > 0"
+                    [class.is-holiday]="!!day.holidayName && day.classes.length === 0"
+                    [class.is-selected]="selectedIso() === day.iso"
+                    (click)="selectDay(day.iso)"
+                  >
+                    <span class="cal-num">{{ day.day }}</span>
+                    <span class="cal-marks" aria-hidden="true">
+                      @if (day.classes.length > 0) {
+                        <span class="cal-mark cal-mark--class" title="Clase">📚</span>
+                      }
+                      @if (day.dueTests.length > 0) {
+                        <span class="cal-mark cal-mark--test" title="Ejercicio">✏️</span>
+                      }
+                      @if (day.holidayName && day.classes.length === 0) {
+                        <span class="cal-mark cal-mark--holiday" title="Fiesta">🎉</span>
+                      }
+                    </span>
+                  </button>
+                }
               }
             </div>
-          }
-        } @else {
-          <div class="cal-panel-idle">
-            <h2 class="cal-panel-title">Elige un día</h2>
-            <p class="cal-footnote">Verás la clase, el Meet y los ejercicios.</p>
-            <ul class="cal-idle-tips">
-              <li><span aria-hidden="true">📚</span> Clase</li>
-              <li><span aria-hidden="true">✏️</span> Ejercicio</li>
-              <li><span aria-hidden="true">🎉</span> Fiesta</li>
+
+            <ul class="cal-legend">
+              <li class="cal-legend-item cal-legend-item--class">
+                <span aria-hidden="true">📚</span> Clase
+              </li>
+              <li class="cal-legend-item cal-legend-item--test">
+                <span aria-hidden="true">✏️</span> Ejercicio
+              </li>
+              <li class="cal-legend-item cal-legend-item--holiday">
+                <span aria-hidden="true">🎉</span> Fiesta
+              </li>
             </ul>
           </div>
-        }
-      </aside>
+
+          <aside class="cal-panel st-card" [attr.aria-label]="selected()?.title ? 'Detalle de ' + selected()?.title : 'Detalle del día'">
+            @if (selected(); as day) {
+              <header class="cal-panel-head">
+                <div>
+                  @if (day.iso === today) {
+                    <span class="st-chip cal-panel-chip"><span class="st-chip-dot"></span> Hoy</span>
+                  }
+                  <h2 class="cal-panel-title">{{ day.title }}</h2>
+                  @if (summary(day); as line) {
+                    <p class="cal-panel-meta">{{ line }}</p>
+                  } @else if (day.holidayName) {
+                    <p class="cal-panel-meta">{{ day.holidayName }}</p>
+                  }
+                </div>
+                <button type="button" class="cal-panel-close" (click)="closeDay()">Cerrar</button>
+              </header>
+
+              @if (downloadError()) {
+                <app-alert>{{ downloadError() }}</app-alert>
+              }
+
+              @if (day.classes.length === 0 && day.tests.length === 0) {
+                <p class="cal-panel-empty">
+                  {{ day.holidayName ? day.holidayName + '. ' : '' }}Este día no hay clase ni ejercicios.
+                </p>
+              } @else {
+                <div class="cal-agenda">
+                  @if (day.classes.length > 0) {
+                    <section>
+                      <h3 class="cal-section cal-section--class">
+                        <span aria-hidden="true">📚</span> Clases
+                      </h3>
+                      <ul class="cal-rows">
+                        @for (item of day.classes; track item.course.uuid) {
+                          <li class="cal-row cal-row--class">
+                            <div class="cal-row-copy">
+                              <p class="cal-row-title">{{ item.course.title }}</p>
+                              <p class="cal-row-sub">{{ item.course.schedule_start }}–{{ item.course.schedule_end }}</p>
+                              @if (item.session; as session) {
+                                @if (session.materials.length > 0) {
+                                  <div class="cal-files">
+                                    @for (file of session.materials; track file.uuid) {
+                                      <button type="button" (click)="download(file)">📎 {{ file.name }}</button>
+                                    }
+                                  </div>
+                                }
+                              }
+                            </div>
+                            @if (meetUrl(item.session); as url) {
+                              <a class="cal-row-go cal-row-go--meet" [href]="url" target="_blank" rel="noopener noreferrer">Entrar</a>
+                            }
+                          </li>
+                        }
+                      </ul>
+                      @if (meetPending(day.classes)) {
+                        <p class="cal-footnote">El enlace de Meet aparece el mismo día de clase.</p>
+                      }
+                    </section>
+                  }
+
+                  @if (day.tests.length > 0) {
+                    <section>
+                      <h3 class="cal-section cal-section--test">
+                        <span aria-hidden="true">✏️</span> Ejercicios
+                      </h3>
+                      <ul class="cal-rows">
+                        @for (test of day.tests; track test.uuid) {
+                          <li>
+                            <a class="cal-row cal-row--link cal-row--test" [routerLink]="['/student/exercises', test.uuid]">
+                              <div class="cal-row-copy">
+                                <p class="cal-row-title">{{ test.title }}</p>
+                                <p class="cal-row-sub">{{ testMeta(test) }}</p>
+                              </div>
+                              <span class="cal-row-go">{{ testCta(test) }}</span>
+                            </a>
+                          </li>
+                        }
+                      </ul>
+                    </section>
+                  }
+                </div>
+              }
+            } @else {
+              <div class="cal-panel-idle">
+                <h2 class="cal-panel-title">Elige un día</h2>
+                <p class="cal-footnote">Verás la clase, el Meet y los ejercicios.</p>
+                <ul class="cal-idle-tips">
+                  <li><span aria-hidden="true">📚</span> Clase</li>
+                  <li><span aria-hidden="true">✏️</span> Ejercicio</li>
+                  <li><span aria-hidden="true">🎉</span> Fiesta</li>
+                </ul>
+              </div>
+            }
+          </aside>
+        </div>
+      }
     </div>
   }
 </section>

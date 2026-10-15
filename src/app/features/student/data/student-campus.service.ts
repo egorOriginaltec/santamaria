@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
   CalendarExerciseDto,
@@ -6,7 +5,6 @@ import {
   CourseSessionsApiService,
   MaterialDto,
   StudentCalendarDto,
-  readApiError,
 } from '@core/services/course-sessions-api.service';
 import { CourseDto } from '@core/services/courses-api.service';
 import { HolidayDto } from '@core/services/holidays-api.service';
@@ -16,8 +14,6 @@ import { pastClasses, todayIso, upcomingClasses } from '../student-schedule';
 @Injectable({ providedIn: 'root' })
 export class StudentCampusService {
   private readonly sessionsApi = inject(CourseSessionsApiService);
-  private started = false;
-
   readonly loading = signal(true);
   readonly error = signal<string | null>(null);
   readonly courses = signal<readonly CourseDto[]>([]);
@@ -41,14 +37,6 @@ export class StudentCampusService {
   );
 
   ensure(): void {
-    if (this.started) {
-      this.sessionsApi.studentCalendar().subscribe({
-        next: (calendar) => this.apply(calendar),
-      });
-      return;
-    }
-
-    this.started = true;
     this.reload().subscribe();
   }
 
@@ -78,7 +66,6 @@ export class StudentCampusService {
   }
 
   clear(): void {
-    this.started = false;
     this.loading.set(true);
     this.error.set(null);
     this.courses.set([]);

@@ -15,92 +15,94 @@
       </div>
     </div>
   } @else {
-    <header class="cls-hero student-reveal">
-      <p class="st-kicker">Tus cursos</p>
-      <h1 class="st-title">
-        <span class="st-marker">Contenido</span>
-      </h1>
-      <p class="st-lead">
-        Apuntes y ejercicios, de arriba abajo. El Meet y las fechas siguen en el calendario.
-      </p>
-    </header>
+    <div class="cls-content" @contentEnter>
+      <header class="cls-hero">
+        <p class="st-kicker">Tus cursos</p>
+        <h1 class="st-title">
+          <span class="st-marker">Contenido</span>
+        </h1>
+        <p class="st-lead">
+          Apuntes y ejercicios, de arriba abajo. El Meet y las fechas siguen en el calendario.
+        </p>
+      </header>
 
-    @if (errorMessage(); as err) {
-      <app-alert>
-        <p>{{ err }}</p>
-        <button type="button" (click)="retry()">Reintentar</button>
-      </app-alert>
-    } @else if (downloadError(); as err) {
-      <app-alert>{{ err }}</app-alert>
-    }
-
-    @if (!errorMessage()) {
-      @if (empty()) {
-        <div class="cls-empty st-card student-reveal">
-          <p class="cls-empty-title">Aún no tienes un grupo</p>
-          <p class="cls-empty-text">Cuando te matriculen, aquí saldrán los apuntes y los ejercicios.</p>
-          <a routerLink="/student">Volver al inicio</a>
-        </div>
-      } @else {
-        <div class="cls-list student-reveal student-reveal-2">
-          @for (course of courses(); track course.uuid) {
-            <article class="cls-course st-card">
-              <header class="cls-course-head">
-                <h2 class="cls-course-title">{{ course.title }}</h2>
-                @if (courseMeta(course); as meta) {
-                  <p class="cls-course-meta">{{ meta }}</p>
-                }
-              </header>
-
-              @if (course.materials.length === 0 && course.exercises.length === 0) {
-                <p class="cls-none">Aún no hay apuntes ni ejercicios en este grupo.</p>
-              } @else {
-                <ul class="cls-items">
-                  @for (file of course.materials; track file.uuid) {
-                    <li class="cls-item">
-                      <p class="cls-kind">Archivo</p>
-                      <div class="cls-item-copy">
-                        <p class="cls-item-title">{{ file.name }}</p>
-                        <p class="cls-item-meta">{{ fileMeta(file) }}</p>
-                      </div>
-                      <button
-                        type="button"
-                        class="st-btn st-btn--ghost cls-cta"
-                        [disabled]="downloadingUuid() === file.uuid"
-                        (click)="download(file)"
-                      >
-                        {{ downloadingUuid() === file.uuid ? 'Descargando…' : 'Descargar' }}
-                      </button>
-                    </li>
-                  }
-                  @for (test of course.exercises; track test.uuid) {
-                    <li>
-                      <a class="cls-item cls-item--link" [routerLink]="['/student/exercises', test.uuid]">
-                        <p
-                          class="cls-kind"
-                          [class.is-exam]="test.purpose === 'exam'"
-                          [class.is-practice]="test.purpose === 'practice'"
-                        >
-                          {{ testKind(test) }}
-                        </p>
-                        <div class="cls-item-copy">
-                          <p class="cls-item-title">{{ test.title }}</p>
-                          @if (testMeta(test); as meta) {
-                            <p class="cls-item-meta">{{ meta }}</p>
-                          }
-                        </div>
-                        <span class="st-btn cls-cta" [class.st-btn--ghost]="!isPrimaryCta(test)">
-                          {{ testCta(test) }}
-                        </span>
-                      </a>
-                    </li>
-                  }
-                </ul>
-              }
-            </article>
-          }
-        </div>
+      @if (errorMessage(); as err) {
+        <app-alert>
+          <p>{{ err }}</p>
+          <button type="button" (click)="retry()">Reintentar</button>
+        </app-alert>
+      } @else if (downloadError(); as err) {
+        <app-alert>{{ err }}</app-alert>
       }
-    }
+
+      @if (!errorMessage()) {
+        @if (empty()) {
+          <div class="cls-empty st-card">
+            <p class="cls-empty-title">Aún no tienes un grupo</p>
+            <p class="cls-empty-text">Cuando te matriculen, aquí saldrán los apuntes y los ejercicios.</p>
+            <a routerLink="/student">Volver al inicio</a>
+          </div>
+        } @else {
+          <div class="cls-list">
+            @for (course of courses(); track course.uuid) {
+              <article class="cls-course st-card">
+                <header class="cls-course-head">
+                  <h2 class="cls-course-title">{{ course.title }}</h2>
+                  @if (courseMeta(course); as meta) {
+                    <p class="cls-course-meta">{{ meta }}</p>
+                  }
+                </header>
+
+                @if (course.materials.length === 0 && course.exercises.length === 0) {
+                  <p class="cls-none">Aún no hay apuntes ni ejercicios en este grupo.</p>
+                } @else {
+                  <ul class="cls-items">
+                    @for (file of course.materials; track file.uuid) {
+                      <li class="cls-item">
+                        <p class="cls-kind">Archivo</p>
+                        <div class="cls-item-copy">
+                          <p class="cls-item-title">{{ file.name }}</p>
+                          <p class="cls-item-meta">{{ fileMeta(file) }}</p>
+                        </div>
+                        <button
+                          type="button"
+                          class="st-btn st-btn--ghost cls-cta"
+                          [disabled]="downloadingUuid() === file.uuid"
+                          (click)="download(file)"
+                        >
+                          {{ downloadingUuid() === file.uuid ? 'Descargando…' : 'Descargar' }}
+                        </button>
+                      </li>
+                    }
+                    @for (test of course.exercises; track test.uuid) {
+                      <li>
+                        <a class="cls-item cls-item--link" [routerLink]="['/student/exercises', test.uuid]">
+                          <p
+                            class="cls-kind"
+                            [class.is-exam]="test.purpose === 'exam'"
+                            [class.is-practice]="test.purpose === 'practice'"
+                          >
+                            {{ testKind(test) }}
+                          </p>
+                          <div class="cls-item-copy">
+                            <p class="cls-item-title">{{ test.title }}</p>
+                            @if (testMeta(test); as meta) {
+                              <p class="cls-item-meta">{{ meta }}</p>
+                            }
+                          </div>
+                          <span class="st-btn cls-cta" [class.st-btn--ghost]="!isPrimaryCta(test)">
+                            {{ testCta(test) }}
+                          </span>
+                        </a>
+                      </li>
+                    }
+                  </ul>
+                }
+              </article>
+            }
+          </div>
+        }
+      }
+    </div>
   }
 </section>

@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { AppAlert } from '@shared/components/alert/alert';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { StudentCampusService } from '../../data/student-campus.service';
+import { studentContentEnter } from '../../student-enter.animation';
 import { firstName, formatNice, todayIso } from '../../student-schedule';
 
 @Component({
@@ -11,6 +12,7 @@ import { firstName, formatNice, todayIso } from '../../student-schedule';
   templateUrl: './student-home.html',
   styleUrls: ['../../student-ui.css', './student-home.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [studentContentEnter],
 })
 export class StudentHome {
   private readonly auth = inject(AuthApiService);

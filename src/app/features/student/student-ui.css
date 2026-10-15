@@ -22,7 +22,7 @@
 }
 
 .student-reveal {
-  animation: student-reveal 0.5s ease both;
+  animation: student-reveal 0.45s ease both;
 }
 
 .student-reveal-2 {
@@ -176,7 +176,7 @@
 @keyframes student-reveal {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
