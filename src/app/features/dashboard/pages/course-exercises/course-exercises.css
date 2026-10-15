@@ -3,11 +3,20 @@
 }
 
 .ex-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
   padding: 1.25rem;
   box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
+}
+
+.ex-table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .ex-loader {
@@ -90,5 +99,22 @@
   }
   100% {
     transform: translateX(350%);
+  }
+}
+
+@media (max-width: 1023px) {
+  .ex-card {
+    padding: 1rem;
+  }
+
+  .ex-table-scroll {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 640px) {
+  .ex-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
   }
 }

@@ -5,7 +5,10 @@
 
 .dashboard-shell {
   display: flex;
+  min-width: 0;
+  max-width: 100%;
   min-height: 100dvh;
+  overflow-x: clip;
   background: #f6f6fa;
 }
 

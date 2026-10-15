@@ -44,8 +44,8 @@ export class LegalDocumentPage {
       const page = this.doc();
       this.title.setTitle(
         page
-          ? `${page.title} · Santamaria Academia`
-          : 'Legal · Santamaria Academia',
+          ? `${page.title} · Santamaria Club`
+          : 'Legal · Santamaria Club',
       );
       this.aos.replay();
     });

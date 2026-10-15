@@ -2,7 +2,7 @@
   <header class="payments-header">
     <div class="payments-heading">
       <div>
-        <p class="payments-eyebrow">Academia</p>
+        <p class="payments-eyebrow">Club</p>
         <h2 class="payments-title">Resultados</h2>
         <p class="payments-subtitle">
           @if (loading() && initialLoad()) {
@@ -37,7 +37,7 @@
         </select>
       </label>
 
-      <label class="payments-field payments-field--search">
+      <label class="payments-field payments-field--course">
         <span class="payments-field-label">Curso</span>
         <select class="payments-input" [formControl]="courseControl">
           <option value="">Todos</option>
@@ -100,9 +100,9 @@
     </div>
   } @else if (attempts().length > 0) {
     <div [@resultsEnter]>
-      <div class="overflow-x-auto max-[720px]:overflow-visible">
-        <table class="w-full min-w-160 border-collapse text-left text-[13px] max-[720px]:block max-[720px]:min-w-0">
-          <thead class="max-[720px]:hidden">
+      <div class="payments-table-scroll max-lg:overflow-visible">
+        <table class="w-full min-w-0 border-collapse text-left text-[13px] max-lg:block lg:min-w-[48rem]">
+          <thead class="max-lg:hidden">
             <tr>
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Alumno</th>
               <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Test</th>
@@ -112,30 +112,30 @@
               <th class="pb-3"></th>
             </tr>
           </thead>
-          <tbody class="max-[720px]:block">
+          <tbody class="max-lg:block">
             @for (attempt of attempts(); track attempt.uuid) {
-              <tr class="max-[720px]:mb-3 max-[720px]:block max-[720px]:rounded-2xl max-[720px]:border max-[720px]:border-[#efeff3] max-[720px]:px-3.5 max-[720px]:pt-3 max-[720px]:pb-2 max-[720px]:last:mb-0">
+              <tr class="max-lg:mb-3 max-lg:block max-lg:rounded-2xl max-lg:border max-lg:border-[#efeff3] max-lg:px-3.5 max-lg:pt-3 max-lg:pb-2 max-lg:last:mb-0">
                 <td
                   data-label="Alumno"
-                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:flex-col max-[720px]:items-start max-[720px]:gap-1 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:text-left max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:flex-col max-lg:items-start max-lg:gap-1 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:text-left max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                 >
-                  <span class="block text-[13px] leading-snug font-semibold text-ink">
+                  <span class="block break-words text-[13px] leading-snug font-semibold text-ink">
                     {{ attempt.student.name || attempt.student.email }}
                   </span>
-                  <p class="mt-1 text-[13px] text-[#8a8a9a]">{{ attempt.student.email }}</p>
+                  <p class="mt-1 break-words text-[13px] text-[#8a8a9a]">{{ attempt.student.email }}</p>
                 </td>
                 <td
                   data-label="Test"
-                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:flex-col max-[720px]:items-start max-[720px]:gap-1 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:flex-col max-lg:items-start max-lg:gap-1 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                 >
-                  <span class="block text-[13px] leading-snug font-semibold text-ink">
+                  <span class="block break-words text-[13px] leading-snug font-semibold text-ink">
                     {{ attempt.exercise.title }}
                   </span>
-                  <p class="mt-1 text-[13px] text-[#8a8a9a]">{{ attempt.course.title }}</p>
+                  <p class="mt-1 break-words text-[13px] text-[#8a8a9a]">{{ attempt.course.title }}</p>
                 </td>
                 <td
                   data-label="Tipo"
-                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                 >
                   <span class="inline-flex rounded-full bg-[#eef2ff] px-2 py-0.5 text-[11px] font-bold text-[#4338ca]">
                     {{ purposeLabel(attempt.purpose) }}
@@ -143,21 +143,21 @@
                 </td>
                 <td
                   data-label="Nota"
-                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:whitespace-normal max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                 >
                   {{ scoreLabel(attempt) }}
                 </td>
                 <td
                   data-label="Fecha"
-                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                  class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:whitespace-normal max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                 >
                   {{ attempt.submitted_at ? (attempt.submitted_at | date: 'd MMM yyyy HH:mm') : '—' }}
                 </td>
-                <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-[720px]:block max-[720px]:w-full max-[720px]:border-0 max-[720px]:px-0 max-[720px]:pt-2 max-[720px]:pb-1">
-                  <div class="flex justify-end gap-1.5 max-[720px]:w-full">
+                <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-lg:block max-lg:w-full max-lg:border-0 max-lg:px-0 max-lg:pt-2 max-lg:pb-1">
+                  <div class="flex justify-end gap-1.5 max-lg:w-full">
                     <button
                       type="button"
-                      class="payments-btn payments-btn--danger payments-btn--small max-[720px]:flex-1"
+                      class="payments-btn payments-btn--danger payments-btn--small max-lg:flex-1"
                       [disabled]="deletingUuid() !== null"
                       (click)="onDelete(attempt)"
                     >

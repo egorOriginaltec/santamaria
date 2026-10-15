@@ -15,13 +15,13 @@ export const LEGAL_DOCUMENTS: Record<LegalSlug, LegalDocument> = {
     marker: 'Términos de uso',
     updatedOn: UPDATED,
     intro:
-      'Estas condiciones regulan el uso de la web y de los servicios de Santamaria Academia (extraescolares online de programación). Al navegar o contratar, aceptas este documento.',
+      'Estas condiciones regulan el uso de la web y de los servicios de Santamaria Club (extraescolares online de programación). Al navegar o contratar, aceptas este documento.',
     sections: [
       {
         id: 'quien',
         title: '1. Quiénes somos',
         paragraphs: [
-          'Santamaria Academia ofrece clases online en directo de programación e informática para jóvenes, con grupos reducidos y seguimiento docente.',
+          'Santamaria Club ofrece clases online en directo de programación e informática para jóvenes, con grupos reducidos y seguimiento docente.',
           `Para cualquier duda legal o contractual puedes escribir a ${EMAIL}.`,
         ],
       },
@@ -73,7 +73,7 @@ export const LEGAL_DOCUMENTS: Record<LegalSlug, LegalDocument> = {
         id: 'propiedad',
         title: '7. Propiedad intelectual',
         paragraphs: [
-          'La marca, el diseño de la web, los textos, vídeos y materiales didácticos son titularidad de Santamaria Academia o de sus licenciantes. No puedes copiarlos ni explotarlos fuera del uso educativo autorizado.',
+          'La marca, el diseño de la web, los textos, vídeos y materiales didácticos son titularidad de Santamaria Club o de sus licenciantes. No puedes copiarlos ni explotarlos fuera del uso educativo autorizado.',
         ],
       },
       {
@@ -116,7 +116,7 @@ export const LEGAL_DOCUMENTS: Record<LegalSlug, LegalDocument> = {
         id: 'responsable',
         title: '1. Responsable del tratamiento',
         paragraphs: [
-          `Responsable: Santamaria Academia. Contacto de privacidad: ${EMAIL}.`,
+          `Responsable: Santamaria Club. Contacto de privacidad: ${EMAIL}.`,
           'Si en el futuro designamos un delegado de protección de datos (DPD), sus datos de contacto se publicarán en esta misma página.',
         ],
       },

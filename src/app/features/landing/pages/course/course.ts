@@ -943,7 +943,7 @@ export class CoursePage {
         void this.router.navigateByUrl('/#program');
         return;
       }
-      this.title.setTitle(`${course.title} · Santamaria Academia`);
+      this.title.setTitle(`${course.title} · Santamaria Club`);
     });
   }
 }

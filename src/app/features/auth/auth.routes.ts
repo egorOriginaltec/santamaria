@@ -5,6 +5,6 @@ export const AUTH_ROUTES: Routes = [
   {
     path: '',
     component: Login,
-    title: 'Login · Santamaria Bootcaps',
+    title: 'Login · Santamaria Club',
   },
 ];

@@ -53,7 +53,7 @@ export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
     ],
   },
   {
-    title: 'Academia',
+    title: 'Club',
     items: [
       { id: 'courses-manage', label: 'Cursos', path: '/dashboard/courses', icon: 'courses' },
       { id: 'exercise-results', label: 'Resultados', path: '/dashboard/exercise-results', icon: 'analytics' },

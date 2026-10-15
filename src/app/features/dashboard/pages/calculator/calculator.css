@@ -3,6 +3,8 @@
 }
 
 .calc-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
@@ -156,9 +158,10 @@
 .calc-layout {
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 1024px) {
   .calc-layout {
     grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.75fr);
     align-items: start;
@@ -166,7 +169,10 @@
 }
 
 .calc-table-wrap {
+  min-width: 0;
+  max-width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid #ececf3;
   border-radius: 1rem;
 }
@@ -230,6 +236,7 @@
 
 .calc-students {
   width: 4.5rem;
+  min-width: 0;
   min-height: 2.2rem;
   border: 1px solid #e4e4ec;
   border-radius: 0.7rem;
@@ -289,10 +296,16 @@
   display: flex;
   align-items: flex-start;
   gap: 0.55rem;
+  min-width: 0;
   color: var(--color-ink, #161439);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.calc-radio span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .calc-radio input {
@@ -393,6 +406,7 @@
 }
 
 .calc-result {
+  min-width: 0;
   border: 1px solid #ececf3;
   border-radius: 1rem;
   background: #fafafc;
@@ -432,23 +446,27 @@
 .calc-rows div {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 1rem;
   padding: 0.75rem 0;
   border-top: 1px solid #f0f0f5;
 }
 
 .calc-rows dt {
+  min-width: 0;
   color: #6b6b80;
   font-size: 0.875rem;
 }
 
 .calc-rows dd {
   margin: 0;
+  flex: 0 0 auto;
   color: var(--color-ink, #161439);
   font-size: 0.875rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  text-align: right;
 }
 
 .calc-rows .is-total dt,
@@ -480,7 +498,15 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
+  .calc-card {
+    padding: 1rem;
+  }
+
+  .calc-subtitle {
+    max-width: none;
+  }
+
   .calc-skeleton-row {
     grid-template-columns: 1fr 1fr;
   }
@@ -488,6 +514,20 @@
   .calc-skeleton-row .sk-line:nth-child(n + 3),
   .calc-skeleton-row .sk-pill:nth-child(n + 3) {
     display: none;
+  }
+
+  .calc-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-result {
+    order: -1;
+  }
+
+  .calc-table-wrap {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
   }
 
   .calc-table {
@@ -508,7 +548,14 @@
   }
 
   .calc-table tr {
-    padding: 0.35rem 0.85rem 0.7rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #efeff3;
+    border-radius: 0.9rem;
+    padding: 0.7rem 0.85rem 0.55rem;
+  }
+
+  .calc-table tr:last-child {
+    margin-bottom: 0;
   }
 
   .calc-table td {
@@ -516,20 +563,102 @@
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+    border-top: 0;
     padding: 0.45rem 0;
     text-align: right;
   }
 
+  .calc-table td:first-child {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .calc-table td:first-child::before {
+    content: attr(data-label);
+    margin-bottom: 0.15rem;
+  }
+
   .calc-table td::before {
     content: attr(data-label);
+    flex: 0 0 auto;
     color: #8a8a9a;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    text-align: left;
   }
 
   .calc-table td:last-child {
     text-align: right;
+    padding-right: 0;
+  }
+
+  .calc-course-title {
+    overflow-wrap: anywhere;
+  }
+
+  .calc-students {
+    width: 5.5rem;
+    font-size: 16px;
+  }
+
+  .calc-students--wide {
+    max-width: none;
+    font-size: 16px;
+  }
+
+  .calc-panel {
+    padding: 0.9rem 1rem 1rem;
+  }
+
+  .calc-teacher-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calc-result-value {
+    font-size: 1.65rem;
+    overflow-wrap: anywhere;
+  }
+
+  .calc-rows div {
+    gap: 0.75rem;
+  }
+
+  .calc-rows dt {
+    overflow-wrap: anywhere;
+  }
+
+  .calc-empty .calc-btn {
+    width: 100%;
+    max-width: 18rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calc-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .calc-title {
+    font-size: 1.05rem;
+  }
+
+  .calc-result-value {
+    font-size: 1.45rem;
+  }
+
+  .calc-rows .is-total {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+
+  .calc-rows .is-total dd {
+    text-align: left;
   }
 }

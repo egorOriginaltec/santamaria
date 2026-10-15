@@ -115,9 +115,9 @@
     </div>
   } @else if (holidays().length > 0) {
     <div [@holidaysEnter]>
-    <div class="overflow-x-auto max-[720px]:overflow-visible">
-      <table class="w-full min-w-160 border-collapse text-left text-[13px] max-[720px]:block max-[720px]:min-w-0">
-        <thead class="max-[720px]:hidden">
+    <div class="holidays-table-scroll max-lg:overflow-visible">
+      <table class="w-full min-w-0 border-collapse text-left text-[13px] max-lg:block lg:min-w-[48rem]">
+        <thead class="max-lg:hidden">
           <tr>
             <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Fecha</th>
             <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Nombre</th>
@@ -127,30 +127,30 @@
             <th class="pb-3"></th>
           </tr>
         </thead>
-        <tbody class="max-[720px]:block">
+        <tbody class="max-lg:block">
           @for (holiday of holidays(); track holiday.uuid) {
-            <tr class="max-[720px]:mb-3 max-[720px]:block max-[720px]:rounded-2xl max-[720px]:border max-[720px]:border-[#efeff3] max-[720px]:px-3.5 max-[720px]:pt-3 max-[720px]:pb-2 max-[720px]:last:mb-0">
+            <tr class="max-lg:mb-3 max-lg:block max-lg:rounded-2xl max-lg:border max-lg:border-[#efeff3] max-lg:px-3.5 max-lg:pt-3 max-lg:pb-2 max-lg:last:mb-0">
               <td
                 data-label="Fecha"
-                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] leading-snug font-semibold whitespace-nowrap text-[#4a4a5c] max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:whitespace-normal max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
               >
                 {{ holiday.date | date: 'EEE d MMM yyyy' }}
               </td>
               <td
                 data-label="Nombre"
-                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
               >
-                <span class="text-[13px] leading-snug font-semibold text-ink">{{ holiday.name }}</span>
+                <span class="break-words text-[13px] leading-snug font-semibold text-ink">{{ holiday.name }}</span>
               </td>
               <td
                 data-label="Tipo"
-                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
               >
                 <span class="inline-flex rounded-full bg-[#eef2ff] px-2.5 py-1 text-[11px] font-bold text-[#4338ca]">Nacional</span>
               </td>
               <td
                 data-label="Estado"
-                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-[720px]:flex max-[720px]:w-full max-[720px]:items-center max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:items-center max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
               >
                 <button
                   type="button"
@@ -164,21 +164,21 @@
               </td>
               <td
                 data-label="Notas"
-                class="max-w-56 truncate border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] text-[#8a8a9a] max-[720px]:flex max-[720px]:w-full max-[720px]:max-w-none max-[720px]:items-start max-[720px]:justify-between max-[720px]:gap-3 max-[720px]:border-0 max-[720px]:px-0 max-[720px]:py-1.5 max-[720px]:whitespace-normal max-[720px]:before:shrink-0 max-[720px]:before:text-[10px] max-[720px]:before:font-bold max-[720px]:before:tracking-[0.08em] max-[720px]:before:text-[#8a8a9a] max-[720px]:before:uppercase max-[720px]:before:content-[attr(data-label)]"
+                class="max-w-56 truncate border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle text-[13px] text-[#8a8a9a] max-lg:flex max-lg:w-full max-lg:max-w-none max-lg:items-start max-lg:justify-between max-lg:gap-3 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:whitespace-normal max-lg:break-words max-lg:before:shrink-0 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
               >
                 {{ holiday.notes || '—' }}
               </td>
-              <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-[720px]:block max-[720px]:w-full max-[720px]:border-0 max-[720px]:px-0 max-[720px]:pt-2 max-[720px]:pb-1">
-                <div class="flex justify-end gap-1.5 max-[720px]:w-full">
+              <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-lg:block max-lg:w-full max-lg:border-0 max-lg:px-0 max-lg:pt-2 max-lg:pb-1">
+                <div class="flex justify-end gap-1.5 max-lg:w-full">
                   <a
-                    class="holidays-btn holidays-btn--small max-[720px]:flex-1"
+                    class="holidays-btn holidays-btn--small max-lg:flex-1"
                     [routerLink]="['/dashboard/holidays', holiday.uuid, 'edit']"
                   >
                     Editar
                   </a>
                   <button
                     type="button"
-                    class="holidays-btn holidays-btn--danger holidays-btn--small max-[720px]:flex-1"
+                    class="holidays-btn holidays-btn--danger holidays-btn--small max-lg:flex-1"
                     [disabled]="busyUuid() !== null"
                     (click)="onDelete(holiday)"
                   >

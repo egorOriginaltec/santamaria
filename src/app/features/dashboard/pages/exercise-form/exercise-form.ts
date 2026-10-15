@@ -26,7 +26,7 @@ type EditorMode = 'manual' | 'prompt';
 
 export const PROMPT_LEAD = 'Genera un test A/B/C SOLO sobre este texto (no uses el tema del curso):';
 export const CODE_PROMPT_LEAD =
-  'Genera ejercicios de código SOLO según este texto (no inventes el lenguaje por el nombre del curso):';
+  'Genera ejercicios de CÓDIGO (cualquier lenguaje) según este texto; no uses el nombre del curso para elegir el lenguaje:';
 export const QUESTION_MAX = 100;
 export const QUESTION_MIN = 1;
 

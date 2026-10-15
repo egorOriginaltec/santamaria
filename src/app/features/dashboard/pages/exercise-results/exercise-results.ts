@@ -11,7 +11,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { readApiError } from '@core/services/course-sessions-api.service';
 import { ToastService } from '@core/services/toast.service';
@@ -27,7 +26,7 @@ import { debounceTime, distinctUntilChanged, finalize, merge } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-exercise-results',
-  imports: [DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [DatePipe, ReactiveFormsModule],
   templateUrl: './exercise-results.html',
   styleUrl: '../payments/payments.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,11 +3,20 @@
 }
 
 .payments-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
   padding: 1.25rem;
   box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
+}
+
+.payments-table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .payments-header {
@@ -101,8 +110,8 @@
 
 .payments-input:focus {
   outline: none;
-  border-color: rgba(231, 53, 61), 0.45);
-  box-shadow: 0 0 0 3px rgba(231, 53, 61), 0.12);
+  border-color: rgba(231, 53, 61, 0.45);
+  box-shadow: 0 0 0 3px rgba(231, 53, 61, 0.12);
 }
 
 .payments-btn,
@@ -155,7 +164,7 @@
 
 .payments-btn:hover:not(:disabled):not(.payments-btn--primary),
 .pager-btn:hover:not(:disabled) {
-  border-color: rgba(231, 53, 61), 0.35);
+  border-color: rgba(231, 53, 61, 0.35);
   background: var(--color-brand-soft, #fdeeee);
 }
 
@@ -468,29 +477,38 @@
   }
 }
 
-@media (max-width: 1200px) {
-  .payments-table {
-    min-width: 0;
-  }
-
-  .payments-date,
-  .payments-amount {
-    white-space: normal;
-  }
-}
-
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .payments-card {
     padding: 1rem;
   }
 
+  .payments-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 0.65rem;
+  }
+
   .payments-field,
   .payments-field--search,
-  .payments-field--page,
-  .payments-heading .payments-btn,
-  .payments-filters > .payments-btn {
+  .payments-field--page {
     width: 100%;
     max-width: none;
+    min-width: 0;
+  }
+
+  .payments-field--search,
+  .payments-field--course {
+    grid-column: 1 / -1;
+  }
+
+  .payments-filters > .payments-btn,
+  .payments-heading .payments-btn {
+    width: 100%;
+  }
+
+  .payments-filters > .payments-btn {
+    grid-column: 1 / -1;
   }
 
   .payments-input {
@@ -506,6 +524,7 @@
     display: none;
   }
 
+  .payments-table-scroll,
   .payments-table-wrap {
     overflow: visible;
   }
@@ -566,7 +585,9 @@
   }
 
   .payments-name,
-  .payments-description {
+  .payments-description,
+  .payments-date,
+  .payments-amount {
     max-width: none;
     overflow-wrap: anywhere;
     white-space: normal;
@@ -588,6 +609,35 @@
 
   .payments-actions .payments-btn {
     flex: 1;
+  }
+
+  .payments-pager {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .payments-pager-controls {
+    width: 100%;
+  }
+
+  .payments-pager-controls .pager-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .payments-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .payments-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .payments-title {
+    font-size: 1.05rem;
   }
 }
 

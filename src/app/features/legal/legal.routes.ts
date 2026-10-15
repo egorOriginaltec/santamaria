@@ -5,7 +5,7 @@ export const LEGAL_ROUTES: Routes = [
   {
     path: ':slug',
     component: LegalDocumentPage,
-    title: 'Legal · Santamaria Academia',
+    title: 'Legal · Santamaria Club',
   },
   {
     path: '',

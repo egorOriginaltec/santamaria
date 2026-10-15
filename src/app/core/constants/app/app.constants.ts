@@ -1,4 +1,4 @@
-export const APP_MARK = 'SB';
-export const APP_WORD = 'bootcaps';
-export const APP_NAME = 'Santamaria Bootcaps';
-export const APP_TAGLINE = 'Academia';
+export const APP_MARK = 'SC';
+export const APP_WORD = 'club';
+export const APP_NAME = 'Santamaria Club';
+export const APP_TAGLINE = 'Club';

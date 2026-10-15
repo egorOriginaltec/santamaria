@@ -3,6 +3,8 @@
 }
 
 .course-form-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
@@ -369,14 +371,28 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .course-form-card {
     padding: 1rem;
+  }
+
+  .course-form-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .course-form-back {
+    align-self: flex-start;
   }
 
   .course-form-grid,
   .course-form-skeleton {
     grid-template-columns: 1fr;
+  }
+
+  .course-field {
+    min-width: 0;
   }
 
   .course-weekdays {
@@ -385,15 +401,31 @@
 
   .course-input,
   .course-form-card textarea {
+    width: 100%;
     font-size: 16px;
   }
 
   .course-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .course-form-actions .course-btn {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .course-form-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .course-form-title {
+    font-size: 1.05rem;
+  }
+
+  .course-weekdays {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

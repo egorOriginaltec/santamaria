@@ -3,6 +3,8 @@
 }
 
 .classes-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
@@ -13,6 +15,24 @@
 @media (min-width: 640px) {
   .classes-card {
     padding: 1.15rem 1.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .classes-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .classes-file-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 0.4rem;
+  }
+
+  .classes-file-actions > button {
+    width: 100%;
   }
 }
 

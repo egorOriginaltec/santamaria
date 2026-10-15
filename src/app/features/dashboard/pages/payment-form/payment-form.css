@@ -3,6 +3,8 @@
 }
 
 .payment-form-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
@@ -204,6 +206,8 @@
 }
 
 .payment-input {
+  min-width: 0;
+  width: 100%;
   min-height: 2.5rem;
   border: 1px solid #e4e4ec;
   border-radius: 0.75rem;
@@ -377,9 +381,19 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .payment-form-card {
     padding: 1rem;
+  }
+
+  .payment-form-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .payment-form-back {
+    align-self: flex-start;
   }
 
   .payment-form-grid,
@@ -387,16 +401,41 @@
     grid-template-columns: 1fr;
   }
 
-  .payment-input {
+  .payment-field {
+    min-width: 0;
+  }
+
+  .payment-input,
+  .payment-textarea {
     font-size: 16px;
   }
 
   .payment-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .payment-form-actions .payment-btn {
     width: 100%;
+  }
+
+  .payment-sk-actions {
+    flex-direction: column;
+  }
+
+  .payment-sk-actions .sk-btn,
+  .payment-sk-actions .sk-btn--primary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-form-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .payment-form-title {
+    font-size: 1.05rem;
   }
 }
 

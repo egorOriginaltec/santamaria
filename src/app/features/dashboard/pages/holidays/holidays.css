@@ -3,11 +3,20 @@
 }
 
 .holidays-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
   padding: 1.25rem;
   box-shadow: 0 8px 24px rgba(22, 20, 57, 0.04);
+}
+
+.holidays-table-scroll {
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .holidays-header {
@@ -421,18 +430,37 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .holidays-card {
     padding: 1rem;
   }
 
+  .holidays-filters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: 0.65rem;
+  }
+
   .holidays-field,
   .holidays-field--search,
-  .holidays-field--page,
-  .holidays-heading .holidays-btn,
-  .holidays-filters > .holidays-btn {
+  .holidays-field--page {
     width: 100%;
     max-width: none;
+    min-width: 0;
+  }
+
+  .holidays-field--search {
+    grid-column: 1 / -1;
+  }
+
+  .holidays-filters > .holidays-btn {
+    width: 100%;
+    grid-column: 1 / -1;
+  }
+
+  .holidays-heading .holidays-btn {
+    width: 100%;
   }
 
   .holidays-input {
@@ -448,6 +476,7 @@
     display: none;
   }
 
+  .holidays-table-scroll,
   .holidays-table-wrap {
     overflow: visible;
   }
@@ -520,5 +549,33 @@
 
   .holidays-actions .holidays-btn {
     flex: 1;
+  }
+
+  .holidays-pager {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .holidays-pager-controls {
+    width: 100%;
+  }
+
+  .holidays-pager-controls .pager-btn {
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .holidays-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .holidays-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .holidays-title {
+    font-size: 1.05rem;
   }
 }

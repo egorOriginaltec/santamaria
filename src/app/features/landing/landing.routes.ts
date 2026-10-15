@@ -7,12 +7,12 @@ export const LANDING_ROUTES: Routes = [
   {
     path: '',
     component: Landing,
-    title: 'Santamaria Bootcaps · Programación + IA',
+    title: 'Santamaria Club · Programación + IA',
   },
   {
     path: 'horarios',
     component: SchedulePage,
-    title: 'Horarios y precios · Santamaria Academia',
+    title: 'Horarios y precios · Santamaria Club',
   },
   {
     path: 'precios',
@@ -22,6 +22,6 @@ export const LANDING_ROUTES: Routes = [
   {
     path: 'cursos/:slug',
     component: CoursePage,
-    title: 'Curso · Santamaria Bootcaps',
+    title: 'Curso · Santamaria Club',
   },
 ];

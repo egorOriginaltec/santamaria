@@ -3,6 +3,8 @@
 }
 
 .holiday-form-card {
+  min-width: 0;
+  max-width: 100%;
   border: 1px solid #ececf3;
   border-radius: 1.25rem;
   background: #fff;
@@ -224,6 +226,8 @@
 }
 
 .holiday-input {
+  min-width: 0;
+  width: 100%;
   min-height: 2.5rem;
   border: 1px solid #e4e4ec;
   border-radius: 0.75rem;
@@ -334,9 +338,23 @@
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1023px) {
   .holiday-form-card {
     padding: 1rem;
+  }
+
+  .holiday-form-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .holiday-form-subtitle {
+    max-width: none;
+  }
+
+  .holiday-form-back {
+    align-self: flex-start;
   }
 
   .holiday-form-grid,
@@ -344,15 +362,39 @@
     grid-template-columns: 1fr;
   }
 
+  .holiday-field {
+    min-width: 0;
+  }
+
   .holiday-input {
     font-size: 16px;
   }
 
   .holiday-form-actions {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 
   .holiday-form-actions .holiday-btn {
     width: 100%;
+  }
+
+  .holiday-sk-actions {
+    flex-direction: column;
+  }
+
+  .holiday-sk-actions .sk-btn,
+  .holiday-sk-actions .sk-btn--primary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .holiday-form-card {
+    padding: 0.85rem;
+    border-radius: 1rem;
+  }
+
+  .holiday-form-title {
+    font-size: 1.05rem;
   }
 }
