@@ -320,6 +320,26 @@
   background: var(--color-brand-hover, #cf2932);
 }
 
+.course-form-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.course-form-empty-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-ink, #161439);
+}
+
+.course-form-empty-text {
+  margin: 0.5rem auto 1.1rem;
+  max-width: 26rem;
+  font-size: 0.875rem;
+  color: #8a8a9a;
+  line-height: 1.45;
+}
+
 .course-btn--ghost:hover {
   background: var(--color-brand-soft, #fdeeee);
 }

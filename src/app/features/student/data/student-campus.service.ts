@@ -1,9 +1,12 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 import {
+  CalendarExerciseDto,
   CourseSessionDto,
   CourseSessionsApiService,
   MaterialDto,
   StudentCalendarDto,
+  readApiError,
 } from '@core/services/course-sessions-api.service';
 import { CourseDto } from '@core/services/courses-api.service';
 import { HolidayDto } from '@core/services/holidays-api.service';
@@ -20,6 +23,8 @@ export class StudentCampusService {
   readonly courses = signal<readonly CourseDto[]>([]);
   readonly holidays = signal<readonly HolidayDto[]>([]);
   readonly sessions = signal<Readonly<Record<string, readonly CourseSessionDto[]>>>({});
+  readonly exercises = signal<Readonly<Record<string, readonly CalendarExerciseDto[]>>>({});
+  readonly materials = signal<Readonly<Record<string, readonly MaterialDto[]>>>({});
 
   readonly nextClass = computed(
     () =>
@@ -37,6 +42,9 @@ export class StudentCampusService {
 
   ensure(): void {
     if (this.started) {
+      this.sessionsApi.studentCalendar().subscribe({
+        next: (calendar) => this.apply(calendar),
+      });
       return;
     }
 
@@ -50,9 +58,7 @@ export class StudentCampusService {
 
     return this.sessionsApi.studentCalendar().pipe(
       tap((calendar) => {
-        this.courses.set(calendar.courses);
-        this.holidays.set(calendar.holidays);
-        this.sessions.set(calendar.sessions);
+        this.apply(calendar);
         this.loading.set(false);
       }),
       catchError(() => {
@@ -63,6 +69,14 @@ export class StudentCampusService {
     );
   }
 
+  private apply(calendar: StudentCalendarDto): void {
+    this.courses.set(calendar.courses);
+    this.holidays.set(calendar.holidays);
+    this.sessions.set(calendar.sessions);
+    this.exercises.set(calendar.exercises ?? {});
+    this.materials.set(calendar.materials ?? {});
+  }
+
   clear(): void {
     this.started = false;
     this.loading.set(true);
@@ -70,6 +84,8 @@ export class StudentCampusService {
     this.courses.set([]);
     this.holidays.set([]);
     this.sessions.set({});
+    this.exercises.set({});
+    this.materials.set({});
   }
 
   download(material: MaterialDto): Observable<void> {

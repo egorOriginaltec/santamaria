@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,6 +11,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { AppFieldError } from '@shared/components/field-error/field-error';
 import {
   LOGIN_DEFAULT_EMAIL,
   LOGIN_DEFAULT_PASSWORD,
@@ -20,11 +22,13 @@ import {
   LOGIN_TITLE,
 } from '@core/index';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AppFieldError],
   templateUrl: './login.html',
   styleUrl: './login.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +37,7 @@ export class Login {
   private readonly fb = inject(FormBuilder);
   private readonly router = inject(Router);
   private readonly authApi = inject(AuthApiService);
+  private readonly toast = inject(ToastService);
 
   readonly eyebrow = LOGIN_EYEBROW;
   readonly title = LOGIN_TITLE;
@@ -42,8 +47,6 @@ export class Login {
 
   readonly showPassword = signal(false);
   readonly submitting = signal(false);
-  readonly submitted = signal(false);
-  readonly errorMessage = signal<string | null>(null);
 
   readonly form = this.fb.nonNullable.group({
     email: [LOGIN_DEFAULT_EMAIL, [Validators.required, Validators.email]],
@@ -59,6 +62,42 @@ export class Login {
     return control.invalid && (control.dirty || control.touched);
   }
 
+  emailError(): string {
+    const control = this.form.controls.email;
+    if (control.hasError('required')) {
+      return 'El email es obligatorio.';
+    }
+    if (control.hasError('email')) {
+      return 'Indica un email válido.';
+    }
+    if (control.hasError('server')) {
+      return String(control.getError('server'));
+    }
+    return 'Indica un email válido.';
+  }
+
+  passwordError(): string {
+    const control = this.form.controls.password;
+    if (control.hasError('required')) {
+      return 'La contraseña es obligatoria.';
+    }
+    if (control.hasError('minlength')) {
+      return 'Mínimo 6 caracteres.';
+    }
+    if (control.hasError('server')) {
+      return String(control.getError('server'));
+    }
+    return 'Indica una contraseña válida.';
+  }
+
+  onEmailInput(): void {
+    this.clearServerError('email');
+  }
+
+  onPasswordInput(): void {
+    this.clearServerError('password');
+  }
+
   togglePassword(): void {
     this.showPassword.update((value) => !value);
   }
@@ -66,11 +105,13 @@ export class Login {
   onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.toast.error('Revisa el email y la contraseña.');
       return;
     }
 
     this.submitting.set(true);
-    this.errorMessage.set(null);
+    this.clearServerError('email');
+    this.clearServerError('password');
 
     const { email, password, remember } = this.form.getRawValue();
 
@@ -86,27 +127,80 @@ export class Login {
               ? '/student'
               : '/login';
 
+          this.toast.success('Sesión iniciada correctamente.');
           void this.router.navigateByUrl(destination);
         },
-        error: (err: { status?: number; error?: { message?: string } }) => {
-          if (err.status === 422) {
-            this.errorMessage.set('Email o contraseña incorrectos.');
-            return;
-          }
-          this.errorMessage.set(
-            'No se pudo iniciar sesión. Comprueba que el API esté en marcha.',
-          );
+        error: (err: HttpErrorResponse) => {
+          this.applyServerFieldErrors(err);
+          this.toast.error(this.loginErrorMessage(err));
         },
       });
   }
 
-  resetForm(): void {
-    this.submitted.set(false);
-    this.errorMessage.set(null);
-    this.form.reset({
-      email: LOGIN_DEFAULT_EMAIL,
-      password: LOGIN_DEFAULT_PASSWORD,
-      remember: true,
-    });
+  private loginErrorMessage(err: HttpErrorResponse): string {
+    if (err.status === 429) {
+      return readApiError(err, 'Demasiados intentos. Espera un momento.');
+    }
+
+    if (err.status === 401 || err.status === 422) {
+      const message = readApiError(err, 'Email o contraseña incorrectos.');
+      if (
+        /sesión ha caducado|entra otra vez|unauthenticated|unauthorized/i.test(
+          message,
+        )
+      ) {
+        return 'Email o contraseña incorrectos.';
+      }
+      return message;
+    }
+
+    return readApiError(
+      err,
+      'No se pudo iniciar sesión. Inténtalo de nuevo en un momento.',
+    );
+  }
+
+  private applyServerFieldErrors(err: HttpErrorResponse): void {
+    const errors = err.error?.errors;
+    if (!errors || typeof errors !== 'object') {
+      return;
+    }
+
+    const bag = errors as Record<string, unknown>;
+
+    for (const field of ['email', 'password'] as const) {
+      const value = bag[field];
+      const list = Array.isArray(value) ? value : value != null ? [value] : [];
+      const first = list.find(
+        (item): item is string => typeof item === 'string' && item.length > 0,
+      );
+
+      if (!first) {
+        continue;
+      }
+
+      const message = readApiError(
+        new HttpErrorResponse({
+          error: { message: first },
+          status: err.status,
+          statusText: err.statusText,
+        }),
+        field === 'email'
+          ? 'Indica un email válido.'
+          : 'Indica una contraseña válida.',
+      );
+
+      this.form.controls[field].setErrors({ server: message });
+      this.form.controls[field].markAsTouched();
+    }
+  }
+
+  private clearServerError(controlName: 'email' | 'password'): void {
+    const control = this.form.controls[controlName];
+    if (!control.hasError('server')) {
+      return;
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
   }
 }

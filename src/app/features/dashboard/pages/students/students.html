@@ -67,14 +67,6 @@
       </button>
     </div>
   </header>
-
-  @if (errorMessage()) {
-    <div class="students-alert" role="alert">
-      <p>{{ errorMessage() }}</p>
-      <a routerLink="/login" class="students-alert-link">Ir a acceso</a>
-    </div>
-  }
-
   @if (loading()) {
     <div class="students-loader" aria-busy="true" aria-live="polite">
       <div class="students-loader-line" aria-hidden="true"></div>
@@ -90,7 +82,7 @@
         }
       </div>
     </div>
-  } @else if (students().length === 0 && !errorMessage()) {
+  } @else if (students().length === 0 ) {
     <div class="students-empty students-reveal">
       <p class="students-empty-title">No hay estudiantes con estos filtros</p>
       <p class="students-empty-text">

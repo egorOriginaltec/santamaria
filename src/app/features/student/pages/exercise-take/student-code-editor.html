@@ -1,0 +1,32 @@
+<div class="ced" [class.is-off]="disabled()">
+  <div class="ced-bar">
+    <span class="ced-dot" aria-hidden="true"></span>
+    <span class="ced-dot ced-dot--amber" aria-hidden="true"></span>
+    <span class="ced-dot ced-dot--green" aria-hidden="true"></span>
+    <span class="ced-lang">{{ language() || 'código' }}</span>
+  </div>
+  <div class="ced-body">
+    <ol class="ced-gutter" #gutter>
+      @for (line of lines(); track line) {
+        <li>{{ line }}</li>
+      }
+    </ol>
+    <div class="ced-pane">
+      <pre class="ced-hi" #highlightPane [innerHTML]="highlighted()"></pre>
+      <textarea
+        class="ced-in"
+        spellcheck="false"
+        wrap="off"
+        autocomplete="off"
+        autocapitalize="off"
+        [attr.aria-label]="'Editor de código'"
+        [readOnly]="disabled()"
+        [placeholder]="placeholder()"
+        [value]="value()"
+        (input)="onInput($any($event.target).value)"
+        (scroll)="onScroll($event)"
+        (keydown)="onKeydown($event)"
+      ></textarea>
+    </div>
+  </div>
+</div>

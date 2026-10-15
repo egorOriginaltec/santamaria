@@ -11,6 +11,7 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { DashboardApiService, DashboardSummary } from '@core/services/dashboard-api.service';
+import { ToastService } from '@core/services/toast.service';
 import { catchError, EMPTY, finalize, switchMap } from 'rxjs';
 import { DashboardEnrollmentBreakdown } from '../../components/enrollment-breakdown/enrollment-breakdown';
 import { DashboardRecentStudents } from '../../components/recent-students/recent-students';
@@ -58,6 +59,7 @@ const currentMonth = monthRange(today);
 export class DashboardHome implements OnInit {
   private readonly dashboardApi = inject(DashboardApiService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly toast = inject(ToastService);
 
   readonly years = Array.from({ length: 6 }, (_, index) => String(currentYear - index));
   readonly year = signal(currentMonth.year);
@@ -66,7 +68,6 @@ export class DashboardHome implements OnInit {
   readonly summary = signal<DashboardSummary | null>(null);
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
-  readonly errorMessage = signal<string | null>(null);
   readonly skeletonStats = [0, 1, 2] as const;
   readonly skeletonMini = [0, 1, 2, 3] as const;
   readonly skeletonRows = [0, 1, 2, 3, 4] as const;
@@ -81,12 +82,11 @@ export class DashboardHome implements OnInit {
           if (!from || !to || from > to) {
             this.loading.set(false);
             this.initialLoad.set(false);
-            this.errorMessage.set('La fecha inicial no puede ser posterior a la final.');
+            this.toast.error('La fecha inicial no puede ser posterior a la final.');
             return EMPTY;
           }
 
           this.loading.set(true);
-          this.errorMessage.set(null);
 
           return this.dashboardApi.summary(from, to).pipe(
             finalize(() => {
@@ -94,11 +94,11 @@ export class DashboardHome implements OnInit {
               this.initialLoad.set(false);
             }),
             catchError((error: HttpErrorResponse) => {
-              this.errorMessage.set(
-                error.status === 401 || error.status === 403
-                  ? 'Inicia sesión como administrador para ver la facturación.'
-                  : 'No se ha podido cargar el panel.',
-              );
+              if (error.status === 401 || error.status === 403) {
+                this.toast.error(
+                  'Inicia sesión como administrador para ver la facturación.',
+                );
+              }
               return EMPTY;
             }),
           );

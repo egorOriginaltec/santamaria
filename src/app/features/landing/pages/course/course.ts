@@ -912,7 +912,7 @@ export class CoursePage {
         summary: '60 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'Una base digital para toda la vida',
         introText:
-          'Una hora semanal, a los 7–9 años: ordenador, guardar un trabajo, buscar, un documento, una presentación y usar la nube o una IA con ayuda.',
+          'Una hora semanal, a los 8–9 años: ordenador, guardar un trabajo, buscar, un documento, una presentación y usar la nube o una IA con ayuda.',
         introNote:
           'Sin mecanografía como curso, sin programación y sin un proyecto multimedia aparte. Cada clase se practica, no se explica y se pasa al siguiente tema.',
         skills: this.digitalSkills,

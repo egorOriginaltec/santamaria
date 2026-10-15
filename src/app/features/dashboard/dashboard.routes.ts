@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
 import { DashboardCalculator } from './pages/calculator/calculator';
-
-import { DashboardCalendar } from './pages/calendar/calendar';
 import { DashboardLayout } from './layout/dashboard-layout';
 import { DashboardCourseClasses } from './pages/course-classes/course-classes';
+import { DashboardCourseExercises } from './pages/course-exercises/course-exercises';
 import { DashboardCourseForm } from './pages/course-form/course-form';
 import { DashboardCourses } from './pages/courses/courses';
+import { DashboardExerciseForm } from './pages/exercise-form/exercise-form';
+import { DashboardExerciseResults } from './pages/exercise-results/exercise-results';
 import { DashboardHome } from './pages/dashboard-home/dashboard-home';
 import { DashboardHolidayForm } from './pages/holiday-form/holiday-form';
 import { DashboardHolidays } from './pages/holidays/holidays';
@@ -94,11 +95,31 @@ export const DASHBOARD_ROUTES: Routes = [
         title: 'Editar curso · Santamaria',
       },
       {
-        path: 'calendar',
-        component: DashboardCalendar,
-        title: 'Calendario · Santamaria',
+        path: 'courses/:uuid/classes',
+        component: DashboardCourseClasses,
+        title: 'Clases · Santamaria',
       },
-      { path: 'calendario', redirectTo: 'calendar', pathMatch: 'full' },
+      {
+        path: 'courses/:uuid/exercises',
+        component: DashboardCourseExercises,
+        title: 'Ejercicios · Santamaria',
+      },
+      {
+        path: 'courses/:uuid/exercises/new',
+        component: DashboardExerciseForm,
+        title: 'Nuevo ejercicio · Santamaria',
+      },
+      {
+        path: 'courses/:uuid/exercises/:exerciseUuid/edit',
+        component: DashboardExerciseForm,
+        title: 'Editar ejercicio · Santamaria',
+      },
+      {
+        path: 'exercise-results',
+        component: DashboardExerciseResults,
+        title: 'Resultados · Santamaria',
+      },
+      { path: 'resultados', redirectTo: 'exercise-results', pathMatch: 'full' },
       {
         path: 'calculator',
         component: DashboardCalculator,

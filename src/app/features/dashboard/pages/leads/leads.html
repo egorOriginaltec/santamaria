@@ -81,14 +81,6 @@
       </button>
     </div>
   </header>
-
-  @if (errorMessage()) {
-    <div class="leads-alert" role="alert">
-      <p>{{ errorMessage() }}</p>
-      <a routerLink="/login" class="leads-alert-link">Ir a acceso</a>
-    </div>
-  }
-
   @if (loading()) {
     <div class="leads-loader" aria-busy="true" aria-live="polite">
       <div class="leads-loader-line" aria-hidden="true"></div>
@@ -106,7 +98,7 @@
         }
       </div>
     </div>
-  } @else if (leads().length === 0 && !errorMessage()) {
+  } @else if (leads().length === 0 ) {
     <div class="leads-empty leads-reveal">
       <p class="leads-empty-title">No hay leads en este periodo</p>
       <p class="leads-empty-text">

@@ -13,7 +13,7 @@
 
   <div class="hero-shell relative mx-auto flex w-full max-w-[1320px] flex-1 flex-col px-4 sm:px-6">
     <div class="hero-main grid flex-1 items-center gap-6 lg:grid-cols-2 lg:gap-8 xl:gap-12">
-      <div class="relative z-10 mx-auto min-w-0 max-w-xl text-center lg:mx-0 lg:text-left" appReveal>
+      <div class="relative z-10 mx-auto min-w-0 max-w-xl text-center lg:mx-0 lg:text-left" data-aos="fade-up">
         <svg
           class="mx-auto mb-3 size-8 text-ink/80 sm:mb-4 sm:size-9 lg:mx-0"
           viewBox="0 0 32 32"
@@ -69,8 +69,8 @@
 
       <div
         class="hero-visual relative mx-auto flex min-h-[240px] w-full min-w-0 max-w-[560px] items-center justify-center min-[375px]:min-h-[280px] sm:min-h-[360px] lg:min-h-0 lg:h-full lg:max-h-[min(440px,42dvh)] lg:max-w-none lg:justify-self-end"
-        appReveal
-        [delay]="160"
+        data-aos="fade-up"
+        data-aos-delay="100"
         aria-hidden="true"
       >
         <div class="hero-chip hero-chip--hours">
@@ -117,10 +117,12 @@
       </div>
     </div>
 
-    <div class="hero-features relative z-10 mt-auto grid gap-3 pt-6 pb-5 sm:grid-cols-2 sm:gap-4 sm:pb-6 lg:pb-7 xl:grid-cols-4" appReveal [delay]="120">
-      @for (item of features; track item.title) {
+    <div class="hero-features relative z-10 mt-auto grid gap-3 pt-6 pb-5 sm:grid-cols-2 sm:gap-4 sm:pb-6 lg:pb-7 xl:grid-cols-4">
+      @for (item of features; track item.title; let i = $index) {
         <article
           class="hero-feature min-w-0 rounded-2xl border border-[#ececf3] bg-white/95 p-4 shadow-[0_8px_30px_rgba(22,20,57,0.06)] backdrop-blur-sm sm:p-5"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="i * 70"
         >
           <div class="mb-3">
             @switch (item.icon) {

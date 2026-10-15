@@ -19,7 +19,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     id: '01',
     slug: 'ordenador-e-internet',
     title: 'Primeros Pasos Digitales',
-    ages: '7–9 años',
+    ages: '8–9 años',
     schedule: 'Miércoles · 17:30–18:30',
     price: '49 €',
     icon: '/assets/courses/computer.png?v=4',

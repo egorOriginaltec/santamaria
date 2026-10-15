@@ -58,14 +58,6 @@
       </button>
     </div>
   </header>
-
-  @if (errorMessage()) {
-    <div class="payments-alert" role="alert">
-      <p>{{ errorMessage() }}</p>
-      <a routerLink="/login" class="payments-alert-link">Ir a acceso</a>
-    </div>
-  }
-
   @if (loading()) {
     <div class="payments-loader" aria-busy="true" aria-live="polite">
       <div class="payments-loader-line" aria-hidden="true"></div>
@@ -81,7 +73,7 @@
         }
       </div>
     </div>
-  } @else if (payments().length === 0 && !errorMessage()) {
+  } @else if (payments().length === 0 ) {
     <div class="payments-empty payments-reveal">
       <p class="payments-empty-title">No hay pagos con estos filtros</p>
       <p class="payments-empty-text">

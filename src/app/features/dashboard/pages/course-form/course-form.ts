@@ -1,3 +1,5 @@
+import { ToastService } from '@core/services/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,6 +15,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AppFieldError } from '@shared/components/field-error/field-error';
+import { readApiError } from '@core/services/course-sessions-api.service';
 import { CoursesApiService } from '@core/services/courses-api.service';
 import { finalize } from 'rxjs';
 
@@ -51,13 +55,14 @@ export const COURSE_WEEKDAYS = [
 
 @Component({
   selector: 'app-dashboard-course-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AppFieldError],
   templateUrl: './course-form.html',
   styleUrl: './course-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardCourseForm implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly toast = inject(ToastService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly coursesApi = inject(CoursesApiService);
@@ -66,6 +71,7 @@ export class DashboardCourseForm implements OnInit {
   readonly isEdit = signal(false);
   readonly loading = signal(false);
   readonly saving = signal(false);
+  readonly loadFailed = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly skeletonFields = [0, 1, 2, 3] as const;
   readonly weekdayOptions = COURSE_WEEKDAYS;
@@ -108,6 +114,7 @@ export class DashboardCourseForm implements OnInit {
     this.isEdit.set(true);
     this.courseUuid.set(uuid);
     this.loading.set(true);
+    this.loadFailed.set(false);
 
     this.coursesApi
       .get(uuid)
@@ -126,23 +133,11 @@ export class DashboardCourseForm implements OnInit {
             is_active: course.is_active,
           });
         },
-        error: () => {
-          this.errorMessage.set('No se pudo cargar el curso.');
+        error: (err: HttpErrorResponse) => {
+          this.loadFailed.set(true);
+          this.toast.error(readApiError(err, 'No se pudo cargar el curso.'));
         },
       });
-  }
-
-  private isUuid(value: string): boolean {
-    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
-      value,
-    );
-  }
-
-  private toDateInput(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   fieldInvalid(
@@ -194,7 +189,6 @@ export class DashboardCourseForm implements OnInit {
     }
 
     this.saving.set(true);
-    this.errorMessage.set(null);
 
     const raw = this.form.getRawValue();
     const payload = {
@@ -216,15 +210,23 @@ export class DashboardCourseForm implements OnInit {
 
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
+        this.toast.success(this.isEdit() ? 'Curso actualizado.' : 'Curso creado.');
         void this.router.navigateByUrl('/dashboard/courses');
       },
-      error: (err: { status?: number }) => {
-        this.errorMessage.set(
-          err.status === 422
-            ? 'Revisa las fechas, los días, el horario y el precio.'
-            : 'No se pudo guardar el curso.',
-        );
-      },
+      error: () => {},
     });
+  }
+
+  private isUuid(value: string): boolean {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      value,
+    );
+  }
+
+  private toDateInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

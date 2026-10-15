@@ -26,7 +26,7 @@ const scratch: CourseDto = {
 };
 
 describe('DashboardCalculator', () => {
-  it('multiplies students by course price then subtracts 21% VAT and 15% withholding', () => {
+  function createCalculator(): DashboardCalculator {
     TestBed.configureTestingModule({
       imports: [DashboardCalculator],
       providers: [
@@ -44,14 +44,71 @@ describe('DashboardCalculator', () => {
     });
 
     const fixture = TestBed.createComponent(DashboardCalculator);
-    const calculator = fixture.componentInstance;
     fixture.detectChanges();
+    return fixture.componentInstance;
+  }
 
+  it('splits included VAT correctly for one and many students', () => {
+    const calculator = createCalculator();
+    calculator.setVatTreatment('included');
+    calculator.setVatRatePercent('21');
+
+    calculator.setStudents(scratch.uuid, '1');
+    expect(calculator.totalCharged()).toBe(49);
+    expect(calculator.taxableBase()).toBeCloseTo(40.5, 2);
+    expect(calculator.vatRepercutido()).toBeCloseTo(8.5, 2);
+
+    calculator.setStudents(scratch.uuid, '32');
+    expect(calculator.totalCharged()).toBe(1568);
+    expect(calculator.taxableBase()).toBeCloseTo(1295.87, 2);
+    expect(calculator.vatRepercutido()).toBeCloseTo(272.13, 2);
+    expect(calculator.afterVat()).toBeCloseTo(1295.87, 2);
+  });
+
+  it('adds VAT on top of the catalog price', () => {
+    const calculator = createCalculator();
+    calculator.setVatTreatment('added');
+    calculator.setVatRatePercent('21');
+    calculator.setStudents(scratch.uuid, '1');
+
+    expect(calculator.taxableBase()).toBe(49);
+    expect(calculator.vatRepercutido()).toBeCloseTo(10.29, 2);
+    expect(calculator.totalCharged()).toBeCloseTo(59.29, 2);
+  });
+
+  it('does not break down VAT when the activity is exempt', () => {
+    const calculator = createCalculator();
+    calculator.setVatTreatment('exempt');
     calculator.setStudents(scratch.uuid, '10');
 
-    expect(calculator.gross()).toBe(490);
-    expect(calculator.vat()).toBeCloseTo(102.9);
-    expect(calculator.withholding()).toBeCloseTo(73.5);
-    expect(calculator.net()).toBeCloseTo(313.6);
+    expect(calculator.isVatExempt()).toBeTrue();
+    expect(calculator.totalCharged()).toBe(490);
+    expect(calculator.vatRepercutido()).toBe(0);
+    expect(calculator.afterVat()).toBe(490);
+  });
+
+  it('does not apply automatic IRPF withholding on family payments', () => {
+    const calculator = createCalculator();
+    calculator.setVatTreatment('included');
+    calculator.setStudents(scratch.uuid, '10');
+
+    expect(calculator.withholdingAmount()).toBe(0);
+    expect(calculator.net()).toBe(calculator.afterVat());
+
+    calculator.setOptionalWithholding('50');
+    expect(calculator.net()).toBeCloseTo(calculator.afterVat() - 50, 2);
+  });
+
+  it('subtracts monthly teacher and other expenses', () => {
+    const calculator = createCalculator();
+    calculator.setVatTreatment('exempt');
+    calculator.setStudents(scratch.uuid, '10');
+    calculator.setTeacherHours('10');
+    calculator.setTeacherRate('12');
+    calculator.setOtherMonthlyExpenses('30');
+
+    expect(calculator.teacherCost()).toBe(120);
+    expect(calculator.monthlyExpenses()).toBe(150);
+    expect(calculator.net()).toBe(340);
   });
 });

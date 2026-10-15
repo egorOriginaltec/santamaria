@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   PaymentDto,
   PaymentSort,
@@ -34,6 +37,7 @@ import {
 })
 export class DashboardPayments implements OnInit {
   private readonly paymentsApi = inject(PaymentsApiService);
+  private readonly toast = inject(ToastService);
   private readonly authApi = inject(AuthApiService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -45,6 +49,7 @@ export class DashboardPayments implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -65,7 +70,7 @@ export class DashboardPayments implements OnInit {
       if (!user) {
         this.loading.set(false);
         this.initialLoad.set(false);
-        this.errorMessage.set('Inicia sesión como administrador para gestionar pagos.');
+        this.setError('Inicia sesión como administrador para gestionar pagos.', true);
         return;
       }
 
@@ -83,7 +88,7 @@ export class DashboardPayments implements OnInit {
 
   reload(page = this.currentPage()): void {
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.clearError();
 
     this.paymentsApi
       .list({
@@ -110,15 +115,12 @@ export class DashboardPayments implements OnInit {
             this.options.set(response.options);
           }
         },
-        error: (err: { status?: number }) => {
+        error: (err: HttpErrorResponse) => {
           this.payments.set([]);
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set(
-              'No tienes permiso para ver pagos. Entra con egor@gmail.com.',
-            );
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar los pagos.');
+          this.setError(
+            readApiError(err, 'No se pudieron cargar los pagos.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -131,16 +133,22 @@ export class DashboardPayments implements OnInit {
       return;
     }
 
+    this.clearError();
+
     this.paymentsApi.destroy(payment.uuid).subscribe({
       next: () => {
+        this.toast.success('Pago eliminado.');
         const nextPage =
           this.payments().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1
             : this.currentPage();
         this.reload(nextPage);
       },
-      error: () => {
-        this.errorMessage.set('No se pudo eliminar el pago.');
+      error: (err: HttpErrorResponse) => {
+        this.setError(
+          readApiError(err, 'No se pudo eliminar el pago.'),
+          err.status === 401 || err.status === 403,
+        );
       },
     });
   }
@@ -196,5 +204,14 @@ export class DashboardPayments implements OnInit {
       pages.push(page);
     }
     return pages;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }

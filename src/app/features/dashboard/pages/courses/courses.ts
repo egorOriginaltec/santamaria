@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   CourseDto,
   CourseSort,
@@ -34,6 +37,7 @@ import {
 })
 export class DashboardCourses implements OnInit {
   private readonly coursesApi = inject(CoursesApiService);
+  private readonly toast = inject(ToastService);
   private readonly authApi = inject(AuthApiService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -51,6 +55,7 @@ export class DashboardCourses implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -70,9 +75,7 @@ export class DashboardCourses implements OnInit {
       if (!user) {
         this.loading.set(false);
         this.initialLoad.set(false);
-        this.errorMessage.set(
-          'Inicia sesión como administrador para gestionar cursos.',
-        );
+        this.setError('Inicia sesión como administrador para gestionar cursos.', true);
         return;
       }
 
@@ -95,7 +98,7 @@ export class DashboardCourses implements OnInit {
 
   reload(page = this.currentPage()): void {
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.clearError();
 
     const activeValue = this.activeControl.value;
 
@@ -103,10 +106,7 @@ export class DashboardCourses implements OnInit {
       .list({
         search: this.searchControl.value.trim() || undefined,
         status: this.statusControl.value || undefined,
-        is_active:
-          activeValue === ''
-            ? ''
-            : activeValue === 'true',
+        is_active: activeValue === '' ? '' : activeValue === 'true',
         sort: this.sortControl.value,
         per_page: Number(this.perPageControl.value) || 15,
         page,
@@ -129,15 +129,12 @@ export class DashboardCourses implements OnInit {
             this.options.set(response.options);
           }
         },
-        error: (err: { status?: number }) => {
+        error: (err: HttpErrorResponse) => {
           this.courses.set([]);
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set(
-              'No tienes permiso para ver cursos. Entra con egor@gmail.com.',
-            );
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar los cursos.');
+          this.setError(
+            readApiError(err, 'No se pudieron cargar los cursos.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -148,27 +145,41 @@ export class DashboardCourses implements OnInit {
       return;
     }
 
+    this.clearError();
+
     this.coursesApi.destroy(course.uuid).subscribe({
       next: () => {
+        this.toast.success('Curso eliminado.');
         const nextPage =
           this.courses().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1
             : this.currentPage();
         this.reload(nextPage);
       },
-      error: () => {
-        this.errorMessage.set('No se pudo eliminar el curso.');
+      error: (err: HttpErrorResponse) => {
+        this.setError(
+          readApiError(err, 'No se pudo eliminar el curso.'),
+          err.status === 401 || err.status === 403,
+        );
       },
     });
   }
 
   toggleActive(course: CourseDto): void {
+    this.clearError();
+
     this.coursesApi
       .update(course.uuid, { is_active: !course.is_active })
       .subscribe({
-        next: () => this.reload(this.currentPage()),
-        error: () => {
-          this.errorMessage.set('No se pudo actualizar el estado.');
+        next: () => {
+          this.toast.success(course.is_active ? 'Curso desactivado.' : 'Curso activado.');
+          this.reload(this.currentPage());
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo actualizar el estado del curso.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -181,10 +192,12 @@ export class DashboardCourses implements OnInit {
   }
 
   formatPrice(price: number): string {
-    return new Intl.NumberFormat('es-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(price) + '/mes';
+    return (
+      new Intl.NumberFormat('es-ES', {
+        style: 'currency',
+        currency: 'EUR',
+      }).format(price) + '/mes'
+    );
   }
 
   sortLabel(sort: CourseSort): string {
@@ -213,5 +226,14 @@ export class DashboardCourses implements OnInit {
       pages.push(page);
     }
     return pages;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }

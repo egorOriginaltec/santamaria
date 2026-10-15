@@ -1,4 +1,37 @@
 @import "tailwindcss";
+@import "aos/dist/aos.css";
+
+/* Muy suave: poco desplazamiento + failsafe para no dejar nada invisible */
+[data-aos='fade-up'] {
+  transform: translate3d(0, 14px, 0);
+}
+
+[data-aos='fade-up'].aos-animate {
+  transform: translate3d(0, 0, 0);
+}
+
+/* Si AOS falla, tras 1.4s el contenido se muestra igual */
+[data-aos].aos-init:not(.aos-animate) {
+  animation: aos-failsafe 0.01s linear 1.4s forwards;
+}
+
+@keyframes aos-failsafe {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos],
+  [data-aos].aos-init,
+  [data-aos].aos-animate {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
 
 .section-kicker {
   color: #e7353d;
@@ -34,12 +67,17 @@
     scroll-padding-top: calc(var(--site-header-height) + 0.75rem);
   }
 
+  html,
+  body {
+    overflow-x: clip;
+  }
+
   body {
     @apply m-0 min-h-dvh bg-white font-sans text-ink antialiased;
   }
 
   img {
-    @apply block max-w-full;
+    @apply block max-w-full h-auto;
   }
 
   a {

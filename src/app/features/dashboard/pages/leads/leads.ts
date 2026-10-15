@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   LeadDto,
   LeadPeriod,
@@ -37,6 +40,7 @@ import {
 })
 export class DashboardLeads implements OnInit {
   private readonly leadsApi = inject(LeadsApiService);
+  private readonly toast = inject(ToastService);
   private readonly authApi = inject(AuthApiService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -59,6 +63,7 @@ export class DashboardLeads implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -86,9 +91,7 @@ export class DashboardLeads implements OnInit {
       if (!user) {
         this.loading.set(false);
         this.initialLoad.set(false);
-        this.errorMessage.set(
-          'Inicia sesión como administrador para ver los leads.',
-        );
+        this.setError('Inicia sesión como administrador para ver los leads.', true);
         return;
       }
 
@@ -112,7 +115,7 @@ export class DashboardLeads implements OnInit {
 
   reload(page = this.currentPage()): void {
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.clearError();
     this.openStatusMenuUuid.set(null);
 
     this.leadsApi
@@ -143,15 +146,12 @@ export class DashboardLeads implements OnInit {
             this.options.set(response.options);
           }
         },
-        error: (err: { status?: number }) => {
+        error: (err: HttpErrorResponse) => {
           this.leads.set([]);
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set(
-              'No tienes permiso para ver leads. Entra con egor@gmail.com.',
-            );
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar los leads.');
+          this.setError(
+            readApiError(err, 'No se pudieron cargar los leads.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -178,15 +178,22 @@ export class DashboardLeads implements OnInit {
       return;
     }
 
+    this.clearError();
     this.updatingUuid.set(lead.uuid);
 
     this.leadsApi
       .update(lead.uuid, { status })
       .pipe(finalize(() => this.updatingUuid.set(null)))
       .subscribe({
-        next: () => this.reload(this.currentPage()),
-        error: () => {
-          this.errorMessage.set('No se pudo actualizar el estado.');
+        next: () => {
+          this.toast.success('Estado del lead actualizado.');
+          this.reload(this.currentPage());
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo actualizar el estado del lead.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -197,6 +204,7 @@ export class DashboardLeads implements OnInit {
       return;
     }
 
+    this.clearError();
     this.updatingUuid.set(lead.uuid);
 
     this.leadsApi
@@ -204,14 +212,18 @@ export class DashboardLeads implements OnInit {
       .pipe(finalize(() => this.updatingUuid.set(null)))
       .subscribe({
         next: () => {
+          this.toast.success('Lead eliminado.');
           const nextPage =
             this.leads().length === 1 && this.currentPage() > 1
               ? this.currentPage() - 1
               : this.currentPage();
           this.reload(nextPage);
         },
-        error: () => {
-          this.errorMessage.set('No se pudo eliminar el lead.');
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo eliminar el lead.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -281,5 +293,14 @@ export class DashboardLeads implements OnInit {
       pages.push(page);
     }
     return pages;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }

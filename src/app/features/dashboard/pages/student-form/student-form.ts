@@ -1,3 +1,5 @@
+import { ToastService } from '@core/services/toast.service';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +15,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AppFieldError } from '@shared/components/field-error/field-error';
 import { CourseDto, CoursesApiService } from '@core/services/courses-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
 import { StudentsApiService } from '@core/services/students-api.service';
 import { normalizeEmail } from '@core/utils/form-sanitize.utils';
 import {
@@ -33,13 +37,14 @@ function phoneValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-dashboard-student-form',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, AppFieldError],
   templateUrl: './student-form.html',
   styleUrl: './student-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardStudentForm implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly toast = inject(ToastService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly studentsApi = inject(StudentsApiService);
@@ -49,6 +54,7 @@ export class DashboardStudentForm implements OnInit {
   readonly isEdit = signal(false);
   readonly loading = signal(false);
   readonly saving = signal(false);
+  readonly loadFailed = signal(false);
   readonly errorMessage = signal<string | null>(null);
   readonly courses = signal<readonly CourseDto[]>([]);
   readonly selectedCourseUuids = signal<readonly string[]>([]);
@@ -68,7 +74,11 @@ export class DashboardStudentForm implements OnInit {
       this.isEdit.set(false);
       courses$.subscribe({
         next: (response) => this.courses.set(response.data),
-        error: () => this.errorMessage.set('No se pudieron cargar los cursos.'),
+        error: (err: HttpErrorResponse) => {
+          this.toast.error(
+            readApiError(err, 'No se pudieron cargar los cursos.'),
+          );
+        },
       });
       return;
     }
@@ -81,6 +91,7 @@ export class DashboardStudentForm implements OnInit {
     this.isEdit.set(true);
     this.studentUuid.set(uuid);
     this.loading.set(true);
+    this.loadFailed.set(false);
 
     forkJoin({
       student: this.studentsApi.get(uuid),
@@ -97,8 +108,11 @@ export class DashboardStudentForm implements OnInit {
             is_active: student.is_active,
           });
         },
-        error: () => {
-          this.errorMessage.set('No se pudo cargar el estudiante.');
+        error: (err: HttpErrorResponse) => {
+          this.loadFailed.set(true);
+          this.toast.error(
+            readApiError(err, 'No se pudo cargar el estudiante.'),
+          );
         },
       });
   }
@@ -125,6 +139,34 @@ export class DashboardStudentForm implements OnInit {
     return control.invalid && (control.dirty || control.touched);
   }
 
+  emailError(): string {
+    const control = this.form.controls.email;
+    if (control.hasError('required')) {
+      return 'El email es obligatorio.';
+    }
+    if (control.hasError('email') || control.hasError('maxlength')) {
+      return 'Indica un email válido.';
+    }
+    if (control.hasError('server')) {
+      return String(control.getError('server'));
+    }
+    return 'Indica un email válido.';
+  }
+
+  phoneError(): string {
+    const control = this.form.controls.phone;
+    if (control.hasError('required')) {
+      return 'El teléfono es obligatorio.';
+    }
+    if (control.hasError('phone')) {
+      return 'Teléfono de España o Latinoamérica.';
+    }
+    if (control.hasError('server')) {
+      return String(control.getError('server'));
+    }
+    return 'Indica un teléfono válido.';
+  }
+
   onEmailInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     const cleaned = input.value.replace(/\s+/g, '');
@@ -132,6 +174,7 @@ export class DashboardStudentForm implements OnInit {
       input.value = cleaned;
     }
     this.form.controls.email.setValue(cleaned, { emitEvent: false });
+    this.clearServerError('email');
   }
 
   onPhoneInput(event: Event): void {
@@ -140,6 +183,7 @@ export class DashboardStudentForm implements OnInit {
     input.value = formatted;
     this.form.controls.phone.setValue(formatted, { emitEvent: false });
     this.form.controls.phone.updateValueAndValidity({ emitEvent: false });
+    this.clearServerError('phone');
   }
 
   onPhoneKeydown(event: KeyboardEvent): void {
@@ -167,7 +211,8 @@ export class DashboardStudentForm implements OnInit {
     }
 
     this.saving.set(true);
-    this.errorMessage.set(null);
+    this.clearServerError('email');
+    this.clearServerError('phone');
 
     const raw = this.form.getRawValue();
     const payload = {
@@ -184,15 +229,53 @@ export class DashboardStudentForm implements OnInit {
 
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
+        this.toast.success(this.isEdit() ? 'Estudiante actualizado.' : 'Estudiante creado.');
         void this.router.navigateByUrl('/dashboard/students');
       },
-      error: (err: { status?: number }) => {
-        this.errorMessage.set(
-          err.status === 422
-            ? 'Revisa el email y el teléfono. Puede que ya existan.'
-            : 'No se pudo guardar el estudiante.',
-        );
+      error: (err: HttpErrorResponse) => {
+        this.applyServerFieldErrors(err);
       },
     });
   }
+
+  private applyServerFieldErrors(err: HttpErrorResponse): void {
+    const errors = err.error?.errors;
+    if (!errors || typeof errors !== 'object') {
+      return;
+    }
+
+    const bag = errors as Record<string, unknown>;
+
+    for (const field of ['email', 'phone'] as const) {
+      const value = bag[field];
+      const list = Array.isArray(value) ? value : value != null ? [value] : [];
+      const first = list.find((item): item is string => typeof item === 'string' && item.length > 0);
+
+      if (!first) {
+        continue;
+      }
+
+      const message = readApiError(
+        new HttpErrorResponse({
+          error: { message: first },
+          status: err.status,
+          statusText: err.statusText,
+        }),
+        field === 'email' ? 'Indica un email válido.' : 'Indica un teléfono válido.',
+      );
+
+      this.form.controls[field].setErrors({ server: message });
+      this.form.controls[field].markAsTouched();
+    }
+  }
+
+  private clearServerError(controlName: 'email' | 'phone'): void {
+    const control = this.form.controls[controlName];
+    if (!control.hasError('server')) {
+      return;
+    }
+
+    control.updateValueAndValidity({ emitEvent: false });
+  }
 }
+

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { Reveal } from '@shared/directives/reveal.directive';
 import {
   FAQ_EYEBROW,
   FAQ_INTRO,
@@ -9,7 +8,6 @@ import {
 
 @Component({
   selector: 'app-faq',
-  imports: [Reveal],
   templateUrl: './faq.html',
   styleUrl: './faq.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

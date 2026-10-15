@@ -8,6 +8,8 @@
       <p class="holiday-form-subtitle">
         @if (loading()) {
           Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir este festivo.
         } @else {
           Solo festivos nacionales de España (ES).
         }
@@ -42,72 +44,87 @@
       </div>
     </div>
   } @else {
-    <form class="holiday-form holiday-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      @if (errorMessage()) {
-        <p class="holiday-form-alert" role="alert">{{ errorMessage() }}</p>
-      }
-
-      <div class="holiday-form-grid">
-        <label class="holiday-field">
-          <span class="holiday-field-label">Nombre</span>
-          <input
-            type="text"
-            class="holiday-input"
-            formControlName="name"
-            maxlength="150"
-            placeholder="Ej. Año Nuevo"
-            [class.is-invalid]="fieldInvalid('name')"
-          />
-          @if (fieldInvalid('name')) {
-            <span class="holiday-field-error">Indica un nombre válido (mín. 2).</span>
-          }
-        </label>
-
-        <label class="holiday-field">
-          <span class="holiday-field-label">Fecha</span>
-          <input
-            type="date"
-            class="holiday-input"
-            formControlName="date"
-            [class.is-invalid]="fieldInvalid('date')"
-          />
-          @if (fieldInvalid('date')) {
-            <span class="holiday-field-error">La fecha es obligatoria.</span>
-          }
-        </label>
-
-        <label class="holiday-field holiday-field--check">
-          <input type="checkbox" formControlName="is_active" />
-          <span>Activo en el calendario</span>
-        </label>
-
-        <label class="holiday-field holiday-field--full">
-          <span class="holiday-field-label">Notas (opcional)</span>
-          <textarea
-            class="holiday-input holiday-textarea"
-            formControlName="notes"
-            rows="3"
-            maxlength="1000"
-            placeholder="Fiesta nacional de España"
-          ></textarea>
-        </label>
+    @if (loadFailed()) {
+      <div class="holiday-form-empty holiday-form-reveal">
+        <p class="holiday-form-empty-title">Festivo no disponible</p>
+        <p class="holiday-form-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verlo.
+        </p>
+        <a routerLink="/dashboard/holidays" class="holiday-btn holiday-btn--primary">
+          Volver al listado
+        </a>
       </div>
+    } @else {
+      <form
+        class="holiday-form holiday-form-reveal"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+        <div class="holiday-form-grid">
+          <label class="holiday-field">
+            <span class="holiday-field-label">Nombre</span>
+            <input
+              type="text"
+              class="holiday-input"
+              formControlName="name"
+              maxlength="150"
+              placeholder="Ej. Año Nuevo"
+              [class.is-invalid]="fieldInvalid('name')"
+              (input)="onNameInput()"
+            />
+            @if (fieldInvalid('name')) {
+              <app-field-error>{{ nameError() }}</app-field-error>
+            }
+          </label>
 
-      <div class="holiday-form-meta">
-        <span class="meta-pill">Tipo: Nacional</span>
-        <span class="meta-pill">País: ES</span>
-      </div>
+          <label class="holiday-field">
+            <span class="holiday-field-label">Fecha</span>
+            <input
+              type="date"
+              class="holiday-input"
+              formControlName="date"
+              [class.is-invalid]="fieldInvalid('date')"
+              (change)="onDateChange()"
+            />
+            @if (fieldInvalid('date')) {
+              <app-field-error>{{ dateError() }}</app-field-error>
+            }
+          </label>
 
-      <div class="holiday-form-actions">
-        <a routerLink="/dashboard/holidays" class="holiday-btn holiday-btn--ghost">Cancelar</a>
-        <button
-          type="submit"
-          class="holiday-btn holiday-btn--primary"
-          [disabled]="saving()"
-        >
-          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear festivo' }}
-        </button>
-      </div>
-    </form>
+          <label class="holiday-field holiday-field--check">
+            <input type="checkbox" formControlName="is_active" />
+            <span>Activo</span>
+          </label>
+
+          <label class="holiday-field holiday-field--full">
+            <span class="holiday-field-label">Notas (opcional)</span>
+            <textarea
+              class="holiday-input holiday-textarea"
+              formControlName="notes"
+              rows="3"
+              maxlength="1000"
+              placeholder="Fiesta nacional de España"
+            ></textarea>
+          </label>
+        </div>
+
+        <div class="holiday-form-meta">
+          <span class="meta-pill">Tipo: Nacional</span>
+          <span class="meta-pill">País: ES</span>
+        </div>
+
+        <div class="holiday-form-actions">
+          <a routerLink="/dashboard/holidays" class="holiday-btn holiday-btn--ghost">Cancelar</a>
+          <button
+            type="submit"
+            class="holiday-btn holiday-btn--primary"
+            [disabled]="saving()"
+          >
+            {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear festivo' }}
+          </button>
+        </div>
+      </form>
+    }
   }
 </section>

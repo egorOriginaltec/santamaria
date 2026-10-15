@@ -8,6 +8,8 @@
       <p class="course-form-subtitle">
         @if (loading()) {
           Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir este curso.
         } @else {
           Título, fechas, días, horario y precio mensual (49 € o 59 €).
         }
@@ -42,11 +44,18 @@
       </div>
     </div>
   } @else {
+    @if (loadFailed()) {
+      <div class="course-form-empty course-form-reveal">
+        <p class="course-form-empty-title">Curso no disponible</p>
+        <p class="course-form-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verlo.
+        </p>
+        <a routerLink="/dashboard/courses" class="course-btn course-btn--primary">
+          Volver al listado
+        </a>
+      </div>
+    } @else {
     <form class="course-form course-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      @if (errorMessage()) {
-        <p class="course-form-alert" role="alert">{{ errorMessage() }}</p>
-      }
-
       <div class="course-form-grid">
         <label class="course-field course-field--full">
           <span class="course-field-label">Título</span>
@@ -59,7 +68,7 @@
             [class.is-invalid]="fieldInvalid('title')"
           />
           @if (fieldInvalid('title')) {
-            <span class="course-field-error">Indica un título válido (mín. 2).</span>
+            <app-field-error>Indica un título válido (mín. 2).</app-field-error>
           }
         </label>
 
@@ -74,7 +83,7 @@
             [class.is-invalid]="fieldInvalid('description')"
           ></textarea>
           @if (fieldInvalid('description')) {
-            <span class="course-field-error">La descripción debe tener al menos 10 caracteres.</span>
+            <app-field-error>La descripción debe tener al menos 10 caracteres.</app-field-error>
           }
         </label>
 
@@ -97,7 +106,7 @@
             [class.is-invalid]="fieldInvalid('end_date') || hasDateRangeError()"
           />
           @if (hasDateRangeError()) {
-            <span class="course-field-error">La fecha fin debe ser posterior o igual al inicio.</span>
+            <app-field-error>La fecha fin debe ser posterior o igual al inicio.</app-field-error>
           }
         </label>
 
@@ -124,7 +133,7 @@
             }
           </div>
           @if (hasWeekdaysError()) {
-            <span class="course-field-error">Selecciona al menos un día de lunes a domingo.</span>
+            <app-field-error>Selecciona al menos un día de lunes a domingo.</app-field-error>
           }
         </div>
 
@@ -147,7 +156,7 @@
             [class.is-invalid]="fieldInvalid('schedule_end') || hasScheduleRangeError()"
           />
           @if (hasScheduleRangeError()) {
-            <span class="course-field-error">La hora fin debe ser posterior a la de inicio.</span>
+            <app-field-error>La hora fin debe ser posterior a la de inicio.</app-field-error>
           }
         </label>
 
@@ -164,7 +173,7 @@
             [class.is-invalid]="fieldInvalid('price')"
           />
           @if (fieldInvalid('price')) {
-            <span class="course-field-error">Indica el precio mensual (ej. 49 o 59).</span>
+            <app-field-error>Indica el precio mensual (ej. 49 o 59).</app-field-error>
           }
         </label>
 
@@ -185,5 +194,6 @@
         </button>
       </div>
     </form>
+    }
   }
 </section>

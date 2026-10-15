@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Reveal } from '@shared/directives/reveal.directive';
 import {
   AUDIENCE_EYEBROW,
   AUDIENCE_INTRO,

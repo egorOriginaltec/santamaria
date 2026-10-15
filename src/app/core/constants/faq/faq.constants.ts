@@ -12,7 +12,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 1,
     question: '¿Necesita conocimientos previos?',
     answer:
-      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos Digitales (7–9), Scratch (8–10), Unity (10–14), Seguridad Digital (11–15), Apps o Python (12–16), IA (14–18) o Desarrollo Web (15–20). Si hay duda entre dos, lo vemos en la clase gratuita.',
+      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos Digitales (8–9), Scratch (8–10), Unity (10–14), Seguridad Digital (11–15), Apps o Python (12–16), IA (14–18) o Desarrollo Web (15–20). Si hay duda entre dos, lo vemos en la clase gratuita.',
   },
   {
     id: 2,

@@ -8,20 +8,29 @@ import {
   signal,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MaterialDto } from '@core/services/course-sessions-api.service';
+import { AppAlert } from '@shared/components/alert/alert';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+  CalendarExerciseDto,
+  CourseSessionDto,
+  MaterialDto,
+  readApiError,
+} from '@core/services/course-sessions-api.service';
 import { StudentCampusService } from '../../data/student-campus.service';
 import {
   WEEKDAYS_LONG,
   buildMonthCells,
   formatMonthTitle,
   formatNice,
+  holidayDates,
   parseIso,
+  testsListedOn,
   todayIso,
 } from '../../student-schedule';
 
 @Component({
   selector: 'app-student-calendar',
-  imports: [RouterLink],
+  imports: [RouterLink, AppAlert],
   templateUrl: './student-calendar.html',
   styleUrls: ['../../student-ui.css', './student-calendar.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,6 +43,7 @@ export class StudentCalendar {
   readonly courses = this.campus.courses;
   readonly weekdayLabels = WEEKDAYS_LONG.map((label) => label.slice(0, 3));
   readonly today = todayIso();
+  readonly formatNice = formatNice;
   readonly cursor = signal(startOfCurrentMonth());
   readonly selectedIso = signal<string | null>(null);
   readonly downloadError = signal<string | null>(null);
@@ -54,27 +64,30 @@ export class StudentCalendar {
       this.campus.sessions(),
       this.campus.holidays(),
       this.today,
+      this.campus.exercises(),
     );
   });
 
-  readonly selectedClasses = computed(() => {
-    const iso = this.selectedIso();
-    if (!iso) {
-      return [];
-    }
-
-    return this.weeks()
-      .flat()
-      .find((cell) => cell.iso === iso)?.classes ?? [];
-  });
-
-  readonly selectedHoliday = computed(() => {
+  readonly selected = computed(() => {
     const iso = this.selectedIso();
     if (!iso) {
       return null;
     }
 
-    return this.weeks().flat().find((cell) => cell.iso === iso)?.holidayName ?? null;
+    const cell = this.weeks()
+      .flat()
+      .find((day) => day.iso === iso);
+
+    const holidays = holidayDates(this.campus.holidays());
+    const tests = testsListedOn(iso, this.campus.courses(), this.campus.exercises(), holidays);
+
+    return {
+      iso,
+      title: formatNice(iso),
+      holidayName: cell?.holidayName ?? this.campus.holidays().find((holiday) => holiday.date.slice(0, 10) === iso)?.name ?? null,
+      classes: cell?.classes ?? [],
+      tests,
+    };
   });
 
   constructor() {
@@ -102,51 +115,106 @@ export class StudentCalendar {
       } else if (today > end) {
         this.cursor.set(new Date(end.getFullYear(), end.getMonth(), 1));
       }
+
+      this.pickDefaultDay();
     });
   }
 
-  readonly formatNice = formatNice;
+  private pickDefaultDay(): void {
+    const days = this.weeks()
+      .flat()
+      .filter((day) => day.inMonth);
+    const today = days.find((day) => day.isToday);
+    const busy = days.find((day) => day.classes.length > 0 || day.dueTests.length > 0);
+    this.selectedIso.set(today?.iso ?? busy?.iso ?? days[0]?.iso ?? null);
+  }
 
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.selectedIso()) {
-      this.closeDay();
-    }
+    this.selectedIso.set(null);
   }
 
   prevMonth(): void {
     const date = new Date(this.cursor());
     date.setMonth(date.getMonth() - 1);
     this.cursor.set(date);
-    this.selectedIso.set(null);
+    this.pickDefaultDay();
   }
 
   nextMonth(): void {
     const date = new Date(this.cursor());
     date.setMonth(date.getMonth() + 1);
     this.cursor.set(date);
-    this.selectedIso.set(null);
+    this.pickDefaultDay();
   }
 
-  selectDay(iso: string, hasClass: boolean, holidayName: string | null): void {
-    if (!hasClass && !holidayName) {
-      return;
-    }
-
-    this.selectedIso.set(iso);
+  selectDay(iso: string): void {
     this.downloadError.set(null);
+    this.selectedIso.set(iso);
+
+    if (window.matchMedia('(max-width: 979px)').matches) {
+      queueMicrotask(() =>
+        document.querySelector('.cal-panel')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }),
+      );
+    }
   }
 
   closeDay(): void {
     this.selectedIso.set(null);
-    this.downloadError.set(null);
+  }
+
+  retry(): void {
+    this.campus.reload().subscribe();
   }
 
   download(material: MaterialDto): void {
     this.downloadError.set(null);
     this.campus.download(material).subscribe({
-      error: () => this.downloadError.set('No se pudo descargar el archivo.'),
+      error: (err: HttpErrorResponse) => {
+        this.downloadError.set(readApiError(err, 'No se pudo descargar el archivo.'));
+      },
     });
+  }
+
+  summary(day: { classes: readonly unknown[]; tests: readonly unknown[] }): string {
+    const parts: string[] = [];
+    if (day.classes.length > 0) {
+      parts.push(day.classes.length === 1 ? '1 clase' : `${day.classes.length} clases`);
+    }
+    if (day.tests.length > 0) {
+      parts.push(day.tests.length === 1 ? '1 ejercicio' : `${day.tests.length} ejercicios`);
+    }
+    return parts.join(' · ');
+  }
+
+  meetUrl(session: CourseSessionDto | null): string | null {
+    return session?.meet_url ?? null;
+  }
+
+  meetPending(classes: readonly { session: CourseSessionDto | null }[]): boolean {
+    return classes.length > 0 && !classes.some((item) => !!item.session?.meet_url);
+  }
+
+  testKind(exercise: CalendarExerciseDto): string {
+    return 'Ejercicio';
+  }
+
+  testMeta(exercise: CalendarExerciseDto): string {
+    const kind = this.testKind(exercise);
+    if (exercise.attempt) {
+      return `${kind} · ${exercise.attempt.correct_count}/${exercise.attempt.question_count}`;
+    }
+
+    const count = exercise.question_count;
+    if (count == null) {
+      return kind;
+    }
+
+    return `${kind} · ${count} ${count === 1 ? 'pregunta' : 'preguntas'}`;
+  }
+
+  testCta(exercise: CalendarExerciseDto): string {
+    return exercise.attempt ? 'Repetir' : 'Hacer';
   }
 }
 

@@ -1,0 +1,125 @@
+.ced {
+  overflow: hidden;
+  border: 1px solid #2a2d3a;
+  border-radius: 1rem;
+  background: #0f1117;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.ced-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid #222533;
+  background: #161822;
+}
+
+.ced-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #ff5f57;
+}
+
+.ced-dot--amber {
+  background: #febc2e;
+}
+
+.ced-dot--green {
+  background: #28c840;
+}
+
+.ced-lang {
+  margin-left: 0.45rem;
+  color: #9aa3b8;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ced-body {
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  min-height: 12.5rem;
+}
+
+.ced-gutter {
+  margin: 0;
+  padding: 0.85rem 0.35rem 0.85rem 0;
+  list-style: none;
+  overflow: hidden;
+  border-right: 1px solid #222533;
+  background: #12141c;
+  color: #5c6478;
+  font-family: ui-monospace, "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  text-align: right;
+  user-select: none;
+}
+
+.ced-pane {
+  display: grid;
+  min-width: 0;
+}
+
+.ced-hi,
+.ced-in {
+  grid-area: 1 / 1;
+  margin: 0;
+  border: 0;
+  padding: 0.85rem 0.9rem;
+  font-family: ui-monospace, "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+
+.ced-hi {
+  color: #e7ecf5;
+  pointer-events: none;
+}
+
+.ced-in {
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  caret-color: #f4f7ff;
+  resize: vertical;
+  outline: none;
+  min-height: 12.5rem;
+}
+
+.ced-in::placeholder {
+  color: #6b7388;
+}
+
+.ced.is-off .ced-in {
+  caret-color: transparent;
+  cursor: default;
+}
+
+:host ::ng-deep .tok-kw {
+  color: #d2a8ff;
+}
+
+:host ::ng-deep .tok-str {
+  color: #a5d6a7;
+}
+
+:host ::ng-deep .tok-cm {
+  color: #7d869c;
+  font-style: italic;
+}
+
+:host ::ng-deep .tok-num {
+  color: #f0c674;
+}
+
+:host ::ng-deep .tok-fn {
+  color: #79c0ff;
+}

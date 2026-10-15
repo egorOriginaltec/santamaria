@@ -8,6 +8,8 @@
       <p class="student-form-subtitle">
         @if (loading()) {
           Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir este estudiante.
         } @else {
           Email, teléfono y los cursos en los que está matriculado. Puede estar en varios.
         }
@@ -34,89 +36,97 @@
       </div>
     </div>
   } @else {
-    <form class="student-form student-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      @if (errorMessage()) {
-        <p class="student-form-alert" role="alert">{{ errorMessage() }}</p>
-      }
+    @if (loadFailed()) {
+      <div class="student-form-empty student-form-reveal">
+        <p class="student-form-empty-title">Estudiante no disponible</p>
+        <p class="student-form-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verlo.
+        </p>
+        <a routerLink="/dashboard/students" class="student-btn student-btn--primary">
+          Volver al listado
+        </a>
+      </div>
+    } @else {
+      <form class="student-form student-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="student-form-grid">
+          <label class="student-field">
+            <span class="student-field-label">Email</span>
+            <input
+              type="email"
+              class="student-input"
+              formControlName="email"
+              maxlength="255"
+              autocomplete="off"
+              placeholder="ana@email.com"
+              [class.is-invalid]="fieldInvalid('email')"
+              (input)="onEmailInput($event)"
+            />
+            @if (fieldInvalid('email')) {
+              <app-field-error>{{ emailError() }}</app-field-error>
+            }
+          </label>
 
-      <div class="student-form-grid">
-        <label class="student-field">
-          <span class="student-field-label">Email</span>
-          <input
-            type="email"
-            class="student-input"
-            formControlName="email"
-            maxlength="255"
-            autocomplete="off"
-            placeholder="ana@email.com"
-            [class.is-invalid]="fieldInvalid('email')"
-            (input)="onEmailInput($event)"
-          />
-          @if (fieldInvalid('email')) {
-            <span class="student-field-error">Indica un email válido.</span>
-          }
-        </label>
+          <label class="student-field">
+            <span class="student-field-label">Teléfono</span>
+            <input
+              type="tel"
+              class="student-input"
+              formControlName="phone"
+              inputmode="tel"
+              autocomplete="tel"
+              maxlength="20"
+              placeholder="600 11 12 22"
+              [class.is-invalid]="fieldInvalid('phone')"
+              (input)="onPhoneInput($event)"
+              (keydown)="onPhoneKeydown($event)"
+            />
+            @if (fieldInvalid('phone')) {
+              <app-field-error>{{ phoneError() }}</app-field-error>
+            }
+          </label>
 
-        <label class="student-field">
-          <span class="student-field-label">Teléfono</span>
-          <input
-            type="tel"
-            class="student-input"
-            formControlName="phone"
-            inputmode="tel"
-            autocomplete="tel"
-            maxlength="20"
-            placeholder="600 11 12 22"
-            [class.is-invalid]="fieldInvalid('phone')"
-            (input)="onPhoneInput($event)"
-            (keydown)="onPhoneKeydown($event)"
-          />
-          @if (fieldInvalid('phone')) {
-            <span class="student-field-error">Teléfono de España o Latinoamérica.</span>
-          }
-        </label>
+          <div class="student-courses">
+            <span class="student-field-label">Cursos</span>
+            @if (courses().length === 0) {
+              <p class="student-course-empty">No hay cursos creados todavía.</p>
+            } @else {
+              <div class="student-course-list">
+                @for (course of courses(); track course.uuid) {
+                  <label class="student-course-option">
+                    <input
+                      type="checkbox"
+                      [checked]="isCourseSelected(course.uuid)"
+                      (change)="toggleCourse(course.uuid, $event)"
+                    />
+                    <span>
+                      {{ course.title }}
+                      @if (!course.is_active) {
+                        <span class="student-course-muted">· inactivo</span>
+                      }
+                    </span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
 
-        <div class="student-courses">
-          <span class="student-field-label">Cursos</span>
-          @if (courses().length === 0) {
-            <p class="student-course-empty">No hay cursos creados todavía.</p>
-          } @else {
-            <div class="student-course-list">
-              @for (course of courses(); track course.uuid) {
-                <label class="student-course-option">
-                  <input
-                    type="checkbox"
-                    [checked]="isCourseSelected(course.uuid)"
-                    (change)="toggleCourse(course.uuid, $event)"
-                  />
-                  <span>
-                    {{ course.title }}
-                    @if (!course.is_active) {
-                      <span class="student-course-muted">· inactivo</span>
-                    }
-                  </span>
-                </label>
-              }
-            </div>
-          }
+          <label class="student-field student-field--check">
+            <input type="checkbox" formControlName="is_active" />
+            <span>Cuenta activa</span>
+          </label>
         </div>
 
-        <label class="student-field student-field--check">
-          <input type="checkbox" formControlName="is_active" />
-          <span>Cuenta activa</span>
-        </label>
-      </div>
-
-      <div class="student-form-actions">
-        <a routerLink="/dashboard/students" class="student-btn student-btn--ghost">Cancelar</a>
-        <button
-          type="submit"
-          class="student-btn student-btn--primary"
-          [disabled]="saving()"
-        >
-          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear estudiante' }}
-        </button>
-      </div>
-    </form>
+        <div class="student-form-actions">
+          <a routerLink="/dashboard/students" class="student-btn student-btn--ghost">Cancelar</a>
+          <button
+            type="submit"
+            class="student-btn student-btn--primary"
+            [disabled]="saving()"
+          >
+            {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear estudiante' }}
+          </button>
+        </div>
+      </form>
+    }
   }
 </section>

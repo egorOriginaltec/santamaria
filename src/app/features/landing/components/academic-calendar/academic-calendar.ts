@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Reveal } from '@shared/directives/reveal.directive';
 
 type Weekday = 'Lunes' | 'Martes' | 'Miércoles' | 'Jueves' | 'Viernes' | 'Sábado' | 'Domingo';
 
@@ -13,9 +12,14 @@ interface WeeklyClass {
   readonly tone: 'red' | 'yellow' | 'teal' | 'ink' | 'muted';
 }
 
+interface MobileDay {
+  readonly day: Weekday;
+  readonly lessons: readonly WeeklyClass[];
+}
+
 @Component({
   selector: 'app-academic-calendar',
-  imports: [Reveal, RouterLink],
+  imports: [RouterLink],
   templateUrl: './academic-calendar.html',
   styleUrl: './academic-calendar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +36,14 @@ export class AcademicCalendar {
     'Viernes',
     'Sábado',
     'Domingo',
+  ];
+
+  readonly weekdayDays: readonly Weekday[] = [
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
   ];
 
   readonly slots = ['17:30', '19:00'] as const;
@@ -56,7 +68,7 @@ export class AcademicCalendar {
       },
       Miércoles: {
         title: 'Primeros Pasos Digitales',
-        ages: '7–9 años',
+        ages: '8–9 años',
         hours: '17:30–18:30',
         price: '49 €/mes',
         slug: 'ordenador-e-internet',
@@ -106,6 +118,15 @@ export class AcademicCalendar {
       },
     },
   };
+
+  readonly mobileDays = computed<readonly MobileDay[]>(() =>
+    this.weekdayDays.map((day) => ({
+      day,
+      lessons: this.slots
+        .map((slot) => this.classAt(slot, day))
+        .filter((lesson): lesson is WeeklyClass => lesson != null),
+    })),
+  );
 
   classAt(time: string, day: Weekday): WeeklyClass | undefined {
     return this.timetable[time]?.[day];

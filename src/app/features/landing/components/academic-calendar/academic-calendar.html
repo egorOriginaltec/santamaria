@@ -3,7 +3,11 @@
   class="relative overflow-hidden"
   [class.calendar-section]="!plain()"
 >
-  <div class="relative mx-auto w-full" [class.calendar-shell]="!plain()" appReveal>
+  <div
+    class="relative mx-auto w-full min-w-0"
+    [class.calendar-shell]="!plain()"
+    data-aos="fade-up"
+  >
     @if (!plain()) {
       <header class="mx-auto max-w-2xl text-center">
         <p class="section-kicker mb-4">
@@ -18,6 +22,37 @@
       </header>
     }
 
+    <div class="calendar-mobile" [class.calendar-mobile--section]="!plain()">
+      @for (group of mobileDays(); track group.day) {
+        <section class="calendar-day-card">
+          <h3 class="calendar-day-title">{{ group.day }}</h3>
+          <ul class="calendar-day-list">
+            @for (lesson of group.lessons; track lesson.title) {
+              <li>
+                <a
+                  class="calendar-lesson calendar-lesson--mobile"
+                  [attr.data-tone]="lesson.tone"
+                  [routerLink]="['/cursos', lesson.slug]"
+                >
+                  <em>{{ lesson.hours }}</em>
+                  <strong>{{ lesson.title }}</strong>
+                  <span>{{ lesson.ages }} · {{ lesson.price }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+      <div class="calendar-day-card calendar-day-card--weekend">
+        <h3 class="calendar-day-title">Sábado y domingo</h3>
+        <div class="calendar-lesson calendar-lesson--mobile" data-tone="muted">
+          <strong>Fiesta</strong>
+          <span>Sin clases</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="calendar-scroll-hint" aria-hidden="true">Desliza para ver todos los días →</p>
     <div
       class="calendar-table-wrap mx-auto overflow-x-auto rounded-2xl border bg-white"
       [class.calendar-table-wrap--section]="!plain()"

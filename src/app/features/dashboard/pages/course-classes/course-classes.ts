@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
@@ -8,6 +9,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CourseDto, CoursesApiService } from '@core/services/courses-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   CourseSessionDto,
   CourseSessionsApiService,
@@ -15,9 +17,12 @@ import {
   materialFileError,
   readApiError,
 } from '@core/services/course-sessions-api.service';
+
 import { finalize, forkJoin } from 'rxjs';
 
 const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'] as const;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 @Component({
   selector: 'app-dashboard-course-classes',
@@ -25,9 +30,21 @@ const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', '
   templateUrl: './course-classes.html',
   styleUrl: './course-classes.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('classesEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(12px)' }),
+        animate(
+          '520ms cubic-bezier(0.16, 1, 0.3, 1)',
+          style({ opacity: 1, transform: 'none' }),
+        ),
+      ]),
+    ]),
+  ],
 })
 export class DashboardCourseClasses implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly toast = inject(ToastService);
   private readonly coursesApi = inject(CoursesApiService);
   private readonly sessionsApi = inject(CourseSessionsApiService);
 
@@ -35,24 +52,28 @@ export class DashboardCourseClasses implements OnInit {
   readonly sessions = signal<readonly CourseSessionDto[]>([]);
   readonly materials = signal<readonly MaterialDto[]>([]);
   readonly loading = signal(true);
-  readonly uploading = signal<string | null>(null);
+  readonly loadFailed = signal(false);
+  readonly uploading = signal(false);
+  readonly busyUuid = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
-  readonly skeletonRows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
-
+  readonly authRequired = signal(false);
   ngOnInit(): void {
     this.reload();
   }
 
   reload(): void {
     const uuid = this.route.snapshot.paramMap.get('uuid');
-    if (!uuid) {
+    if (!uuid || !UUID_RE.test(uuid)) {
       this.loading.set(false);
-      this.errorMessage.set('No se encontró el curso.');
+      this.loadFailed.set(true);
+      this.course.set(null);
+      this.setError('No se encontró el curso.');
       return;
     }
 
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.loadFailed.set(false);
+    this.clearError();
 
     forkJoin({
       course: this.coursesApi.get(uuid),
@@ -65,20 +86,24 @@ export class DashboardCourseClasses implements OnInit {
           this.course.set(course);
           this.sessions.set(sessions);
           this.materials.set(materials);
+          this.loadFailed.set(false);
         },
         error: (err: HttpErrorResponse) => {
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set('No tienes permiso para gestionar las clases de este curso.');
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar las clases.');
+          this.course.set(null);
+          this.sessions.set([]);
+          this.materials.set([]);
+          this.loadFailed.set(true);
+          this.setError(
+            readApiError(err, 'No se pudieron cargar las clases.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
 
   onDeleteSession(session: CourseSessionDto): void {
     const course = this.course();
-    if (!course) {
+    if (!course || this.busyUuid()) {
       return;
     }
 
@@ -87,17 +112,32 @@ export class DashboardCourseClasses implements OnInit {
       return;
     }
 
-    this.sessionsApi.destroy(course.uuid, session.uuid).subscribe({
-      next: () => this.reload(),
-      error: () => this.errorMessage.set('No se pudo eliminar la clase.'),
-    });
+    this.clearError();
+    this.busyUuid.set(session.uuid);
+
+    this.sessionsApi
+      .destroy(course.uuid, session.uuid)
+      .pipe(finalize(() => this.busyUuid.set(null)))
+      .subscribe({
+        next: () => {
+          this.toast.success('Clase eliminada.');
+          this.reload();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo eliminar la clase.'),
+            err.status === 401 || err.status === 403,
+          );
+        },
+      });
   }
 
   onCourseFile(event: Event): void {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     const course = this.course();
-    if (!file || !course || this.uploading()) {
+
+    if (!file || !course || this.uploading() || this.busyUuid()) {
       input.value = '';
       return;
     }
@@ -105,50 +145,99 @@ export class DashboardCourseClasses implements OnInit {
     const problem = materialFileError(file);
     if (problem) {
       input.value = '';
-      this.errorMessage.set(problem);
+      this.setError(problem);
       return;
     }
 
     void file.arrayBuffer().then(
       (bytes) => {
-        const upload = new File([bytes], file.name, { type: file.type, lastModified: file.lastModified });
+        const upload = new File([bytes], file.name, {
+          type: file.type,
+          lastModified: file.lastModified,
+        });
         input.value = '';
-        this.uploading.set('course');
-        this.errorMessage.set(null);
+        this.uploading.set(true);
+        this.clearError();
+
         this.sessionsApi
           .uploadCourseMedia(course.uuid, upload)
-          .pipe(finalize(() => this.uploading.set(null)))
+          .pipe(finalize(() => this.uploading.set(false)))
           .subscribe({
-            next: () => this.reload(),
+            next: () => {
+              this.toast.success('Archivo subido.');
+              this.reload();
+            },
             error: (err: HttpErrorResponse) => {
-              this.errorMessage.set(readApiError(err, 'No se pudo subir el archivo.'));
+              this.setError(
+                readApiError(err, 'No se pudo subir el archivo.'),
+                err.status === 401 || err.status === 403,
+              );
             },
           });
       },
       () => {
         input.value = '';
-        this.errorMessage.set('No se pudo leer el archivo.');
+        this.setError('No se pudo leer el archivo.');
       },
     );
   }
 
   onDeleteMedia(material: MaterialDto): void {
+    if (this.busyUuid() || this.uploading()) {
+      return;
+    }
+
     const ok = window.confirm(`¿Eliminar “${material.name}”?`);
     if (!ok) {
       return;
     }
 
-    this.sessionsApi.destroyMedia(material.uuid).subscribe({
-      next: () => this.reload(),
-      error: () => this.errorMessage.set('No se pudo eliminar el archivo.'),
-    });
+    this.clearError();
+    this.busyUuid.set(material.uuid);
+
+    this.sessionsApi
+      .destroyMedia(material.uuid)
+      .pipe(finalize(() => this.busyUuid.set(null)))
+      .subscribe({
+        next: () => {
+          this.toast.success('Archivo eliminado.');
+          this.reload();
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo eliminar el archivo.'),
+            err.status === 401 || err.status === 403,
+          );
+        },
+      });
   }
 
   onDownload(material: MaterialDto): void {
-    this.sessionsApi.download(material.uuid).subscribe({
-      next: (blob) => saveBlob(blob, material.name),
-      error: () => this.errorMessage.set('No se pudo descargar el archivo.'),
-    });
+    if (this.busyUuid() || this.uploading()) {
+      return;
+    }
+
+    this.clearError();
+    this.busyUuid.set(material.uuid);
+
+    this.sessionsApi
+      .download(material.uuid)
+      .pipe(finalize(() => this.busyUuid.set(null)))
+      .subscribe({
+        next: (blob) => {
+          if (blob.type.includes('json') || blob.size === 0) {
+            this.setError('No se pudo descargar el archivo.');
+            return;
+          }
+          saveBlob(blob, material.name);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo descargar el archivo.'),
+            err.status === 401 || err.status === 403,
+          );
+        },
+      });
   }
 
   formatDate(value: string): string {
@@ -165,6 +254,15 @@ export class DashboardCourseClasses implements OnInit {
       return `${Math.round(bytes / 1024)} KB`;
     }
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }
 

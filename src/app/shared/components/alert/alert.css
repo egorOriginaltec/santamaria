@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  margin-bottom: 0.85rem;
+  transform-origin: top center;
+}
+
+.app-alert {
+  margin: 0;
+  border: 1px solid #fecaca;
+  border-radius: 1rem;
+  background: #fef2f2;
+  color: #b91c1c;
+  padding: 0.85rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.app-alert.is-ok {
+  border-color: #86efac;
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.app-alert p {
+  margin: 0;
+}
+
+.app-alert a,
+.app-alert button {
+  display: inline-flex;
+  margin-top: 0.45rem;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 800;
+  color: var(--color-brand, #e7353d);
+  cursor: pointer;
+}

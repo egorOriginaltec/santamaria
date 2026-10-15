@@ -77,14 +77,6 @@
       </button>
     </div>
   </header>
-
-  @if (errorMessage()) {
-    <div class="courses-alert" role="alert">
-      <p>{{ errorMessage() }}</p>
-      <a routerLink="/login" class="courses-alert-link">Ir a acceso</a>
-    </div>
-  }
-
   @if (loading()) {
     <div class="courses-loader" aria-busy="true" aria-live="polite">
       <div class="courses-loader-line" aria-hidden="true"></div>
@@ -101,7 +93,7 @@
         }
       </div>
     </div>
-  } @else if (courses().length === 0 && !errorMessage()) {
+  } @else if (courses().length === 0 ) {
     <div class="courses-empty courses-reveal">
       <p class="courses-empty-title">No hay cursos con estos filtros</p>
       <p class="courses-empty-text">
@@ -180,6 +172,12 @@
                       [routerLink]="['/dashboard/courses', course.uuid, 'classes']"
                     >
                       Clases
+                    </a>
+                    <a
+                      class="courses-btn courses-btn--small max-[720px]:flex-1"
+                      [routerLink]="['/dashboard/courses', course.uuid, 'exercises']"
+                    >
+                      Tests
                     </a>
                     <a
                       class="courses-btn courses-btn--small max-[720px]:flex-1"

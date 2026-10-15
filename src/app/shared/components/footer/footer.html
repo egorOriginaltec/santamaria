@@ -29,7 +29,7 @@
           </span>
         </a>
         <p class="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-[#9a9aa3]">
-          Extraescolares de programación online, de los 7 a los 20 años.
+          Extraescolares de programación online, de los 8 a los 20 años.
         </p>
       </div>
 
@@ -109,12 +109,21 @@
     </div>
 
     <div
-      class="mt-10 flex flex-col gap-3 border-t border-white/10 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between"
+      class="mt-10 flex flex-col gap-4 border-t border-white/10 pt-6 sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
     >
       <p class="text-xs text-white/40">
         © {{ year }} {{ fullName }}. Todos los derechos reservados.
       </p>
-      <p class="text-xs text-white/40">Programación · extraescolares · online</p>
+      <nav class="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Legal">
+        @for (item of legalLinks; track item.slug) {
+          <a
+            [routerLink]="item.path"
+            class="text-xs font-medium text-white/45 transition-colors hover:text-brand"
+          >
+            {{ item.label }}
+          </a>
+        }
+      </nav>
     </div>
   </div>
 </footer>

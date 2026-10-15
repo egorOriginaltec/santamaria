@@ -1,0 +1,362 @@
+<section class="ex-form-card">
+  <header class="ex-form-header">
+    <div>
+      <h2 class="ex-form-title">
+        {{ isEdit() ? 'Revisar ejercicio' : 'Nuevo ejercicio' }}
+      </h2>
+      <p class="ex-form-subtitle">
+        @if (loading()) {
+          Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir este ejercicio.
+        } @else {
+          {{ courseTitle() }} · la fecha aparece en el calendario; el alumno puede hacerlo si está publicado
+        }
+      </p>
+    </div>
+    <a class="ex-form-back" [routerLink]="listPath()">Volver al listado</a>
+  </header>
+
+  @if (loading()) {
+    <div class="ex-form-loader" aria-busy="true">
+      <div class="ex-form-loader-line"></div>
+      <div class="ex-skel-grid">
+        <span class="sk sk-block"></span>
+        <span class="sk sk-block"></span>
+        <span class="sk sk-block sk-block--wide"></span>
+      </div>
+    </div>
+  } @else {
+    @if (loadFailed()) {
+      <div class="ex-empty">
+        <p class="ex-empty-title">Ejercicio no disponible</p>
+        <p class="ex-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verlo.
+        </p>
+        <a class="ex-btn ex-btn--primary" [routerLink]="listPath()">Volver al listado</a>
+      </div>
+    } @else {
+      <form class="ex-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        @if (!isEdit()) {
+          <section class="ex-section">
+            <div class="ex-section-head">
+              <p class="ex-section-step">1</p>
+              <div>
+                <h3 class="ex-section-title">Tipo de ejercicio</h3>
+                <p class="ex-section-text">Elige el formato que verá el alumno.</p>
+              </div>
+            </div>
+
+            <div class="ex-choice-grid" role="radiogroup" aria-label="Tipo de ejercicio">
+              <button
+                type="button"
+                class="ex-choice"
+                [class.is-on]="!isCode()"
+                (click)="setExerciseType('multiple_choice')"
+              >
+                <span class="ex-choice-badge">ABC</span>
+                <strong>Test de opciones</strong>
+                <span>Tres respuestas (A, B y C). El alumno marca una.</span>
+              </button>
+              <button
+                type="button"
+                class="ex-choice"
+                [class.is-on]="isCode()"
+                (click)="setExerciseType('code')"
+              >
+                <span class="ex-choice-badge ex-choice-badge--mono">&lt;/&gt;</span>
+                <strong>Código</strong>
+                <span>Escribir o completar código. Se corrige por comparación.</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="ex-section">
+            <div class="ex-section-head">
+              <p class="ex-section-step">2</p>
+              <div>
+                <h3 class="ex-section-title">Cómo lo creas</h3>
+                <p class="ex-section-text">Puedes redactarlo tú o pedir un borrador a la IA.</p>
+              </div>
+            </div>
+
+            <div class="ex-choice-grid" role="radiogroup" aria-label="Modo de creación">
+              <button
+                type="button"
+                class="ex-choice"
+                [class.is-on]="mode() === 'manual'"
+                (click)="setMode('manual')"
+              >
+                <strong>Redactar yo</strong>
+                <span>Escribes el enunciado y las respuestas una a una.</span>
+              </button>
+              <button
+                type="button"
+                class="ex-choice"
+                [class.is-on]="mode() === 'prompt'"
+                (click)="setMode('prompt')"
+              >
+                <strong>Generar con IA</strong>
+                <span>Pegas el temario y obtienes un borrador para revisar.</span>
+              </button>
+            </div>
+          </section>
+        }
+
+        <section class="ex-section">
+          <div class="ex-section-head">
+            @if (!isEdit()) {
+              <p class="ex-section-step">3</p>
+            }
+            <div>
+              <h3 class="ex-section-title">Datos del ejercicio</h3>
+              <p class="ex-section-text">Título, fecha en el calendario y publicación.</p>
+            </div>
+          </div>
+
+          <div class="ex-fields">
+            <label class="ex-field ex-field--full">
+              <span class="ex-label">Título</span>
+              <input
+                type="text"
+                formControlName="title"
+                maxlength="160"
+                placeholder="Ej. Variables en Scratch"
+                class="ex-input"
+              />
+            </label>
+
+            <label class="ex-field">
+              <span class="ex-label">Fecha (calendario)</span>
+              <input type="date" formControlName="starts_on" required class="ex-input" />
+            </label>
+
+            <label class="ex-check">
+              <input type="checkbox" formControlName="is_published" />
+              <span>
+                <strong>Publicar ahora</strong>
+                <em>Si no, se guarda como borrador.</em>
+              </span>
+            </label>
+          </div>
+
+          <fieldset class="ex-reveal">
+            <legend>¿Cuándo ven si acertaron?</legend>
+            <div class="ex-reveal-row">
+              <label class="ex-reveal-option">
+                <input type="radio" formControlName="reveal_on" value="after_choice" />
+                <span>
+                  <strong>Al momento</strong>
+                  <em>Tras marcar cada respuesta</em>
+                </span>
+              </label>
+              <label class="ex-reveal-option">
+                <input type="radio" formControlName="reveal_on" value="at_end" />
+                <span>
+                  <strong>Al entregar</strong>
+                  <em>Solo al final del ejercicio</em>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+        </section>
+
+        @if (mode() === 'prompt' && !isEdit()) {
+          <section class="ex-section">
+            <div class="ex-section-head">
+              <p class="ex-section-step">4</p>
+              <div>
+                <h3 class="ex-section-title">Contenido para la IA</h3>
+                <p class="ex-section-text">{{ promptLeadText() }}</p>
+              </div>
+            </div>
+
+            <div class="ex-prompt">
+              <textarea
+                formControlName="prompt"
+                rows="10"
+                maxlength="20000"
+                placeholder="Pega aquí el temario, apuntes o el contenido. Nada más."
+                class="ex-prompt-input"
+              ></textarea>
+              @if (isCode()) {
+                <p class="ex-hint">
+                  Pega el temario o enunciados. Las preguntas salen de ese texto, no del nombre del curso.
+                </p>
+              } @else {
+                <p class="ex-hint">
+                  Pega el texto o temario. El test sale solo de eso (si pegas historia, preguntas de historia — no de Scratch).
+                </p>
+              }
+            </div>
+
+            <div class="ex-fields ex-fields--compact">
+              @if (isCode()) {
+                <label class="ex-field">
+                  <span class="ex-label">Lenguaje (opcional)</span>
+                  <input
+                    type="text"
+                    formControlName="language"
+                    maxlength="32"
+                    placeholder="JavaScript, Python…"
+                    class="ex-input"
+                  />
+                </label>
+              }
+              <label class="ex-field ex-field--narrow">
+                <span class="ex-label">Nº de preguntas</span>
+                <input
+                  type="number"
+                  formControlName="count"
+                  min="1"
+                  [max]="questionMax"
+                  class="ex-input"
+                />
+              </label>
+            </div>
+            <p class="ex-hint">
+              Hasta 100 preguntas. La IA crea un borrador (si pides muchas, tarda un poco). Revisa
+              {{ isCode() ? 'las soluciones' : 'las correctas' }} antes de publicar.
+            </p>
+          </section>
+        } @else {
+          <section class="ex-section">
+            <div class="ex-section-head">
+              @if (!isEdit()) {
+                <p class="ex-section-step">4</p>
+              }
+              <div>
+                <h3 class="ex-section-title">Preguntas</h3>
+                <p class="ex-section-text">
+                  {{ isCode() ? 'Enunciado, lenguaje y solución válida.' : 'Enunciado, opciones A/B/C y la correcta.' }}
+                </p>
+              </div>
+            </div>
+
+            <div formArrayName="questions" class="ex-questions">
+              @for (question of questions.controls; track $index; let i = $index) {
+                <article class="ex-question" [formGroupName]="i">
+                  <div class="ex-question-top">
+                    <p class="ex-question-index">Pregunta {{ i + 1 }}</p>
+                    @if (questions.length > 1) {
+                      <button type="button" class="ex-link-danger" (click)="removeQuestion(i)">
+                        Quitar
+                      </button>
+                    }
+                  </div>
+
+                  <label class="ex-field ex-field--full">
+                    <span class="ex-label">Enunciado</span>
+                    <textarea
+                      formControlName="prompt"
+                      rows="2"
+                      class="ex-input ex-textarea"
+                      [placeholder]="isCode() ? 'Ej. Imprime hola mundo' : 'Escribe la pregunta…'"
+                    ></textarea>
+                  </label>
+
+                  @if (isCode()) {
+                    <label class="ex-field">
+                      <span class="ex-label">Lenguaje</span>
+                      <input
+                        type="text"
+                        formControlName="language"
+                        maxlength="32"
+                        placeholder="Python, JavaScript, Java…"
+                        class="ex-input"
+                      />
+                    </label>
+
+                    <div class="ex-seg" role="group" aria-label="Formato de la pregunta">
+                      <button
+                        type="button"
+                        class="ex-seg-btn"
+                        [class.is-on]="question.get('format')?.value === 'code_write'"
+                        (click)="setQuestionFormat(i, 'code_write')"
+                      >
+                        Escribir código
+                      </button>
+                      <button
+                        type="button"
+                        class="ex-seg-btn"
+                        [class.is-on]="question.get('format')?.value === 'code_complete'"
+                        (click)="setQuestionFormat(i, 'code_complete')"
+                      >
+                        Completar código
+                      </button>
+                    </div>
+
+                    @if (question.get('format')?.value === 'code_complete') {
+                      <label class="ex-field ex-field--full">
+                        <span class="ex-label">Empieza así (el alumno lo termina)</span>
+                        <textarea
+                          formControlName="starter_code"
+                          rows="3"
+                          class="ex-code"
+                          placeholder="if i >"
+                        ></textarea>
+                      </label>
+                    }
+
+                    <label class="ex-field ex-field--full">
+                      <span class="ex-label">Solución(es) válidas</span>
+                      <textarea
+                        formControlName="accepted_answers"
+                        rows="5"
+                        class="ex-code"
+                        placeholder='print("Hola mundo")'
+                      ></textarea>
+                      <span class="ex-hint">
+                        Si hay varias formas, sepáralas con una línea que solo diga ---. No se ejecuta el código: se compara.
+                      </span>
+                    </label>
+                  } @else {
+                    <div class="ex-choices">
+                      @for (key of keys; track key) {
+                        <label class="ex-option">
+                          <input
+                            type="radio"
+                            formControlName="correct_key"
+                            [value]="key"
+                          />
+                          <span class="ex-option-key">{{ key }}</span>
+                          <input
+                            [formControlName]="key"
+                            type="text"
+                            maxlength="255"
+                            class="ex-input"
+                            [placeholder]="'Respuesta ' + key"
+                          />
+                        </label>
+                      }
+                    </div>
+                    <p class="ex-hint">Marca el círculo de la opción correcta.</p>
+                  }
+                </article>
+              }
+            </div>
+
+            @if (questions.length < questionMax) {
+              <button type="button" class="ex-btn ex-btn--ghost" (click)="addQuestion()">
+                Añadir pregunta
+              </button>
+            }
+          </section>
+        }
+
+        <div class="ex-actions">
+          <a class="ex-btn ex-btn--ghost" [routerLink]="listPath()">Cancelar</a>
+          <button type="submit" class="ex-btn ex-btn--primary" [disabled]="saving()">
+            @if (saving()) {
+              {{ mode() === 'prompt' && !isEdit() ? 'Generando…' : 'Guardando…' }}
+            } @else if (mode() === 'prompt' && !isEdit()) {
+              Generar borrador
+            } @else {
+              Guardar ejercicio
+            }
+          </button>
+        </div>
+      </form>
+    }
+  }
+</section>

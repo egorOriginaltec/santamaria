@@ -1,0 +1,42 @@
+<section class="exs-page">
+  <header class="exs-hero student-reveal">
+    <p class="exs-kicker">Ejercicios</p>
+    <h1 class="exs-title">Práctica y exámenes</h1>
+    <p class="exs-lead">
+      Práctica: puedes repetir. Examen: un solo intento. Si no hay fechas, lo haces cuando quieras.
+    </p>
+  </header>
+
+  @if (loading()) {
+    <div class="student-loader" aria-busy="true">
+      <div class="student-loader-line"></div>
+      @for (row of skeletonRows; track row) {
+        <div class="exs-sk-card">
+          <span class="student-sk exs-sk-kicker"></span>
+          <span class="student-sk exs-sk-title"></span>
+          <span class="student-sk exs-sk-btn"></span>
+        </div>
+      }
+    </div>
+  } @else if (errorMessage()) {
+    <app-alert>{{ errorMessage() }}</app-alert>
+  } @else if (exercises().length === 0) {
+    <div class="exs-empty student-reveal">
+      <p>Ahora mismo no hay ejercicios abiertos en tus cursos.</p>
+      <a routerLink="/student">Volver al inicio</a>
+    </div>
+  } @else {
+    <div class="exs-list student-reveal student-reveal-2">
+      @for (exercise of exercises(); track exercise.uuid) {
+        <a class="exs-card" [routerLink]="['/student/exercises', exercise.uuid]">
+          <p class="exs-course">{{ exercise.course?.title || 'Tu curso' }}</p>
+          <h2 class="exs-name">{{ exercise.title }}</h2>
+          <p class="exs-meta">
+            {{ kind(exercise) }} · {{ exercise.question_count ?? '—' }} preguntas · {{ status(exercise) }}
+          </p>
+          <span class="exs-cta">{{ cta(exercise) }}</span>
+        </a>
+      }
+    </div>
+  }
+</section>

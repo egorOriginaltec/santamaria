@@ -33,23 +33,66 @@ export class Reveal {
         return;
       }
 
-      const inView = () => {
-        const rect = node.getBoundingClientRect();
-        const height = window.innerHeight;
-        return rect.top < height * 0.88 && rect.bottom > height * 0.06;
-      };
+      let done = false;
+      let timer = 0;
 
-      const show = () => {
-        if (!inView()) {
+      const reveal = (immediate = false) => {
+        if (done) {
           return;
         }
-        this.shown.set(true);
-        window.removeEventListener('scroll', show);
+        done = true;
+
+        const run = () => this.shown.set(true);
+
+        if (immediate) {
+          // Above-the-fold: force a painted opacity:0 frame before is-in.
+          timer = window.setTimeout(run, 40);
+          this.destroyRef.onDestroy(() => window.clearTimeout(timer));
+          return;
+        }
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(run);
+        });
       };
 
-      window.addEventListener('scroll', show, { passive: true });
-      this.destroyRef.onDestroy(() => window.removeEventListener('scroll', show));
-      show();
+      const inView = () => {
+        const rect = node.getBoundingClientRect();
+        const height = window.innerHeight || document.documentElement.clientHeight;
+        return rect.top < height * 0.92 && rect.bottom > height * 0.04;
+      };
+
+      if (typeof IntersectionObserver === 'undefined') {
+        const onScroll = () => {
+          if (inView()) {
+            window.removeEventListener('scroll', onScroll);
+            reveal(true);
+          }
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        this.destroyRef.onDestroy(() => window.removeEventListener('scroll', onScroll));
+        if (inView()) {
+          reveal(true);
+        }
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            observer.disconnect();
+            reveal(true);
+          }
+        },
+        { root: null, rootMargin: '0px 0px -6% 0px', threshold: 0.05 },
+      );
+
+      observer.observe(node);
+      this.destroyRef.onDestroy(() => observer.disconnect());
+
+      if (inView()) {
+        reveal(true);
+      }
     });
   }
 }

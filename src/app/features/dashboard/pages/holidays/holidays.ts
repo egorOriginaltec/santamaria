@@ -1,4 +1,6 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +13,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   HolidayDto,
   HolidaySort,
@@ -30,9 +34,21 @@ import {
   templateUrl: './holidays.html',
   styleUrl: './holidays.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('holidaysEnter', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(12px)' }),
+        animate(
+          '520ms cubic-bezier(0.16, 1, 0.3, 1)',
+          style({ opacity: 1, transform: 'none' }),
+        ),
+      ]),
+    ]),
+  ],
 })
 export class DashboardHolidays implements OnInit {
   private readonly holidaysApi = inject(HolidaysApiService);
+  private readonly toast = inject(ToastService);
   private readonly authApi = inject(AuthApiService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -50,7 +66,9 @@ export class DashboardHolidays implements OnInit {
   readonly holidays = signal<readonly HolidayDto[]>([]);
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
+  readonly busyUuid = signal<string | null>(null);
   readonly errorMessage = signal<string | null>(null);
+  readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -93,9 +111,7 @@ export class DashboardHolidays implements OnInit {
       if (!user) {
         this.loading.set(false);
         this.initialLoad.set(false);
-        this.errorMessage.set(
-          'Inicia sesión como administrador para gestionar festivos.',
-        );
+        this.setError('Inicia sesión como administrador para gestionar festivos.', true);
         return;
       }
 
@@ -119,7 +135,7 @@ export class DashboardHolidays implements OnInit {
 
   reload(page = this.currentPage()): void {
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.clearError();
 
     const yearValue = this.yearControl.value;
     const activeValue = this.activeControl.value;
@@ -128,13 +144,8 @@ export class DashboardHolidays implements OnInit {
       .list({
         search: this.searchControl.value.trim() || undefined,
         year: yearValue === 'all' ? 'all' : Number(yearValue) || new Date().getFullYear(),
-        month: this.monthControl.value
-          ? Number(this.monthControl.value)
-          : '',
-        is_active:
-          activeValue === ''
-            ? ''
-            : activeValue === 'true',
+        month: this.monthControl.value ? Number(this.monthControl.value) : '',
+        is_active: activeValue === '' ? '' : activeValue === 'true',
         sort: this.sortControl.value,
         per_page: Number(this.perPageControl.value) || 10,
         page,
@@ -157,46 +168,74 @@ export class DashboardHolidays implements OnInit {
             this.options.set(response.options);
           }
         },
-        error: (err: { status?: number }) => {
+        error: (err: HttpErrorResponse) => {
           this.holidays.set([]);
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set(
-              'No tienes permiso para ver festivos. Entra con egor@gmail.com.',
-            );
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar los festivos.');
+          this.total.set(0);
+          this.setError(
+            readApiError(err, 'No se pudieron cargar los festivos.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
 
   onDelete(holiday: HolidayDto): void {
+    if (this.busyUuid()) {
+      return;
+    }
+
     const ok = window.confirm(`¿Eliminar el festivo “${holiday.name}”?`);
     if (!ok) {
       return;
     }
 
-    this.holidaysApi.destroy(holiday.uuid).subscribe({
-      next: () => {
-        const nextPage =
-          this.holidays().length === 1 && this.currentPage() > 1
-            ? this.currentPage() - 1
-            : this.currentPage();
-        this.reload(nextPage);
-      },
-      error: () => {
-        this.errorMessage.set('No se pudo eliminar el festivo.');
-      },
-    });
+    this.clearError();
+    this.busyUuid.set(holiday.uuid);
+
+    this.holidaysApi
+      .destroy(holiday.uuid)
+      .pipe(finalize(() => this.busyUuid.set(null)))
+      .subscribe({
+        next: () => {
+          this.toast.success('Festivo eliminado.');
+          const nextPage =
+            this.holidays().length === 1 && this.currentPage() > 1
+              ? this.currentPage() - 1
+              : this.currentPage();
+          this.reload(nextPage);
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo eliminar el festivo.'),
+            err.status === 401 || err.status === 403,
+          );
+        },
+      });
   }
 
   toggleActive(holiday: HolidayDto): void {
+    if (this.busyUuid()) {
+      return;
+    }
+
+    this.clearError();
+    this.busyUuid.set(holiday.uuid);
+
     this.holidaysApi
       .update(holiday.uuid, { is_active: !holiday.is_active })
+      .pipe(finalize(() => this.busyUuid.set(null)))
       .subscribe({
-        next: () => this.reload(this.currentPage()),
-        error: () => {
-          this.errorMessage.set('No se pudo actualizar el estado.');
+        next: () => {
+          this.toast.success(
+            holiday.is_active ? 'Festivo desactivado.' : 'Festivo activado.',
+          );
+          this.reload(this.currentPage());
+        },
+        error: (err: HttpErrorResponse) => {
+          this.setError(
+            readApiError(err, 'No se pudo actualizar el estado del festivo.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -230,5 +269,14 @@ export class DashboardHolidays implements OnInit {
       pages.push(page);
     }
     return pages;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }

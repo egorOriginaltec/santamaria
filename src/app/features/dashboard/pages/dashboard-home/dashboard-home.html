@@ -67,13 +67,6 @@
       </label>
     </div>
   </header>
-
-  @if (errorMessage()) {
-    <p class="rounded-2xl border border-[#fecaca] bg-[#fef2f2] px-4 py-3 text-sm text-[#b91c1c]" role="alert">
-      {{ errorMessage() }}
-    </p>
-  }
-
   @if (loading()) {
     <div class="dash-loader" aria-busy="true" aria-live="polite">
       <section class="dash-skel-card dash-skel-bill">

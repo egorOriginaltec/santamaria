@@ -1,6 +1,6 @@
 <section id="program" class="relative scroll-mt-[calc(var(--site-header-height)+0.75rem)] overflow-hidden bg-white">
-  <div class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20" appReveal>
-    <header class="mx-auto max-w-2xl text-center">
+  <div class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+    <header class="mx-auto max-w-2xl text-center" data-aos="fade-up">
       <p class="section-kicker mb-4">
         Cursos
       </p>
@@ -14,8 +14,12 @@
     </header>
 
     <div class="mt-8 grid grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 sm:gap-5 md:mt-12 lg:grid-cols-3">
-      @for (course of courses; track course.id) {
-        <article class="course-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-[#ececf3] bg-white">
+      @for (course of courses; track course.id; let i = $index) {
+        <article
+          class="course-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-[#ececf3] bg-white"
+          data-aos="fade-up"
+          [attr.data-aos-delay]="i < 5 ? i * 60 : 300"
+        >
           <div class="course-cover" [style.--course-cover]="course.cover">
             @if (course.image) {
               <img class="course-cover-photo" [src]="course.image" [alt]="course.title" />

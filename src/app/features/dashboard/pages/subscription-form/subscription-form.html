@@ -8,6 +8,8 @@
       <p class="student-form-subtitle">
         @if (loading()) {
           Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir esta suscripción.
         } @else {
           Un alumno, una cuota mensual. No se puede asignar dos veces el mismo alumno.
         }
@@ -33,81 +35,98 @@
       </div>
     </div>
   } @else {
-    <form class="student-form student-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      @if (errorMessage()) {
-        <p class="student-form-alert" role="alert">{{ errorMessage() }}</p>
-      }
-
-      <div class="student-form-grid">
-        <label class="student-field">
-          <span class="student-field-label">Alumno</span>
-          <select
-            class="student-input"
-            formControlName="student_uuid"
-            [class.is-invalid]="fieldInvalid('student_uuid')"
-          >
-            <option value="">Elige un alumno</option>
-            @for (student of availableStudents(); track student.uuid) {
-              <option [value]="student.uuid">{{ student.email }}</option>
+    @if (loadFailed()) {
+      <div class="student-form-empty student-form-reveal">
+        <p class="student-form-empty-title">Suscripción no disponible</p>
+        <p class="student-form-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verla.
+        </p>
+        <a routerLink="/dashboard/subscriptions" class="student-btn student-btn--primary">
+          Volver al listado
+        </a>
+      </div>
+    } @else {
+      <form
+        class="student-form student-form-reveal"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+        <div class="student-form-grid">
+          <label class="student-field">
+            <span class="student-field-label">Alumno</span>
+            <select
+              class="student-input"
+              formControlName="student_uuid"
+              [class.is-invalid]="fieldInvalid('student_uuid')"
+              (change)="onStudentChange()"
+            >
+              <option value="">Elige un alumno</option>
+              @for (student of availableStudents(); track student.uuid) {
+                <option [value]="student.uuid">{{ student.email }}</option>
+              }
+            </select>
+            @if (fieldInvalid('student_uuid')) {
+              <app-field-error>{{ studentError() }}</app-field-error>
+            } @else if (availableStudents().length === 0) {
+              <app-field-error>No quedan alumnos libres. Crea uno primero.</app-field-error>
             }
-          </select>
-          @if (fieldInvalid('student_uuid')) {
-            <span class="student-field-error">Elige un alumno sin suscripción.</span>
-          }
-          @if (availableStudents().length === 0) {
-            <span class="student-field-error">No quedan alumnos libres. Crea uno primero.</span>
-          }
-        </label>
+          </label>
 
-        <label class="student-field">
-          <span class="student-field-label">Cuota mensual (€)</span>
-          <input
-            type="number"
-            class="student-input"
-            formControlName="monthly_amount"
-            min="1"
-            max="9999.99"
-            step="0.01"
-            [class.is-invalid]="fieldInvalid('monthly_amount')"
-          />
-          @if (fieldInvalid('monthly_amount')) {
-            <span class="student-field-error">Indica un importe entre 1 € y 9.999,99 €.</span>
-          }
-        </label>
+          <label class="student-field">
+            <span class="student-field-label">Cuota mensual (€)</span>
+            <input
+              type="number"
+              class="student-input"
+              formControlName="monthly_amount"
+              min="1"
+              max="9999.99"
+              step="0.01"
+              [class.is-invalid]="fieldInvalid('monthly_amount')"
+              (input)="onAmountInput()"
+            />
+            @if (fieldInvalid('monthly_amount')) {
+              <app-field-error>{{ amountError() }}</app-field-error>
+            }
+          </label>
 
-        <label class="student-field">
-          <span class="student-field-label">Estado</span>
-          <select class="student-input" formControlName="status">
-            <option value="active">Activa</option>
-            <option value="paused">Pausada</option>
-            <option value="cancelled">Cancelada</option>
-          </select>
-        </label>
+          <label class="student-field">
+            <span class="student-field-label">Estado</span>
+            <select class="student-input" formControlName="status">
+              <option value="active">Activa</option>
+              <option value="paused">Pausada</option>
+              <option value="cancelled">Cancelada</option>
+            </select>
+          </label>
 
-        <label class="student-field">
-          <span class="student-field-label">Inicio</span>
-          <input
-            type="date"
-            class="student-input"
-            formControlName="starts_on"
-            [class.is-invalid]="fieldInvalid('starts_on')"
-          />
-          @if (fieldInvalid('starts_on')) {
-            <span class="student-field-error">Indica la fecha de inicio.</span>
-          }
-        </label>
-      </div>
+          <label class="student-field">
+            <span class="student-field-label">Inicio</span>
+            <input
+              type="date"
+              class="student-input"
+              formControlName="starts_on"
+              [class.is-invalid]="fieldInvalid('starts_on')"
+              (change)="onStartsOnChange()"
+            />
+            @if (fieldInvalid('starts_on')) {
+              <app-field-error>{{ startsOnError() }}</app-field-error>
+            }
+          </label>
+        </div>
 
-      <div class="student-form-actions">
-        <a routerLink="/dashboard/subscriptions" class="student-btn student-btn--ghost">Cancelar</a>
-        <button
-          type="submit"
-          class="student-btn student-btn--primary"
-          [disabled]="saving() || availableStudents().length === 0"
-        >
-          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear suscripción' }}
-        </button>
-      </div>
-    </form>
+        <div class="student-form-actions">
+          <a routerLink="/dashboard/subscriptions" class="student-btn student-btn--ghost">
+            Cancelar
+          </a>
+          <button
+            type="submit"
+            class="student-btn student-btn--primary"
+            [disabled]="saving() || (!isEdit() && availableStudents().length === 0)"
+          >
+            {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear suscripción' }}
+          </button>
+        </div>
+      </form>
+    }
   }
 </section>

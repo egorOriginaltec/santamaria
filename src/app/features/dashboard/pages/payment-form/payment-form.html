@@ -8,6 +8,8 @@
       <p class="payment-form-subtitle">
         @if (loading()) {
           Cargando…
+        } @else if (loadFailed()) {
+          No se pudo abrir este pago.
         } @else {
           Elige el estudiante y uno de los cursos en los que está matriculado.
         }
@@ -37,107 +39,131 @@
       </div>
     </div>
   } @else {
-    <form class="payment-form payment-form-reveal" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-      @if (errorMessage()) {
-        <p class="payment-form-alert" role="alert">{{ errorMessage() }}</p>
-      }
-
-      <div class="payment-form-grid">
-        <label class="payment-field">
-          <span class="payment-field-label">Estudiante</span>
-          <select
-            class="payment-input"
-            formControlName="student_uuid"
-            [class.is-invalid]="fieldInvalid('student_uuid')"
-          >
-            <option value="">Selecciona…</option>
-            @for (student of students(); track student.uuid) {
-              <option [value]="student.uuid">{{ student.email }}</option>
-            }
-          </select>
-          @if (fieldInvalid('student_uuid')) {
-            <span class="payment-field-error">Selecciona un estudiante.</span>
-          }
-        </label>
-
-        <label class="payment-field">
-          <span class="payment-field-label">Curso</span>
-          <select
-            class="payment-input"
-            formControlName="course_uuid"
-            [class.is-invalid]="fieldInvalid('course_uuid')"
-          >
-            <option value="">
-              {{ form.controls.student_uuid.value ? 'Selecciona un curso…' : 'Primero el estudiante' }}
-            </option>
-            @for (course of courseOptions(); track course.uuid) {
-              <option [value]="course.uuid">{{ course.title }}</option>
-            }
-          </select>
-          @if (form.controls.student_uuid.value && courseOptions().length === 0) {
-            <span class="payment-field-error">Este estudiante no tiene cursos asignados.</span>
-          } @else if (fieldInvalid('course_uuid')) {
-            <span class="payment-field-error">Selecciona un curso del estudiante.</span>
-          }
-        </label>
-
-        <label class="payment-field">
-          <span class="payment-field-label">Importe (€)</span>
-          <input
-            type="number"
-            class="payment-input"
-            formControlName="amount"
-            min="0.01"
-            max="99999.99"
-            step="0.01"
-            placeholder="1200.00"
-            [class.is-invalid]="fieldInvalid('amount')"
-          />
-          @if (fieldInvalid('amount')) {
-            <span class="payment-field-error">Indica un importe válido.</span>
-          }
-        </label>
-
-        <label class="payment-field">
-          <span class="payment-field-label">Método</span>
-          <select class="payment-input" formControlName="method">
-            @for (method of methods; track method) {
-              <option [value]="method">{{ methodLabel(method) }}</option>
-            }
-          </select>
-        </label>
-
-        <label class="payment-field">
-          <span class="payment-field-label">Fecha de pago</span>
-          <input
-            type="date"
-            class="payment-input"
-            formControlName="paid_on"
-            [class.is-invalid]="fieldInvalid('paid_on')"
-          />
-          @if (fieldInvalid('paid_on')) {
-            <span class="payment-field-error">Indica la fecha del pago.</span>
-          }
-        </label>
-
-        <label class="payment-field payment-field--full">
-          <span class="payment-field-label">Notas (opcional)</span>
-          <textarea
-            class="payment-input payment-textarea"
-            formControlName="notes"
-            rows="3"
-            maxlength="1000"
-            placeholder="Matrícula, primer plazo…"
-          ></textarea>
-        </label>
+    @if (loadFailed()) {
+      <div class="payment-form-empty payment-form-reveal">
+        <p class="payment-form-empty-title">Pago no disponible</p>
+        <p class="payment-form-empty-text">
+          Puede que se haya eliminado o que no tengas permiso para verlo.
+        </p>
+        <a routerLink="/dashboard/payments" class="payment-btn payment-btn--primary">
+          Volver al listado
+        </a>
       </div>
+    } @else {
+      <form
+        class="payment-form payment-form-reveal"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        novalidate
+      >
+        <div class="payment-form-grid">
+          <label class="payment-field">
+            <span class="payment-field-label">Estudiante</span>
+            <select
+              class="payment-input"
+              formControlName="student_uuid"
+              [class.is-invalid]="fieldInvalid('student_uuid')"
+            >
+              <option value="">Selecciona…</option>
+              @for (student of students(); track student.uuid) {
+                <option [value]="student.uuid">{{ student.email }}</option>
+              }
+            </select>
+            @if (fieldInvalid('student_uuid')) {
+              <app-field-error>{{ studentError() }}</app-field-error>
+            }
+          </label>
 
-      <div class="payment-form-actions">
-        <a routerLink="/dashboard/payments" class="payment-btn payment-btn--ghost">Cancelar</a>
-        <button type="submit" class="payment-btn payment-btn--primary" [disabled]="saving()">
-          {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear pago' }}
-        </button>
-      </div>
-    </form>
+          <label class="payment-field">
+            <span class="payment-field-label">Curso</span>
+            <select
+              class="payment-input"
+              formControlName="course_uuid"
+              [class.is-invalid]="
+                fieldInvalid('course_uuid') ||
+                (!!form.controls.student_uuid.value && courseOptions().length === 0)
+              "
+              (change)="onCourseChange()"
+            >
+              <option value="">
+                {{
+                  form.controls.student_uuid.value
+                    ? 'Selecciona un curso…'
+                    : 'Primero el estudiante'
+                }}
+              </option>
+              @for (course of courseOptions(); track course.uuid) {
+                <option [value]="course.uuid">{{ course.title }}</option>
+              }
+            </select>
+            @if (
+              fieldInvalid('course_uuid') ||
+              (!!form.controls.student_uuid.value && courseOptions().length === 0)
+            ) {
+              <app-field-error>{{ courseError() }}</app-field-error>
+            }
+          </label>
+
+          <label class="payment-field">
+            <span class="payment-field-label">Importe (€)</span>
+            <input
+              type="number"
+              class="payment-input"
+              formControlName="amount"
+              min="0.01"
+              max="99999.99"
+              step="0.01"
+              placeholder="1200.00"
+              [class.is-invalid]="fieldInvalid('amount')"
+              (input)="onAmountInput()"
+            />
+            @if (fieldInvalid('amount')) {
+              <app-field-error>{{ amountError() }}</app-field-error>
+            }
+          </label>
+
+          <label class="payment-field">
+            <span class="payment-field-label">Método</span>
+            <select class="payment-input" formControlName="method">
+              @for (method of methods; track method) {
+                <option [value]="method">{{ methodLabel(method) }}</option>
+              }
+            </select>
+          </label>
+
+          <label class="payment-field">
+            <span class="payment-field-label">Fecha de pago</span>
+            <input
+              type="date"
+              class="payment-input"
+              formControlName="paid_on"
+              [class.is-invalid]="fieldInvalid('paid_on')"
+              (change)="onPaidOnChange()"
+            />
+            @if (fieldInvalid('paid_on')) {
+              <app-field-error>{{ paidOnError() }}</app-field-error>
+            }
+          </label>
+
+          <label class="payment-field payment-field--full">
+            <span class="payment-field-label">Notas (opcional)</span>
+            <textarea
+              class="payment-input payment-textarea"
+              formControlName="notes"
+              rows="3"
+              maxlength="1000"
+              placeholder="Matrícula, primer plazo…"
+            ></textarea>
+          </label>
+        </div>
+
+        <div class="payment-form-actions">
+          <a routerLink="/dashboard/payments" class="payment-btn payment-btn--ghost">Cancelar</a>
+          <button type="submit" class="payment-btn payment-btn--primary" [disabled]="saving()">
+            {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear pago' }}
+          </button>
+        </div>
+      </form>
+    }
   }
 </section>

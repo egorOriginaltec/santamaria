@@ -1,0 +1,109 @@
+<section class="exs-page">
+  @if (loading()) {
+    <div class="student-loader" aria-busy="true">
+      <div class="student-loader-line"></div>
+      <span class="student-sk exs-sk-title"></span>
+      <span class="student-sk" style="height: 8rem; border-radius: 1.25rem"></span>
+    </div>
+  } @else if (errorMessage() && !exercise()) {
+    <app-alert>
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="retry()">Reintentar</button>
+    </app-alert>
+    <a routerLink="/student/contenido" class="take-back">Volver a contenido</a>
+  } @else if (exercise(); as current) {
+    <header class="exs-hero student-reveal">
+      <p class="exs-kicker">{{ current.course?.title || 'Ejercicio' }} · Ejercicio</p>
+      <h1 class="exs-title">{{ current.title }}</h1>
+      <p class="exs-lead">{{ lead() }}</p>
+    </header>
+    <ol class="take-list student-reveal student-reveal-2">
+      @for (question of current.questions ?? []; track question.uuid) {
+        <li class="take-q">
+          <p class="take-prompt">{{ question.position }}. {{ question.prompt }}</p>
+          @if (isCodeQuestion(question)) {
+            <app-student-code-editor
+              class="take-editor"
+              [value]="codeOf(question.uuid)"
+              [language]="question.language ?? ''"
+              [disabled]="!canAnswer()"
+              [placeholder]="codePlaceholder(question)"
+              (valueChange)="setCode(question.uuid, $event)"
+            />
+            @if (canAnswer() && revealsLive()) {
+              <button
+                type="button"
+                class="take-check"
+                [disabled]="checkingUuid() === question.uuid"
+                (click)="checkCode(question)"
+              >
+                {{ checkingUuid() === question.uuid ? 'Comprobando…' : 'Comprobar' }}
+              </button>
+            }
+            @if (checkResult(question.uuid) === true) {
+              <app-alert tone="ok">¡Bien! Coincide con la solución.</app-alert>
+            } @else if (checkResult(question.uuid) === false) {
+              <app-alert>No coincide. Prueba otra vez o entrega para ver la solución.</app-alert>
+              @if (viewingResults() && question.solution) {
+                <p class="take-sol-label">Solución</p>
+                <app-student-code-editor
+                  class="take-editor"
+                  [value]="question.solution"
+                  [language]="question.language ?? ''"
+                  [disabled]="true"
+                />
+              }
+            } @else if (viewingResults() && question.solution) {
+              <p class="take-sol-label">Solución</p>
+              <app-student-code-editor
+                class="take-editor"
+                [value]="question.solution"
+                [language]="question.language ?? ''"
+                [disabled]="true"
+              />
+            }
+          } @else {
+            <div class="take-choices">
+              @for (choice of question.choices; track choice.key) {
+                <button
+                  type="button"
+                  class="take-choice"
+                  [class.is-picked]="!showsFeedback(question.uuid) && selected(question.uuid) === choice.key"
+                  [class.is-correct]="showsFeedback(question.uuid) && question.correct_key === choice.key"
+                  [class.is-wrong]="showsFeedback(question.uuid) && selected(question.uuid) === choice.key && question.correct_key !== choice.key"
+                  [disabled]="!canAnswer()"
+                  (click)="pick(question.uuid, choice.key)"
+                >
+                  <span class="take-key">{{ choice.key }}</span>
+                  <span>{{ choice.label }}</span>
+                </button>
+              }
+            </div>
+            @if (showsFeedback(question.uuid) && selected(question.uuid) && question.correct_key) {
+              @if (selected(question.uuid) === question.correct_key) {
+                <p class="take-ok">¡Bien! Es la {{ selected(question.uuid) }}.</p>
+              } @else {
+                <p class="take-no">No es esa. La correcta es la {{ question.correct_key }}.</p>
+              }
+            }
+          }
+        </li>
+      }
+    </ol>
+
+    <div class="take-actions student-reveal">
+      <a routerLink="/student/contenido" class="take-back">Volver a contenido</a>
+      @if (canAnswer()) {
+        <button type="button" class="take-submit" [disabled]="saving()" (click)="onSubmit()">
+          @if (saving()) {
+            Entregando…
+          } @else {
+            Entregar
+          }
+        </button>
+      } @else if (canRetry() && viewingResults()) {
+        <button type="button" class="take-retry" (click)="startRetry()">Intentar de nuevo</button>
+      }
+    </div>
+  }
+</section>

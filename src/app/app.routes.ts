@@ -23,10 +23,20 @@ export const routes: Routes = [
         loadChildren: () =>
           import('@features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
+      {
+        path: 'legal',
+        loadChildren: () =>
+          import('@features/legal/legal.routes').then((m) => m.LEGAL_ROUTES),
+      },
       // Legacy Spanish paths
       { path: 'contacto', redirectTo: 'contact', pathMatch: 'full' },
       { path: 'acceso', redirectTo: 'login', pathMatch: 'full' },
       { path: 'horario', redirectTo: 'horarios', pathMatch: 'full' },
+      { path: 'terminos', redirectTo: 'legal/terminos', pathMatch: 'full' },
+      { path: 'privacidad', redirectTo: 'legal/privacidad', pathMatch: 'full' },
+      { path: 'cookies', redirectTo: 'legal/cookies', pathMatch: 'full' },
+      { path: 'politica-de-privacidad', redirectTo: 'legal/privacidad', pathMatch: 'full' },
+      { path: 'politica-de-cookies', redirectTo: 'legal/cookies', pathMatch: 'full' },
     ],
   },
   {
@@ -46,8 +56,11 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: '/student' },
       { path: 'calendar', redirectTo: '/student/calendar' },
       { path: 'calendario', redirectTo: '/student/calendar' },
-      { path: 'classes', redirectTo: '/student/classes' },
-      { path: 'clases', redirectTo: '/student/classes' },
+      { path: 'contenido', redirectTo: '/student/contenido' },
+      { path: 'classes', redirectTo: '/student/contenido' },
+      { path: 'clases', redirectTo: '/student/contenido' },
+      { path: 'exercises', redirectTo: '/student/calendar' },
+      { path: 'ejercicios', redirectTo: '/student/calendar' },
     ],
   },
   { path: 'calendario', redirectTo: '/student/calendar', pathMatch: 'full' },

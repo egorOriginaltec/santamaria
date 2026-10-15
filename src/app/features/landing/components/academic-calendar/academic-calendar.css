@@ -39,6 +39,95 @@
   box-shadow: 0 10px 32px rgb(22 20 57 / 6%);
 }
 
+.calendar-table-wrap {
+  display: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-gutter: stable;
+}
+
+.calendar-scroll-hint {
+  display: none;
+  margin: 0 0 0.65rem;
+  color: #9694a4;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.calendar-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.calendar-mobile--section {
+  margin-top: 2rem;
+}
+
+.calendar-day-card {
+  border: 1px solid #e4e4ec;
+  border-radius: 1.15rem;
+  background: #fff;
+  padding: 0.9rem 1rem 1rem;
+  box-shadow: 0 8px 24px rgb(22 20 57 / 5%);
+}
+
+.calendar-day-card--weekend {
+  background: #f7f6f8;
+}
+
+.calendar-day-title {
+  margin: 0 0 0.7rem;
+  color: #161439;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.calendar-day-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.calendar-lesson--mobile {
+  min-height: 0;
+  padding: 0.75rem 0.85rem;
+}
+
+.calendar-lesson--mobile strong {
+  font-size: 0.9rem;
+}
+
+.calendar-lesson--mobile span {
+  font-size: 0.72rem;
+}
+
+@media (min-width: 900px) {
+  .calendar-mobile {
+    display: none;
+  }
+
+  .calendar-table-wrap {
+    display: block;
+  }
+
+  .calendar-scroll-hint {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .calendar-scroll-hint {
+    display: none;
+  }
+}
+
 .calendar-marker {
   padding-inline: 0.08em;
   background-image: linear-gradient(transparent 62%, #ffc224 62%);
@@ -57,10 +146,16 @@
 
 .calendar-table {
   width: 100%;
-  min-width: 80rem;
+  min-width: 56rem;
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;
+}
+
+@media (min-width: 768px) {
+  .calendar-table {
+    min-width: 72rem;
+  }
 }
 
 .calendar-table th,

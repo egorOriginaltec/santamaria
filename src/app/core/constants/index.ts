@@ -5,6 +5,7 @@ export {
   APP_TAGLINE,
 } from './app/app.constants';
 export { PRIMARY_NAV } from './primary-nav/primary-nav.constants';
+export { LEGAL_NAV } from './legal/legal-nav.constants';
 export { TOP_BANNER } from './top-banner/top-banner.constants';
 export { BREADCRUMBS } from './breadcrumbs/breadcrumbs.constants';
 export { SUB_NAV } from './sub-nav/sub-nav.constants';

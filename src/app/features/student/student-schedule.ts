@@ -1,4 +1,7 @@
-import { CourseSessionDto } from '@core/services/course-sessions-api.service';
+import {
+  CalendarExerciseDto,
+  CourseSessionDto,
+} from '@core/services/course-sessions-api.service';
 import { CourseDto } from '@core/services/courses-api.service';
 import { HolidayDto } from '@core/services/holidays-api.service';
 
@@ -56,6 +59,7 @@ export interface StudentCalendarCell {
   readonly isWeekend: boolean;
   readonly holidayName: string | null;
   readonly classes: readonly StudentClassOccurrence[];
+  readonly dueTests: readonly CalendarExerciseDto[];
 }
 
 export function firstName(fullName: string): string {
@@ -224,6 +228,36 @@ export function pastClasses(
   return found.slice(0, limit);
 }
 
+export function exerciseOpenOn(_exercise: CalendarExerciseDto, _iso: string): boolean {
+  return true;
+}
+
+export function testsDueOn(
+  iso: string,
+  exercises: Readonly<Record<string, readonly CalendarExerciseDto[]>>,
+): CalendarExerciseDto[] {
+  const due: CalendarExerciseDto[] = [];
+
+  for (const items of Object.values(exercises)) {
+    for (const exercise of items) {
+      if (exercise.starts_on?.slice(0, 10) === iso) {
+        due.push(exercise);
+      }
+    }
+  }
+
+  return due;
+}
+
+export function testsListedOn(
+  iso: string,
+  _courses: readonly CourseDto[],
+  exercises: Readonly<Record<string, readonly CalendarExerciseDto[]>>,
+  _holidays: ReadonlySet<string>,
+): CalendarExerciseDto[] {
+  return testsDueOn(iso, exercises);
+}
+
 export function buildMonthCells(
   year: number,
   month: number,
@@ -231,6 +265,7 @@ export function buildMonthCells(
   sessions: Readonly<Record<string, readonly CourseSessionDto[]>>,
   holidays: readonly HolidayDto[],
   today: string,
+  exercises: Readonly<Record<string, readonly CalendarExerciseDto[]>> = {},
 ): StudentCalendarCell[][] {
   const closed = holidayDates(holidays);
   const holidayNames = new Map(
@@ -256,6 +291,7 @@ export function buildMonthCells(
         isWeekend: weekend,
         holidayName: holidayNames.get(iso) ?? null,
         classes: occurrencesOn(iso, courses, sessions, closed),
+        dueTests: testsDueOn(iso, exercises),
       });
       cursor.setDate(cursor.getDate() + 1);
     }

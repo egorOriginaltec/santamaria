@@ -1,17 +1,16 @@
-<section id="contact" class="contact-section relative overflow-hidden">
-  <div class="contact-glow pointer-events-none absolute inset-0" aria-hidden="true"></div>
+<section id="contact" class="contact-section relative">
+  <div class="contact-glow pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true"></div>
 
-  <div
-    class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20"
-    appReveal
-  >
-    <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14">
-      <header class="min-w-0 lg:pt-2">
+  <div class="relative mx-auto w-full min-w-0 max-w-[1320px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+    <div
+      class="mx-auto grid w-full min-w-0 max-w-5xl gap-8 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14"
+    >
+      <header class="min-w-0 lg:pt-2" data-aos="fade-up">
         <p class="contact-eyebrow mb-4">
           {{ eyebrow }}
         </p>
         <h2
-          class="contact-heading text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight sm:text-3xl md:text-4xl"
+          class="contact-heading text-balance text-[1.35rem] leading-[1.15] font-bold tracking-tight min-[375px]:text-[1.5rem] sm:text-3xl md:text-4xl"
         >
           <span class="contact-marker">{{ title }}</span>
         </h2>
@@ -22,13 +21,17 @@
         </p>
         <a
           [href]="'mailto:' + email"
-          class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
+          class="contact-email mt-6 inline-flex min-h-11 max-w-full items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
         >
           {{ email }}
         </a>
       </header>
 
-      <div class="contact-card min-w-0 rounded-2xl border bg-white p-5 text-ink sm:p-7">
+      <div
+        class="contact-card min-w-0 w-full rounded-2xl border bg-white p-4 text-ink min-[375px]:p-5 sm:p-7"
+        data-aos="fade-up"
+        data-aos-delay="120"
+      >
         @if (submitted()) {
           <div class="py-6 text-center sm:py-8" role="status">
             <p class="text-lg font-bold text-ink">Mensaje enviado</p>
@@ -45,10 +48,8 @@
           </div>
         } @else {
           <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-            @if (errorMessage()) {
-              <p class="rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-[13px] text-red-600" role="alert">
-                {{ errorMessage() }}
-              </p>
+            @if (errorMessage(); as err) {
+              <app-alert>{{ err }}</app-alert>
             }
             <div>
               <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="contact-name">
@@ -66,14 +67,12 @@
                 (input)="onNameInput($event)"
               />
               @if (fieldInvalid('name')) {
-                <p class="mt-1.5 text-[12px] text-red-500">
-                  Usa solo letras (mín. 2 caracteres).
-                </p>
+                <app-field-error>Usa solo letras (mín. 2 caracteres).</app-field-error>
               }
             </div>
 
-            <div class="grid gap-4 sm:grid-cols-2">
-              <div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="min-w-0">
                 <label
                   class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
                   for="contact-email"
@@ -92,11 +91,11 @@
                   (input)="onEmailInput($event)"
                 />
                 @if (fieldInvalid('email')) {
-                  <p class="mt-1.5 text-[12px] text-red-500">Email no válido.</p>
+                  <app-field-error>Email no válido.</app-field-error>
                 }
               </div>
 
-              <div>
+              <div class="min-w-0">
                 <label
                   class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
                   for="contact-phone"
@@ -117,9 +116,7 @@
                   (keydown)="onPhoneKeydown($event)"
                 />
                 @if (fieldInvalid('phone')) {
-                  <p class="mt-1.5 text-[12px] text-red-500">
-                    Teléfono ES o LATAM no válido.
-                  </p>
+                  <app-field-error>Teléfono ES o LATAM no válido.</app-field-error>
                 }
               </div>
             </div>
@@ -142,7 +139,36 @@
                 (input)="onMessageInput($event)"
               ></textarea>
               @if (fieldInvalid('message')) {
-                <p class="mt-1.5 text-[12px] text-red-500">Escribe al menos 10 caracteres.</p>
+                <app-field-error>Escribe al menos 10 caracteres.</app-field-error>
+              }
+            </div>
+
+            <div>
+              <label class="contact-accept" for="contact-accepted">
+                <input
+                  id="contact-accepted"
+                  type="checkbox"
+                  formControlName="accepted"
+                  class="contact-check"
+                  [class.is-invalid]="fieldInvalid('accepted')"
+                />
+                <span>
+                  Acepto los
+                  <a
+                    routerLink="/legal/terminos"
+                    class="contact-legal-link"
+                    (click)="$event.stopPropagation()"
+                  >términos de uso</a>
+                  y la
+                  <a
+                    routerLink="/legal/privacidad"
+                    class="contact-legal-link"
+                    (click)="$event.stopPropagation()"
+                  >política de privacidad</a>.
+                </span>
+              </label>
+              @if (fieldInvalid('accepted')) {
+                <app-field-error>Debes aceptar para enviar el mensaje.</app-field-error>
               }
             </div>
 

@@ -31,7 +31,7 @@ export const STUDENT_NAV: readonly DashboardNavGroup[] = [
     items: [
       { id: 'home', label: 'Inicio', path: '/student', icon: 'dashboard' },
       { id: 'calendar', label: 'Calendario', path: '/student/calendar', icon: 'planner' },
-      { id: 'classes', label: 'Clases', path: '/student/classes', icon: 'courses' },
+      { id: 'classes', label: 'Contenido', path: '/student/contenido', icon: 'courses' },
     ],
   },
 ] as const;
@@ -56,7 +56,7 @@ export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
     title: 'Academia',
     items: [
       { id: 'courses-manage', label: 'Cursos', path: '/dashboard/courses', icon: 'courses' },
-      { id: 'calendar', label: 'Calendario', path: '/dashboard/calendar', icon: 'planner' },
+      { id: 'exercise-results', label: 'Resultados', path: '/dashboard/exercise-results', icon: 'analytics' },
       { id: 'holidays', label: 'Festivos', path: '/dashboard/holidays', icon: 'calendar' },
     ],
   },

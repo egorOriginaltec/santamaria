@@ -1,4 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +12,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { readApiError } from '@core/services/course-sessions-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   SubscriptionDto,
   SubscriptionSort,
@@ -34,6 +37,7 @@ import {
 })
 export class DashboardSubscriptions implements OnInit {
   private readonly subscriptionsApi = inject(SubscriptionsApiService);
+  private readonly toast = inject(ToastService);
   private readonly authApi = inject(AuthApiService);
   private readonly destroyRef = inject(DestroyRef);
 
@@ -48,6 +52,7 @@ export class DashboardSubscriptions implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);
   readonly lastPage = signal(1);
@@ -67,8 +72,9 @@ export class DashboardSubscriptions implements OnInit {
       if (!user) {
         this.loading.set(false);
         this.initialLoad.set(false);
-        this.errorMessage.set(
+        this.setError(
           'Inicia sesión como administrador para gestionar suscripciones.',
+          true,
         );
         return;
       }
@@ -91,7 +97,7 @@ export class DashboardSubscriptions implements OnInit {
 
   reload(page = this.currentPage()): void {
     this.loading.set(true);
-    this.errorMessage.set(null);
+    this.clearError();
 
     const statusValue = this.statusControl.value;
 
@@ -121,15 +127,12 @@ export class DashboardSubscriptions implements OnInit {
             this.options.set(response.options);
           }
         },
-        error: (err: { status?: number }) => {
+        error: (err: HttpErrorResponse) => {
           this.subscriptions.set([]);
-          if (err.status === 401 || err.status === 403) {
-            this.errorMessage.set(
-              'No tienes permiso para ver suscripciones. Entra con egor@gmail.com.',
-            );
-            return;
-          }
-          this.errorMessage.set('No se pudieron cargar las suscripciones.');
+          this.setError(
+            readApiError(err, 'No se pudieron cargar las suscripciones.'),
+            err.status === 401 || err.status === 403,
+          );
         },
       });
   }
@@ -141,16 +144,22 @@ export class DashboardSubscriptions implements OnInit {
       return;
     }
 
+    this.clearError();
+
     this.subscriptionsApi.destroy(subscription.uuid).subscribe({
       next: () => {
+        this.toast.success('Suscripción eliminada.');
         const nextPage =
           this.subscriptions().length === 1 && this.currentPage() > 1
             ? this.currentPage() - 1
             : this.currentPage();
         this.reload(nextPage);
       },
-      error: () => {
-        this.errorMessage.set('No se pudo eliminar la suscripción.');
+      error: (err: HttpErrorResponse) => {
+        this.setError(
+          readApiError(err, 'No se pudo eliminar la suscripción.'),
+          err.status === 401 || err.status === 403,
+        );
       },
     });
   }
@@ -195,5 +204,14 @@ export class DashboardSubscriptions implements OnInit {
       pages.push(page);
     }
     return pages;
+  }
+
+  private setError(message: string, authRequired = false): void {
+    this.authRequired.set(authRequired);
+    this.toast.error(message);
+  }
+
+  private clearError(): void {
+    this.authRequired.set(false);
   }
 }

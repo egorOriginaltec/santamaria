@@ -6,19 +6,11 @@
       @if (loading() && initialLoad()) {
         Cargando…
       } @else {
-        Alumnos por curso × precio mensual. Ejemplo: 10 × 49 € = 490 €. Del total se resta IVA 21% y
-        retención 15% de servicios profesionales.
+        Estimación orientativa de cobros, IVA, retenciones opcionales y gastos mensuales. El tratamiento
+        fiscal de la formación privada online debe confirmarse con una gestoría.
       }
     </p>
   </header>
-
-  @if (errorMessage()) {
-    <div class="calc-alert" role="alert">
-      <p>{{ errorMessage() }}</p>
-      <a routerLink="/login" class="calc-alert-link">Ir a acceso</a>
-    </div>
-  }
-
   @if (loading()) {
     <div class="calc-loader" aria-busy="true" aria-live="polite">
       <div class="calc-loader-line" aria-hidden="true"></div>
@@ -35,86 +27,246 @@
         }
       </div>
     </div>
-  } @else if (courses().length === 0 && !errorMessage()) {
+  } @else if (courses().length === 0 ) {
     <div class="calc-empty calc-reveal">
       <p class="calc-empty-title">No hay cursos activos</p>
       <p class="calc-empty-text">Crea un curso con precio para calcular mensualidades.</p>
       <a routerLink="/dashboard/courses/new" class="calc-btn">Crear curso</a>
     </div>
-  } @else if (!errorMessage()) {
+  } @else {
     <div class="calc-layout calc-reveal">
-      <div class="calc-table-wrap">
-        <table class="calc-table">
-          <thead>
-            <tr>
-              <th>Curso</th>
-              <th>Precio</th>
-              <th>Alumnos</th>
-              <th>Subtotal</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (line of lines(); track line.course.uuid) {
-              <tr>
-                <td data-label="Curso">
-                  <span class="calc-course-title">{{ line.course.title }}</span>
-                  <span class="calc-course-meta">
-                    @if (line.course.weekdays_label) {
-                      {{ line.course.weekdays_label }} ·
-                    }
-                    {{ line.course.schedule }}
-                  </span>
-                </td>
-                <td data-label="Precio">{{ money(line.course.price) }}/mes</td>
-                <td data-label="Alumnos">
-                  <input
-                    type="number"
-                    min="0"
-                    [max]="maxStudents"
-                    step="1"
-                    class="calc-students"
-                    [value]="line.students"
-                    [attr.aria-label]="'Alumnos de ' + line.course.title"
-                    (input)="setStudents(line.course.uuid, $any($event.target).value)"
-                    (change)="setStudents(line.course.uuid, $any($event.target).value)"
-                  />
-                </td>
-                <td data-label="Subtotal">{{ money(line.subtotal) }}</td>
-              </tr>
+      <div class="calc-main">
+        <div class="calc-panel">
+          <p class="calc-panel-title">Tratamiento del IVA</p>
+          <p class="calc-panel-note">
+            No presupongas sujeción al 21&nbsp;% ni exención. Confirma el régimen con tu gestoría.
+            El tipo inicial es provisional.
+          </p>
+
+          <div class="calc-vat-options" role="radiogroup" aria-label="Tratamiento del IVA">
+            @for (option of vatTreatments; track option.value) {
+              <label class="calc-radio">
+                <input
+                  type="radio"
+                  name="vat-treatment"
+                  [value]="option.value"
+                  [checked]="vatTreatment() === option.value"
+                  (change)="setVatTreatment(option.value)"
+                />
+                <span>{{ option.label }}</span>
+              </label>
             }
-          </tbody>
-        </table>
+          </div>
+
+          @if (!isVatExempt()) {
+            <label class="calc-teacher-field calc-vat-rate">
+              <span>Tipo de IVA (provisional)</span>
+              <div class="calc-vat-rate-row">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  inputmode="decimal"
+                  class="calc-students calc-students--wide"
+                  [value]="vatRatePercentValue()"
+                  (input)="setVatRatePercent($any($event.target).value)"
+                  (change)="setVatRatePercent($any($event.target).value)"
+                />
+                <span class="calc-vat-rate-suffix">%</span>
+              </div>
+              <em class="calc-provisional">Pendiente de confirmación fiscal</em>
+            </label>
+          } @else {
+            <p class="calc-exempt-banner">
+              Exenta de IVA: no se desglosa IVA repercutido. No confundir con actividad sujeta al
+              0&nbsp;%.
+            </p>
+          }
+
+          <p class="calc-panel-hint">{{ priceHint() }}</p>
+        </div>
+
+        <div class="calc-table-wrap">
+          <table class="calc-table">
+            <thead>
+              <tr>
+                <th>Curso</th>
+                <th>Precio</th>
+                <th>Alumnos</th>
+                <th>Cobrado</th>
+                @if (!isVatExempt()) {
+                  <th>Base</th>
+                  <th>IVA</th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (line of lines(); track line.course.uuid) {
+                <tr>
+                  <td data-label="Curso">
+                    <span class="calc-course-title">{{ line.course.title }}</span>
+                    <span class="calc-course-meta">
+                      @if (line.course.weekdays_label) {
+                        {{ line.course.weekdays_label }} ·
+                      }
+                      {{ line.course.schedule }}
+                    </span>
+                  </td>
+                  <td data-label="Precio">{{ money(line.unitPrice) }}/mes</td>
+                  <td data-label="Alumnos">
+                    <input
+                      type="number"
+                      min="0"
+                      step="1"
+                      inputmode="numeric"
+                      class="calc-students"
+                      [value]="line.students"
+                      [attr.aria-label]="'Alumnos de ' + line.course.title"
+                      (input)="setStudents(line.course.uuid, $any($event.target).value)"
+                      (change)="setStudents(line.course.uuid, $any($event.target).value)"
+                    />
+                  </td>
+                  <td data-label="Cobrado">{{ money(line.charged) }}</td>
+                  @if (!isVatExempt()) {
+                    <td data-label="Base">{{ money(line.taxableBase) }}</td>
+                    <td data-label="IVA">{{ money(line.vatAmount) }}</td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="calc-panel">
+          <p class="calc-panel-title">Retención del IRPF (opcional)</p>
+          <p class="calc-panel-note">
+            No se aplica automáticamente un 15&nbsp;% sobre los pagos de las familias. Las retenciones
+            profesionales dependen del tipo de ingreso, de quién paga la factura y de tu situación
+            fiscal. Una retención a cuenta no equivale necesariamente al impuesto definitivo.
+          </p>
+          <label class="calc-teacher-field">
+            <span>Retenciones practicadas en el mes (€)</span>
+            <input
+              type="number"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+              class="calc-students calc-students--wide"
+              [value]="optionalWithholding()"
+              (input)="setOptionalWithholding($any($event.target).value)"
+              (change)="setOptionalWithholding($any($event.target).value)"
+            />
+          </label>
+        </div>
+
+        <div class="calc-panel">
+          <p class="calc-panel-title">Gastos mensuales</p>
+          <p class="calc-panel-note">
+            Profesor a media orientativa de 12&nbsp;€/h, más otros costes fijos del mes. Se restan del
+            resultado estimativo.
+          </p>
+          <div class="calc-teacher-grid">
+            <label class="calc-teacher-field">
+              <span>Horas profesor / mes</span>
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                inputmode="decimal"
+                class="calc-students calc-students--wide"
+                [value]="teacherHours()"
+                (input)="setTeacherHours($any($event.target).value)"
+                (change)="setTeacherHours($any($event.target).value)"
+              />
+            </label>
+            <label class="calc-teacher-field">
+              <span>€ / hora profesor</span>
+              <input
+                type="number"
+                min="0"
+                step="0.5"
+                inputmode="decimal"
+                class="calc-students calc-students--wide"
+                [value]="teacherRate()"
+                (input)="setTeacherRate($any($event.target).value)"
+                (change)="setTeacherRate($any($event.target).value)"
+              />
+            </label>
+            <label class="calc-teacher-field">
+              <span>Otros gastos (€)</span>
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                inputmode="decimal"
+                class="calc-students calc-students--wide"
+                [value]="otherMonthlyExpenses()"
+                (input)="setOtherMonthlyExpenses($any($event.target).value)"
+                (change)="setOtherMonthlyExpenses($any($event.target).value)"
+              />
+            </label>
+            <div class="calc-teacher-total">
+              <span>Total gastos</span>
+              <strong>{{ money(monthlyExpenses()) }}</strong>
+            </div>
+          </div>
+        </div>
       </div>
 
       <aside class="calc-result">
-        <p class="calc-result-kicker">Neto tras IVA y retención</p>
+        <p class="calc-result-kicker">Resultado estimativo</p>
         <p class="calc-result-value">{{ money(net()) }}</p>
         <p class="calc-result-note">
           @if (studentTotal() === 0) {
-            Indica alumnos en cada curso. 10 × 49 € = 490 €, luego se restan 21% y 15%.
+            Indica alumnos por curso. Con IVA incluido al {{ vatRatePercentLabel() }}: 49&nbsp;€ → base
+            ≈ 40,50&nbsp;€ e IVA ≈ 8,50&nbsp;€ por alumno.
           } @else {
             {{ studentTotal() }}
-            {{ studentTotal() === 1 ? 'alumno' : 'alumnos' }}
-            facturan {{ money(gross()) }}. Resta IVA {{ percent(vatRate) }} y retención
-            {{ percent(withholdingRate) }}.
+            {{ studentTotal() === 1 ? 'alumno' : 'alumnos' }} · cobrado
+            {{ money(totalCharged()) }}.
+            @if (!isVatExempt()) {
+              Tras liquidar IVA repercutido queda base {{ money(afterVat()) }}.
+            }
           }
         </p>
 
         <dl class="calc-rows">
           <div>
-            <dt>Facturado</dt>
-            <dd>{{ money(gross()) }}</dd>
+            <dt>Total cobrado</dt>
+            <dd>{{ money(totalCharged()) }}</dd>
           </div>
+          @if (!isVatExempt()) {
+            <div>
+              <dt>Base imponible</dt>
+              <dd>{{ money(taxableBase()) }}</dd>
+            </div>
+            <div>
+              <dt>IVA repercutido {{ vatRatePercentLabel() }}</dt>
+              <dd>{{ money(vatRepercutido()) }}</dd>
+            </div>
+            <div>
+              <dt>Tras liquidar IVA</dt>
+              <dd>{{ money(afterVat()) }}</dd>
+            </div>
+          } @else {
+            <div>
+              <dt>IVA</dt>
+              <dd>Exenta (sin desglose)</dd>
+            </div>
+          }
+          @if (withholdingAmount() > 0) {
+            <div>
+              <dt>Retenciones a cuenta</dt>
+              <dd>− {{ money(withholdingAmount()) }}</dd>
+            </div>
+          }
           <div>
-            <dt>IVA {{ percent(vatRate) }}</dt>
-            <dd>− {{ money(vat()) }}</dd>
-          </div>
-          <div>
-            <dt>Retención {{ percent(withholdingRate) }}</dt>
-            <dd>− {{ money(withholding()) }}</dd>
+            <dt>Gastos mensuales</dt>
+            <dd>− {{ money(monthlyExpenses()) }}</dd>
           </div>
           <div class="is-total">
-            <dt>Te queda</dt>
+            <dt>Te queda (orientativo)</dt>
             <dd>{{ money(net()) }}</dd>
           </div>
         </dl>

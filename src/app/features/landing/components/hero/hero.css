@@ -41,6 +41,11 @@
 
 .hero-visual {
   overflow: hidden;
+  max-width: 100%;
+}
+
+.hero-main {
+  min-width: 0;
 }
 
 .hero-code-window {

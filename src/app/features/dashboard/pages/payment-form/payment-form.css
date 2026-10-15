@@ -337,6 +337,26 @@
   opacity: 0.55;
 }
 
+.payment-form-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.payment-form-empty-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-ink, #161439);
+}
+
+.payment-form-empty-text {
+  margin: 0.5rem auto 1.1rem;
+  max-width: 26rem;
+  font-size: 0.875rem;
+  color: #8a8a9a;
+  line-height: 1.45;
+}
+
 @keyframes payment-form-progress {
   0% {
     transform: translateX(-120%);

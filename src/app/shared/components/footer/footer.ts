@@ -4,6 +4,7 @@ import {
   APP_NAME,
   APP_TAGLINE,
   CONTACT_FORM_EMAIL,
+  LEGAL_NAV,
   PRIMARY_NAV,
   SOCIAL_LINKS,
 } from '@core/index';
@@ -21,9 +22,9 @@ export class Footer {
   readonly email = CONTACT_FORM_EMAIL;
   readonly year = new Date().getFullYear();
   readonly socialLinks = SOCIAL_LINKS;
+  readonly legalLinks = LEGAL_NAV;
 
   readonly links: readonly { label: string; path: string; fragment?: string }[] = [
-    { label: 'Inicio', path: '/' },
     ...PRIMARY_NAV.map((item) => ({
       label: item.label,
       path: item.path ?? '/',

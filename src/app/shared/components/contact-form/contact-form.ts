@@ -1,3 +1,5 @@
+import { DOCUMENT } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -19,6 +21,7 @@ import {
   CONTACT_FORM_SUCCESS,
   CONTACT_FORM_TITLE,
 } from '@core/index';
+import { readApiError } from '@core/services/course-sessions-api.service';
 import { LeadsApiService } from '@core/services/leads-api.service';
 import {
   normalizeEmail,
@@ -32,8 +35,10 @@ import {
   isValidEsOrLatamPhone,
   normalizePhoneForApi,
 } from '@core/utils/phone.utils';
+import { RouterLink } from '@angular/router';
 import { finalize } from 'rxjs';
-import { Reveal } from '@shared/directives/reveal.directive';
+import { AppAlert } from '@shared/components/alert/alert';
+import { AppFieldError } from '@shared/components/field-error/field-error';
 
 export type ContactFormTheme = 'dark' | 'light';
 
@@ -62,7 +67,7 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-contact-form',
-  imports: [ReactiveFormsModule, Reveal],
+  imports: [ReactiveFormsModule, RouterLink, AppAlert, AppFieldError],
   templateUrl: './contact-form.html',
   styleUrl: './contact-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,6 +79,7 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
 export class ContactForm {
   private readonly fb = inject(FormBuilder);
   private readonly leadsApi = inject(LeadsApiService);
+  private readonly document = inject(DOCUMENT);
 
   readonly theme = input<ContactFormTheme>('light');
   readonly source = input('website');
@@ -93,9 +99,12 @@ export class ContactForm {
     email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
     phone: ['', [phoneValidator]],
     message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(5000)]],
+    accepted: [false, [Validators.requiredTrue]],
   });
 
-  fieldInvalid(controlName: 'name' | 'email' | 'phone' | 'message'): boolean {
+  fieldInvalid(
+    controlName: 'name' | 'email' | 'phone' | 'message' | 'accepted',
+  ): boolean {
     const control = this.form.controls[controlName];
     return control.invalid && (control.dirty || control.touched);
   }
@@ -154,6 +163,7 @@ export class ContactForm {
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      this.showError('Revisa los campos marcados en rojo.');
       return;
     }
 
@@ -176,19 +186,29 @@ export class ContactForm {
       .subscribe({
         next: () => {
           this.submitted.set(true);
-          this.form.reset({ name: '', email: '', phone: '', message: '' });
+          this.errorMessage.set(null);
+          this.form.reset({
+            name: '',
+            email: '',
+            phone: '',
+            message: '',
+            accepted: false,
+          });
         },
-        error: (err: { status?: number; error?: { message?: string } }) => {
-          if (err.status === 422) {
-            this.errorMessage.set(
-              'Revisa los datos del formulario. Algún campo no es válido.',
-            );
-            return;
-          }
-          this.errorMessage.set(
-            'No se pudo enviar el mensaje. Comprueba que el API esté en marcha e inténtalo de nuevo.',
+        error: (err: HttpErrorResponse) => {
+          this.showError(
+            readApiError(err, 'No se pudo enviar el mensaje. Inténtalo de nuevo en un momento.'),
           );
         },
       });
+  }
+
+  private showError(message: string): void {
+    this.errorMessage.set(message);
+    queueMicrotask(() => {
+      this.document
+        .querySelector('#contact .app-alert, #contact app-alert')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
   }
 }

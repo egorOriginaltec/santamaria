@@ -1,96 +1,106 @@
-<section class="cls-page">
-  <header class="cls-hero student-reveal">
-    <p class="cls-kicker">Clases</p>
-    <h1 class="cls-title">Entra y descarga los apuntes</h1>
-    <p class="cls-lead">
-      Cada tarjeta es una clase. Si hay Meet, el botón rojo te lleva a la videollamada. Si hay apuntes, salen debajo.
-    </p>
-  </header>
-
+<section class="cls">
   @if (loading()) {
     <div class="student-loader" aria-busy="true" aria-live="polite">
       <div class="student-loader-line" aria-hidden="true"></div>
-      @for (row of skeletonRows; track row) {
-        <div class="cls-sk-card">
-          <span class="student-sk cls-sk-kicker"></span>
-          <span class="student-sk cls-sk-title"></span>
-          <span class="student-sk cls-sk-btn"></span>
-        </div>
-      }
+      <div class="cls-hero">
+        <span class="student-sk cls-sk-kicker"></span>
+        <span class="student-sk cls-sk-title"></span>
+        <span class="student-sk cls-sk-copy"></span>
+      </div>
+      <div class="cls-course st-card cls-sk-card">
+        <span class="student-sk cls-sk-course"></span>
+        @for (row of skeletonRows; track row) {
+          <span class="student-sk cls-sk-row"></span>
+        }
+      </div>
     </div>
-  } @else if (errorMessage()) {
-    <p class="cls-alert" role="alert">{{ errorMessage() }}</p>
   } @else {
-    @if (downloadError()) {
-      <p class="cls-alert" role="alert">{{ downloadError() }}</p>
+    <header class="cls-hero student-reveal">
+      <p class="st-kicker">Tus cursos</p>
+      <h1 class="st-title">
+        <span class="st-marker">Contenido</span>
+      </h1>
+      <p class="st-lead">
+        Apuntes y ejercicios, de arriba abajo. El Meet y las fechas siguen en el calendario.
+      </p>
+    </header>
+
+    @if (errorMessage(); as err) {
+      <app-alert>
+        <p>{{ err }}</p>
+        <button type="button" (click)="retry()">Reintentar</button>
+      </app-alert>
+    } @else if (downloadError(); as err) {
+      <app-alert>{{ err }}</app-alert>
     }
 
-    @if (upcoming().length > 0) {
-      <div class="cls-list student-reveal student-reveal-2">
-        @for (item of upcoming(); track occurrenceKey(item.course.uuid, item.iso)) {
-          <article class="cls-card" [class.is-today]="item.iso === todayIso">
-            <p class="cls-when">
-              {{ item.iso === todayIso ? 'Hoy' : formatNice(item.iso) }}
-              · {{ item.course.schedule_start }}–{{ item.course.schedule_end }}
-            </p>
-            <h2 class="cls-name">{{ item.course.title }}</h2>
-            @if (item.session?.meet_url; as url) {
-              <a class="cls-meet" [href]="url" target="_blank" rel="noopener noreferrer">Entrar a Meet</a>
-            } @else {
-              <p class="cls-wait">El enlace se publica el día de clase. Vuelve a esta página cuando toque.</p>
-            }
-            @if (item.session; as session) {
-              @if (session.materials.length > 0) {
-                <ul class="cls-files">
-                  @for (file of session.materials; track file.uuid) {
+    @if (!errorMessage()) {
+      @if (empty()) {
+        <div class="cls-empty st-card student-reveal">
+          <p class="cls-empty-title">Aún no tienes un grupo</p>
+          <p class="cls-empty-text">Cuando te matriculen, aquí saldrán los apuntes y los ejercicios.</p>
+          <a routerLink="/student">Volver al inicio</a>
+        </div>
+      } @else {
+        <div class="cls-list student-reveal student-reveal-2">
+          @for (course of courses(); track course.uuid) {
+            <article class="cls-course st-card">
+              <header class="cls-course-head">
+                <h2 class="cls-course-title">{{ course.title }}</h2>
+                @if (courseMeta(course); as meta) {
+                  <p class="cls-course-meta">{{ meta }}</p>
+                }
+              </header>
+
+              @if (course.materials.length === 0 && course.exercises.length === 0) {
+                <p class="cls-none">Aún no hay apuntes ni ejercicios en este grupo.</p>
+              } @else {
+                <ul class="cls-items">
+                  @for (file of course.materials; track file.uuid) {
+                    <li class="cls-item">
+                      <p class="cls-kind">Archivo</p>
+                      <div class="cls-item-copy">
+                        <p class="cls-item-title">{{ file.name }}</p>
+                        <p class="cls-item-meta">{{ fileMeta(file) }}</p>
+                      </div>
+                      <button
+                        type="button"
+                        class="st-btn st-btn--ghost cls-cta"
+                        [disabled]="downloadingUuid() === file.uuid"
+                        (click)="download(file)"
+                      >
+                        {{ downloadingUuid() === file.uuid ? 'Descargando…' : 'Descargar' }}
+                      </button>
+                    </li>
+                  }
+                  @for (test of course.exercises; track test.uuid) {
                     <li>
-                      <span>{{ file.name }}</span>
-                      <button type="button" (click)="download(file)">Descargar</button>
+                      <a class="cls-item cls-item--link" [routerLink]="['/student/exercises', test.uuid]">
+                        <p
+                          class="cls-kind"
+                          [class.is-exam]="test.purpose === 'exam'"
+                          [class.is-practice]="test.purpose === 'practice'"
+                        >
+                          {{ testKind(test) }}
+                        </p>
+                        <div class="cls-item-copy">
+                          <p class="cls-item-title">{{ test.title }}</p>
+                          @if (testMeta(test); as meta) {
+                            <p class="cls-item-meta">{{ meta }}</p>
+                          }
+                        </div>
+                        <span class="st-btn cls-cta" [class.st-btn--ghost]="!isPrimaryCta(test)">
+                          {{ testCta(test) }}
+                        </span>
+                      </a>
                     </li>
                   }
                 </ul>
               }
-            }
-          </article>
-        }
-      </div>
-    } @else if (!empty()) {
-      <div class="cls-empty student-reveal">
-        <p>No quedan clases en el calendario de este curso.</p>
-        <a routerLink="/student/calendar">Mirar el calendario</a>
-      </div>
-    }
-
-    @if (recent().length > 0) {
-      <section class="cls-past student-reveal student-reveal-3">
-        <h2 class="cls-section">Clases anteriores</h2>
-        <ul class="cls-past-list">
-          @for (item of recent(); track occurrenceKey(item.course.uuid, item.iso)) {
-            <li>
-              <div>
-                <p class="cls-past-name">{{ item.course.title }}</p>
-                <p class="cls-past-meta">{{ formatNice(item.iso) }}</p>
-              </div>
-              @if (item.session; as session) {
-                @if (session.materials.length > 0) {
-                  <div class="cls-past-files">
-                    @for (file of session.materials; track file.uuid) {
-                      <button type="button" (click)="download(file)">{{ file.name }}</button>
-                    }
-                  </div>
-                }
-              }
-            </li>
+            </article>
           }
-        </ul>
-      </section>
-    }
-
-    @if (empty()) {
-      <div class="cls-empty student-reveal">
-        <p>Cuando te matriculen, aquí saldrán tus clases con el botón de Meet.</p>
-        <a routerLink="/student">Volver al inicio</a>
-      </div>
+        </div>
+      }
     }
   }
 </section>
