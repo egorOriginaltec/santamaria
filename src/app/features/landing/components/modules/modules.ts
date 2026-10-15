@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { COURSE_PATHS, type CoursePath } from '../../data/course-paths';
+import { COURSES_GUIDE } from '../../data/courses-guide';
 import { LANDING_COURSES, type LandingCourse } from '../../data/courses';
 
 @Component({
@@ -13,6 +14,7 @@ import { LANDING_COURSES, type LandingCourse } from '../../data/courses';
 export class Modules {
   readonly courses = LANDING_COURSES;
   readonly paths = COURSE_PATHS;
+  readonly coursesGuide = COURSES_GUIDE;
   readonly activePathId = signal<string | null>(null);
 
   readonly activePath = computed<CoursePath | null>(() => {

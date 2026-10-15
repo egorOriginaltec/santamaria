@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Santamaria Club · Nuestros cursos</title>
+    <style>
+      :root {
+        --brand: #e7353d;
+        --ink: #161439;
+        --muted: #6b6b80;
+        --line: #ececf3;
+        --head: #f7f7fb;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: #fff;
+        font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap {
+        max-width: 56rem;
+        margin: 0 auto;
+        padding: 2rem 1rem 2.5rem;
+      }
+
+      @media (min-width: 640px) {
+        .wrap {
+          padding: 2.5rem 1.5rem;
+        }
+      }
+
+      .kicker {
+        margin: 0;
+        color: var(--brand);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0.25rem 0 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        line-height: 1.2;
+      }
+
+      @media (min-width: 640px) {
+        h1 {
+          font-size: 1.875rem;
+        }
+      }
+
+      .lead {
+        margin: 0.5rem 0 0;
+        max-width: 36rem;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      .table-wrap {
+        margin-top: 1.25rem;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 0.5rem;
+      }
+
+      table {
+        width: 100%;
+        min-width: 40rem;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.875rem;
+      }
+
+      thead {
+        background: var(--head);
+        color: var(--muted);
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      th,
+      td {
+        padding: 0.625rem 0.75rem;
+        vertical-align: top;
+      }
+
+      th.price,
+      td.price {
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      tbody tr + tr {
+        border-top: 1px solid var(--line);
+      }
+
+      .num,
+      .price {
+        color: var(--brand);
+        font-weight: 800;
+      }
+
+      .title {
+        font-weight: 600;
+      }
+
+      .meta {
+        color: var(--muted);
+      }
+
+      .contact {
+        margin: 1.5rem 0 0;
+        color: var(--muted);
+        font-size: 0.875rem;
+      }
+
+      .contact a {
+        color: var(--brand);
+        font-weight: 600;
+        text-decoration: none;
+      }
+
+      @media print {
+        body {
+          print-color-adjust: exact;
+          -webkit-print-color-adjust: exact;
+        }
+
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+
+        a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        tr {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <p class="kicker">Santamaria Club</p>
+        <h1>Nuestros cursos</h1>
+        <p class="lead">
+          Ocho extraescolares online, de los 7 a los 18 años. Grupo semanal de hasta 10.
+        </p>
+      </header>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nº</th>
+              <th>Curso</th>
+              <th>Edad</th>
+              <th>Horario</th>
+              <th class="price">Precio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="num">01</td>
+              <td class="title">Primeros Pasos Digitales</td>
+              <td class="meta">7–9 años</td>
+              <td class="meta">Miércoles · 17:30–18:30</td>
+              <td class="price">49 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">02</td>
+              <td class="title">Programación con Scratch</td>
+              <td class="meta">8–12 años</td>
+              <td class="meta">Lunes · 17:30–18:30</td>
+              <td class="price">49 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">03</td>
+              <td class="title">Desarrollo de Videojuegos con Unity</td>
+              <td class="meta">12–16 años</td>
+              <td class="meta">Martes · 17:30–19:00</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">04</td>
+              <td class="title">Seguridad Digital y Ciberseguridad</td>
+              <td class="meta">10–14 años</td>
+              <td class="meta">Martes · 19:00–20:30</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">05</td>
+              <td class="title">Desarrollo de Apps Móviles con Kodular</td>
+              <td class="meta">11–14 años</td>
+              <td class="meta">Jueves · 17:30–19:00</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">06</td>
+              <td class="title">Programación con Python</td>
+              <td class="meta">12–16 años</td>
+              <td class="meta">Lunes · 19:00–20:30</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">07</td>
+              <td class="title">Inteligencia Artificial y Automatización</td>
+              <td class="meta">14–17 años</td>
+              <td class="meta">Miércoles · 19:00–20:30</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">08</td>
+              <td class="title">Desarrollo Web con HTML, CSS y Tailwind</td>
+              <td class="meta">14–18 años</td>
+              <td class="meta">Viernes · 17:30–19:00</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="contact">
+        ¿Dudas sobre el curso o el itinerario? Escríbenos a
+        <a href="mailto:hola@santamariaclub.com">hola@santamariaclub.com</a>
+        o llámanos / WhatsApp al
+        <a href="tel:+34696919228">+34 696 91 92 28</a>
+        y te orientamos.
+      </p>
+    </div>
+  </body>
+</html>

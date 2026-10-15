@@ -151,3 +151,33 @@
   outline: 2px solid var(--color-brand, #e7353d);
   outline-offset: 3px;
 }
+
+.modules-download {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.35rem 0.75rem;
+  margin: 1.75rem auto 0;
+  max-width: 36rem;
+  text-align: center;
+}
+
+.modules-download-link {
+  color: var(--color-brand, #e7353d);
+  font-size: 0.9rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.modules-download-hint {
+  color: #8b8998;
+  font-size: 0.8125rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modules-download-link:hover {
+    color: var(--color-brand-hover, #cf2932);
+  }
+}

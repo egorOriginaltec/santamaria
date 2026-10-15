@@ -106,7 +106,7 @@
               @if (summary(day); as line) {
                 <p class="cal-panel-meta">{{ line }}</p>
               } @else if (day.holidayName) {
-                <p class="cal-panel-meta">🎉 {{ day.holidayName }}</p>
+                <p class="cal-panel-meta">{{ day.holidayName }}</p>
               }
             </div>
             <button type="button" class="cal-panel-close" (click)="closeDay()">Cerrar</button>
@@ -117,12 +117,9 @@
           }
 
           @if (day.classes.length === 0 && day.tests.length === 0) {
-            <div class="cal-panel-empty-box">
-              <span class="cal-panel-empty-emoji" aria-hidden="true">😌</span>
-              <p class="cal-panel-empty">
-                {{ day.holidayName ? day.holidayName + '. ' : '' }}Este día no hay clase ni ejercicios. ¡A disfrutar!
-              </p>
-            </div>
+            <p class="cal-panel-empty">
+              {{ day.holidayName ? day.holidayName + '. ' : '' }}Este día no hay clase ni ejercicios.
+            </p>
           } @else {
             <div class="cal-agenda">
               @if (day.classes.length > 0) {
@@ -135,7 +132,7 @@
                       <li class="cal-row cal-row--class">
                         <div class="cal-row-copy">
                           <p class="cal-row-title">{{ item.course.title }}</p>
-                          <p class="cal-row-sub">🕐 {{ item.course.schedule_start }}–{{ item.course.schedule_end }}</p>
+                          <p class="cal-row-sub">{{ item.course.schedule_start }}–{{ item.course.schedule_end }}</p>
                           @if (item.session; as session) {
                             @if (session.materials.length > 0) {
                               <div class="cal-files">
@@ -182,13 +179,12 @@
           }
         } @else {
           <div class="cal-panel-idle">
-            <span class="cal-panel-idle-emoji" aria-hidden="true">👆</span>
-            <h2 class="cal-panel-title">Toca un día</h2>
-            <p class="cal-footnote">Ahí verás la clase, el Meet y los ejercicios.</p>
+            <h2 class="cal-panel-title">Elige un día</h2>
+            <p class="cal-footnote">Verás la clase, el Meet y los ejercicios.</p>
             <ul class="cal-idle-tips">
-              <li><span aria-hidden="true">📚</span> Rojo = hay clase</li>
-              <li><span aria-hidden="true">✏️</span> Amarillo = hay ejercicio</li>
-              <li><span aria-hidden="true">🎉</span> Morado = es fiesta</li>
+              <li><span aria-hidden="true">📚</span> Clase</li>
+              <li><span aria-hidden="true">✏️</span> Ejercicio</li>
+              <li><span aria-hidden="true">🎉</span> Fiesta</li>
             </ul>
           </div>
         }
