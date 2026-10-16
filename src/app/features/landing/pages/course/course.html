@@ -72,9 +72,11 @@
           <p class="mt-5 text-pretty leading-7 text-[#68677c]">
             {{ content.introText }}
           </p>
-          <div class="mt-7 rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-5 text-sm leading-6 text-[#4c4a5d]">
-            {{ content.introNote }}
-          </div>
+          @if (content.introNote) {
+            <div class="mt-7 rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-5 text-sm leading-6 text-[#4c4a5d]">
+              {{ content.introNote }}
+            </div>
+          }
         </div>
 
         <div>
@@ -109,6 +111,36 @@
               </article>
             }
           </div>
+
+          @if ('rhythm' in content && content.rhythm; as rhythm) {
+            <div class="mt-14 max-w-2xl">
+              <p class="course-kicker">En clase</p>
+              <h2 class="course-heading mt-3">
+                {{
+                  slug() === 'python'
+                    ? 'Cómo funcionarán las clases'
+                    : slug() === 'python-avanzado'
+                      ? 'Cómo serán las clases'
+                      : 'Cómo será cada sesión'
+                }}
+              </h2>
+              @if (slug() !== 'python' && slug() !== 'python-avanzado') {
+                <p class="mt-4 leading-7 text-[#68677c]">
+                  Guía flexible de 90 minutos: si están muy enganchados creando, alargamos el proyecto y
+                  acortamos la explicación.
+                </p>
+              }
+            </div>
+            <div class="course-rhythm mt-8">
+              @for (step of rhythm; track step.title) {
+                <article class="course-rhythm-card">
+                  <span class="course-rhythm-time">{{ step.minutes }}</span>
+                  <h3 class="course-rhythm-title">{{ step.title }}</h3>
+                  <p class="course-rhythm-text">{{ step.text }}</p>
+                </article>
+              }
+            </div>
+          }
         </div>
       </section>
 
@@ -138,18 +170,64 @@
                     <span>{{ block.period }}</span>
                   </div>
                   <p class="mt-3 text-sm leading-6 text-[#77758c]">{{ block.text }}</p>
-                  <ul class="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
-                    @for (topic of block.topics; track topic) {
-                      <li class="flex gap-2.5 text-sm leading-5 text-[#454458]">
-                        <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-[#22b8a7]"></span>
-                        <span>{{ topic }}</span>
-                      </li>
-                    }
-                  </ul>
+
+                  @if ('sessions' in block && block.sessions; as sessions) {
+                    <ol class="course-sessions">
+                      @for (session of sessions; track session.label) {
+                        <li class="course-session">
+                          <div class="course-session-meta">
+                            @if (session.date && session.date !== '—') {
+                              <span class="course-session-date">{{ session.date }}</span>
+                            }
+                            <span class="course-session-label">{{ session.label }}</span>
+                          </div>
+                          <div class="course-session-body">
+                            <h4 class="course-session-title">{{ session.title }}</h4>
+                            <p class="course-session-text">{{ session.text }}</p>
+                            <p class="course-session-learns">
+                              <span>Qué aprendes</span>
+                              {{ session.learns }}
+                            </p>
+                            @if ('result' in session && session.result) {
+                              <p class="course-session-result">
+                                <span>Resultado</span>
+                                {{ session.result }}
+                              </p>
+                            }
+                          </div>
+                        </li>
+                      }
+                    </ol>
+                  } @else if ('topics' in block && block.topics; as topics) {
+                    <ul class="mt-5 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+                      @for (topic of topics; track topic) {
+                        <li class="flex gap-2.5 text-sm leading-5 text-[#454458]">
+                          <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-[#22b8a7]"></span>
+                          <span>{{ topic }}</span>
+                        </li>
+                      }
+                    </ul>
+                  }
                 </div>
               </article>
             }
           </div>
+
+          @if ('outcomes' in content && content.outcomes; as outcomes) {
+            <aside class="course-enrollment course-outcomes" aria-labelledby="course-outcomes-title">
+              <p class="course-kicker">Al terminar</p>
+              <h2 id="course-outcomes-title" class="course-heading mt-3">{{ outcomes.title }}</h2>
+              <p class="mt-4 max-w-2xl leading-7 text-[#68677c]">{{ outcomes.text }}</p>
+              <ul class="course-enrollment-list">
+                @for (point of outcomes.points; track point) {
+                  <li>
+                    <span class="course-check" aria-hidden="true">✓</span>
+                    <span>{{ point }}</span>
+                  </li>
+                }
+              </ul>
+            </aside>
+          }
         </div>
       </section>
 
