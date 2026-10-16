@@ -1,4 +1,4 @@
-<section class="payments-card">
+<section class="payments-card" [@resultsEnter]>
   <header class="payments-header">
     <div class="payments-heading">
       <div>
@@ -75,6 +75,7 @@
       </button>
     </div>
   </header>
+
   @if (loading()) {
     <div class="payments-loader" aria-busy="true" aria-live="polite">
       <div class="payments-loader-line" aria-hidden="true"></div>
@@ -90,15 +91,15 @@
         }
       </div>
     </div>
-  } @else if (attempts().length === 0 ) {
+  } @else if (attempts().length === 0) {
     <div class="payments-empty" [@resultsEnter]>
       <p class="payments-empty-title">Nadie ha entregado todavía</p>
       <p class="payments-empty-text">
-        Cuando un alumno entregue un test, aquí verás solo su último resultado. Borrar el resultado
-        le deja repetirlo.
+        Cuando un alumno entregue un test, aquí verás solo su último resultado. Abre Ver para
+        revisar qué acertó y qué falló. Borrar el resultado le deja repetirlo.
       </p>
     </div>
-  } @else if (attempts().length > 0) {
+  } @else {
     <div [@resultsEnter]>
       <div class="payments-table-scroll max-lg:overflow-visible">
         <table class="w-full min-w-0 border-collapse text-left text-[13px] max-lg:block lg:min-w-[48rem]">
@@ -155,13 +156,19 @@
                 </td>
                 <td class="border-t border-[#f0f0f5] py-3.5 align-middle max-lg:block max-lg:w-full max-lg:border-0 max-lg:px-0 max-lg:pt-2 max-lg:pb-1">
                   <div class="flex justify-end gap-1.5 max-lg:w-full">
+                    <a
+                      class="payments-btn payments-btn--ghost payments-btn--small max-lg:flex-1 max-lg:text-center"
+                      [routerLink]="['/dashboard/exercise-results', attempt.uuid]"
+                    >
+                      Ver
+                    </a>
                     <button
                       type="button"
                       class="payments-btn payments-btn--danger payments-btn--small max-lg:flex-1"
                       [disabled]="deletingUuid() !== null"
                       (click)="onDelete(attempt)"
                     >
-                      {{ deletingUuid() === attempt.uuid ? 'Borrando…' : 'Borrar resultado' }}
+                      {{ deletingUuid() === attempt.uuid ? 'Borrando…' : 'Borrar' }}
                     </button>
                   </div>
                 </td>

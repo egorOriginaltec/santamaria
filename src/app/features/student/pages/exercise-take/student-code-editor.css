@@ -82,6 +82,7 @@
 .ced-hi {
   color: #e7ecf5;
   pointer-events: none;
+  user-select: none;
 }
 
 .ced-in {

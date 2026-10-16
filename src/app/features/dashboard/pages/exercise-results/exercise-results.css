@@ -1,0 +1,140 @@
+.er-detail {
+  margin-top: 1.15rem;
+  border-top: 1px solid #f0f0f5;
+  padding-top: 1.15rem;
+  animation: payments-reveal 0.45s ease both;
+}
+
+.er-detail-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.er-detail-title {
+  margin: 0;
+  color: var(--color-ink, #161439);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.er-detail-meta {
+  margin: 0.35rem 0 0;
+  color: #8a8a9a;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.er-detail-loader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.er-q {
+  border: 1px solid #ececf3;
+  border-radius: 1rem;
+  background: #fff;
+  padding: 0.95rem 1rem;
+  margin: 0 0 0.75rem;
+  animation: payments-reveal 0.4s ease both;
+}
+
+.er-q:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.er-q:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.er-q:nth-child(4) {
+  animation-delay: 0.12s;
+}
+
+.er-q:nth-child(5) {
+  animation-delay: 0.16s;
+}
+
+.er-q-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.55rem;
+  margin-bottom: 0.55rem;
+}
+
+.er-q-prompt {
+  margin: 0;
+  color: var(--color-ink, #161439);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.er-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.er-badge--ok {
+  background: #ecfdf5;
+  color: #15803d;
+}
+
+.er-badge--no {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.er-label {
+  margin: 0.65rem 0 0.3rem;
+  color: #8a8a9a;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.er-code,
+.er-choice {
+  margin: 0;
+  border: 1px solid #ececf3;
+  border-radius: 0.75rem;
+  background: #fafafa;
+  padding: 0.7rem 0.8rem;
+  color: #2a2a3a;
+  font-family: ui-monospace, "Cascadia Code", SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.er-code--sol {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.er-choice {
+  font-family: inherit;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .er-detail,
+  .er-q {
+    animation: none;
+  }
+}

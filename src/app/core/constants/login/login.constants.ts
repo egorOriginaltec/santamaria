@@ -8,7 +8,7 @@ export const LOGIN_INTRO =
 export const LOGIN_HELP =
   '¿Sin acceso todavía? Escribe a admisiones y te ayudamos.';
 
-export const LOGIN_HELP_PATH = '/contact';
+export const LOGIN_HELP_PATH = '/contacto';
 
 /** Default credentials shown in the login form (administrator). */
 export const LOGIN_DEFAULT_EMAIL = 'egor@gmail.com';

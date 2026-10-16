@@ -30,7 +30,6 @@ export class StudentExerciseTake implements OnInit {
   readonly answers = signal<Readonly<Record<string, ExerciseChoiceKey | ''>>>({});
   readonly codes = signal<Readonly<Record<string, string>>>({});
   readonly checks = signal<Readonly<Record<string, boolean | null>>>({});
-  readonly checkingUuid = signal<string | null>(null);
   readonly loading = signal(true);
   readonly saving = signal(false);
   readonly retrying = signal(false);
@@ -128,11 +127,7 @@ export class StudentExerciseTake implements OnInit {
     }
 
     if (this.isCodeExercise()) {
-      if (exercise.reveal_on === 'after_choice') {
-        return 'Escribe el código y pulsa Comprobar. Cada comprobación va a la API. Puedes repetirlo.';
-      }
-
-      return 'Escribe el código. Al entregar, la API dice si coincide con la solución. Puedes repetirlo.';
+      return 'Escribe el código y pulsa Entregar. Se corrige al entregar y verás si acertaste y la solución. Puedes repetirlo.';
     }
 
     if (exercise.reveal_on === 'after_choice') {
@@ -169,31 +164,6 @@ export class StudentExerciseTake implements OnInit {
 
   checkResult(questionUuid: string): boolean | null {
     return this.checks()[questionUuid] ?? null;
-  }
-
-  checkCode(question: ExerciseQuestionDto): void {
-    const exercise = this.exercise();
-    if (!exercise || !this.canAnswer() || !this.revealsLive()) {
-      return;
-    }
-
-    const code = this.codeOf(question.uuid).trim();
-    if (code === '') {
-      this.showError('Escribe el código antes de comprobar.');
-      return;
-    }
-
-    this.checkingUuid.set(question.uuid);
-    this.errorMessage.set(null);
-    this.exercisesApi
-      .checkCode(exercise.uuid, { question_uuid: question.uuid, code })
-      .pipe(finalize(() => this.checkingUuid.set(null)))
-      .subscribe({
-        next: (ok) => this.checks.update((current) => ({ ...current, [question.uuid]: ok })),
-        error: (err: HttpErrorResponse) => {
-          this.showError(readApiError(err, 'No se pudo comprobar el código.'));
-        },
-      });
   }
 
   startRetry(): void {

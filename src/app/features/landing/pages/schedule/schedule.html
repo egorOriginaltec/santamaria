@@ -2,29 +2,52 @@
   <section class="schedule-section relative overflow-hidden">
     <div class="schedule-shell relative mx-auto w-full max-w-[1320px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
       <header class="max-w-2xl min-w-0" data-aos="fade-up">
-        <p class="section-kicker mb-4">
-          Horarios
-        </p>
+        <p class="section-kicker mb-4">Horarios</p>
         <h1 class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
           <span class="schedule-marker">Horarios y precios</span>
         </h1>
         <p class="mt-4 max-w-xl text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
-          Ocho grupos online, de lunes a viernes. 1 hora: 49 € al mes. 1:30 h: 59 € al mes.
+          Nueve grupos online, de lunes a viernes. Sesiones de 90 minutos.
         </p>
-        <a
-          routerLink="/contact"
-          class="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
-        >
-          Inscribirme
-        </a>
       </header>
 
-      <div class="mt-10" data-aos="fade-up" data-aos-delay="100">
+      <div class="schedule-pricing" data-aos="fade-up" data-aos-delay="60">
+        <aside class="schedule-bundle" aria-label="Descuento para hermanos o varios cursos">
+          <div class="schedule-bundle-prices" role="list">
+            <div class="schedule-bundle-price" role="listitem">
+              <span class="schedule-bundle-label">1 curso</span>
+              <span class="schedule-bundle-amount">59 €</span>
+              <span class="schedule-bundle-period">/mes</span>
+            </div>
+            <div class="schedule-bundle-price schedule-bundle-price--deal" role="listitem">
+              <span class="schedule-bundle-label">2 cursos</span>
+              <span class="schedule-bundle-amount">99 €</span>
+              <span class="schedule-bundle-period">/mes</span>
+            </div>
+          </div>
+          <p class="schedule-bundle-save">Ahorras 19 €/mes al combinar dos cursos.</p>
+        </aside>
+
+        <a
+          routerLink="/contacto"
+          class="schedule-cta inline-flex min-h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] active:translate-y-1 active:shadow-[0_2px_0_var(--color-brand-dark)]"
+        >
+          Inscribirme
+          <svg class="size-4" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"
+            />
+          </svg>
+        </a>
+      </div>
+
+      <div class="mt-10 sm:mt-12" data-aos="fade-up" data-aos-delay="100">
         <app-academic-calendar [plain]="true" />
       </div>
 
       <p class="mt-5 text-xs leading-5 text-[#9694a4]" data-aos="fade-up" data-aos-delay="180">
-        Sábado y domingo no hay clase. Las vacaciones escolares también se respetan.
+        Sábado y domingo no hay clase. En vacaciones escolares se hace clase igual.
       </p>
     </div>
   </section>

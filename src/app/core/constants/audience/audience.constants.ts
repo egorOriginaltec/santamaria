@@ -5,7 +5,7 @@ export const AUDIENCE_EYEBROW = 'Por qué Santamaria';
 export const AUDIENCE_TITLE = '¿Por qué elegirnos?';
 
 export const AUDIENCE_INTRO =
-  'Cursos online y en directo para jóvenes de 7 a 18 años. Grupos reducidos, acompañamiento cercano y un proyecto real en cada etapa.';
+  'Cursos online y en directo para jóvenes de 8 a 18 años. Grupos reducidos, acompañamiento cercano y un proyecto real en cada etapa.';
 
 export const AUDIENCE_REASONS: readonly AudienceReason[] = [
   {
@@ -25,7 +25,7 @@ export const AUDIENCE_REASONS: readonly AudienceReason[] = [
     id: 3,
     code: '03',
     title: 'Un camino para crecer',
-    text: 'Desde los primeros pasos digitales hasta Python, Unity, apps, inteligencia artificial y desarrollo web.',
+    text: 'Desde Scratch hasta apps, Roblox, Unity, Python, IA y desarrollo web.',
   },
   {
     id: 4,

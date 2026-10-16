@@ -6,6 +6,7 @@ import { DashboardCourseExercises } from './pages/course-exercises/course-exerci
 import { DashboardCourseForm } from './pages/course-form/course-form';
 import { DashboardCourses } from './pages/courses/courses';
 import { DashboardExerciseForm } from './pages/exercise-form/exercise-form';
+import { DashboardExerciseResultDetail } from './pages/exercise-result-detail/exercise-result-detail';
 import { DashboardExerciseResults } from './pages/exercise-results/exercise-results';
 import { DashboardHome } from './pages/dashboard-home/dashboard-home';
 import { DashboardHolidayForm } from './pages/holiday-form/holiday-form';
@@ -118,6 +119,11 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'exercise-results',
         component: DashboardExerciseResults,
         title: 'Resultados · Santamaria Club',
+      },
+      {
+        path: 'exercise-results/:uuid',
+        component: DashboardExerciseResultDetail,
+        title: 'Detalle resultado · Santamaria Club',
       },
       { path: 'resultados', redirectTo: 'exercise-results', pathMatch: 'full' },
       {

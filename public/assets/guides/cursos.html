@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Santamaria Club · Nuestros cursos</title>
+    <title>Santamaria Club · Itinerarios y cursos</title>
     <style>
       :root {
         --brand: #e7353d;
@@ -22,71 +22,127 @@
         color: var(--ink);
         background: #fff;
         font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-        line-height: 1.5;
+        line-height: 1.45;
         -webkit-font-smoothing: antialiased;
       }
 
       .wrap {
         max-width: 56rem;
         margin: 0 auto;
-        padding: 2rem 1rem 2.5rem;
-      }
-
-      @media (min-width: 640px) {
-        .wrap {
-          padding: 2.5rem 1.5rem;
-        }
+        padding: 1.5rem 1rem 1.75rem;
       }
 
       .kicker {
         margin: 0;
         color: var(--brand);
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         font-weight: 800;
         letter-spacing: 0.16em;
         text-transform: uppercase;
       }
 
       h1 {
-        margin: 0.25rem 0 0;
-        font-size: 1.5rem;
+        margin: 0.2rem 0 0;
+        font-size: 1.55rem;
         font-weight: 700;
         letter-spacing: -0.025em;
         line-height: 1.2;
       }
 
-      @media (min-width: 640px) {
-        h1 {
-          font-size: 1.875rem;
-        }
+      h2 {
+        margin: 1.25rem 0 0.55rem;
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
       }
 
       .lead {
-        margin: 0.5rem 0 0;
-        max-width: 36rem;
+        margin: 0.45rem 0 0;
+        max-width: 42rem;
         color: var(--muted);
-        font-size: 0.875rem;
+        font-size: 0.84rem;
+      }
+
+      .paths {
+        display: grid;
+        gap: 0.65rem;
+        margin-top: 0.9rem;
+      }
+
+      .path {
+        border: 1px solid var(--line);
+        border-radius: 0.6rem;
+        padding: 0.75rem 0.9rem;
+        break-inside: avoid;
+      }
+
+      .path-ages {
+        margin: 0;
+        color: var(--brand);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .path-title {
+        margin: 0.12rem 0 0;
+        font-size: 0.95rem;
+        font-weight: 750;
+      }
+
+      .path-goal {
+        margin: 0.28rem 0 0;
+        color: var(--muted);
+        font-size: 0.78rem;
+      }
+
+      .steps {
+        margin: 0.55rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.32rem;
+      }
+
+      .steps li {
+        display: grid;
+        grid-template-columns: 4.4rem 1fr;
+        gap: 0.45rem;
+        font-size: 0.78rem;
+      }
+
+      .steps .if {
+        color: #8a8a9a;
+        font-size: 0.66rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        padding-top: 0.1rem;
+      }
+
+      .steps strong {
+        font-weight: 700;
       }
 
       .table-wrap {
-        margin-top: 1.25rem;
-        overflow-x: auto;
+        margin-top: 0.7rem;
         border: 1px solid var(--line);
         border-radius: 0.5rem;
+        overflow: hidden;
       }
 
       table {
         width: 100%;
-        min-width: 40rem;
         border-collapse: collapse;
         text-align: left;
-        font-size: 0.875rem;
+        font-size: 0.78rem;
       }
 
       thead {
         background: var(--head);
         color: var(--muted);
-        font-size: 0.6875rem;
+        font-size: 0.62rem;
         font-weight: 700;
         letter-spacing: 0.04em;
         text-transform: uppercase;
@@ -94,7 +150,7 @@
 
       th,
       td {
-        padding: 0.625rem 0.75rem;
+        padding: 0.48rem 0.6rem;
         vertical-align: top;
       }
 
@@ -122,10 +178,37 @@
         color: var(--muted);
       }
 
-      .contact {
-        margin: 1.5rem 0 0;
+      .week {
+        margin-top: 0.7rem;
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.72rem;
+      }
+
+      .week th,
+      .week td {
+        border: 1px solid var(--line);
+        padding: 0.4rem 0.45rem;
+      }
+
+      .week thead th {
+        background: var(--head);
         color: var(--muted);
-        font-size: 0.875rem;
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .week .empty {
+        color: #b0b0bc;
+        text-align: center;
+      }
+
+      .note,
+      .contact {
+        margin: 1rem 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
       }
 
       .contact a {
@@ -150,6 +233,7 @@
           text-decoration: none;
         }
 
+        .path,
         tr {
           break-inside: avoid;
         }
@@ -160,12 +244,140 @@
     <div class="wrap">
       <header>
         <p class="kicker">Santamaria Club</p>
-        <h1>Nuestros cursos</h1>
+        <h1>Itinerarios y cursos</h1>
         <p class="lead">
-          Ocho extraescolares online, de los 7 a los 18 años. Grupo semanal de hasta 10.
+          Nueve cursos online (90 min · 59 €/mes). Elige según edad y lo que ya ha estudiado — no solo por el
+          número de años.
         </p>
       </header>
 
+      <h2>Camino recomendado</h2>
+      <div class="paths">
+        <section class="path">
+          <p class="path-ages">8–12 años</p>
+          <h3 class="path-title">Empezar con bloques</h3>
+          <p class="path-goal">Objetivo: lógica básica creando algo que se puede enseñar.</p>
+          <ul class="steps">
+            <li>
+              <span class="if">Sin base</span>
+              <span><strong>Scratch</strong> — primer curso.</span>
+            </li>
+            <li>
+              <span class="if">Tras Scratch</span>
+              <span
+                >Con 10+: <strong>Apps</strong> o <strong>Roblox Studio</strong>. Con 11+: también
+                <strong>Arduino</strong>.</span
+              >
+            </li>
+          </ul>
+        </section>
+
+        <section class="path">
+          <p class="path-ages">10–14 años</p>
+          <h3 class="path-title">Crear (apps o juegos)</h3>
+          <p class="path-goal">Objetivo: un producto propio — app o juego en Roblox Studio.</p>
+          <ul class="steps">
+            <li>
+              <span class="if">Sin Scratch</span>
+              <span>Si tiene 8–12: <strong>Scratch</strong>. Si ya maneja el PC: <strong>Apps</strong> o <strong>Roblox Studio</strong>.</span>
+            </li>
+            <li>
+              <span class="if">Quiere juegos</span>
+              <span><strong>Roblox Studio</strong> (10–14). Con 12+: también <strong>Unity</strong>.</span>
+            </li>
+            <li>
+              <span class="if">Tras Apps/Roblox</span>
+              <span>Con 12+: <strong>Unity</strong> o <strong>Python</strong>.</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="path">
+          <p class="path-ages">12–16 años</p>
+          <h3 class="path-title">Código, juegos o robótica</h3>
+          <p class="path-goal">Objetivo: especialidad según interés, con base de lógica.</p>
+          <ul class="steps">
+            <li>
+              <span class="if">Código</span>
+              <span><strong>Python</strong> → luego (14+) <strong>Python avanzado</strong> o <strong>IA</strong>.</span>
+            </li>
+            <li>
+              <span class="if">Juegos</span>
+              <span><strong>Unity</strong> (12–16) o seguir desde <strong>Roblox Studio</strong> si aún encaja la edad.</span>
+            </li>
+            <li>
+              <span class="if">Hardware</span>
+              <span><strong>Arduino</strong> (hasta 15) y después <strong>Python</strong>.</span>
+            </li>
+          </ul>
+        </section>
+
+        <section class="path">
+          <p class="path-ages">14–18 años</p>
+          <h3 class="path-title">Especialización</h3>
+          <p class="path-goal">Objetivo: proyectos más reales. Python avanzado no es para empezar de cero.</p>
+          <ul class="steps">
+            <li>
+              <span class="if">Sin código</span>
+              <span><strong>Python</strong> o <strong>Web</strong>. No empezar por IA ni Python avanzado.</span>
+            </li>
+            <li>
+              <span class="if">Tras Python</span>
+              <span
+                ><strong>Python avanzado</strong> (OOP, APIs, datos, app) o <strong>IA</strong> (flujos con
+                modelos) o <strong>Web</strong>.</span
+              >
+            </li>
+            <li>
+              <span class="if">Requisito</span>
+              <span
+                >Python avanzado pide bases: variables, if, bucles, funciones y listas. No es un curso de
+                IA.</span
+              >
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <h2>Horario semanal</h2>
+      <table class="week">
+        <thead>
+          <tr>
+            <th>Día</th>
+            <th>17:30–19:00</th>
+            <th>19:00–20:30</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="title">Lunes</td>
+            <td>Scratch (8–12)</td>
+            <td>Python (12–16)</td>
+          </tr>
+          <tr>
+            <td class="title">Martes</td>
+            <td>Roblox Studio (10–14)</td>
+            <td>Unity (12–16)</td>
+          </tr>
+          <tr>
+            <td class="title">Miércoles</td>
+            <td>Arduino (11–15)</td>
+            <td>IA (14–18)</td>
+          </tr>
+          <tr>
+            <td class="title">Jueves</td>
+            <td>Apps (10–14)</td>
+            <td>Python avanzado (14–18)</td>
+          </tr>
+          <tr>
+            <td class="title">Viernes</td>
+            <td>Desarrollo web (14–18)</td>
+            <td class="empty">—</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Catálogo</h2>
       <div class="table-wrap">
         <table>
           <thead>
@@ -180,57 +392,64 @@
           <tbody>
             <tr>
               <td class="num">01</td>
-              <td class="title">Primeros Pasos Digitales</td>
-              <td class="meta">7–9 años</td>
-              <td class="meta">Miércoles · 17:30–18:30</td>
-              <td class="price">49 €/mes</td>
+              <td class="title">Programación con Scratch</td>
+              <td class="meta">8–12</td>
+              <td class="meta">Lunes · 17:30–19:00</td>
+              <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">02</td>
-              <td class="title">Programación con Scratch</td>
-              <td class="meta">8–12 años</td>
-              <td class="meta">Lunes · 17:30–18:30</td>
-              <td class="price">49 €/mes</td>
+              <td class="title">Crea tus propias aplicaciones móviles</td>
+              <td class="meta">10–14</td>
+              <td class="meta">Jueves · 17:30–19:00</td>
+              <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">03</td>
-              <td class="title">Desarrollo de Videojuegos con Unity</td>
-              <td class="meta">12–16 años</td>
+              <td class="title">Crea tus propios videojuegos con Roblox Studio</td>
+              <td class="meta">10–14</td>
               <td class="meta">Martes · 17:30–19:00</td>
               <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">04</td>
-              <td class="title">Seguridad Digital y Ciberseguridad</td>
-              <td class="meta">10–14 años</td>
-              <td class="meta">Martes · 19:00–20:30</td>
+              <td class="title">Robótica y Programación con Arduino</td>
+              <td class="meta">11–15</td>
+              <td class="meta">Miércoles · 17:30–19:00</td>
               <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">05</td>
-              <td class="title">Desarrollo de Apps Móviles con Kodular</td>
-              <td class="meta">11–14 años</td>
-              <td class="meta">Jueves · 17:30–19:00</td>
+              <td class="title">Desarrollo de Videojuegos con Unity</td>
+              <td class="meta">12–16</td>
+              <td class="meta">Martes · 19:00–20:30</td>
               <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">06</td>
               <td class="title">Programación con Python</td>
-              <td class="meta">12–16 años</td>
+              <td class="meta">12–16</td>
               <td class="meta">Lunes · 19:00–20:30</td>
               <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">07</td>
-              <td class="title">Inteligencia Artificial y Automatización</td>
-              <td class="meta">14–17 años</td>
-              <td class="meta">Miércoles · 19:00–20:30</td>
+              <td class="title">Python avanzado: crea proyectos reales</td>
+              <td class="meta">14–18</td>
+              <td class="meta">Jueves · 19:00–20:30</td>
               <td class="price">59 €/mes</td>
             </tr>
             <tr>
               <td class="num">08</td>
+              <td class="title">Inteligencia Artificial y Automatización</td>
+              <td class="meta">14–18</td>
+              <td class="meta">Miércoles · 19:00–20:30</td>
+              <td class="price">59 €/mes</td>
+            </tr>
+            <tr>
+              <td class="num">09</td>
               <td class="title">Desarrollo Web con HTML, CSS y Tailwind</td>
-              <td class="meta">14–18 años</td>
+              <td class="meta">14–18</td>
               <td class="meta">Viernes · 17:30–19:00</td>
               <td class="price">59 €/mes</td>
             </tr>
@@ -238,12 +457,16 @@
         </table>
       </div>
 
+      <p class="note">
+        1 curso: 59 €/mes · 2 cursos: 99 €/mes (ahorras 19 €). Grupo de hasta 10 · online en directo.
+        Python avanzado requiere bases de Python.
+      </p>
+
       <p class="contact">
-        ¿Dudas sobre el curso o el itinerario? Escríbenos a
+        ¿Dudas sobre el itinerario?
         <a href="mailto:hola@santamariaclub.com">hola@santamariaclub.com</a>
-        o llámanos / WhatsApp al
+        · WhatsApp
         <a href="tel:+34696919228">+34 696 91 92 28</a>
-        y te orientamos.
       </p>
     </div>
   </body>

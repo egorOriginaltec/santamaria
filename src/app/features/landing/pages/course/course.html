@@ -58,8 +58,8 @@
           <div class="course-summary-bottom">
             <p>{{ content.summary }}</p>
             <div class="course-summary-actions">
-              <a routerLink="/contact" class="course-enrol-action course-enrol-action--primary">Inscribirme <span>→</span></a>
-              <a routerLink="/contact" class="course-enrol-action course-enrol-action--whatsapp">WhatsApp</a>
+              <a routerLink="/contacto" class="course-enrol-action course-enrol-action--primary">Inscribirme <span>→</span></a>
+              <a routerLink="/contacto" class="course-enrol-action course-enrol-action--whatsapp">WhatsApp</a>
             </div>
           </div>
         </div>
@@ -161,7 +161,7 @@
             {{ content.ctaText }}
           </p>
           <p class="mt-5 text-pretty text-sm font-bold text-[#ffc224]">{{ content.price }}/mes · {{ content.schedule }}</p>
-          <a routerLink="/contact" class="course-cta-button mt-5 inline-flex min-h-12 w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#ffc224] px-6 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5 sm:w-auto sm:px-7">
+          <a routerLink="/contacto" class="course-cta-button mt-5 inline-flex min-h-12 w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#ffc224] px-6 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5 sm:w-auto sm:px-7">
             Inscribirme <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -171,7 +171,7 @@
     <article class="bg-white">
       <div class="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
         <a routerLink="/" fragment="program" class="text-sm font-semibold text-brand">← Cursos</a>
-        <p class="mt-6 text-xs font-medium tracking-[0.18em] text-[#b0b0bc] uppercase">Extraescolar · {{ course.ages }}</p>
+        <p class="mt-6 text-xs font-medium tracking-[0.18em] text-[#b0b0bc] uppercase">Curso · {{ course.ages }}</p>
         <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-ink sm:text-4xl"><span class="course-marker">{{ course.title }}</span></h1>
         <p class="mt-4 text-pretty leading-relaxed text-[#6b6b80]">{{ course.lead }}</p>
         <dl class="mt-8 grid gap-3 sm:grid-cols-3">
@@ -185,7 +185,7 @@
             <li class="rounded-xl bg-[#f7f7fb] px-4 py-3 text-sm leading-relaxed text-[#3c3c4e]">{{ item }}</li>
           }
         </ul>
-        <a routerLink="/contact" class="mt-7 inline-flex min-h-11 items-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white">Inscribirme</a>
+        <a routerLink="/contacto" class="mt-7 inline-flex min-h-11 items-center rounded-full bg-brand px-6 py-3 text-sm font-semibold text-white">Inscribirme</a>
       </div>
     </article>
   }

@@ -152,6 +152,66 @@
   outline-offset: 3px;
 }
 
+.modules-bundle {
+  margin: 1.75rem auto 0;
+  max-width: 22rem;
+  text-align: center;
+}
+
+.modules-bundle-prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid #ececf3;
+  border-bottom: 1px solid #ececf3;
+}
+
+.modules-bundle-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 1rem 0.5rem;
+}
+
+.modules-bundle-price + .modules-bundle-price {
+  border-left: 1px solid #ececf3;
+}
+
+.modules-bundle-label {
+  color: #8a8a9a;
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.modules-bundle-amount {
+  color: var(--color-ink, #161439);
+  font-size: 1.55rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.modules-bundle-price--deal .modules-bundle-amount {
+  color: var(--color-brand, #e7353d);
+}
+
+.modules-bundle-period {
+  color: #8a8a9a;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.modules-bundle-save {
+  margin: 0.75rem 0 0;
+  color: #7a7a8c;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
 .modules-download {
   display: flex;
   flex-wrap: wrap;

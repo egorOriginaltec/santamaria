@@ -1,0 +1,87 @@
+<section class="payments-card" [@detailEnter]>
+  <header class="payments-header">
+    <div class="payments-heading">
+      <div>
+        <p class="payments-eyebrow">Club</p>
+        @if (loading()) {
+          <h2 class="payments-title">Resultado</h2>
+          <p class="payments-subtitle">Cargando…</p>
+        } @else if (detail(); as current) {
+          <h2 class="payments-title">{{ current.exercise.title }}</h2>
+          <p class="payments-subtitle">
+            {{ current.student.name || current.student.email }}
+            · {{ scoreLabel(current) }} aciertos
+            · {{ purposeLabel(current.purpose) }}
+            @if (current.submitted_at) {
+              · {{ current.submitted_at | date: 'd MMM yyyy HH:mm' }}
+            }
+          </p>
+        } @else {
+          <h2 class="payments-title">Resultado</h2>
+          <p class="payments-subtitle">{{ errorMessage() || 'No disponible' }}</p>
+        }
+      </div>
+      <a routerLink="/dashboard/exercise-results" class="payments-btn payments-btn--ghost">
+        Volver a resultados
+      </a>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="payments-loader" aria-busy="true" aria-live="polite">
+      <div class="payments-loader-line" aria-hidden="true"></div>
+      <div class="payments-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="payments-skeleton-row">
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-40"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (errorMessage() && !detail()) {
+    <div class="payments-empty">
+      <p class="payments-empty-title">No se pudo abrir el resultado</p>
+      <p class="payments-empty-text">{{ errorMessage() }}</p>
+      <button type="button" class="payments-btn payments-btn--ghost" (click)="retry()">
+        Reintentar
+      </button>
+    </div>
+  } @else if (detail(); as current) {
+    <div [@detailEnter]>
+      <p class="er-detail-meta" style="margin-bottom: 1rem">
+        {{ current.course.title }} · {{ current.student.email }}
+      </p>
+
+      @for (answer of current.answers; track answer.question_uuid ?? $index) {
+        <article class="er-q">
+          <div class="er-q-top">
+            <p class="er-q-prompt">{{ answer.position }}. {{ answer.prompt }}</p>
+            @if (answer.is_correct) {
+              <span class="er-badge er-badge--ok">Correcto</span>
+            } @else {
+              <span class="er-badge er-badge--no">Incorrecto</span>
+            }
+          </div>
+
+          @if (isCodeAnswer(answer.format)) {
+            <p class="er-label">Respuesta del alumno</p>
+            <pre class="er-code">{{ answer.code || '—' }}</pre>
+            @if (answer.solution) {
+              <p class="er-label">Solución</p>
+              <pre class="er-code er-code--sol">{{ answer.solution }}</pre>
+            }
+          } @else {
+            <p class="er-label">Respuesta del alumno</p>
+            <p class="er-choice">{{ answer.choice || '—' }}</p>
+            @if (answer.correct_key) {
+              <p class="er-label">Correcta</p>
+              <p class="er-choice">{{ answer.correct_key }}</p>
+            }
+          }
+        </article>
+      }
+    </div>
+  }
+</section>

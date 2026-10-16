@@ -29,13 +29,13 @@
           </span>
         </a>
         <p class="mt-4 max-w-xs text-pretty text-sm leading-relaxed text-[#9a9aa3]">
-          Extraescolares de programación online, de los 7 a los 18 años.
+          Programación, videojuegos, IA e informática online, de 8 a 18 años.
         </p>
       </div>
 
       <div class="min-w-0">
         <p class="text-[11px] font-bold tracking-[0.16em] text-white/45 uppercase">Explorar</p>
-        <nav class="mt-4 flex flex-col gap-1" aria-label="Footer navigation">
+        <nav class="mt-4 flex flex-col gap-1" aria-label="Navegación del pie">
           @for (item of links; track item.label) {
             <a
               [routerLink]="item.path"
@@ -65,7 +65,7 @@
 
       <div class="min-w-0">
         <p class="text-[11px] font-bold tracking-[0.16em] text-white/45 uppercase">Síguenos</p>
-        <ul class="mt-4 flex items-center gap-3" aria-label="Social networks">
+        <ul class="mt-4 flex items-center gap-3" aria-label="Redes sociales">
           @for (social of socialLinks; track social.label) {
             <li>
               <a

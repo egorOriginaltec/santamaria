@@ -30,7 +30,7 @@ export class Footer {
       path: item.path ?? '/',
       fragment: item.fragment,
     })),
-    { label: 'Contacto', path: '/contact' },
-    { label: 'Acceso', path: '/login' },
+    { label: 'Contacto', path: '/contacto' },
+    { label: 'Acceso', path: '/acceso' },
   ];
 }

@@ -30,37 +30,46 @@
               [placeholder]="codePlaceholder(question)"
               (valueChange)="setCode(question.uuid, $event)"
             />
-            @if (canAnswer() && revealsLive()) {
-              <button
-                type="button"
-                class="take-check"
-                [disabled]="checkingUuid() === question.uuid"
-                (click)="checkCode(question)"
-              >
-                {{ checkingUuid() === question.uuid ? 'Comprobando…' : 'Comprobar' }}
-              </button>
-            }
-            @if (checkResult(question.uuid) === true) {
-              <app-alert tone="ok">¡Bien! Coincide con la solución.</app-alert>
-            } @else if (checkResult(question.uuid) === false) {
-              <app-alert>No coincide. Prueba otra vez o entrega para ver la solución.</app-alert>
-              @if (viewingResults() && question.solution) {
-                <p class="take-sol-label">Solución</p>
-                <app-student-code-editor
-                  class="take-editor"
-                  [value]="question.solution"
-                  [language]="question.language ?? ''"
-                  [disabled]="true"
-                />
-              }
-            } @else if (viewingResults() && question.solution) {
-              <p class="take-sol-label">Solución</p>
-              <app-student-code-editor
-                class="take-editor"
-                [value]="question.solution"
-                [language]="question.language ?? ''"
-                [disabled]="true"
-              />
+            @if (viewingResults()) {
+              <div class="take-feedback">
+                @if (checkResult(question.uuid) === true) {
+                  <p class="take-ok" role="status">
+                    <svg class="take-ok-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.75" />
+                      <path
+                        d="M7.5 12.2 10.4 15l6.1-6.4"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <span>Correcto</span>
+                  </p>
+                } @else if (checkResult(question.uuid) === false) {
+                  <p class="take-mismatch" role="status">
+                    <svg class="take-mismatch-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                      <path
+                        d="M12 7v7M12 16.5h.01"
+                        stroke="currentColor"
+                        stroke-width="2.4"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <span>Incorrecto</span>
+                  </p>
+                }
+                @if (question.solution) {
+                  <p class="take-sol-label">Solución</p>
+                  <app-student-code-editor
+                    class="take-editor"
+                    [value]="question.solution"
+                    [language]="question.language ?? ''"
+                    [disabled]="true"
+                  />
+                }
+              </div>
             }
           } @else {
             <div class="take-choices">

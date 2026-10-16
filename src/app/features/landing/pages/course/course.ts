@@ -146,7 +146,7 @@ export class CoursePage {
       phase: 'Bloque 1',
       period: 'Diciembre – enero',
       title: 'Mover y animar',
-      text: 'Una hora da para un concepto y practicarlo. Primero el escenario, el personaje y que se mueva.',
+      text: 'Noventa minutos dan para un concepto y practicarlo. Primero el escenario, el personaje y que se mueva.',
       topics: [
         'Objetos, disfraces y escenario',
         'Mover, girar y cambiar de aspecto',
@@ -277,93 +277,6 @@ export class CoursePage {
     },
   ] as const;
 
-  readonly securitySkills = [
-    'Proteger cuentas con contraseña única y doble verificación',
-    'Parar antes de pulsar: phishing, enlaces y perfiles raros',
-    'Ajustar privacidad en el móvil y en redes',
-    'Saber qué hacer si algo huele mal, y a quién pedirlo',
-  ] as const;
-
-  readonly securityLearningAreas = [
-    {
-      number: '01',
-      title: 'Cuentas y dispositivos',
-      text: 'Contraseñas, doble factor, bloqueo del móvil y recuperar el acceso.',
-      tone: 'blue',
-    },
-    {
-      number: '02',
-      title: 'Engaños reales',
-      text: 'Phishing, QR, tiendas falsas y mensajes que presionan.',
-      tone: 'yellow',
-    },
-    {
-      number: '03',
-      title: 'Privacidad',
-      text: 'Permisos, redes, huella digital y qué no se pega a una IA.',
-      tone: 'pink',
-    },
-    {
-      number: '04',
-      title: 'Hábitos que se quedan',
-      text: 'Un plan corto y práctico para casa, no un manual de empresa.',
-      tone: 'green',
-    },
-  ] as const;
-
-  readonly securityCurriculum = [
-    {
-      phase: 'Bloque 1',
-      period: 'Diciembre – enero',
-      title: 'Cerrar las cuentas',
-      text: '90 minutos dan para un hábito y practicarlo. Empezamos por no perder el acceso.',
-      topics: [
-        'Cómo se pierde una cuenta de verdad',
-        'Contraseñas únicas y un gestor sencillo',
-        'Doble factor, bien puesto',
-        'Actualizar y bloquear el móvil',
-        'Recuperar el acceso sin improvisar',
-      ],
-    },
-    {
-      phase: 'Bloque 2',
-      period: 'Febrero – marzo',
-      title: 'Antes de pulsar',
-      text: 'Analizamos mensajes reales (simulados) y decidimos qué hacer.',
-      topics: [
-        'Phishing en correo y WhatsApp',
-        'Enlaces, archivos y códigos QR',
-        'Tiendas y perfiles que no son lo que parecen',
-        'La prisa como truco',
-        'Práctica: parar, comprobar, preguntar',
-      ],
-    },
-    {
-      phase: 'Bloque 3',
-      period: 'Abril – mayo',
-      title: 'Privacidad en el día a día',
-      text: 'Qué se comparte, con quién y cómo se deja de compartir.',
-      topics: [
-        'Datos y permisos del móvil',
-        'Redes: visibilidad y etiquetas',
-        'Huella digital que ya existe',
-        'Ciberacoso y a quién pedirlo',
-        'IA: qué no se pega nunca a un chat',
-      ],
-    },
-    {
-      phase: 'Bloque 4',
-      period: 'Junio',
-      title: 'Su plan de cinco hábitos',
-      text: 'Junio cierra: revisamos cuentas y nos llevamos un plan corto, no un protocolo familiar de seis páginas.',
-      topics: [
-        'Revisión guiada de sus cuentas',
-        'Copia de lo importante y cierre de sesiones',
-        'Presentar cinco hábitos que va a mantener',
-      ],
-    },
-  ] as const;
-
   readonly mobileSkills = [
     'Diseñar 2 o 3 pantallas claras y pasar de una a otra',
     'Programar clics, condiciones y un dato que se recuerda',
@@ -403,9 +316,9 @@ export class CoursePage {
       phase: 'Bloque 1',
       period: 'Diciembre – enero',
       title: 'Pantallas que responden',
-      text: 'Kodular se aprende haciendo una mini app, no recorriendo todos los componentes.',
+      text: 'Se aprende haciendo una mini app, no recorriendo todos los componentes.',
       topics: [
-        'Qué es una app y el entorno de Kodular',
+        'Qué es una app y el entorno de diseño',
         'Una pantalla: botones, textos e imágenes',
         'Ir de una pantalla a otra',
         'Responder a un clic',
@@ -447,6 +360,288 @@ export class CoursePage {
         'Últimas pruebas en el móvil',
         'Generar e instalar el APK',
         'Presentar la app',
+      ],
+    },
+  ] as const;
+
+  readonly arduinoSkills = [
+    'Montar circuitos básicos con LEDs, resistencias y pulsadores',
+    'Programar la placa y leer sensores (luz, temperatura, distancia)',
+    'Automatizar un invento con servo, alarma o barrera',
+    'Diseñar, probar y presentar un proyecto final propio',
+  ] as const;
+
+  readonly arduinoLearningAreas = [
+    {
+      number: '01',
+      title: 'Electrónica básica',
+      text: 'Placa, protoboard, LEDs, resistencias y primeros circuitos seguros.',
+      tone: 'blue',
+    },
+    {
+      number: '02',
+      title: 'Programación interactiva',
+      text: 'Condicionales, bucles, botones, zumbador y patrones de luces.',
+      tone: 'yellow',
+    },
+    {
+      number: '03',
+      title: 'Sensores y movimiento',
+      text: 'Luz, temperatura, distancia y un servo para automatizar.',
+      tone: 'pink',
+    },
+    {
+      number: '04',
+      title: 'Inventos propios',
+      text: 'Un sistema completo que combina sensores, actuadores y código.',
+      tone: 'green',
+    },
+  ] as const;
+
+  readonly arduinoCurriculum = [
+    {
+      phase: 'Bloque 1',
+      period: 'Diciembre',
+      title: 'Fundamentos y primeros circuitos',
+      text: 'Conocer la placa, instalar el entorno y encender los primeros LEDs con seguridad.',
+      topics: [
+        'Qué es Arduino y cómo se conecta al PC',
+        'Protoboard, resistencias y LEDs',
+        'Salidas digitales y un semáforo',
+        'Pulsadores como entrada',
+      ],
+    },
+    {
+      phase: 'Bloque 2',
+      period: 'Enero',
+      title: 'Programación interactiva',
+      text: 'Condicionales, bucles y un juego de reacción con luces y sonido.',
+      topics: [
+        'If, bucles y tiempos',
+        'Botones, zumbador y patrones de luces',
+        'Un juego de reacción medible',
+        'Depurar cuando el circuito no responde',
+      ],
+    },
+    {
+      phase: 'Bloque 3',
+      period: 'Febrero',
+      title: 'Sensores y mediciones',
+      text: 'Leer el entorno: luz, temperatura y el monitor serie.',
+      topics: [
+        'Valores analógicos y potenciómetro',
+        'Fotoresistencia (LDR)',
+        'Sensor de temperatura',
+        'Mostrar resultados por el monitor serie',
+      ],
+    },
+    {
+      phase: 'Bloque 4',
+      period: 'Marzo – abril',
+      title: 'Automatización y movimiento',
+      text: 'Distancia, servo, alarmas y pequeñas máquinas automáticas.',
+      topics: [
+        'Sensor ultrasónico HC-SR04',
+        'Servomotor SG90',
+        'Alarmas y barreras automáticas',
+        'Un invento que reacciona solo',
+      ],
+    },
+    {
+      phase: 'Bloque 5',
+      period: 'Abril – mayo',
+      title: 'Proyectos combinados',
+      text: 'Integrar sensores, actuadores y código en un sistema completo.',
+      topics: [
+        'Elegir el invento y el flujo',
+        'Montar el circuito completo',
+        'Programar la lógica del sistema',
+        'Probar y corregir fallos',
+      ],
+    },
+    {
+      phase: 'Bloque 6',
+      period: 'Mayo – junio',
+      title: 'Proyecto final',
+      text: 'Cada alumno diseña, construye, prueba y presenta su propio invento.',
+      topics: [
+        'Diseño final del invento',
+        'Construcción y pruebas',
+        'Ajustes y presentación al grupo',
+      ],
+    },
+  ] as const;
+
+  readonly robloxSkills = [
+    'Montar un mundo jugable en Roblox Studio',
+    'Programar mecánicas con Luau: monedas, checkpoints y puntuación',
+    'Diseñar niveles y reglas claras para otros jugadores',
+    'Publicar una experiencia propia para compartir',
+  ] as const;
+
+  readonly robloxLearningAreas = [
+    {
+      number: '01',
+      title: 'Roblox Studio',
+      text: 'Editor, partes, spawn y un primer mundo que se puede recorrer.',
+      tone: 'blue',
+    },
+    {
+      number: '02',
+      title: 'Luau básico',
+      text: 'Scripts cortos: tocar, sumar puntos y guardar un progreso simple.',
+      tone: 'yellow',
+    },
+    {
+      number: '03',
+      title: 'Mecánicas de juego',
+      text: 'Monedas, checkpoints, puntuación y un reto por nivel.',
+      tone: 'pink',
+    },
+    {
+      number: '04',
+      title: 'Publicar y enseñar',
+      text: 'Probar con compañeros, pulir y dejar la experiencia lista para compartir.',
+      tone: 'green',
+    },
+  ] as const;
+
+  readonly robloxCurriculum = [
+    {
+      phase: 'Bloque 1',
+      period: 'Diciembre – enero',
+      title: 'El primer mundo',
+      text: 'Conocer Studio y dejar un mapa pequeño recorrible.',
+      topics: [
+        'Instalar Studio y moverse por el editor',
+        'Partes, spawn y un camino básico',
+        'Obstáculos simples',
+        'Probar el juego en Studio',
+        'Guardar y organizar el proyecto',
+      ],
+    },
+    {
+      phase: 'Bloque 2',
+      period: 'Febrero – marzo',
+      title: 'Luau que se nota',
+      text: 'Scripts cortos ligados a lo que el jugador hace.',
+      topics: [
+        'Un script al tocar una parte',
+        'Sumar monedas o puntos',
+        'Un checkpoint que recuerda el progreso',
+        'Mensajes en pantalla',
+        'Corregir errores típicos de Luau',
+      ],
+    },
+    {
+      phase: 'Bloque 3',
+      period: 'Abril – mayo',
+      title: 'Su juego con mecánicas',
+      text: 'Niveles, recompensas y reglas propias.',
+      topics: [
+        'Diseñar 2 o 3 tramos o niveles',
+        'Monedas, puntuación y un objetivo claro',
+        'Una mecánica personalizada del alumno',
+        'Equilibrar dificultad',
+        'Probar con compañeros',
+      ],
+    },
+    {
+      phase: 'Bloque 4',
+      period: 'Junio',
+      title: 'Publicar y presentar',
+      text: 'Cerrar, publicar y enseñar el juego.',
+      topics: [
+        'Pulir bugs que rompen la partida',
+        'Publicar la experiencia',
+        'Presentación al grupo',
+      ],
+    },
+  ] as const;
+
+  readonly pythonAdvancedSkills = [
+    'Organizar un proyecto Python con clases y módulos claros',
+    'Consumir una API y guardar datos con persistencia básica',
+    'Automatizar tareas útiles sin depender de IA',
+    'Entregar una aplicación funcional propia',
+  ] as const;
+
+  readonly pythonAdvancedLearningAreas = [
+    {
+      number: '01',
+      title: 'Proyectos reales',
+      text: 'Estructura de carpetas, clases y código que se puede mantener.',
+      tone: 'blue',
+    },
+    {
+      number: '02',
+      title: 'APIs y datos',
+      text: 'Pedir datos a un servicio externo y entender la respuesta.',
+      tone: 'yellow',
+    },
+    {
+      number: '03',
+      title: 'Persistencia',
+      text: 'Guardar información en archivo o base de datos sencilla.',
+      tone: 'pink',
+    },
+    {
+      number: '04',
+      title: 'App final',
+      text: 'Una herramienta útil: no un notebook suelto ni un curso de IA.',
+      tone: 'green',
+    },
+  ] as const;
+
+  readonly pythonAdvancedCurriculum = [
+    {
+      phase: 'Bloque 1',
+      period: 'Diciembre – enero',
+      title: 'Ordenar el código',
+      text: 'De scripts sueltos a un proyecto con clases y funciones claras.',
+      topics: [
+        'Repaso rápido de bases (if, bucles, funciones, listas)',
+        'Clases y objetos con un ejemplo pequeño',
+        'Módulos y estructura de proyecto',
+        'Errores y pruebas mínimas',
+        'Elegir la idea del proyecto final',
+      ],
+    },
+    {
+      phase: 'Bloque 2',
+      period: 'Febrero – marzo',
+      title: 'APIs y servicios',
+      text: 'Conectar Python con el exterior sin complicar de más.',
+      topics: [
+        'Peticiones HTTP y JSON',
+        'Una API pública o de práctica',
+        'Manejar fallos de red',
+        'Guardar resultados',
+        'Integrar la API en el proyecto',
+      ],
+    },
+    {
+      phase: 'Bloque 3',
+      period: 'Abril – mayo',
+      title: 'Datos y automatización',
+      text: 'Persistencia y herramientas útiles del día a día.',
+      topics: [
+        'Archivos o SQLite según el proyecto',
+        'CRUD básico',
+        'Una automatización concreta (archivos, datos, informes)',
+        'Buenas prácticas sin overengineering',
+        'Cerrar el núcleo de la app',
+      ],
+    },
+    {
+      phase: 'Bloque 4',
+      period: 'Junio',
+      title: 'Entregar la app',
+      text: 'Pulir, documentar en corto y presentar.',
+      topics: [
+        'Pulir bugs y casos límite',
+        'README corto de uso',
+        'Presentación de la aplicación',
       ],
     },
   ] as const;
@@ -794,17 +989,71 @@ export class CoursePage {
       } as const;
     }
 
+    if (this.slug() === 'python-avanzado') {
+      return {
+        category: 'Python · proyectos reales',
+        heading: 'Python avanzado:',
+        accent: 'crea proyectos reales',
+        schedule: this.course()?.schedule ?? 'Jueves · 19:00–20:30',
+        price: this.course()?.price ?? '59 €',
+        summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
+        introTitle: 'El siguiente paso cuando ya sabes programar',
+        introText:
+          'Para quien ya maneja variables, if, bucles, funciones y listas. Se trabaja OOP, APIs, persistencia y automatizaciones, cerrando con una aplicación funcional.',
+        introNote:
+          'No es un curso de IA (eso va en el grupo de IA y automatización). Requisito de entrada: bases de Python. Si hay duda, escríbenos y te orientamos.',
+        skills: this.pythonAdvancedSkills,
+        areas: this.pythonAdvancedLearningAreas,
+        areasText:
+          'Proyectos ordenados, APIs, datos y una app útil — continuidad tras Python inicial.',
+        curriculum: this.pythonAdvancedCurriculum,
+        curriculumText:
+          'Una clase de 90 minutos a la semana. El núcleo de la app se monta en primavera; junio es entregar y presentar.',
+        curriculumBadge: '24 clases · 90 min · App funcional',
+        ctaTitle: 'Sigue con Python de verdad',
+        ctaText:
+          'Escríbenos y te explicamos plazas, requisito de entrada y cómo apuntarse a Python avanzado.',
+      } as const;
+    }
+
+    if (this.slug() === 'roblox') {
+      return {
+        category: 'Roblox Studio · Luau',
+        heading: 'Crea tus propios',
+        accent: 'videojuegos con Roblox Studio',
+        schedule: this.course()?.schedule ?? 'Martes · 17:30–19:00',
+        price: this.course()?.price ?? '59 €',
+        summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
+        introTitle: 'Un juego propio que se puede compartir',
+        introText:
+          'En Roblox Studio crean un juego con niveles, monedas, checkpoints, puntuación y mecánicas personalizadas. El resultado lo entienden al momento: su mundo, jugable y publicable.',
+        introNote:
+          'No hace falta haber tocado Studio antes. Se aprende Luau con scripts cortos ligados al juego, no un temario de motor a fondo.',
+        skills: this.robloxSkills,
+        areas: this.robloxLearningAreas,
+        areasText:
+          'Studio, Luau, mecánicas de juego y una experiencia publicada.',
+        curriculum: this.robloxCurriculum,
+        curriculumText:
+          'Una clase de 90 minutos a la semana. El juego se monta en primavera; junio es publicar y presentar.',
+        curriculumBadge: '24 clases · 90 min · Experiencia publicada',
+        ctaTitle: 'Que cree su propio juego en Roblox Studio',
+        ctaText:
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de Roblox Studio.',
+      } as const;
+    }
+
     if (this.slug() === 'aplicaciones-moviles') {
       return {
-        category: 'Kodular · Apps Android',
-        heading: 'Desarrollo de Apps Móviles',
-        accent: 'con Kodular',
+        category: 'Apps Android',
+        heading: 'Crea tus propias',
+        accent: 'aplicaciones móviles',
         schedule: this.course()?.schedule ?? 'Jueves · 17:30–19:00',
         price: this.course()?.price ?? '59 €',
         summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'De una idea a una app de 2 o 3 pantallas',
         introText:
-          'Con Kodular se diseña, se programa con bloques y se prueba en un Android. El objetivo es una app pequeña con un uso claro, no cámara ni GPS.',
+          'Se diseña, se programa con bloques y se prueba en un Android. El objetivo es una app pequeña con un uso claro, no cámara ni GPS.',
         introNote:
           'El proyecto son 2 o 3 pantallas. Si el grupo llega, se instala el APK. No se copia una app ni se recorre todo el catálogo de componentes.',
         skills: this.mobileSkills,
@@ -817,34 +1066,34 @@ export class CoursePage {
         curriculumBadge: '24 clases · 90 min · App de 2–3 pantallas',
         ctaTitle: 'Su primera app puede empezar hoy',
         ctaText:
-          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de apps móviles.',
+          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de aplicaciones móviles.',
       } as const;
     }
 
-    if (this.slug() === 'seguridad-digital') {
+    if (this.slug() === 'robotica-arduino') {
       return {
-        category: 'Ciberseguridad práctica',
-        heading: 'Seguridad Digital',
-        accent: 'y Ciberseguridad',
-        schedule: this.course()?.schedule ?? 'Martes · 19:00–20:30',
+        category: 'Arduino UNO',
+        heading: 'Robótica y Programación',
+        accent: 'con Arduino',
+        schedule: this.course()?.schedule ?? 'Miércoles · 17:30–19:00',
         price: this.course()?.price ?? '59 €',
         summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
-        introTitle: 'Aprender a protegerse también es competencia digital',
+        introTitle: 'Inventos, sensores y automatización desde casa',
         introText:
-          'El curso enseña a reconocer riesgos reales de Internet y a tomar decisiones seguras: proteger cuentas, detectar engaños y cuidar la privacidad.',
+          'Construye tus propios inventos, programa sensores y crea sistemas automáticos. Aprende electrónica y programación con proyectos prácticos en directo.',
         introNote:
-          'Trabajamos con situaciones simuladas y ejemplos adecuados a su edad. Nunca utilizamos datos personales ni realizamos prácticas ofensivas.',
-        skills: this.securitySkills,
-        areas: this.securityLearningAreas,
+          'No prometemos solo robots móviles: el curso cubre inventos, sensores y automatización. Cada familia usa el mismo kit (placa compatible UNO, protoboard y sensores). Lista de materiales al apuntarse.',
+        skills: this.arduinoSkills,
+        areas: this.arduinoLearningAreas,
         areasText:
-          'Una formación práctica para comprender los riesgos más habituales y saber cómo prevenirlos.',
-        curriculum: this.securityCurriculum,
+          'Circuitos, programación, sensores y un invento final que se puede enseñar.',
+        curriculum: this.arduinoCurriculum,
         curriculumText:
-          'Una clase de 90 minutos a la semana. En junio no hay temario nuevo: se revisan cuentas y se sale con cinco hábitos.',
-        curriculumBadge: '24 clases · 90 min · Cinco hábitos finales',
-        ctaTitle: 'Más autonomía digital, con menos riesgos',
+          '24 clases de 90 minutos de diciembre a junio. El invento final se cierra en mayo–junio.',
+        curriculumBadge: '24 clases · 90 min · Invento final',
+        ctaTitle: 'Empieza a construir y programar',
         ctaText:
-          'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de seguridad digital.',
+          'Escríbenos y te explicamos plazas, horario, kit de materiales y cómo apuntarse al grupo de Arduino.',
       } as const;
     }
 
@@ -853,7 +1102,7 @@ export class CoursePage {
         category: 'Unity y C#',
         heading: 'Desarrollo de Videojuegos',
         accent: 'con Unity',
-        schedule: this.course()?.schedule ?? 'Martes · 17:30–19:00',
+        schedule: this.course()?.schedule ?? 'Martes · 19:00–20:30',
         price: this.course()?.price ?? '59 €',
         summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'Un videojuego 2D que se puede jugar',
@@ -880,12 +1129,12 @@ export class CoursePage {
         category: 'Programación visual',
         heading: 'Programación con',
         accent: 'Scratch',
-        schedule: this.course()?.schedule ?? 'Lunes · 17:30–18:30',
-        price: this.course()?.price ?? '49 €',
-        summary: '60 min por semana · Máximo 10 alumnos · Online y en directo',
+        schedule: this.course()?.schedule ?? 'Lunes · 17:30–19:00',
+        price: this.course()?.price ?? '59 €',
+        summary: '90 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'De jugar a crear sus propios videojuegos',
         introText:
-          'En 60 minutos semanales cabe un concepto y practicarlo: mover, repetir, decidir y un juego corto con marcador.',
+          'En 90 minutos semanales cabe un concepto y practicarlo: mover, repetir, decidir y un juego corto con marcador.',
         introNote:
           'No hay varios niveles ni un segundo juego en junio. El profesor programa con el grupo y cada alumno termina el suyo.',
         skills: this.scratchSkills,
@@ -894,8 +1143,8 @@ export class CoursePage {
           'Bloques, un personaje controlado y un juego corto que se puede enseñar.',
         curriculum: this.scratchCurriculum,
         curriculumText:
-          'Una hora a la semana. El juego se monta en abril–mayo; junio es dejarlo jugable y presentarlo.',
-        curriculumBadge: '24 clases · 60 min · Un juego corto',
+          'Una clase de 90 minutos a la semana. El juego se monta en abril–mayo; junio es dejarlo jugable y presentarlo.',
+        curriculumBadge: '24 clases · 90 min · Un juego corto',
         ctaTitle: 'Su primera creación empieza aquí',
         ctaText:
           'Escríbenos y te explicamos plazas, horario y cómo apuntarse al grupo de Scratch.',
@@ -907,8 +1156,8 @@ export class CoursePage {
         category: 'Competencia digital',
         heading: 'Primeros Pasos',
         accent: 'Digitales',
-        schedule: this.course()?.schedule ?? 'Miércoles · 17:30–18:30',
-        price: this.course()?.price ?? '49 €',
+        schedule: this.course()?.schedule ?? 'Lunes · 17:30–19:00',
+        price: this.course()?.price ?? '59 €',
         summary: '60 min por semana · Máximo 10 alumnos · Online y en directo',
         introTitle: 'Una base digital para toda la vida',
         introText:

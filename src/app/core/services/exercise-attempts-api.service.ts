@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_BASE_URL } from '@core/constants/api/api.constants';
 import { ExercisePurpose } from '@core/services/exercises-api.service';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 export type ExerciseAttemptSort = 'latest' | 'score_asc' | 'score_desc';
 
@@ -25,6 +25,33 @@ export interface ExerciseAttemptSummaryDto {
     readonly uuid: string | null;
     readonly title: string | null;
   };
+}
+
+export interface ExerciseAttemptAnswerDetailDto {
+  readonly question_uuid: string | null;
+  readonly position: number | null;
+  readonly prompt: string | null;
+  readonly format: string | null;
+  readonly language: string | null;
+  readonly starter_code: string | null;
+  readonly choice: string | null;
+  readonly code: string | null;
+  readonly is_correct: boolean;
+  readonly correct_key: string | null;
+  readonly solution: string | null;
+}
+
+export interface ExerciseAttemptDetailDto extends ExerciseAttemptSummaryDto {
+  readonly exercise: {
+    readonly uuid: string | null;
+    readonly title: string | null;
+    readonly type?: string | null;
+  };
+  readonly answers: readonly ExerciseAttemptAnswerDetailDto[];
+}
+
+interface ExerciseAttemptDetailResponse {
+  readonly data: ExerciseAttemptDetailDto;
 }
 
 export interface ExerciseAttemptsListParams {
@@ -96,6 +123,12 @@ export class ExerciseAttemptsApiService {
     }
 
     return this.http.get<ExerciseAttemptsListResponse>(this.endpoint, { params: httpParams });
+  }
+
+  show(uuid: string): Observable<ExerciseAttemptDetailDto> {
+    return this.http
+      .get<ExerciseAttemptDetailResponse>(`${this.endpoint}/${uuid}`)
+      .pipe(map((response) => response.data));
   }
 
   destroy(uuid: string): Observable<void> {

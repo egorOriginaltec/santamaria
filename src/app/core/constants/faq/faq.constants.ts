@@ -12,13 +12,13 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 1,
     question: '¿Necesita conocimientos previos?',
     answer:
-      'No. Ningún curso pide haber programado antes. Se elige por edad: Primeros Pasos (7–9), Scratch (8–12), Seguridad Digital (10–14), Apps (11–14), Unity o Python (12–16), IA (14–17) o Desarrollo Web (14–18). Si hay duda entre dos, escríbenos y te orientamos.',
+      'Casi ninguno pide haber programado antes. Se elige por edad e interés: Scratch (8–12), Apps o Roblox (10–14), Arduino (11–15), Unity o Python (12–16), Web, IA o Python avanzado (14–18). Python avanzado sí pide bases (variables, if, bucles, funciones y listas). Hace falta soltura con el ordenador. En Arduino hace falta el kit. Si hay duda, escríbenos.',
   },
   {
     id: 2,
     question: '¿Qué ordenador necesita?',
     answer:
-      'Un portátil o un sobremesa (Windows, Mac o Linux), con teclado, cámara, micrófono y conexión estable. El móvil no sirve para programar. Scratch, Kodular y Primeros Pasos van con un portátil normal; Unity se defiende mejor con 8 GB de RAM. Los programas se indican al apuntarse: no hace falta un equipo de gaming.',
+      'Un portátil o un sobremesa (Windows, Mac o Linux), con teclado, cámara, micrófono y conexión estable. El móvil no sirve para programar. Scratch y apps van con un portátil normal; Unity se defiende mejor con 8 GB de RAM. En Arduino hace falta el kit (placa, protoboard y sensores) además del PC. Los programas se indican al apuntarse: no hace falta un equipo de gaming.',
   },
   {
     id: 3,
@@ -30,13 +30,13 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 4,
     question: '¿Se paga durante las vacaciones?',
     answer:
-      'No hay clase en Navidad, Semana Santa ni verano, igual que el calendario escolar. La cuota es mensual de diciembre a junio; las semanas de vacaciones de esos meses no se descuentan. Julio y agosto no se cobran.',
+      'En vacaciones escolares (puentes, Semana Santa, etc.) se hace clase igual: el colegio para, nosotros no. Solo se pausa en Navidad y al cerrar el curso en junio. La cuota es mensual de diciembre a junio; julio y agosto no se cobran.',
   },
   {
     id: 5,
     question: '¿Cómo se realiza el pago y cómo puedo darme de baja?',
     answer:
-      'La cuota es de 49 € o 59 € al mes, según el curso, por transferencia o tarjeta. No hay permanencia. Para no cobrar el mes siguiente, basta un aviso por email o WhatsApp antes del día 20.',
+      'La cuota es de 59 € al mes por curso, o 99 €/mes si combina dos (ahorras 19 €). Vale para hermanos o para el mismo alumno en dos cursos. Pago por transferencia o tarjeta. No hay permanencia. Para no cobrar el mes siguiente, basta un aviso por email o WhatsApp antes del día 20.',
   },
   {
     id: 6,

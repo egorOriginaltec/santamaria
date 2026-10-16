@@ -19,7 +19,7 @@ export const adminGuard: CanActivateFn = () => {
         return router.createUrlTree(['/student']);
       }
 
-      return router.createUrlTree(['/login']);
+      return router.createUrlTree(['/acceso']);
     }),
   );
 };

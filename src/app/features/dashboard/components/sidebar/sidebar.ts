@@ -85,10 +85,10 @@ export class DashboardSidebar {
       .pipe(finalize(() => this.loggingOut.set(false)))
       .subscribe({
         next: () => {
-          void this.router.navigateByUrl('/login');
+          void this.router.navigateByUrl('/acceso');
         },
         error: () => {
-          void this.router.navigateByUrl('/login');
+          void this.router.navigateByUrl('/acceso');
         },
       });
   }

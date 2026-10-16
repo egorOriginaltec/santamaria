@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { readApiError } from '@core/services/course-sessions-api.service';
 import { ToastService } from '@core/services/toast.service';
@@ -26,9 +27,9 @@ import { debounceTime, distinctUntilChanged, finalize, merge } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard-exercise-results',
-  imports: [DatePipe, ReactiveFormsModule],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink],
   templateUrl: './exercise-results.html',
-  styleUrl: '../payments/payments.css',
+  styleUrls: ['../payments/payments.css', './exercise-results.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('resultsEnter', [
@@ -60,7 +61,6 @@ export class DashboardExerciseResults implements OnInit {
   readonly loading = signal(true);
   readonly initialLoad = signal(true);
   readonly deletingUuid = signal<string | null>(null);
-  readonly errorMessage = signal<string | null>(null);
   readonly authRequired = signal(false);
   readonly total = signal(0);
   readonly currentPage = signal(1);

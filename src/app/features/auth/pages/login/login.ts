@@ -125,7 +125,7 @@ export class Login {
             ? '/dashboard'
             : roles.includes('student')
               ? '/student'
-              : '/login';
+              : '/acceso';
 
           this.toast.success('Sesión iniciada correctamente.');
           void this.router.navigateByUrl(destination);

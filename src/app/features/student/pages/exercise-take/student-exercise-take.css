@@ -110,6 +110,31 @@
   cursor: pointer;
 }
 
+.take-feedback {
+  margin-top: 0.85rem;
+  animation: student-reveal 0.45s ease both;
+}
+
+.take-mismatch {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0;
+  color: #dc2626;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.take-mismatch-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  color: #e7353d;
+  flex-shrink: 0;
+  animation: take-icon-in 0.4s ease 0.08s both;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -160,17 +185,55 @@
   cursor: pointer;
 }
 
-.take-ok,
+.take-ok {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0;
+  color: #16a34a;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.take-ok-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-top: 0.1rem;
+  color: #16a34a;
+  flex-shrink: 0;
+  animation: take-icon-in 0.4s ease 0.08s both;
+}
+
+.take-feedback .take-sol-label,
+.take-feedback .take-editor {
+  animation: student-reveal 0.45s ease 0.12s both;
+}
+
 .take-no {
   margin: 0.7rem 0 0;
+  color: #b91c1c;
   font-size: 0.85rem;
   font-weight: 700;
 }
 
-.take-ok {
-  color: #15803d;
+@keyframes take-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.take-no {
-  color: #b91c1c;
+@media (prefers-reduced-motion: reduce) {
+  .take-feedback,
+  .take-mismatch-icon,
+  .take-ok-icon,
+  .take-feedback .take-sol-label,
+  .take-feedback .take-editor {
+    animation: none;
+  }
 }

@@ -25,3 +25,82 @@
 .schedule-shell {
   min-width: 0;
 }
+
+.schedule-pricing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+  margin-top: 1.75rem;
+}
+
+.schedule-bundle {
+  max-width: 22rem;
+  width: 100%;
+}
+
+.schedule-bundle-prices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid #ececf3;
+  border-bottom: 1px solid #ececf3;
+}
+
+.schedule-bundle-price {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 1rem 0.5rem;
+}
+
+.schedule-bundle-price + .schedule-bundle-price {
+  border-left: 1px solid #ececf3;
+}
+
+.schedule-bundle-label {
+  color: #8a8a9a;
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.schedule-bundle-amount {
+  color: var(--color-ink, #161439);
+  font-size: 1.55rem;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.schedule-bundle-price--deal .schedule-bundle-amount {
+  color: var(--color-brand, #e7353d);
+}
+
+.schedule-bundle-period {
+  color: #8a8a9a;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.schedule-bundle-save {
+  margin: 0.75rem 0 0;
+  color: #7a7a8c;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 640px) {
+  .schedule-pricing {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+
+  .schedule-cta {
+    margin-bottom: 0.35rem;
+  }
+}

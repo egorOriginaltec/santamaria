@@ -14,12 +14,12 @@ export const routes: Routes = [
           import('@features/landing/landing.routes').then((m) => m.LANDING_ROUTES),
       },
       {
-        path: 'contact',
+        path: 'contacto',
         loadChildren: () =>
           import('@features/contact/contact.routes').then((m) => m.CONTACT_ROUTES),
       },
       {
-        path: 'login',
+        path: 'acceso',
         loadChildren: () =>
           import('@features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
@@ -28,9 +28,9 @@ export const routes: Routes = [
         loadChildren: () =>
           import('@features/legal/legal.routes').then((m) => m.LEGAL_ROUTES),
       },
-      // Legacy Spanish paths
-      { path: 'contacto', redirectTo: 'contact', pathMatch: 'full' },
-      { path: 'acceso', redirectTo: 'login', pathMatch: 'full' },
+      // Legacy English paths
+      { path: 'contact', redirectTo: 'contacto', pathMatch: 'full' },
+      { path: 'login', redirectTo: 'acceso', pathMatch: 'full' },
       { path: 'horario', redirectTo: 'horarios', pathMatch: 'full' },
       { path: 'terminos', redirectTo: 'legal/terminos', pathMatch: 'full' },
       { path: 'privacidad', redirectTo: 'legal/privacidad', pathMatch: 'full' },

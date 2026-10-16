@@ -1,7 +1,7 @@
 export const HERO_CONTENT = {
-  title: 'Programación de 7 a 18 años.',
+  title: 'Programación de 8 a 18 años.',
   description:
-    'Extraescolares de programación online, de los 7 a los 18. Un grupo semanal, para quien quiera aprender a programar.',
+    'Programación, videojuegos, IA e informática para niños y jóvenes de 8 a 18 años. Grupos online en directo, en toda España.',
   primaryCta: 'Inscribirme',
   secondaryCta: 'Contactar',
 } as const;

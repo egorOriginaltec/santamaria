@@ -45,8 +45,8 @@ export class StudentLayout {
       .logout()
       .pipe(finalize(() => this.loggingOut.set(false)))
       .subscribe({
-        next: () => void this.router.navigateByUrl('/login'),
-        error: () => void this.router.navigateByUrl('/login'),
+        next: () => void this.router.navigateByUrl('/acceso'),
+        error: () => void this.router.navigateByUrl('/acceso'),
       });
   }
 }
