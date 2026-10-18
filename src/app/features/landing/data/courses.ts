@@ -78,13 +78,13 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     price: '59 €',
     icon: '/assets/courses/arduino.svg',
     cover: '#e8f7f2',
-    summary: 'Circuitos, sensores, automatización e invento final.',
+    summary: 'Kit Miuzei: sensores, LCD, motores e invento final.',
     lead:
-      'De las primeras luces a sensores, motores y juegos electrónicos, hasta presentar un invento propio en el Robotics Fest.',
-    tools: 'Arduino UNO',
+      'Con el kit Miuzei montan luces, sensores, pantallas y motores, y terminan presentando un invento propio en el Robotics Fest.',
+    tools: 'Arduino UNO · Kit Miuzei',
     learns: [
-      'Montar circuitos con LEDs, botones y sensores',
-      'Programar condiciones, secuencias y automatismos',
+      'Montar circuitos con el kit (LEDs, sensores, LCD)',
+      'Controlar servo, motores, teclado, IR y relé',
       'Diseñar, depurar y presentar un invento propio',
     ],
   },

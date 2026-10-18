@@ -25,6 +25,17 @@
               <p class="mt-4 max-w-2xl text-pretty text-[15px] leading-7 text-[#65647a] sm:mt-5 sm:text-lg sm:leading-8">
                 {{ course.lead }}
               </p>
+              @if ('introNoteUrl' in content && content.introNoteUrl) {
+                <div class="mt-4 max-w-2xl rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-4 text-sm leading-6 text-[#4c4a5d] sm:mt-5">
+                  <p class="whitespace-pre-line">{{ content.introNote }}</p>
+                  <a
+                    class="mt-2 inline-block break-all font-semibold text-ink underline underline-offset-2"
+                    [href]="content.introNoteUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >{{ content.introNoteUrl }}</a>
+                </div>
+              }
               <div class="course-hero-actions mt-6 sm:mt-7">
                 <a href="#programa" class="course-button course-button--primary">
                   Ver el programa <span aria-hidden="true">↓</span>
@@ -72,7 +83,7 @@
           <p class="mt-5 text-pretty leading-7 text-[#68677c]">
             {{ content.introText }}
           </p>
-          @if (content.introNote) {
+          @if (content.introNote && !('introNoteUrl' in content && content.introNoteUrl)) {
             <div class="mt-7 rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-5 text-sm leading-6 text-[#4c4a5d]">
               {{ content.introNote }}
             </div>
@@ -176,9 +187,7 @@
                       @for (session of sessions; track session.label) {
                         <li class="course-session">
                           <div class="course-session-meta">
-                            @if (session.date && session.date !== '—') {
-                              <span class="course-session-date">{{ session.date }}</span>
-                            }
+                            <span class="course-session-date">{{ session.date }}</span>
                             <span class="course-session-label">{{ session.label }}</span>
                           </div>
                           <div class="course-session-body">
@@ -215,7 +224,7 @@
 
           @if ('outcomes' in content && content.outcomes; as outcomes) {
             <aside class="course-enrollment course-outcomes" aria-labelledby="course-outcomes-title">
-              <p class="course-kicker">Al terminar</p>
+              <p class="course-kicker">Qué aprenderás</p>
               <h2 id="course-outcomes-title" class="course-heading mt-3">{{ outcomes.title }}</h2>
               <p class="mt-4 max-w-2xl leading-7 text-[#68677c]">{{ outcomes.text }}</p>
               <ul class="course-enrollment-list">

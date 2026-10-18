@@ -165,7 +165,7 @@ export class CoursePage {
   ] as const;
 
   readonly scratchOutcomes = {
-    title: '¿Qué sabrán hacer al terminar el curso?',
+    title: '¿Qué aprenderás?',
     text: 'Al acabar las 30 sesiones, habrán creado muchos juegos y aprendido lógica de programación de verdad.',
     points: [
       'Pensar como programadores: secuencia, eventos, bucles y condiciones.',
@@ -481,7 +481,7 @@ export class CoursePage {
   ] as const;
 
   readonly unityOutcomes = {
-    title: '¿Qué aprenderán al terminar?',
+    title: '¿Qué aprenderás?',
     text: 'Al finalizar las 30 sesiones, habrán creado varios juegos 2D y un proyecto final propio.',
     points: [
       'Crear videojuegos en 2D con Unity desde cero.',
@@ -850,7 +850,7 @@ export class CoursePage {
   ] as const;
 
   readonly mobileOutcomes = {
-    title: '¿Qué sabrán hacer al terminar el curso?',
+    title: '¿Qué aprenderás?',
     text: 'Al acabar el curso, los alumnos habrán construido varios proyectos y aprendido a crear aplicaciones reales.',
     points: [
       'Diseñar pantallas con botones, imágenes, textos y formularios.',
@@ -1164,9 +1164,9 @@ export class CoursePage {
   ] as const;
 
   readonly arduinoSkills = [
-    'Montar circuitos con LEDs, botones, potenciómetros y sensores',
-    'Programar secuencias, condiciones y leer el monitor serie',
-    'Automatizar con distancia, movimiento, zumbador y servo',
+    'Montar circuitos con el kit: LEDs, botones, potenciómetros y sensores',
+    'Programar la placa y leer datos en el monitor serie',
+    'Usar LCD, mando IR, teclado, motores, relé y automatismos',
     'Diseñar, construir, probar y presentar un invento propio',
   ] as const;
 
@@ -1174,321 +1174,307 @@ export class CoursePage {
     {
       number: '01',
       title: 'Primeros circuitos',
-      text: 'Arduino, protoboard, LEDs, botones y control de brillo.',
+      text: 'Placa UNO, protoboard, LEDs, RGB, botones y potenciómetro.',
       tone: 'blue',
     },
     {
       number: '02',
-      title: 'Electrónica interactiva',
-      text: 'Alarmas, semáforos, sensores de luz y el monitor serie.',
+      title: 'Sensores y sonido',
+      text: 'Zumbadores, LDR, ultrasónico, tacto, DHT11 y monitor serie.',
       tone: 'yellow',
     },
     {
       number: '03',
-      title: 'Sensores y automatización',
-      text: 'Distancia, aparcamiento, movimiento, servo y barrera automática.',
+      title: 'Pantallas y control',
+      text: 'LCD, teclado, mando IR, joystick, displays y motores del kit.',
       tone: 'pink',
     },
     {
       number: '04',
-      title: 'Proyectos y fest',
-      text: 'Juegos electrónicos, estación de sensores e invento final propio.',
+      title: 'Proyecto final',
+      text: 'Combinan piezas del kit y presentan su invento en el Robotics Fest.',
       tone: 'green',
     },
   ] as const;
 
   readonly arduinoOutcomes = {
-    title: '¿Qué sabrán hacer al terminar?',
-    text: 'Al finalizar el curso, habrán montado, programado y presentado inventos electrónicos reales.',
+    title: '¿Qué aprenderás?',
+    text: 'Trabajarás con el kit Miuzei (placa UNO, sensores, pantallas y motores) para montar, programar y presentar inventos reales en 90 minutos por sesión.',
     points: [
-      'Montar circuitos básicos con LEDs, resistencias, botones y potenciómetros.',
-      'Programar la placa: secuencias, tiempos, condiciones y lectura de sensores.',
-      'Usar el monitor serie para comprobar qué detecta Arduino.',
-      'Automatizar con sensores de distancia o movimiento y un servomotor.',
-      'Combinar varios componentes en un dispositivo útil.',
-      'Diseñar, montar, depurar y presentar un invento propio.',
+      'Montar circuitos en protoboard con LEDs, botones, potenciómetros y resistencias.',
+      'Leer sensores del kit: luz, distancia ultrasónica, tacto, temperatura y humedad.',
+      'Mostrar información en LCD y displays, y controlar con teclado, joystick o mando IR.',
+      'Mover un servo, un motor DC o un stepper y usar el relé con seguridad.',
+      'Depurar con el monitor serie y combinar piezas en un invento propio.',
+      'Presentar tu proyecto en el Santamaria Robotics Fest.',
     ],
   } as const;
 
   readonly arduinoCurriculum = [
     {
-      phase: 'Bloque 1',
-      period: 'Diciembre – enero',
-      title: 'Primeros pasos con Arduino',
-      text: 'Objetivo: conocer la placa y controlar luces.',
+      phase: 'Diciembre',
+      period: 'Diciembre 2026',
+      title: 'Primeros pasos con el kit',
+      text: 'Conocer la placa UNO, la protoboard y controlar luces del kit Miuzei.',
       sessions: [
         {
-          date: '—',
+          date: '02/12',
           label: 'Clase 1',
-          title: "Mi primer circuito",
-          text: "Montan un circuito sencillo con un LED y aprenden qué es Arduino, para qué sirve la protoboard y cómo conectar los componentes.",
-          learns: "Qué es Arduino · Protoboard · Conexión de componentes",
-        }
-,
+          title: 'Abre el kit y enciende tu primer LED',
+          text: 'Identificarás la placa UNO, la protoboard, las resistencias y los cables. Montarás un LED y lo encenderás desde el IDE. Un resultado claro en 90 minutos: luz que responde al código.',
+          learns: 'Arduino IDE, pines digitales, LED, resistencia y protoboard',
+        },
         {
-          date: '—',
+          date: '09/12',
           label: 'Clase 2',
-          title: "Luces de colores",
-          text: "Construyen un circuito con varios LED y programan una secuencia de luces. Aprenden a controlar salidas y tiempos de espera.",
-          learns: "Salidas digitales · Secuencias · Tiempos de espera",
-        }
-,
+          title: 'Luces de colores en secuencia',
+          text: 'Montarás varios LED del kit y programarás una secuencia. Aprenderás a organizar salidas y tiempos sin saturar el montaje.',
+          learns: 'Varias salidas digitales, delay y secuencias',
+        },
         {
-          date: '—',
+          date: '16/12',
           label: 'Clase 3',
-          title: "Personaliza las luces",
-          text: "Modifican la velocidad y el patrón de las luces. Aprenden a cambiar valores del programa y a entender sus instrucciones principales.",
-          learns: "Cambiar valores del programa · Entender instrucciones principales",
-        }
-,
+          title: 'LED RGB: inventa tus colores',
+          text: 'Usarás el LED RGB del kit para mezclar colores. Cambiarás valores del programa y verás el resultado al instante.',
+          learns: 'LED RGB, PWM básico y personalizar patrones',
+        },
         {
-          date: '—',
+          date: '23/12',
           label: 'Clase 4',
-          title: "Controla una luz con un botón",
-          text: "Montan un botón que enciende o apaga un LED. Descubren cómo Arduino recibe información del exterior.",
-          learns: "Entradas digitales · Botón · Encender y apagar un LED",
-        }
-,
+          title: 'Botones que mandan',
+          text: 'Conectarás un pulsador del kit para encender o apagar luces. Descubrirás cómo Arduino lee el mundo exterior.',
+          learns: 'Entradas digitales, botones y condiciones sencillas',
+        },
         {
-          date: '—',
+          date: '30/12',
           label: 'Clase 5',
-          title: "Control de brillo",
-          text: "Utilizan un potenciómetro para variar la intensidad de una luz. Aprenden a leer valores analógicos y controlar una salida.",
-          learns: "Valores analógicos · Potenciómetro · Control de intensidad",
-        }
-,
+          title: 'Potenciómetro y brillo',
+          text: 'Con un potenciómetro del kit variarás el brillo de un LED. Leerás valores analógicos y controlarás una salida PWM.',
+          learns: 'Entrada analógica, map y PWM',
+        },
       ],
     },
     {
-      phase: 'Bloque 2',
-      period: 'Febrero',
-      title: 'Programación y electrónica interactiva',
-      text: 'Objetivo: crear dispositivos que reaccionan.',
+      phase: 'Enero',
+      period: 'Enero 2027',
+      title: 'Sonido, luz y datos',
+      text: 'Zumbadores, semáforo, sensor de luz LDR y monitor serie.',
       sessions: [
         {
-          date: '—',
+          date: '06/01',
           label: 'Clase 6',
-          title: "Alarma sonora",
-          text: "Programan un zumbador para producir sonidos y crear una alarma sencilla que se activa con un botón.",
-          learns: "Zumbador · Sonidos · Alarma con botón",
-        }
-,
+          title: 'Alarmas con zumbador',
+          text: 'Probarás el zumbador activo y el pasivo del kit. Crearás una alarma sencilla activada con un botón.',
+          learns: 'Zumbadores, tono y alarma con botón',
+        },
         {
-          date: '—',
+          date: '13/01',
           label: 'Clase 7',
-          title: "Semáforo automático",
-          text: "Combinan varios LED y tiempos para simular un semáforo. Aprenden a organizar instrucciones en una secuencia.",
-          learns: "Varios LED · Tiempos · Secuencia organizada",
-        }
-,
+          title: 'Semáforo automático',
+          text: 'Combinarás LED y tiempos para un semáforo completo. Una secuencia clara que cabe en una sesión.',
+          learns: 'Secuencias, estados y varios LED',
+        },
         {
-          date: '—',
+          date: '20/01',
           label: 'Clase 8',
-          title: "Luz nocturna automática",
-          text: "Un sensor detecta si hay poca luz y Arduino enciende un LED. Aprenden a usar condiciones como if y else.",
-          learns: "Sensor de luz · Condiciones if / else",
-        }
-,
+          title: 'Luz nocturna con LDR',
+          text: 'Usarás una fotorresistencia del kit para detectar poca luz y encender un LED automáticamente.',
+          learns: 'Sensor LDR, if/else y umbrales',
+        },
         {
-          date: '—',
+          date: '27/01',
           label: 'Clase 9',
-          title: "Arduino nos cuenta qué detecta",
-          text: "Leen valores de los sensores en el ordenador mediante el monitor serie y aprenden a comprobar si el circuito funciona.",
-          learns: "Monitor serie · Comprobar lecturas · Depurar el circuito",
-        }
-,
+          title: 'El monitor serie te cuenta qué pasa',
+          text: 'Leerás potenciómetro o LDR en el ordenador. Aprenderás a comprobar el circuito antes de seguir.',
+          learns: 'Monitor serie, depuración y lectura de sensores',
+        },
       ],
     },
     {
-      phase: 'Bloque 3',
-      period: 'Marzo',
-      title: 'Sensores y automatización',
-      text: 'Objetivo: el entorno controla los proyectos.',
+      phase: 'Febrero',
+      period: 'Febrero 2027',
+      title: 'Distancia, tacto y movimiento',
+      text: 'Ultrasónico HC-SR04, sensor táctil y servomotor SG90 del kit.',
       sessions: [
         {
-          date: '—',
+          date: '03/02',
           label: 'Clase 10',
-          title: "Medidor de distancia",
-          text: "Montan un sensor ultrasónico para calcular la distancia a un objeto. Aprenden que los sensores permiten medir el entorno.",
-          learns: "Sensor ultrasónico · Medir distancias",
-        }
-,
+          title: 'Medidor de distancia',
+          text: 'Montarás el sensor ultrasónico del kit (ya con pines) y medirás distancias en el monitor serie.',
+          learns: 'HC-SR04, tiempos y medir el entorno',
+        },
         {
-          date: '—',
+          date: '10/02',
           label: 'Clase 11',
-          title: "Sensor de aparcamiento",
-          text: "Combinan el sensor con luces y sonidos para avisar cuando un objeto se acerca demasiado.",
-          learns: "Distancia + luces + sonido · Avisos por proximidad",
-        }
-,
+          title: 'Sensor de aparcamiento',
+          text: 'Combinarás ultrasónico, LED y zumbador para avisar cuando algo se acerca demasiado. Un proyecto completo y realista en 90 minutos.',
+          learns: 'Combinar sensor, luces y sonido',
+        },
         {
-          date: '—',
+          date: '17/02',
           label: 'Clase 12',
-          title: "Detector de movimiento",
-          text: "Con un sensor PIR, crean un dispositivo que enciende una luz o activa una alarma cuando detecta movimiento.",
-          learns: "Sensor PIR · Luz o alarma al detectar movimiento",
-        }
-,
+          title: 'Lámpara táctil',
+          text: 'Usarás el módulo táctil del kit para encender una luz o activar una alarma al tocar.',
+          learns: 'Sensor táctil, entradas digitales y reacciones',
+        },
         {
-          date: '—',
+          date: '24/02',
           label: 'Clase 13',
-          title: "Mi primer motor",
-          text: "Controlan la posición de un servomotor y entienden cómo Arduino puede producir movimiento.",
-          learns: "Servomotor · Control de posición · Movimiento",
-        }
-,
+          title: 'Tu primer servo',
+          text: 'Moverás el servomotor SG90 del kit a distintas posiciones. Verás cómo Arduino produce movimiento preciso.',
+          learns: 'Servo, biblioteca Servo y ángulos',
+        },
+      ],
+    },
+    {
+      phase: 'Marzo',
+      period: 'Marzo 2027',
+      title: 'Automatismos y pantallas',
+      text: 'Barrera automática, LCD1602 y estación de temperatura DHT11.',
+      sessions: [
         {
-          date: '—',
+          date: '03/03',
           label: 'Clase 14',
-          title: "Barrera automática",
-          text: "Combinan un sensor y un servo para construir una barrera que se abre al detectar un objeto cercano.",
-          learns: "Sensor + servo · Barrera automática",
-        }
-,
-      ],
-    },
-    {
-      phase: 'Bloque 4',
-      period: 'Abril – mayo',
-      title: 'Construir dispositivos útiles',
-      text: 'Objetivo: combinar componentes en proyectos completos.',
-      sessions: [
+          title: 'Barrera automática',
+          text: 'Unirás ultrasónico y servo: la barrera se abre al detectar un objeto cercano. Un automatismo clásico con piezas del kit.',
+          learns: 'Combinar distancia y servo',
+        },
         {
-          date: '—',
+          date: '10/03',
           label: 'Clase 15',
-          title: "Control manual de un motor",
-          text: "Usan un potenciómetro para cambiar la posición de un servomotor y aprenden a conectar entradas y salidas.",
-          learns: "Potenciómetro + servo · Entradas y salidas",
-        }
-,
+          title: 'Tu primera pantalla LCD',
+          text: 'Conectarás el LCD1602 del kit (módulo listo, sin soldar) y mostrarás mensajes. Un paso visual muy motivador.',
+          learns: 'LCD1602, biblioteca LiquidCrystal y mensajes',
+        },
         {
-          date: '—',
+          date: '17/03',
           label: 'Clase 16',
-          title: "Cerradura electrónica sencilla",
-          text: "Crean un sistema con botón o combinación de entradas que permite activar un mecanismo. Practican condiciones y estados.",
-          learns: "Condiciones · Estados · Mecanismo activable",
-        }
-,
+          title: 'LCD + distancia en vivo',
+          text: 'Mostrarás en la pantalla la distancia medida por el ultrasónico. Combinarás sensor y display en un solo montaje.',
+          learns: 'Actualizar LCD con datos de sensor',
+        },
         {
-          date: '—',
+          date: '24/03',
           label: 'Clase 17',
-          title: "Juego de reflejos",
-          text: "Programan una luz que aparece en un momento determinado y miden cuánto tardan en pulsar un botón.",
-          learns: "Temporización · Reacción · Medir el tiempo de respuesta",
-        }
-,
+          title: 'Estación de temperatura y humedad',
+          text: 'Usarás el DHT11 del kit y mostrarás temperatura y humedad en el LCD o en el monitor serie.',
+          learns: 'DHT11, lectura de ambiente y mostrar datos',
+        },
         {
-          date: '—',
+          date: '31/03',
           label: 'Clase 18',
-          title: "Juego de memoria electrónica",
-          text: "Construyen un juego de luces y botones en el que hay que repetir una secuencia. Practican variables, condiciones y lógica.",
-          learns: "Variables · Condiciones · Lógica de secuencias",
-        }
-,
-        {
-          date: '—',
-          label: 'Clase 19',
-          title: "Estación de temperatura",
-          text: "Si el kit incluye un sensor compatible, miden la temperatura y muestran los datos en el ordenador.",
-          learns: "Sensor de temperatura · Mostrar datos en el PC",
-        }
-,
-        {
-          date: '—',
-          label: 'Clase 20',
-          title: "Control de un dispositivo",
-          text: "Descubren cómo controlar una pequeña carga eléctrica usando el componente adecuado y por qué algunos motores no deben conectarse directamente a un pin.",
-          learns: "Cargas eléctricas · Seguridad · Componentes adecuados",
-        }
-,
-        {
-          date: '—',
-          label: 'Clase 21',
-          title: "Central de sensores",
-          text: "Combinan varios componentes para crear un dispositivo que reacciona de diferentes formas según lo que detecta.",
-          learns: "Varios sensores · Reacciones distintas según la entrada",
-        }
-,
-        {
-          date: '—',
-          label: 'Clase 22',
-          title: "Diseñar un proyecto desde cero",
-          text: "Eligen un problema sencillo, deciden qué componentes necesitan y dibujan cómo conectarlos antes de empezar a construir.",
-          learns: "Definir el problema · Elegir componentes · Dibujar el circuito",
-        }
-,
+          title: 'Teclado 4x4',
+          text: 'Conectarás el teclado matricial del kit y leerás teclas en pantalla. Base para cerraduras y menús.',
+          learns: 'Teclado 4x4, matrices y lectura de teclas',
+        },
       ],
     },
     {
-      phase: 'Bloque 5',
-      period: 'Junio – julio',
-      title: 'Proyecto final',
-      text: 'Objetivo: diseñar, construir y presentar.',
+      phase: 'Abril',
+      period: 'Abril 2027',
+      title: 'Control remoto e interfaces',
+      text: 'Cerradura con teclado, mando IR, joystick y display de 7 segmentos.',
       sessions: [
         {
-          date: '—',
+          date: '07/04',
+          label: 'Clase 19',
+          title: 'Cerradura con teclado',
+          text: 'Crearás una clave sencilla con el teclado 4x4: si aciertas, enciendes un LED o suena el zumbador. Ideal para practicar estados en 90 minutos.',
+          learns: 'Contraseñas simples, estados y feedback',
+        },
+        {
+          date: '14/04',
+          label: 'Clase 20',
+          title: 'Mando a distancia IR',
+          text: 'Usarás el receptor IR y el mando del kit para encender luces o mover el servo a distancia.',
+          learns: 'Receptor IR, códigos del mando y acciones remotas',
+        },
+        {
+          date: '21/04',
+          label: 'Clase 21',
+          title: 'Joystick al mando',
+          text: 'Leerás el joystick del kit (ejes X/Y y botón) para mover un servo o cambiar LEDs. Un control muy visual.',
+          learns: 'Joystick analógico, map y control de movimiento',
+        },
+        {
+          date: '28/04',
+          label: 'Clase 22',
+          title: 'Contador en display de 7 segmentos',
+          text: 'Mostrarás números en el display de 7 segmentos del kit. Contarás pulsaciones o una puntuación simple.',
+          learns: 'Display 7 segmentos y mostrar dígitos',
+        },
+      ],
+    },
+    {
+      phase: 'Mayo',
+      period: 'Mayo 2027',
+      title: 'Motores, relé y diseño del invento',
+      text: 'Motor DC, stepper ULN2003, relé 5V y plan del proyecto final con piezas del kit.',
+      sessions: [
+        {
+          date: '05/05',
           label: 'Clase 23',
-          title: "Elegir el invento",
-          text: "Cada alumno escoge un proyecto final, como una alarma, un juego electrónico o un sistema automático, y prepara su plan.",
-          learns: "Elegir idea · Planificar el proyecto",
-        }
-,
+          title: 'Motor DC y hélice',
+          text: 'Harás girar el motor DC del kit con control seguro (montaje guiado). Un resultado claro: movimiento y ventilador.',
+          learns: 'Motor DC, corriente y control seguro desde un pin',
+        },
         {
-          date: '—',
+          date: '12/05',
           label: 'Clase 24',
-          title: "Montar el circuito",
-          text: "Conectan los componentes del proyecto final y comprueban cada parte por separado.",
-          learns: "Montaje · Probar cada parte por separado",
-        }
-,
+          title: 'Motor paso a paso',
+          text: 'Usarás el stepper y el driver ULN2003 del kit para girar con precisión. Ideal para mecanismos que necesitan pasos exactos.',
+          learns: 'Stepper, ULN2003 y giros controlados',
+        },
         {
-          date: '—',
+          date: '19/05',
           label: 'Clase 25',
-          title: "Programar el invento",
-          text: "Escriben el código que hace funcionar su proyecto, reutilizando conceptos de las clases anteriores.",
-          learns: "Código del invento · Reutilizar lo aprendido",
-        }
-,
+          title: 'Relé: controla un circuito',
+          text: 'Aprenderás para qué sirve el módulo relé 5V del kit y cómo activarlo con seguridad en un ejemplo de baja tensión guiado.',
+          learns: 'Relé, aislamiento y activar cargas con cuidado',
+        },
         {
-          date: '—',
+          date: '26/05',
           label: 'Clase 26',
-          title: "Probar y corregir",
-          text: "Detectan errores en conexiones o código, prueban posibles soluciones y dejan funcionando la versión básica.",
-          learns: "Depurar conexiones y código · Versión básica estable",
-        }
-,
+          title: 'Diseña tu invento con el kit',
+          text: 'Elegirás un proyecto final usando solo piezas del kit Miuzei: alarma, estación LCD, cerradura, brazo con servo u otro invento realista para 4 sesiones.',
+          learns: 'Elegir idea, piezas necesarias y plan por pasos',
+        },
+      ],
+    },
+    {
+      phase: 'Junio',
+      period: 'Junio 2027',
+      title: 'Proyecto final y Robotics Fest',
+      text: 'Montar, programar, pulir y presentar el invento.',
+      sessions: [
         {
-          date: '—',
+          date: '02/06',
           label: 'Clase 27',
-          title: "Añadir mejoras",
-          text: "Cada alumno añade una función adicional: otra luz, un sonido, un sensor o un comportamiento nuevo.",
-          learns: "Mejora opcional · Ampliar el invento",
-        }
-,
+          title: 'Monta tu invento',
+          text: 'Conectarás los componentes elegidos y comprobarás cada parte por separado antes de unir todo.',
+          learns: 'Montaje por bloques y probar cada parte',
+        },
         {
-          date: '—',
+          date: '09/06',
           label: 'Clase 28',
-          title: "Acabar y preparar la demostración",
-          text: "Revisan el circuito, ordenan las conexiones y preparan una explicación de cómo funciona su invento.",
-          learns: "Revisión final · Explicar el funcionamiento",
-        }
-,
+          title: 'Programa las funciones principales',
+          text: 'Escribirás el código del invento reutilizando lo del curso: sensores, pantallas, botones o motores según tu idea.',
+          learns: 'Integrar código y reutilizar lo aprendido',
+        },
         {
-          date: '—',
+          date: '16/06',
           label: 'Clase 29',
-          title: "Ensayo del proyecto",
-          text: "Cada alumno presenta una primera versión, recibe comentarios y soluciona los últimos fallos.",
-          learns: "Presentación de prueba · Comentarios · Últimos ajustes",
-        }
-,
+          title: 'Prueba, corrige y añade un extra',
+          text: 'Depurarás fallos y, si da tiempo, añadirás una mejora pequeña del kit: otro LED, sonido, LCD o mando IR.',
+          learns: 'Depuración, mejoras y versión estable',
+        },
         {
-          date: '—',
+          date: '23/06',
           label: 'Clase 30',
-          title: "Santamaria Robotics Fest",
-          text: "Cada alumno enseña su invento al grupo, explica qué hace y demuestra cómo lo ha programado.",
-          learns: "Demostración · Explicar qué hace y cómo está programado",
-        }
-,
+          title: 'Santamaria Robotics Fest',
+          text: 'Presentarás tu invento, explicarás qué piezas del kit usaste y demostrarás cómo lo has programado.',
+          learns: 'Demostración, explicar el montaje y el código',
+        },
       ],
     },
   ] as const;
@@ -1528,7 +1514,7 @@ export class CoursePage {
   ] as const;
 
   readonly robloxOutcomes = {
-    title: '¿Qué sabrán hacer al terminar?',
+    title: '¿Qué aprenderás?',
     text: 'Al finalizar el curso, los alumnos habrán aprendido a crear y probar videojuegos en Roblox Studio.',
     points: [
       'Construir mundos, escenarios, plataformas y circuitos de obstáculos.',
@@ -1898,7 +1884,7 @@ export class CoursePage {
   ] as const;
 
   readonly pythonAdvancedOutcomes = {
-    title: '¿Qué sabrás hacer al terminar?',
+    title: '¿Qué aprenderás?',
     text: 'Al finalizar las 30 sesiones, habrás pasado de scripts sueltos a aplicaciones con datos, interfaz, web e integración con APIs.',
     points: [
       'Organizar un proyecto Python con módulos, clases y validaciones.',
@@ -2865,7 +2851,7 @@ export class CoursePage {
   ] as const;
 
   readonly webEnrollment = {
-    title: '¿Qué sabrán hacer al terminar el curso?',
+    title: '¿Qué aprenderás?',
     text: 'Al finalizar las 30 sesiones, los alumnos habrán aprendido a construir y diseñar webs estáticas de principio a fin.',
     points: [
       'HTML: construir páginas, organizar secciones, insertar imágenes, crear enlaces y formularios.',
@@ -3360,20 +3346,21 @@ export class CoursePage {
         accent: 'con Arduino',
         schedule: this.course()?.schedule ?? 'Miércoles · 17:30–19:00',
         price: this.course()?.price ?? '59 €',
-        summary: '30 clases · 90 min · Miércoles 17:30–19:00 · Dic 2026 – Jul 2027',
+        summary: '30 clases · 90 min · Miércoles 17:30–19:00 · Dic 2026 – Jun 2027',
         introTitle: 'Inventos, sensores y automatización desde casa',
         introText:
-          'De las primeras luces a sensores, motores y juegos electrónicos. Cada bloque monta algo que se ve y se oye; en junio–julio presentan su invento en el Santamaria Robotics Fest.',
+          'Con el kit Miuzei (placa UNO, sensores, LCD, mando IR, teclado, motores y más) montan un invento cada semana. En junio lo presentan en el Santamaria Robotics Fest.',
         introNote:
-          'No prometemos solo robots móviles: el curso cubre inventos, sensores y automatización. Cada familia usa el mismo kit (placa compatible UNO, protoboard y sensores). Lista de materiales al apuntarse.',
+          'Kit oficial: Miuzei Starter Kit (~169 piezas). Sin soldar.\n\nMientras llega, empiezas en Tinkercad (gratis): lo mismo en digital. Cuando llega la caja, en físico.',
+        introNoteUrl: 'https://www.amazon.es/dp/B07CXKP3R3',
         skills: this.arduinoSkills,
         areas: this.arduinoLearningAreas,
         areasText:
-          'Circuitos, programación interactiva, sensores, automatización e invento final.',
+          'Luces, sensores, LCD, control remoto, motores, relé e invento final con el kit.',
         outcomes: this.arduinoOutcomes,
         curriculum: this.arduinoCurriculum,
         curriculumText:
-          '30 sesiones en cinco bloques, de diciembre a julio. En cada clase montan, programan y prueban.',
+          '30 miércoles, del 2 de diciembre de 2026 al 23 de junio de 2027. Cada clase cabe en 90 minutos y usa piezas reales del kit Miuzei.',
         curriculumBadge: '30 clases · 90 min · Plan 2026–2027',
         ctaTitle: 'Empieza a construir y programar',
         ctaText:
