@@ -37,12 +37,16 @@
                 </div>
               }
               <div class="course-hero-actions mt-6 sm:mt-7">
-                <a href="#programa" class="course-button course-button--primary">
-                  Ver el programa <span aria-hidden="true">↓</span>
+                <a
+                  [href]="'packs' in content && content.packs ? '#precios' : '#programa'"
+                  class="course-button course-button--primary"
+                >
+                  {{ 'packs' in content && content.packs ? 'Ver precios' : 'Ver el programa' }}
+                  <span aria-hidden="true">↓</span>
                 </a>
                 <p class="course-hero-price">
                   <strong>{{ content.price }}</strong>
-                  <span>/mes</span>
+                  <span>/{{ content.priceUnit ?? 'mes' }}</span>
                 </p>
               </div>
             </div>
@@ -62,7 +66,7 @@
       <section class="relative z-10 mx-auto -mt-7 w-full max-w-[1240px] px-4 sm:px-6">
         <div class="course-summary course-summary--enter" data-aos="fade-up" data-aos-delay="80">
           <dl class="course-summary-highlights">
-            <div><dt>Precio</dt><dd>{{ content.price }} <span>/mes</span></dd></div>
+            <div><dt>Precio</dt><dd>{{ content.price }} <span>/{{ content.priceUnit ?? 'mes' }}</span></dd></div>
             <div><dt>Edad</dt><dd>{{ course.ages }}</dd></div>
             <div><dt>Horario</dt><dd>{{ content.schedule }}</dd></div>
           </dl>
@@ -76,30 +80,32 @@
         </div>
       </section>
 
-      <section class="mx-auto grid w-full max-w-[1240px] gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[.82fr_1.18fr] lg:gap-20 lg:py-20">
-        <div>
-          <p class="course-kicker">El curso</p>
-          <h2 class="course-heading mt-3">{{ content.introTitle }}</h2>
-          <p class="mt-5 text-pretty leading-7 text-[#68677c]">
-            {{ content.introText }}
-          </p>
-          @if (content.introNote && !('introNoteUrl' in content && content.introNoteUrl)) {
-            <div class="mt-7 rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-5 text-sm leading-6 text-[#4c4a5d]">
-              {{ content.introNote }}
-            </div>
-          }
-        </div>
-
-        <div>
-          <p class="text-sm font-bold text-ink">Qué aprenderán</p>
-          <ul class="mt-5 grid gap-3">
-            @for (skill of content.skills; track skill) {
-              <li class="course-check-item">
-                <span class="course-check" aria-hidden="true">✓</span>
-                <span>{{ skill }}</span>
-              </li>
+      <section class="bg-white">
+        <div class="mx-auto grid w-full max-w-[1240px] gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[.82fr_1.18fr] lg:gap-20 lg:py-20">
+          <div>
+            <p class="course-kicker">El curso</p>
+            <h2 class="course-heading mt-3">{{ content.introTitle }}</h2>
+            <p class="mt-5 text-pretty leading-7 text-[#68677c]">
+              {{ content.introText }}
+            </p>
+            @if (content.introNote && !('introNoteUrl' in content && content.introNoteUrl)) {
+              <div class="mt-7 rounded-2xl border-l-4 border-[#ffc224] bg-[#fff9e8] p-5 text-sm leading-6 text-[#4c4a5d]">
+                {{ content.introNote }}
+              </div>
             }
-          </ul>
+          </div>
+
+          <div>
+            <p class="text-sm font-bold text-ink">Qué aprenderán</p>
+            <ul class="mt-5 grid gap-3">
+              @for (skill of content.skills; track skill) {
+                <li class="course-check-item">
+                  <span class="course-check" aria-hidden="true">✓</span>
+                  <span>{{ skill }}</span>
+                </li>
+              }
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -123,7 +129,7 @@
             }
           </div>
 
-          @if ('rhythm' in content && content.rhythm; as rhythm) {
+          @if (slug() !== 'clases-particulares' && 'rhythm' in content && content.rhythm; as rhythm) {
             <div class="mt-14 max-w-2xl">
               <p class="course-kicker">En clase</p>
               <h2 class="course-heading mt-3">
@@ -155,7 +161,7 @@
         </div>
       </section>
 
-      <section class="course-curriculum">
+      <section class="course-curriculum bg-white">
         <div class="mx-auto w-full max-w-[1240px] px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
           <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div class="max-w-2xl">
@@ -240,14 +246,75 @@
         </div>
       </section>
 
-      <section class="px-4 pb-14 sm:px-6 sm:pb-20 lg:pb-24">
+      @if (slug() === 'clases-particulares' && 'rhythm' in content && content.rhythm; as rhythm) {
+        <section class="bg-[#f7f7fc]">
+          <div class="mx-auto w-full max-w-[1240px] px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+            <div class="max-w-2xl">
+              <p class="course-kicker">Cómo funciona</p>
+              <h2 class="course-heading mt-3">Clases 1:1, a tu medida</h2>
+              <p class="mt-4 leading-7 text-[#68677c]">
+                Online, individuales y prácticas. Sin grupo ni ritmo ajeno.
+              </p>
+            </div>
+            <ul class="course-private-points">
+              @for (step of rhythm; track step.title) {
+                <li>
+                  <strong>{{ step.title }}</strong>
+                  <span>{{ step.text }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </section>
+      }
+
+      @if ('packs' in content && content.packs; as packs) {
+        <section id="precios" class="scroll-mt-36 bg-white">
+          <div class="mx-auto w-full max-w-[1240px] px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+            <div class="max-w-2xl">
+              <p class="course-kicker">Precios</p>
+              <h2 class="course-heading mt-3">Elige cómo empezar</h2>
+              <p class="mt-4 leading-7 text-[#68677c]">
+                Una clase suelta o un pack con ahorro. Sin matrícula ni compromiso de continuidad.
+              </p>
+            </div>
+
+            <div class="course-packs mt-10">
+              @for (pack of packs; track pack.name) {
+                <article class="course-pack" [class.course-pack--featured]="pack.featured">
+                  <div class="course-pack-top">
+                    <h3 class="course-pack-name">{{ pack.name }}</h3>
+                    <span class="course-pack-badge">{{ pack.badge }}</span>
+                  </div>
+                  <div class="course-pack-price-row">
+                    <p class="course-pack-price">{{ pack.price }}</p>
+                    @if (pack.originalPrice) {
+                      <p class="course-pack-original">{{ pack.originalPrice }}</p>
+                    }
+                  </div>
+                  <p class="course-pack-detail">
+                    {{ pack.detail }}
+                    @if (pack.saving) {
+                      <span>· {{ pack.saving }}</span>
+                    }
+                  </p>
+                  <p class="course-pack-text">{{ pack.text }}</p>
+                  <a routerLink="/contacto" class="course-pack-cta">Consultar <span aria-hidden="true">→</span></a>
+                </article>
+              }
+            </div>
+          </div>
+        </section>
+      }
+
+      <section class="bg-[#f7f7fc] px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
         <div class="course-cta mx-auto max-w-[1240px] overflow-hidden rounded-[1.5rem] px-5 py-9 text-center text-white sm:rounded-[2rem] sm:px-10 sm:py-14">
           <p class="text-[11px] font-bold tracking-[0.18em] text-white/65 uppercase sm:text-xs">El mejor momento para empezar</p>
           <h2 class="mx-auto mt-3 max-w-2xl text-balance text-[1.65rem] leading-tight font-bold tracking-tight sm:text-4xl">{{ content.ctaTitle }}</h2>
           <p class="mx-auto mt-4 max-w-xl text-pretty text-sm leading-6 text-white/75 sm:text-base">
             {{ content.ctaText }}
           </p>
-          <p class="mt-5 text-pretty text-sm font-bold text-[#ffc224]">{{ content.price }}/mes · {{ content.schedule }}</p>
+          <p class="mt-5 text-pretty text-sm font-bold text-[#ffc224]">{{ content.price }}/{{ content.priceUnit ?? 'mes' }} · {{ content.schedule }}</p>
           <a routerLink="/contacto" class="course-cta-button mt-5 inline-flex min-h-12 w-full max-w-sm items-center justify-center gap-2 rounded-full bg-[#ffc224] px-6 py-3 text-sm font-bold text-ink shadow-[0_6px_0_#d59b00] transition-transform hover:translate-y-0.5 sm:w-auto sm:px-7">
             Inscribirme <span aria-hidden="true">→</span>
           </a>
@@ -262,7 +329,7 @@
         <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-ink sm:text-4xl"><span class="course-marker">{{ course.title }}</span></h1>
         <p class="mt-4 text-pretty leading-relaxed text-[#6b6b80]">{{ course.lead }}</p>
         <dl class="mt-8 grid gap-3 sm:grid-cols-3">
-          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Precio</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.price }}/mes</dd></div>
+          <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Precio</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.price }}/{{ course.priceUnit ?? 'mes' }}</dd></div>
           <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Horario</dt><dd class="mt-1 text-sm font-semibold text-ink">{{ course.schedule }}</dd></div>
           <div class="rounded-2xl border border-[#ececf3] px-4 py-3"><dt class="text-[11px] font-bold uppercase text-[#b0b0bc]">Dónde</dt><dd class="mt-1 text-sm font-semibold text-ink">Online, en directo</dd></div>
         </dl>

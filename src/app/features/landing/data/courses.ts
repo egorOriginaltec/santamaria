@@ -5,6 +5,8 @@ export interface LandingCourse {
   readonly ages: string;
   readonly schedule: string;
   readonly price: string;
+  /** Periodo del precio en la card (`mes` por defecto, `hora` para particulares). */
+  readonly priceUnit?: 'mes' | 'hora';
   readonly summary: string;
   readonly lead: string;
   readonly tools: string;
@@ -53,24 +55,6 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
   },
   {
     id: '03',
-    slug: 'roblox',
-    title: 'Crea tus propios videojuegos con Roblox Studio',
-    ages: '10–14 años',
-    schedule: 'Martes · 17:30–19:00',
-    price: '59 €',
-    icon: '/assets/courses/roblox.png?v=3',
-    cover: '#e8f4ff',
-    summary: 'Roblox Studio, Luau y un videojuego propio.',
-    lead: 'De un primer obby a monedas, poderes, UI, multijugador y un juego final que pueden presentar.',
-    tools: 'Roblox Studio · Luau',
-    learns: [
-      'Construir mundos, obstáculos y puntos de control',
-      'Programar mecánicas con Luau y diseñar interfaces',
-      'Crear retos multijugador y un proyecto final propio',
-    ],
-  },
-  {
-    id: '04',
     slug: 'robotica-arduino',
     title: 'Robótica y Programación con Arduino',
     ages: '11–15 años',
@@ -89,7 +73,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     ],
   },
   {
-    id: '05',
+    id: '04',
     slug: 'videojuegos',
     title: 'Desarrollo de Videojuegos con Unity',
     ages: '12–16 años',
@@ -107,7 +91,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     ],
   },
   {
-    id: '06',
+    id: '05',
     slug: 'python',
     title: 'Programación con Python',
     ages: '12–16 años',
@@ -125,7 +109,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     ],
   },
   {
-    id: '07',
+    id: '06',
     slug: 'python-avanzado',
     title: 'Python avanzado: crea proyectos reales',
     ages: '14–18 años',
@@ -143,7 +127,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     ],
   },
   {
-    id: '08',
+    id: '07',
     slug: 'inteligencia-artificial',
     title: 'Inteligencia Artificial y Automatización',
     ages: '14–18 años',
@@ -161,7 +145,7 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
     ],
   },
   {
-    id: '09',
+    id: '08',
     slug: 'paginas-web',
     title: 'Desarrollo Web con HTML, CSS y Tailwind',
     ages: '14–18 años',
@@ -176,6 +160,25 @@ export const LANDING_COURSES: readonly LandingCourse[] = [
       'Montar páginas con HTML, formularios y varias secciones',
       'Diseñar con CSS, Flexbox, Grid y responsive',
       'Usar Tailwind y presentar un proyecto web propio',
+    ],
+  },
+  {
+    id: '09',
+    slug: 'clases-particulares',
+    title: 'Clases particulares de programación',
+    ages: 'Todas las edades',
+    schedule: 'A demanda · Online',
+    price: '40 €',
+    priceUnit: 'hora',
+    icon: '/assets/courses/computer.png',
+    cover: '#f0f4ff',
+    summary: 'Clases 1:1 online · Desde 40 €/hora · Packs con ahorro.',
+    lead: 'Aprende programación con clases individuales online: desde cero, apoyo académico o mejora profesional, a tu ritmo.',
+    tools: 'Python · Java · JavaScript · PHP · Angular · Laravel · SQL',
+    learns: [
+      'Iniciación, web, frontend/backend o el lenguaje que necesites',
+      'Apoyo en DAM, DAW, universidad y proyectos propios',
+      '1 clase, pack de 4 o de 8 · Sin matrícula',
     ],
   },
 ];

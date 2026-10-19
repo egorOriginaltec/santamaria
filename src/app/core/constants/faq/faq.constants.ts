@@ -12,7 +12,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 1,
     question: '¿Necesita conocimientos previos?',
     answer:
-      'Casi ninguno pide haber programado antes. Se elige por edad e interés: Scratch (8–12), Apps o Roblox (10–14), Arduino (11–15), Unity o Python (12–16), Web, IA o Python avanzado (14–18). Python avanzado sí pide bases (variables, if, bucles, funciones y listas). Hace falta soltura con el ordenador. En Arduino hace falta el kit. Si hay duda, escríbenos.',
+      'Casi ninguno pide haber programado antes. Se elige por edad e interés: Scratch (8–12), Apps (10–14), Arduino (11–15), Unity o Python (12–16), Web, IA o Python avanzado (14–18). Python avanzado sí pide bases (variables, if, bucles, funciones y listas). Hace falta soltura con el ordenador. En Arduino hace falta el kit. Si hay duda, escríbenos.',
   },
   {
     id: 2,

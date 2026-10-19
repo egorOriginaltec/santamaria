@@ -3170,7 +3170,168 @@ export class CoursePage {
     },
   ] as const;
 
+  readonly privateSkills = [
+    'Iniciación a la programación: lógica, fundamentos y primeros proyectos',
+    'Desarrollo web: HTML, CSS, JavaScript, responsive, Bootstrap, Tailwind… y más, según tu caso',
+    'Frontend y backend: Angular, PHP, Laravel… y más, según tu caso',
+    'Lenguajes: Java, Python, PHP, JavaScript, C# y otros según tu caso',
+    'Bases de datos y APIs: SQL, integración de servicios y APIs REST',
+    'Apoyo académico: DAM, DAW, universidad y otros estudios de programación',
+    'Proyectos personales o profesionales y buenas prácticas',
+  ] as const;
+
+  readonly privateLearningAreas = [
+    {
+      number: '01',
+      title: 'Iniciación',
+      text: 'Lógica de programación, fundamentos y primeros proyectos a tu ritmo.',
+      tone: 'blue',
+    },
+    {
+      number: '02',
+      title: 'Web y apps',
+      text: 'HTML, CSS, JavaScript, responsive, Tailwind, Angular, PHP, Laravel… y más, según tu caso.',
+      tone: 'yellow',
+    },
+    {
+      number: '03',
+      title: 'Lenguajes y datos',
+      text: 'Java, Python, PHP, JavaScript, C#, SQL, bases de datos y APIs REST.',
+      tone: 'pink',
+    },
+    {
+      number: '04',
+      title: 'Estudios y proyectos',
+      text: 'Apoyo en DAM, DAW o universidad, y ayuda en proyectos reales.',
+      tone: 'green',
+    },
+  ] as const;
+
+  readonly privateRhythm = [
+    {
+      minutes: '1:1',
+      title: 'Clase individual',
+      text: '100 % online, solo tú y el profesor. Sin grupo ni ritmo ajeno.',
+    },
+    {
+      minutes: 'A medida',
+      title: 'Tu nivel, tus objetivos',
+      text: 'Adaptamos el contenido a lo que necesitas: asignatura, tecnología o proyecto.',
+    },
+    {
+      minutes: 'Práctica',
+      title: 'Ejercicios y proyectos',
+      text: 'Aprendes haciendo: ejercicios, prácticas y código real en cada sesión.',
+    },
+  ] as const;
+
+  readonly privateOutcomes = {
+    title: '¿En qué podemos ayudarte?',
+    text: 'Trabajamos con niños, adolescentes, estudiantes de FP, universitarios y adultos. Si necesitas algo concreto, cuéntanos tu caso y valoramos si podemos ayudarte.',
+    points: [
+      'Empezar desde cero o reforzar fundamentos.',
+      'Aprender una tecnología concreta (web, Angular, Laravel, Python, Java…).',
+      'Preparar asignaturas, prácticas y proyectos de DAM, DAW o universidad.',
+      'Sacar adelante un proyecto personal o profesional con buenas prácticas.',
+    ],
+  } as const;
+
+  readonly privateCurriculum = [
+    {
+      phase: 'Cómo funciona',
+      period: 'Flexible',
+      title: 'Clases a tu medida',
+      text: 'Sin matrícula. Puedes empezar con una clase suelta o un pack. Reservas según disponibilidad y objetivos.',
+      topics: [
+        'Clases individuales 100 % online',
+        'Contenido adaptado a tu nivel y tus objetivos',
+        'Aprendizaje práctico con ejercicios y proyectos',
+        'Sin matrícula ni packs obligatorios',
+        'Horarios sujetos a disponibilidad',
+      ],
+    },
+    {
+      phase: 'Temáticas',
+      period: 'Según tu caso',
+      title: 'De los fundamentos a proyectos avanzados',
+      text: 'Cubrimos lenguajes, frameworks y herramientas distintas. Si necesitas algo concreto, pregúntanos.',
+      topics: [
+        'Iniciación y lógica de programación',
+        'Desarrollo web (HTML, CSS, JS, Bootstrap, Tailwind… y más, según tu caso)',
+        'Frontend y backend (Angular, PHP, Laravel… y más, según tu caso)',
+        'Java, Python, PHP, JavaScript, C# y otros',
+        'SQL, bases de datos y APIs REST',
+        'Apoyo académico DAM / DAW / universidad',
+        'Proyectos personales y profesionales',
+      ],
+    },
+  ] as const;
+
+  readonly privatePacks = [
+    {
+      name: 'Clase individual',
+      badge: 'Sin compromiso',
+      price: '40 €',
+      originalPrice: '',
+      detail: '1 clase · 60 minutos',
+      saving: '',
+      text: 'Para probar una clase, resolver dudas puntuales o valorar objetivos.',
+      featured: false,
+    },
+    {
+      name: 'Pack de 4 clases',
+      badge: 'Más flexible',
+      price: '148 €',
+      originalPrice: '160 €',
+      detail: '4 clases · 37 €/hora',
+      saving: 'Ahorras 12 €',
+      text: 'Ideal para avanzar en una asignatura, practicar una tecnología o trabajar en un pequeño proyecto.',
+      featured: true,
+    },
+    {
+      name: 'Pack de 8 clases',
+      badge: 'Más continuidad',
+      price: '280 €',
+      originalPrice: '320 €',
+      detail: '8 clases · 35 €/hora',
+      saving: 'Ahorras 40 €',
+      text: 'Para preparar un proyecto de DAM/DAW, reforzar varias unidades o seguir un itinerario de aprendizaje.',
+      featured: false,
+    },
+  ] as const;
+
   readonly pageContent = computed(() => {
+    if (this.slug() === 'clases-particulares') {
+      return {
+        category: 'Clases 1:1 · Online',
+        heading: 'Clases particulares',
+        accent: 'de programación',
+        schedule: this.course()?.schedule ?? 'A demanda · Online',
+        price: this.course()?.price ?? '40 €',
+        priceUnit: 'hora' as const,
+        summary: 'Individuales · Online · Desde 40 €/hora · Packs con ahorro',
+        introTitle: 'Programación a tu medida',
+        introText:
+          'Tanto si quieres empezar desde cero como si necesitas ayuda con tus estudios o mejorar como desarrollador, ofrecemos clases particulares adaptadas a tu nivel, tus objetivos y tu ritmo. Trabajamos con niños, adolescentes, estudiantes de FP, universitarios y adultos.',
+        introNote:
+          'Sin matrícula. Puedes reservar 1 clase o un pack de 4 u 8. Horarios sujetos a disponibilidad.',
+        skills: this.privateSkills,
+        areas: this.privateLearningAreas,
+        areasText:
+          'Desde iniciación hasta web, lenguajes, bases de datos, apoyo académico y proyectos reales.',
+        rhythm: this.privateRhythm,
+        outcomes: this.privateOutcomes,
+        packs: this.privatePacks,
+        curriculum: this.privateCurriculum,
+        curriculumText:
+          'No hay un plan fijo de 30 semanas: cada alumno sigue un itinerario distinto según lo que necesita.',
+        curriculumBadge: '1:1 · Desde 40 €/hora · Online',
+        ctaTitle: 'Cuéntanos qué necesitas aprender',
+        ctaText:
+          '¿Ayuda con una asignatura, un proyecto de DAW o DAM, o una tecnología concreta? Escríbenos y vemos cómo podemos ayudarte.',
+      } as const;
+    }
+
     if (this.slug() === 'paginas-web') {
       return {
         category: 'HTML · CSS · Tailwind · 14–18 años',

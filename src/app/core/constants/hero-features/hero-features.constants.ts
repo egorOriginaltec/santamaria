@@ -8,7 +8,7 @@ export const HERO_FEATURES: readonly FeatureCard[] = [
   },
   {
     title: 'Varios cursos',
-    text: 'De los 8 a los 18 hay varios. Cada edad tiene el suyo: Scratch, apps, Roblox, Arduino, Unity, Python, web o IA.',
+    text: 'De los 8 a los 18 hay varios. Cada edad tiene el suyo: Scratch, apps, Arduino, Unity, Python, web o IA.',
     icon: 'doc',
   },
   {

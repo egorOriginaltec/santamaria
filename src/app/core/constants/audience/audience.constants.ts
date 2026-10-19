@@ -25,7 +25,7 @@ export const AUDIENCE_REASONS: readonly AudienceReason[] = [
     id: 3,
     code: '03',
     title: 'Un camino para crecer',
-    text: 'Desde Scratch hasta apps, Roblox, Unity, Python, IA y desarrollo web.',
+    text: 'Desde Scratch hasta apps, Unity, Python, IA y desarrollo web.',
   },
   {
     id: 4,

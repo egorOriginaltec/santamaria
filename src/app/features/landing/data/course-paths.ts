@@ -18,8 +18,8 @@ export const COURSE_PATHS: readonly CoursePath[] = [
     id: 'create',
     label: 'Juegos y apps',
     ages: '10–16',
-    hint: 'Apps, Roblox o Unity, según la edad y el interés.',
-    slugs: ['aplicaciones-moviles', 'roblox', 'videojuegos'],
+    hint: 'Apps o Unity, según la edad y el interés.',
+    slugs: ['aplicaciones-moviles', 'videojuegos'],
   },
   {
     id: 'robotics',
@@ -41,5 +41,12 @@ export const COURSE_PATHS: readonly CoursePath[] = [
     ages: '14–18',
     hint: 'HTML, CSS y una landing publicada.',
     slugs: ['paginas-web'],
+  },
+  {
+    id: 'private',
+    label: 'Particulares',
+    ages: 'Todas',
+    hint: 'Clases 1:1 online, a tu ritmo y según disponibilidad.',
+    slugs: ['clases-particulares'],
   },
 ];

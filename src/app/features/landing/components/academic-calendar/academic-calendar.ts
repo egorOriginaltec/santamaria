@@ -58,14 +58,6 @@ export class AcademicCalendar {
         slug: 'scratch',
         tone: 'teal',
       },
-      Martes: {
-        title: 'Roblox Studio',
-        ages: '10–14 años',
-        hours: '17:30–19:00',
-        price: '59 €/mes',
-        slug: 'roblox',
-        tone: 'red',
-      },
       Miércoles: {
         title: 'Robótica y Programación con Arduino',
         ages: '11–15 años',
