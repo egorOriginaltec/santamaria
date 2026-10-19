@@ -1,166 +1,220 @@
-import { Routes } from '@angular/router';
-import { DashboardCalculator } from './pages/calculator/calculator';
-import { DashboardLayout } from './layout/dashboard-layout';
-import { DashboardCourseClasses } from './pages/course-classes/course-classes';
-import { DashboardCourseExercises } from './pages/course-exercises/course-exercises';
-import { DashboardCourseForm } from './pages/course-form/course-form';
-import { DashboardCourses } from './pages/courses/courses';
-import { DashboardExerciseForm } from './pages/exercise-form/exercise-form';
-import { DashboardExerciseResultDetail } from './pages/exercise-result-detail/exercise-result-detail';
-import { DashboardExerciseResults } from './pages/exercise-results/exercise-results';
-import { DashboardHome } from './pages/dashboard-home/dashboard-home';
-import { DashboardHolidayForm } from './pages/holiday-form/holiday-form';
-import { DashboardHolidays } from './pages/holidays/holidays';
-import { DashboardLeads } from './pages/leads/leads';
-import { DashboardPaymentForm } from './pages/payment-form/payment-form';
-import { DashboardPayments } from './pages/payments/payments';
-import { DashboardStudentForm } from './pages/student-form/student-form';
-import { DashboardStudents } from './pages/students/students';
-import { DashboardSubscriptionForm } from './pages/subscription-form/subscription-form';
-import { DashboardSubscriptions } from './pages/subscriptions/subscriptions';
+﻿import { Routes } from '@angular/router';
+
+const loadLayout = () =>
+  import('./layout/dashboard-layout').then((m) => m.DashboardLayout);
 
 export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
-    component: DashboardLayout,
+    loadComponent: loadLayout,
     children: [
       {
         path: '',
-        component: DashboardHome,
-        title: 'Panel · Santamaria Club',
+        loadComponent: () =>
+          import('./pages/dashboard-home/dashboard-home').then((m) => m.DashboardHome),
+        title: 'Panel · Santamaria Learn',
+      },
+
+      {
+        path: 'estudiantes',
+        loadComponent: () =>
+          import('./pages/students/students').then((m) => m.DashboardStudents),
+        title: 'Estudiantes · Santamaria Learn',
       },
       {
-        path: 'students',
-        component: DashboardStudents,
-        title: 'Estudiantes · Santamaria Club',
+        path: 'estudiantes/nuevo',
+        loadComponent: () =>
+          import('./pages/student-form/student-form').then((m) => m.DashboardStudentForm),
+        title: 'Nuevo estudiante · Santamaria Learn',
       },
       {
-        path: 'students/new',
-        component: DashboardStudentForm,
-        title: 'Nuevo estudiante · Santamaria Club',
+        path: 'estudiantes/:uuid/editar',
+        loadComponent: () =>
+          import('./pages/student-form/student-form').then((m) => m.DashboardStudentForm),
+        title: 'Editar estudiante · Santamaria Learn',
+      },
+
+      {
+        path: 'suscripciones',
+        loadComponent: () =>
+          import('./pages/subscriptions/subscriptions').then((m) => m.DashboardSubscriptions),
+        title: 'Suscripciones · Santamaria Learn',
       },
       {
-        path: 'students/:uuid/edit',
-        component: DashboardStudentForm,
-        title: 'Editar estudiante · Santamaria Club',
-      },
-      { path: 'students/nuevo', redirectTo: 'students/new', pathMatch: 'full' },
-      { path: 'students/:uuid/editar', redirectTo: 'students/:uuid/edit' },
-      {
-        path: 'subscriptions',
-        component: DashboardSubscriptions,
-        title: 'Suscripciones · Santamaria Club',
+        path: 'suscripciones/nuevo',
+        loadComponent: () =>
+          import('./pages/subscription-form/subscription-form').then(
+            (m) => m.DashboardSubscriptionForm,
+          ),
+        title: 'Nueva suscripción · Santamaria Learn',
       },
       {
-        path: 'subscriptions/new',
-        component: DashboardSubscriptionForm,
-        title: 'Nueva suscripción · Santamaria Club',
+        path: 'suscripciones/:uuid/editar',
+        loadComponent: () =>
+          import('./pages/subscription-form/subscription-form').then(
+            (m) => m.DashboardSubscriptionForm,
+          ),
+        title: 'Editar suscripción · Santamaria Learn',
+      },
+
+      {
+        path: 'pagos',
+        loadComponent: () =>
+          import('./pages/payments/payments').then((m) => m.DashboardPayments),
+        title: 'Pagos · Santamaria Learn',
       },
       {
-        path: 'subscriptions/:uuid/edit',
-        component: DashboardSubscriptionForm,
-        title: 'Editar suscripción · Santamaria Club',
-      },
-      { path: 'subscriptions/nuevo', redirectTo: 'subscriptions/new', pathMatch: 'full' },
-      { path: 'subscriptions/:uuid/editar', redirectTo: 'subscriptions/:uuid/edit' },
-      {
-        path: 'payments',
-        component: DashboardPayments,
-        title: 'Pagos · Santamaria Club',
+        path: 'pagos/nuevo',
+        loadComponent: () =>
+          import('./pages/payment-form/payment-form').then((m) => m.DashboardPaymentForm),
+        title: 'Nuevo pago · Santamaria Learn',
       },
       {
-        path: 'payments/new',
-        component: DashboardPaymentForm,
-        title: 'Nuevo pago · Santamaria Club',
+        path: 'pagos/:uuid/editar',
+        loadComponent: () =>
+          import('./pages/payment-form/payment-form').then((m) => m.DashboardPaymentForm),
+        title: 'Editar pago · Santamaria Learn',
+      },
+
+      {
+        path: 'cursos',
+        loadComponent: () =>
+          import('./pages/courses/courses').then((m) => m.DashboardCourses),
+        title: 'Cursos · Santamaria Learn',
       },
       {
-        path: 'payments/:uuid/edit',
-        component: DashboardPaymentForm,
-        title: 'Editar pago · Santamaria Club',
-      },
-      { path: 'payments/nuevo', redirectTo: 'payments/new', pathMatch: 'full' },
-      { path: 'payments/:uuid/editar', redirectTo: 'payments/:uuid/edit' },
-      {
-        path: 'courses',
-        component: DashboardCourses,
-        title: 'Cursos · Santamaria Club',
+        path: 'cursos/nuevo',
+        loadComponent: () =>
+          import('./pages/course-form/course-form').then((m) => m.DashboardCourseForm),
+        title: 'Nuevo curso · Santamaria Learn',
       },
       {
-        path: 'courses/new',
-        component: DashboardCourseForm,
-        title: 'Nuevo curso · Santamaria Club',
+        path: 'cursos/:uuid/editar',
+        loadComponent: () =>
+          import('./pages/course-form/course-form').then((m) => m.DashboardCourseForm),
+        title: 'Editar curso · Santamaria Learn',
       },
       {
-        path: 'courses/:uuid/edit',
-        component: DashboardCourseForm,
-        title: 'Editar curso · Santamaria Club',
+        path: 'cursos/:uuid/clases',
+        loadComponent: () =>
+          import('./pages/course-classes/course-classes').then((m) => m.DashboardCourseClasses),
+        title: 'Clases · Santamaria Learn',
       },
       {
-        path: 'courses/:uuid/classes',
-        component: DashboardCourseClasses,
-        title: 'Clases · Santamaria Club',
+        path: 'cursos/:uuid/ejercicios',
+        loadComponent: () =>
+          import('./pages/course-exercises/course-exercises').then(
+            (m) => m.DashboardCourseExercises,
+          ),
+        title: 'Ejercicios · Santamaria Learn',
       },
       {
-        path: 'courses/:uuid/exercises',
-        component: DashboardCourseExercises,
-        title: 'Ejercicios · Santamaria Club',
+        path: 'cursos/:uuid/ejercicios/nuevo',
+        loadComponent: () =>
+          import('./pages/exercise-form/exercise-form').then((m) => m.DashboardExerciseForm),
+        title: 'Nuevo ejercicio · Santamaria Learn',
       },
       {
-        path: 'courses/:uuid/exercises/new',
-        component: DashboardExerciseForm,
-        title: 'Nuevo ejercicio · Santamaria Club',
+        path: 'cursos/:uuid/ejercicios/:exerciseUuid/editar',
+        loadComponent: () =>
+          import('./pages/exercise-form/exercise-form').then((m) => m.DashboardExerciseForm),
+        title: 'Editar ejercicio · Santamaria Learn',
       },
+
+      {
+        path: 'resultados',
+        loadComponent: () =>
+          import('./pages/exercise-results/exercise-results').then(
+            (m) => m.DashboardExerciseResults,
+          ),
+        title: 'Resultados · Santamaria Learn',
+      },
+      {
+        path: 'resultados/:uuid',
+        loadComponent: () =>
+          import('./pages/exercise-result-detail/exercise-result-detail').then(
+            (m) => m.DashboardExerciseResultDetail,
+          ),
+        title: 'Detalle resultado · Santamaria Learn',
+      },
+
+      {
+        path: 'calculadora',
+        loadComponent: () =>
+          import('./pages/calculator/calculator').then((m) => m.DashboardCalculator),
+        title: 'Calculadora · Santamaria Learn',
+      },
+
+      {
+        path: 'contactos',
+        loadComponent: () => import('./pages/leads/leads').then((m) => m.DashboardLeads),
+        title: 'Contactos · Santamaria Learn',
+      },
+
+      {
+        path: 'festivos',
+        loadComponent: () =>
+          import('./pages/holidays/holidays').then((m) => m.DashboardHolidays),
+        title: 'Festivos · Santamaria Learn',
+      },
+      {
+        path: 'festivos/nuevo',
+        loadComponent: () =>
+          import('./pages/holiday-form/holiday-form').then((m) => m.DashboardHolidayForm),
+        title: 'Nuevo festivo · Santamaria Learn',
+      },
+      {
+        path: 'festivos/:uuid/editar',
+        loadComponent: () =>
+          import('./pages/holiday-form/holiday-form').then((m) => m.DashboardHolidayForm),
+        title: 'Editar festivo · Santamaria Learn',
+      },
+
+      // Legacy EN → ES
+      { path: 'students', redirectTo: 'estudiantes', pathMatch: 'full' },
+      { path: 'students/new', redirectTo: 'estudiantes/nuevo', pathMatch: 'full' },
+      { path: 'students/nuevo', redirectTo: 'estudiantes/nuevo', pathMatch: 'full' },
+      { path: 'students/:uuid/edit', redirectTo: 'estudiantes/:uuid/editar' },
+      { path: 'students/:uuid/editar', redirectTo: 'estudiantes/:uuid/editar' },
+
+      { path: 'subscriptions', redirectTo: 'suscripciones', pathMatch: 'full' },
+      { path: 'subscriptions/new', redirectTo: 'suscripciones/nuevo', pathMatch: 'full' },
+      { path: 'subscriptions/nuevo', redirectTo: 'suscripciones/nuevo', pathMatch: 'full' },
+      { path: 'subscriptions/:uuid/edit', redirectTo: 'suscripciones/:uuid/editar' },
+      { path: 'subscriptions/:uuid/editar', redirectTo: 'suscripciones/:uuid/editar' },
+
+      { path: 'payments', redirectTo: 'pagos', pathMatch: 'full' },
+      { path: 'payments/new', redirectTo: 'pagos/nuevo', pathMatch: 'full' },
+      { path: 'payments/nuevo', redirectTo: 'pagos/nuevo', pathMatch: 'full' },
+      { path: 'payments/:uuid/edit', redirectTo: 'pagos/:uuid/editar' },
+      { path: 'payments/:uuid/editar', redirectTo: 'pagos/:uuid/editar' },
+
+      { path: 'courses', redirectTo: 'cursos', pathMatch: 'full' },
+      { path: 'courses/new', redirectTo: 'cursos/nuevo', pathMatch: 'full' },
+      { path: 'courses/nuevo', redirectTo: 'cursos/nuevo', pathMatch: 'full' },
+      { path: 'courses/:uuid/edit', redirectTo: 'cursos/:uuid/editar' },
+      { path: 'courses/:uuid/editar', redirectTo: 'cursos/:uuid/editar' },
+      { path: 'courses/:uuid/classes', redirectTo: 'cursos/:uuid/clases' },
+      { path: 'courses/:uuid/exercises', redirectTo: 'cursos/:uuid/ejercicios' },
+      { path: 'courses/:uuid/exercises/new', redirectTo: 'cursos/:uuid/ejercicios/nuevo' },
       {
         path: 'courses/:uuid/exercises/:exerciseUuid/edit',
-        component: DashboardExerciseForm,
-        title: 'Editar ejercicio · Santamaria Club',
+        redirectTo: 'cursos/:uuid/ejercicios/:exerciseUuid/editar',
       },
-      {
-        path: 'exercise-results',
-        component: DashboardExerciseResults,
-        title: 'Resultados · Santamaria Club',
-      },
-      {
-        path: 'exercise-results/:uuid',
-        component: DashboardExerciseResultDetail,
-        title: 'Detalle resultado · Santamaria Club',
-      },
-      { path: 'resultados', redirectTo: 'exercise-results', pathMatch: 'full' },
-      {
-        path: 'calculator',
-        component: DashboardCalculator,
-        title: 'Calculadora · Santamaria Club',
-      },
-      { path: 'calculadora', redirectTo: 'calculator', pathMatch: 'full' },
-      { path: 'courses/nuevo', redirectTo: 'courses/new', pathMatch: 'full' },
-      { path: 'courses/:uuid/editar', redirectTo: 'courses/:uuid/edit' },
-      {
-        path: 'leads',
-        component: DashboardLeads,
-        title: 'Leads · Santamaria Club',
-      },
-      {
-        path: 'messages',
-        redirectTo: 'leads',
-        pathMatch: 'full',
-      },
-      {
-        path: 'holidays',
-        component: DashboardHolidays,
-        title: 'Festivos · Santamaria Club',
-      },
-      {
-        path: 'holidays/new',
-        component: DashboardHolidayForm,
-        title: 'Nuevo festivo · Santamaria Club',
-      },
-      {
-        path: 'holidays/:uuid/edit',
-        component: DashboardHolidayForm,
-        title: 'Editar festivo · Santamaria Club',
-      },
-      { path: 'holidays/nuevo', redirectTo: 'holidays/new', pathMatch: 'full' },
-      { path: 'holidays/:uuid/editar', redirectTo: 'holidays/:uuid/edit' },
+
+      { path: 'exercise-results', redirectTo: 'resultados', pathMatch: 'full' },
+      { path: 'exercise-results/:uuid', redirectTo: 'resultados/:uuid' },
+
+      { path: 'calculator', redirectTo: 'calculadora', pathMatch: 'full' },
+
+      { path: 'leads', redirectTo: 'contactos', pathMatch: 'full' },
+      { path: 'messages', redirectTo: 'contactos', pathMatch: 'full' },
+
+      { path: 'holidays', redirectTo: 'festivos', pathMatch: 'full' },
+      { path: 'holidays/new', redirectTo: 'festivos/nuevo', pathMatch: 'full' },
+      { path: 'holidays/nuevo', redirectTo: 'festivos/nuevo', pathMatch: 'full' },
+      { path: 'holidays/:uuid/edit', redirectTo: 'festivos/:uuid/editar' },
+      { path: 'holidays/:uuid/editar', redirectTo: 'festivos/:uuid/editar' },
     ],
   },
 ];

@@ -58,6 +58,14 @@ export class AcademicCalendar {
         slug: 'scratch',
         tone: 'teal',
       },
+      Martes: {
+        title: 'Crea tus propias aplicaciones móviles',
+        ages: '10–14 años',
+        hours: '17:30–19:00',
+        price: '59 €/mes',
+        slug: 'aplicaciones-moviles',
+        tone: 'ink',
+      },
       Miércoles: {
         title: 'Robótica y Programación con Arduino',
         ages: '11–15 años',
@@ -67,11 +75,11 @@ export class AcademicCalendar {
         tone: 'teal',
       },
       Jueves: {
-        title: 'Crea tus propias aplicaciones móviles',
-        ages: '10–14 años',
+        title: 'Desarrollo de videojuegos con Unity',
+        ages: '12–16 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
-        slug: 'aplicaciones-moviles',
+        slug: 'videojuegos',
         tone: 'ink',
       },
       Viernes: {
@@ -91,14 +99,6 @@ export class AcademicCalendar {
         price: '59 €/mes',
         slug: 'python',
         tone: 'teal',
-      },
-      Martes: {
-        title: 'Desarrollo de videojuegos con Unity',
-        ages: '12–16 años',
-        hours: '19:00–20:30',
-        price: '59 €/mes',
-        slug: 'videojuegos',
-        tone: 'ink',
       },
       Miércoles: {
         title: 'IA y Automatización',

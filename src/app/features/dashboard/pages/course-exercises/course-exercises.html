@@ -1,21 +1,21 @@
-ï»¿<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-4">
   <header class="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between">
     <div class="min-w-0">
       <h2 class="text-lg font-bold text-ink">Ejercicios</h2>
       <p class="mt-1 break-words text-sm text-[#8a8a9a]">
         @if (loading()) {
-          Cargandoâ€¦
+          Cargando…
         } @else if (course(); as current) {
           {{ current.title }}
         }
       </p>
     </div>
     <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-      <a routerLink="/dashboard/courses" class="text-[13px] font-semibold text-brand">Volver a cursos</a>
+      <a routerLink="/dashboard/cursos" class="text-[13px] font-semibold text-brand">Volver a cursos</a>
       @if (!loading() && course(); as current) {
         <a
           class="inline-flex w-full items-center justify-center rounded-xl bg-brand px-3.5 py-2 text-[13px] font-semibold text-white sm:w-auto"
-          [routerLink]="['/dashboard/courses', current.uuid, 'exercises', 'new']"
+          [routerLink]="['/dashboard/cursos', current.uuid, 'ejercicios', 'nuevo']"
         >
           Nuevo ejercicio
         </a>
@@ -42,14 +42,14 @@
     <section class="ex-card" [@exercisesEnter]>
       @if (exercises().length === 0) {
         <p class="text-sm text-[#8a8a9a]">
-          TodavÃ­a no hay tests en este curso. Crea uno a mano o genera el borrador con IA.
+          Todavía no hay tests en este curso. Crea uno a mano o genera el borrador con IA.
         </p>
       } @else {
         <div class="ex-table-scroll max-lg:overflow-visible">
           <table class="w-full min-w-0 border-collapse text-left text-[13px] max-lg:block lg:min-w-[48rem]">
             <thead class="max-lg:hidden">
               <tr>
-                <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">TÃ­tulo</th>
+                <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Título</th>
                 <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Fecha</th>
                 <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Tipo</th>
                 <th class="pr-3.5 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Estado</th>
@@ -61,12 +61,12 @@
               @for (exercise of exercises(); track exercise.uuid) {
                 <tr class="max-lg:mb-3 max-lg:block max-lg:rounded-2xl max-lg:border max-lg:border-[#efeff3] max-lg:px-3.5 max-lg:pt-3 max-lg:pb-2 max-lg:last:mb-0">
                   <td
-                    data-label="TÃ­tulo"
+                    data-label="Título"
                     class="border-t border-[#f0f0f5] py-3.5 pr-3.5 align-middle max-lg:flex max-lg:w-full max-lg:flex-col max-lg:items-start max-lg:gap-1 max-lg:border-0 max-lg:px-0 max-lg:py-1.5 max-lg:before:text-[10px] max-lg:before:font-bold max-lg:before:tracking-[0.08em] max-lg:before:text-[#8a8a9a] max-lg:before:uppercase max-lg:before:content-[attr(data-label)]"
                   >
                     <span class="block text-[13px] leading-snug font-semibold text-ink">{{ exercise.title }}</span>
                     <p class="mt-1 text-[13px] text-[#8a8a9a]">
-                      {{ exercise.question_count ?? 'â€”' }} preguntas
+                      {{ exercise.question_count ?? '—' }} preguntas
                     </p>
                   </td>
                   <td
@@ -109,7 +109,7 @@
                     <div class="flex justify-end gap-1.5 max-lg:w-full">
                       <a
                         class="ex-btn ex-btn--small max-lg:flex-1"
-                        [routerLink]="['/dashboard/courses', current.uuid, 'exercises', exercise.uuid, 'edit']"
+                        [routerLink]="['/dashboard/cursos', current.uuid, 'ejercicios', exercise.uuid, 'editar']"
                       >
                         Editar
                       </a>

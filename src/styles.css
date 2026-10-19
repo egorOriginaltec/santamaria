@@ -1,36 +1,54 @@
 @import "tailwindcss";
-@import "aos/dist/aos.css";
 
-/* Muy suave: poco desplazamiento + failsafe para no dejar nada invisible */
-[data-aos='fade-up'] {
-  transform: translate3d(0, 14px, 0);
+/* Poppins self-hosted (latin) — sin Google Fonts (mejor LCP / PageSpeed) */
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/poppins-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-[data-aos='fade-up'].aos-animate {
-  transform: translate3d(0, 0, 0);
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url("/fonts/poppins-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Si AOS falla, tras 1.4s el contenido se muestra igual */
-[data-aos].aos-init:not(.aos-animate) {
-  animation: aos-failsafe 0.01s linear 1.4s forwards;
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("/fonts/poppins-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-@keyframes aos-failsafe {
-  to {
-    opacity: 1;
-    transform: none;
-  }
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/poppins-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [data-aos],
-  [data-aos].aos-init,
-  [data-aos].aos-animate {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-    animation: none !important;
-  }
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-display: swap;
+  font-weight: 800;
+  src: url("/fonts/poppins-latin-800-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 .section-kicker {
@@ -51,7 +69,7 @@
   --color-topbar: #161613;
   --color-badge: #ffc224;
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Libre Baskerville", ui-serif, Georgia, serif;
+  --font-display: "Poppins", ui-sans-serif, system-ui, sans-serif;
   --site-header-height: 4.75rem;
 }
 
@@ -102,61 +120,5 @@
   select:disabled,
   [aria-disabled='true'] {
     cursor: not-allowed;
-  }
-}
-
-.reveal {
-  --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal:not(.reveal-stagger) {
-  opacity: 0;
-  transform: translateY(18px);
-  transition:
-    opacity 0.85s var(--reveal-ease),
-    transform 0.95s var(--reveal-ease);
-  transition-delay: var(--reveal-delay, 0ms);
-}
-
-.reveal.is-in:not(.reveal-stagger) {
-  opacity: 1;
-  transform: none;
-}
-
-.reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.8s var(--reveal-ease),
-    transform 0.9s var(--reveal-ease);
-}
-
-.reveal.is-in.reveal-stagger > * {
-  opacity: 1;
-  transform: none;
-}
-
-.reveal.is-in.reveal-stagger > *:nth-child(1) {
-  transition-delay: 40ms;
-}
-.reveal.is-in.reveal-stagger > *:nth-child(2) {
-  transition-delay: 110ms;
-}
-.reveal.is-in.reveal-stagger > *:nth-child(3) {
-  transition-delay: 180ms;
-}
-.reveal.is-in.reveal-stagger > *:nth-child(4) {
-  transition-delay: 250ms;
-}
-.reveal.is-in.reveal-stagger > *:nth-child(5) {
-  transition-delay: 320ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .reveal-stagger > * {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 }

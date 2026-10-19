@@ -2,7 +2,7 @@
 
   <div class="relative mx-auto w-full min-w-0 max-w-[1320px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
     <div class="mx-auto w-full min-w-0 max-w-md">
-      <header class="min-w-0 text-center" data-aos="fade-up">
+      <header class="min-w-0 text-center">
         <p class="section-kicker mb-3">
           {{ eyebrow }}
         </p>
@@ -20,8 +20,6 @@
 
       <div
         class="login-card mt-8 min-w-0 rounded-2xl border border-[#e4e4ec] bg-white p-4 shadow-[0_10px_32px_rgba(22,20,57,0.06)] min-[375px]:p-5 sm:mt-10 sm:p-7"
-        data-aos="fade-up"
-        data-aos-delay="120"
       >
         <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
           <div>
@@ -113,8 +111,6 @@
 
       <p
         class="mt-6 text-center text-pretty text-[13px] leading-relaxed text-[#6b6b80]"
-        data-aos="fade-up"
-        data-aos-delay="200"
       >
         {{ help }}
         <a

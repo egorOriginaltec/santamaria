@@ -1,6 +1,6 @@
-<section id="program" class="relative scroll-mt-[calc(var(--site-header-height)+0.75rem)] overflow-hidden bg-white">
+<section id="cursos" class="relative scroll-mt-[calc(var(--site-header-height)+0.75rem)] overflow-hidden bg-white">
   <div class="relative mx-auto w-full max-w-[1320px] px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
-    <header class="mx-auto max-w-2xl text-center" data-aos="fade-up">
+    <header class="mx-auto max-w-2xl text-center">
       <p class="section-kicker mb-4">
         Cursos
       </p>
@@ -13,7 +13,7 @@
       </p>
     </header>
 
-    <aside class="modules-bundle" data-aos="fade-up" aria-label="Descuento para hermanos o varios cursos">
+    <aside class="modules-bundle" aria-label="Descuento para hermanos o varios cursos">
       <div class="modules-bundle-prices" role="list">
         <div class="modules-bundle-price" role="listitem">
           <span class="modules-bundle-label">1 curso</span>
@@ -29,7 +29,7 @@
       <p class="modules-bundle-save">Ahorras 19 €/mes al combinar dos cursos.</p>
     </aside>
 
-    <div class="modules-filters" data-aos="fade-up" role="group" aria-label="Filtrar por itinerario">
+    <div class="modules-filters" role="group" aria-label="Filtrar por itinerario">
       <button
         type="button"
         class="modules-filter"
@@ -52,21 +52,35 @@
     </div>
 
     @if (activePath(); as path) {
-      <p class="modules-hint" data-aos="fade-up">{{ path.hint }}</p>
+      <p class="modules-hint">{{ path.hint }}</p>
     }
 
     <div class="mt-6 grid grid-cols-1 gap-4 sm:mt-8 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
-      @for (course of visibleCourses(); track course.id; let i = $index) {
+      @for (course of visibleCourses(); track course.id) {
         <article
           class="course-card flex h-full min-w-0 flex-col overflow-hidden rounded-2xl border border-[#ececf3] bg-white"
-          data-aos="fade-up"
-          [attr.data-aos-delay]="i < 5 ? i * 60 : 300"
         >
           <div class="course-cover" [style.--course-cover]="course.cover">
             @if (course.image) {
-              <img class="course-cover-photo" [src]="course.image" [alt]="course.title" />
+              <img
+                class="course-cover-photo"
+                [src]="course.image"
+                [alt]="course.title"
+                width="640"
+                height="360"
+                loading="lazy"
+                decoding="async"
+              />
             } @else {
-              <img class="course-cover-icon" [src]="course.icon" alt="" />
+              <img
+                class="course-cover-icon"
+                [src]="course.icon"
+                alt=""
+                width="128"
+                height="128"
+                loading="lazy"
+                decoding="async"
+              />
             }
           </div>
           <div class="flex flex-1 flex-col px-4 py-4 sm:px-5">
@@ -82,7 +96,7 @@
       }
     </div>
 
-    <p class="modules-download" data-aos="fade-up">
+    <p class="modules-download">
       <a
         class="modules-download-link"
         [href]="coursesGuide.href"

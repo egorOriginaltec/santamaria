@@ -10,7 +10,7 @@
       <p>{{ errorMessage() }}</p>
       <button type="button" (click)="retry()">Reintentar</button>
     </app-alert>
-    <a routerLink="/student/contenido" class="take-back">Volver a contenido</a>
+    <a routerLink="/alumno/contenido" class="take-back">Volver a contenido</a>
   } @else if (exercise(); as current) {
     <header class="exs-hero student-reveal">
       <p class="exs-kicker">{{ current.course?.title || 'Ejercicio' }} · Ejercicio</p>
@@ -101,7 +101,7 @@
     </ol>
 
     <div class="take-actions student-reveal">
-      <a routerLink="/student/contenido" class="take-back">Volver a contenido</a>
+      <a routerLink="/alumno/contenido" class="take-back">Volver a contenido</a>
       @if (canAnswer()) {
         <button type="button" class="take-submit" [disabled]="saving()" (click)="onSubmit()">
           @if (saving()) {

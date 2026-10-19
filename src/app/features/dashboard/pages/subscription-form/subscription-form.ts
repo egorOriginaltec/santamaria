@@ -68,7 +68,7 @@ export class DashboardSubscriptionForm implements OnInit {
     }
 
     if (!this.isUuid(uuid)) {
-      void this.router.navigateByUrl('/dashboard/subscriptions');
+      void this.router.navigateByUrl('/dashboard/suscripciones');
       return;
     }
 
@@ -199,7 +199,7 @@ export class DashboardSubscriptionForm implements OnInit {
         this.toast.success(
           this.isEdit() ? 'Suscripción actualizada.' : 'Suscripción creada.',
         );
-        void this.router.navigateByUrl('/dashboard/subscriptions');
+        void this.router.navigateByUrl('/dashboard/suscripciones');
       },
       error: (err: HttpErrorResponse) => {
         this.applyServerFieldErrors(err);

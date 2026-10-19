@@ -40,7 +40,7 @@
       } @else if (courses().length === 0) {
         <div class="cal-empty st-card">
           <p>Todavía no estás en ningún grupo, así que el calendario está vacío.</p>
-          <a routerLink="/student" class="st-btn" style="margin-top: 0.9rem">Volver al inicio</a>
+          <a routerLink="/alumno" class="st-btn" style="margin-top: 0.9rem">Volver al inicio</a>
         </div>
       } @else {
         <div class="cal-stage">
@@ -169,7 +169,7 @@
                       <ul class="cal-rows">
                         @for (test of day.tests; track test.uuid) {
                           <li>
-                            <a class="cal-row cal-row--link cal-row--test" [routerLink]="['/student/exercises', test.uuid]">
+                            <a class="cal-row cal-row--link cal-row--test" [routerLink]="['/alumno/ejercicios', test.uuid]">
                               <div class="cal-row-copy">
                                 <p class="cal-row-title">{{ test.title }}</p>
                                 <p class="cal-row-sub">{{ testMeta(test) }}</p>

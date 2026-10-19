@@ -14,7 +14,7 @@
           }
         </p>
       </div>
-      <a routerLink="/dashboard/students/new" class="students-btn students-btn--primary">
+      <a routerLink="/dashboard/estudiantes/nuevo" class="students-btn students-btn--primary">
         Nuevo estudiante
       </a>
     </div>
@@ -88,7 +88,7 @@
       <p class="students-empty-text">
         Cambia la búsqueda o el estado, o crea un estudiante nuevo.
       </p>
-      <a routerLink="/dashboard/students/new" class="students-btn students-btn--primary">
+      <a routerLink="/dashboard/estudiantes/nuevo" class="students-btn students-btn--primary">
         Crear estudiante
       </a>
     </div>
@@ -154,7 +154,7 @@
                   <div class="flex justify-end gap-1.5 max-lg:w-full">
                     <a
                       class="students-btn students-btn--small max-lg:flex-1"
-                      [routerLink]="['/dashboard/students', student.uuid, 'edit']"
+                      [routerLink]="['/dashboard/estudiantes', student.uuid, 'editar']"
                     >
                       Editar
                     </a>

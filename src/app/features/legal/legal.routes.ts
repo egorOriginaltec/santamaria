@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { LegalDocumentPage } from './pages/legal-document/legal-document';
 
 export const LEGAL_ROUTES: Routes = [
   {
     path: ':slug',
-    component: LegalDocumentPage,
-    title: 'Legal · Santamaria Club',
+    loadComponent: () =>
+      import('./pages/legal-document/legal-document').then((m) => m.LegalDocumentPage),
+    title: 'Aviso legal · Santamaria Learn',
   },
   {
     path: '',

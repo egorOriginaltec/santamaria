@@ -1,6 +1,6 @@
 import type { AudienceReason } from '../../models/audience/audience.model';
 
-export const AUDIENCE_EYEBROW = 'Por qué Santamaria';
+export const AUDIENCE_EYEBROW = 'Por qué Santamaria Learn';
 
 export const AUDIENCE_TITLE = '¿Por qué elegirnos?';
 

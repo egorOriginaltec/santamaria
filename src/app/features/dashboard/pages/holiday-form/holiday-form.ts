@@ -57,7 +57,7 @@ export class DashboardHolidayForm implements OnInit {
     }
 
     if (!this.isUuid(uuid)) {
-      void this.router.navigateByUrl('/dashboard/holidays');
+      void this.router.navigateByUrl('/dashboard/festivos');
       return;
     }
 
@@ -148,7 +148,7 @@ export class DashboardHolidayForm implements OnInit {
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
         this.toast.success(this.isEdit() ? 'Festivo actualizado.' : 'Festivo creado.');
-        void this.router.navigateByUrl('/dashboard/holidays');
+        void this.router.navigateByUrl('/dashboard/festivos');
       },
       error: (err: HttpErrorResponse) => {
         this.applyServerFieldErrors(err);

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { courseBySlug } from '../../data/courses';
@@ -15,7 +14,6 @@ import { courseBySlug } from '../../data/courses';
 export class CoursePage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  private readonly title = inject(Title);
 
   readonly slug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug') ?? '')),
@@ -3241,13 +3239,13 @@ export class CoursePage {
       phase: 'Cómo funciona',
       period: 'Flexible',
       title: 'Clases a tu medida',
-      text: 'Sin matrícula. Puedes empezar con una clase suelta o un pack. Reservas según disponibilidad y objetivos.',
+      text: 'Sin matrícula. Puedes empezar con una clase suelta o un pack. Reservas entre semana, sábado o domingo, según disponibilidad y objetivos.',
       topics: [
         'Clases individuales 100 % online',
         'Contenido adaptado a tu nivel y tus objetivos',
         'Aprendizaje práctico con ejercicios y proyectos',
         'Sin matrícula ni packs obligatorios',
-        'Horarios sujetos a disponibilidad',
+        'Horarios flexibles: entre semana, sábados y domingos',
       ],
     },
     {
@@ -3306,15 +3304,15 @@ export class CoursePage {
         category: 'Clases 1:1 · Online',
         heading: 'Clases particulares',
         accent: 'de programación',
-        schedule: this.course()?.schedule ?? 'A demanda · Online',
+        schedule: this.course()?.schedule ?? 'A demanda · Online · Fin de semana incluido',
         price: this.course()?.price ?? '40 €',
         priceUnit: 'hora' as const,
-        summary: 'Individuales · Online · Desde 40 €/hora · Packs con ahorro',
+        summary: 'Individuales · Online · Entre semana, sábados y domingos · Desde 40 €/hora',
         introTitle: 'Programación a tu medida',
         introText:
           'Tanto si quieres empezar desde cero como si necesitas ayuda con tus estudios o mejorar como desarrollador, ofrecemos clases particulares adaptadas a tu nivel, tus objetivos y tu ritmo. Trabajamos con niños, adolescentes, estudiantes de FP, universitarios y adultos.',
         introNote:
-          'Sin matrícula. Puedes reservar 1 clase o un pack de 4 u 8. Horarios sujetos a disponibilidad.',
+          'Sin matrícula. Puedes reservar 1 clase o un pack de 4 u 8. Horarios flexibles entre semana, sábados y domingos, según disponibilidad.',
         skills: this.privateSkills,
         areas: this.privateLearningAreas,
         areasText:
@@ -3477,9 +3475,9 @@ export class CoursePage {
         category: 'Apps Android · Kodular · 10–14 años',
         heading: 'Crea tus propias',
         accent: 'aplicaciones móviles',
-        schedule: this.course()?.schedule ?? 'Jueves · 17:30–19:00',
+        schedule: this.course()?.schedule ?? 'Martes · 17:30–19:00',
         price: this.course()?.price ?? '59 €',
-        summary: '30 clases · 90 min · Jueves 17:30–19:00 · Dic 2026 – Jul 2027',
+        summary: '30 clases · 90 min · Martes 17:30–19:00 · Dic 2026 – Jul 2027',
         introTitle: 'De la primera pantalla a una app propia',
         introText:
           'Cada mes un proyecto claro: sonidos, concurso, mascota, tareas con Firebase, Pokédex con API, asistente personal y, en junio, su app final. No vendemos “aprender Kodular”: vendemos crear aplicaciones que pueden enseñar en casa.',
@@ -3534,9 +3532,9 @@ export class CoursePage {
         category: 'Unity · C# · 12–16 años',
         heading: 'Desarrollo de Videojuegos',
         accent: 'con Unity',
-        schedule: this.course()?.schedule ?? 'Martes · 19:00–20:30',
+        schedule: this.course()?.schedule ?? 'Jueves · 17:30–19:00',
         price: this.course()?.price ?? '59 €',
-        summary: '30 clases · 90 min · Martes 19:00–20:30 · Dic 2026 – Jun 2027',
+        summary: '30 clases · 90 min · Jueves 17:30–19:00 · Dic 2026 – Jun 2027',
         introTitle: 'Curso desde cero para crear videojuegos 2D',
         introText:
           'Cada semana construyen una parte funcional: movimiento, monedas, enemigos, menús, otras mecánicas 2D y, en junio, su proyecto final en el Santamaria Game Fest.',
@@ -3548,7 +3546,7 @@ export class CoursePage {
         outcomes: this.unityOutcomes,
         curriculum: this.unityCurriculum,
         curriculumText:
-          '30 sesiones en martes. En cada clase: qué crearás y qué aprenderás.',
+          '30 sesiones en jueves. En cada clase: qué crearás y qué aprenderás.',
         curriculumBadge: '30 clases · 90 min · Plan 2026–2027',
         ctaTitle: 'Convierte sus ideas en un videojuego',
         ctaText:
@@ -3623,10 +3621,9 @@ export class CoursePage {
       }
       const course = courseBySlug(slug);
       if (!course) {
-        void this.router.navigateByUrl('/#program');
+        void this.router.navigateByUrl('/#cursos');
         return;
       }
-      this.title.setTitle(`${course.title} · Santamaria Club`);
     });
   }
 }

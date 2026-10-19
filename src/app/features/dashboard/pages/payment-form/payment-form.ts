@@ -95,7 +95,7 @@ export class DashboardPaymentForm implements OnInit {
     }
 
     if (!this.isUuid(uuid)) {
-      void this.router.navigateByUrl('/dashboard/payments');
+      void this.router.navigateByUrl('/dashboard/pagos');
       return;
     }
 
@@ -264,7 +264,7 @@ export class DashboardPaymentForm implements OnInit {
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
         this.toast.success(this.isEdit() ? 'Pago actualizado.' : 'Pago registrado.');
-        void this.router.navigateByUrl('/dashboard/payments');
+        void this.router.navigateByUrl('/dashboard/pagos');
       },
       error: (err: HttpErrorResponse) => {
         this.applyServerFieldErrors(err);

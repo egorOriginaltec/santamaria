@@ -124,7 +124,7 @@ export class Login {
           const destination = roles.includes('administrator')
             ? '/dashboard'
             : roles.includes('student')
-              ? '/student'
+              ? '/alumno'
               : '/acceso';
 
           this.toast.success('Sesión iniciada correctamente.');

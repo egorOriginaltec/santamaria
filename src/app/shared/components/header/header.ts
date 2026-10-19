@@ -13,6 +13,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import {
+  APP_EMAIL,
+  APP_NAME,
   APP_TAGLINE,
   COURSE_START_MS,
   PRIMARY_NAV,
@@ -32,7 +34,9 @@ export class Header implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly host = inject(ElementRef<HTMLElement>);
 
+  readonly brandName = APP_NAME;
   readonly tagline = APP_TAGLINE;
+  readonly email = APP_EMAIL;
   readonly navItems = PRIMARY_NAV;
   readonly socialLinks = SOCIAL_LINKS;
 

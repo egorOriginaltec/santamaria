@@ -193,7 +193,7 @@ export class DashboardExerciseForm implements OnInit {
   }
 
   listPath(): string[] {
-    return ['/dashboard/courses', this.courseUuid() ?? '', 'exercises'];
+    return ['/dashboard/cursos', this.courseUuid() ?? '', 'ejercicios'];
   }
 
   onSubmit(): void {
@@ -256,11 +256,11 @@ export class DashboardExerciseForm implements OnInit {
         next: (response) => {
           this.toast.success('Borrador generado.');
           void this.router.navigate([
-            '/dashboard/courses',
+            '/dashboard/cursos',
             courseUuid,
-            'exercises',
+            'ejercicios',
             response.data.exercise.uuid,
-            'edit',
+            'editar',
           ]);
         },
         error: (err: unknown) => {

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SeoService } from '@core/services/seo.service';
 import { AppToastHost } from '@shared/components/toast-host/toast-host';
 
 @Component({
@@ -8,4 +9,10 @@ import { AppToastHost } from '@shared/components/toast-host/toast-host';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {}
+export class App {
+  private readonly seo = inject(SeoService);
+
+  constructor() {
+    this.seo.init();
+  }
+}

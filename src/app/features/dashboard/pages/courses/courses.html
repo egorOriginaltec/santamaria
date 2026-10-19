@@ -1,8 +1,8 @@
-﻿<section class="courses-card">
+<section class="courses-card">
   <header class="courses-header">
     <div class="courses-heading">
       <div>
-        <p class="courses-eyebrow">Club</p>
+        <p class="courses-eyebrow">Santamaria Learn</p>
         <h2 class="courses-title">Cursos</h2>
         <p class="courses-subtitle">
           @if (loading() && initialLoad()) {
@@ -14,7 +14,7 @@
           }
         </p>
       </div>
-      <a routerLink="/dashboard/courses/new" class="courses-btn courses-btn--primary">
+      <a routerLink="/dashboard/cursos/nuevo" class="courses-btn courses-btn--primary">
         Nuevo curso
       </a>
     </div>
@@ -99,7 +99,7 @@
       <p class="courses-empty-text">
         Cambia el periodo o el estado, o crea un curso nuevo.
       </p>
-      <a routerLink="/dashboard/courses/new" class="courses-btn courses-btn--primary">
+      <a routerLink="/dashboard/cursos/nuevo" class="courses-btn courses-btn--primary">
         Crear curso
       </a>
     </div>
@@ -169,19 +169,19 @@
                   <div class="flex flex-wrap justify-end gap-1.5 max-lg:grid max-lg:w-full max-lg:grid-cols-2">
                     <a
                       class="courses-btn courses-btn--small"
-                      [routerLink]="['/dashboard/courses', course.uuid, 'classes']"
+                      [routerLink]="['/dashboard/cursos', course.uuid, 'clases']"
                     >
                       Clases
                     </a>
                     <a
                       class="courses-btn courses-btn--small"
-                      [routerLink]="['/dashboard/courses', course.uuid, 'exercises']"
+                      [routerLink]="['/dashboard/cursos', course.uuid, 'ejercicios']"
                     >
                       Tests
                     </a>
                     <a
                       class="courses-btn courses-btn--small"
-                      [routerLink]="['/dashboard/courses', course.uuid, 'edit']"
+                      [routerLink]="['/dashboard/cursos', course.uuid, 'editar']"
                     >
                       Editar
                     </a>

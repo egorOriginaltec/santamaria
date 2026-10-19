@@ -5,7 +5,7 @@
     <div
       class="mx-auto grid w-full min-w-0 max-w-5xl gap-8 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14"
     >
-      <header class="min-w-0 lg:pt-2" data-aos="fade-up">
+      <header class="min-w-0 lg:pt-2">
         <p class="contact-eyebrow mb-4">
           {{ eyebrow }}
         </p>
@@ -29,8 +29,6 @@
 
       <div
         class="contact-card min-w-0 w-full rounded-2xl border bg-white p-4 text-ink min-[375px]:p-5 sm:p-7"
-        data-aos="fade-up"
-        data-aos-delay="120"
       >
         @if (submitted()) {
           <div class="py-6 text-center sm:py-8" role="status">
@@ -135,7 +133,7 @@
                 maxlength="5000"
                 class="contact-input min-h-[7rem] resize-y"
                 [class.is-invalid]="fieldInvalid('message')"
-                placeholder="¿Qué te gustaría saber del club?"
+                placeholder="¿Qué te gustaría saber de Santamaria Learn?"
                 (input)="onMessageInput($event)"
               ></textarea>
               @if (fieldInvalid('message')) {

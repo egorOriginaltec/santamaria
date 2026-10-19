@@ -40,7 +40,7 @@
           <div class="cls-empty st-card">
             <p class="cls-empty-title">Aún no tienes un grupo</p>
             <p class="cls-empty-text">Cuando te matriculen, aquí saldrán los apuntes y los ejercicios.</p>
-            <a routerLink="/student">Volver al inicio</a>
+            <a routerLink="/alumno">Volver al inicio</a>
           </div>
         } @else {
           <div class="cls-list">
@@ -76,7 +76,7 @@
                     }
                     @for (test of course.exercises; track test.uuid) {
                       <li>
-                        <a class="cls-item cls-item--link" [routerLink]="['/student/exercises', test.uuid]">
+                        <a class="cls-item cls-item--link" [routerLink]="['/alumno/ejercicios', test.uuid]">
                           <p
                             class="cls-kind"
                             [class.is-exam]="test.purpose === 'exam'"

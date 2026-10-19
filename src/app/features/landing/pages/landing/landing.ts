@@ -2,6 +2,7 @@ import { ViewportScroller } from '@angular/common';
 import { afterNextRender, ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
+import { LANDING_FRAGMENT_ALIASES } from '@core/index';
 import { AcademicCalendar } from '../../components/academic-calendar/academic-calendar';
 import { Audience } from '../../components/audience/audience';
 import { Faq } from '../../components/faq/faq';
@@ -35,8 +36,10 @@ export class Landing {
       return;
     }
 
+    const target = LANDING_FRAGMENT_ALIASES[fragment] ?? fragment;
+
     requestAnimationFrame(() => {
-      this.viewport.scrollToAnchor(fragment);
+      this.viewport.scrollToAnchor(target);
     });
   }
 }

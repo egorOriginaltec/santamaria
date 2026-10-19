@@ -14,7 +14,7 @@
           }
         </p>
       </div>
-      <a routerLink="/dashboard/holidays/new" class="holidays-btn holidays-btn--primary">
+      <a routerLink="/dashboard/festivos/nuevo" class="holidays-btn holidays-btn--primary">
         Nuevo festivo
       </a>
     </div>
@@ -109,7 +109,7 @@
       <p class="holidays-empty-text">
         Cambia el año o el mes, o crea un festivo nacional nuevo.
       </p>
-      <a routerLink="/dashboard/holidays/new" class="holidays-btn holidays-btn--primary">
+      <a routerLink="/dashboard/festivos/nuevo" class="holidays-btn holidays-btn--primary">
         Crear festivo
       </a>
     </div>
@@ -172,7 +172,7 @@
                 <div class="flex justify-end gap-1.5 max-lg:w-full">
                   <a
                     class="holidays-btn holidays-btn--small max-lg:flex-1"
-                    [routerLink]="['/dashboard/holidays', holiday.uuid, 'edit']"
+                    [routerLink]="['/dashboard/festivos', holiday.uuid, 'editar']"
                   >
                     Editar
                   </a>

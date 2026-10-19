@@ -18,7 +18,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 2,
     question: '¿Qué ordenador necesita?',
     answer:
-      'Un portátil o un sobremesa (Windows, Mac o Linux), con teclado, cámara, micrófono y conexión estable. El móvil no sirve para programar. Scratch y apps van con un portátil normal; Unity se defiende mejor con 8 GB de RAM. En Arduino hace falta el kit (placa, protoboard y sensores) además del PC. Los programas se indican al apuntarse: no hace falta un equipo de gaming.',
+      'Un portátil o un sobremesa (Windows, Mac o Linux), con teclado, cámara, micrófono y conexión estable. El móvil no sirve para programar. Scratch y apps van con un portátil normal. Unity se defiende mejor con 8 GB de RAM. En Arduino hace falta el kit (placa, protoboard y sensores) además del PC. Los programas se indican al apuntarse: no hace falta un equipo de gaming.',
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     id: 4,
     question: '¿Se paga durante las vacaciones?',
     answer:
-      'En vacaciones escolares (puentes, Semana Santa, etc.) se hace clase igual: el colegio para, nosotros no. Solo se pausa en Navidad y al cerrar el curso en junio. La cuota es mensual de diciembre a junio; julio y agosto no se cobran.',
+      'En vacaciones escolares (puentes, Semana Santa, etc.) se hace clase igual: el colegio para, nosotros no. Solo se pausa en Navidad y al cerrar el curso en junio. La cuota es mensual de diciembre a junio. Julio y agosto no se cobran.',
   },
   {
     id: 5,

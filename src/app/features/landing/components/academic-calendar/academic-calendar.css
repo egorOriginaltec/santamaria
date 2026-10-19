@@ -295,6 +295,20 @@ a.calendar-lesson:hover {
   color: #6f6c7c;
 }
 
+.calendar-private-span {
+  height: auto !important;
+  vertical-align: middle;
+}
+
+.calendar-lesson--span {
+  min-height: 4.6rem;
+  width: 100%;
+}
+
+.calendar-private-skip {
+  background: #f7f6f8;
+}
+
 @media (min-width: 1280px) {
   .calendar-table {
     min-width: 0;

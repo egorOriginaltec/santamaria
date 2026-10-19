@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
+  APP_EMAIL,
   APP_NAME,
   APP_TAGLINE,
-  CONTACT_FORM_EMAIL,
   LEGAL_NAV,
   PRIMARY_NAV,
   SOCIAL_LINKS,
@@ -18,8 +18,9 @@ import {
 })
 export class Footer {
   readonly fullName = APP_NAME;
+  readonly brandName = APP_NAME;
   readonly tagline = APP_TAGLINE;
-  readonly email = CONTACT_FORM_EMAIL;
+  readonly email = APP_EMAIL;
   readonly year = new Date().getFullYear();
   readonly socialLinks = SOCIAL_LINKS;
   readonly legalLinks = LEGAL_NAV;

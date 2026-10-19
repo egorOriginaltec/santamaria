@@ -107,7 +107,7 @@ export class DashboardCourseForm implements OnInit {
     }
 
     if (!this.isUuid(uuid)) {
-      void this.router.navigateByUrl('/dashboard/courses');
+      void this.router.navigateByUrl('/dashboard/cursos');
       return;
     }
 
@@ -211,7 +211,7 @@ export class DashboardCourseForm implements OnInit {
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
         this.toast.success(this.isEdit() ? 'Curso actualizado.' : 'Curso creado.');
-        void this.router.navigateByUrl('/dashboard/courses');
+        void this.router.navigateByUrl('/dashboard/cursos');
       },
       error: () => {},
     });

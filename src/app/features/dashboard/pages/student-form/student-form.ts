@@ -84,7 +84,7 @@ export class DashboardStudentForm implements OnInit {
     }
 
     if (!this.isUuid(uuid)) {
-      void this.router.navigateByUrl('/dashboard/students');
+      void this.router.navigateByUrl('/dashboard/estudiantes');
       return;
     }
 
@@ -230,7 +230,7 @@ export class DashboardStudentForm implements OnInit {
     request$.pipe(finalize(() => this.saving.set(false))).subscribe({
       next: () => {
         this.toast.success(this.isEdit() ? 'Estudiante actualizado.' : 'Estudiante creado.');
-        void this.router.navigateByUrl('/dashboard/students');
+        void this.router.navigateByUrl('/dashboard/estudiantes');
       },
       error: (err: HttpErrorResponse) => {
         this.applyServerFieldErrors(err);

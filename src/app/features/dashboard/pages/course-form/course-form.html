@@ -1,7 +1,7 @@
 <section class="course-form-card">
   <header class="course-form-header">
     <div>
-      <p class="course-form-eyebrow">Club · Cursos</p>
+      <p class="course-form-eyebrow">Santamaria Learn · Cursos</p>
       <h2 class="course-form-title">
         {{ isEdit() ? 'Editar curso' : 'Nuevo curso' }}
       </h2>
@@ -15,7 +15,7 @@
         }
       </p>
     </div>
-    <a routerLink="/dashboard/courses" class="course-form-back">Volver al listado</a>
+    <a routerLink="/dashboard/cursos" class="course-form-back">Volver al listado</a>
   </header>
 
   @if (loading()) {
@@ -50,7 +50,7 @@
         <p class="course-form-empty-text">
           Puede que se haya eliminado o que no tengas permiso para verlo.
         </p>
-        <a routerLink="/dashboard/courses" class="course-btn course-btn--primary">
+        <a routerLink="/dashboard/cursos" class="course-btn course-btn--primary">
           Volver al listado
         </a>
       </div>
@@ -184,7 +184,7 @@
       </div>
 
       <div class="course-form-actions">
-        <a routerLink="/dashboard/courses" class="course-btn course-btn--ghost">Cancelar</a>
+        <a routerLink="/dashboard/cursos" class="course-btn course-btn--ghost">Cancelar</a>
         <button
           type="submit"
           class="course-btn course-btn--primary"

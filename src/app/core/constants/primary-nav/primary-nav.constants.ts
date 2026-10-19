@@ -9,7 +9,7 @@ export const PRIMARY_NAV: readonly NavItem[] = [
   {
     label: 'Cursos',
     path: '/',
-    fragment: 'program',
+    fragment: 'cursos',
   },
   {
     label: 'Horarios',

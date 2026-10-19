@@ -16,7 +16,7 @@ export const adminGuard: CanActivateFn = () => {
       }
 
       if (roles.includes('student')) {
-        return router.createUrlTree(['/student']);
+        return router.createUrlTree(['/alumno']);
       }
 
       return router.createUrlTree(['/acceso']);

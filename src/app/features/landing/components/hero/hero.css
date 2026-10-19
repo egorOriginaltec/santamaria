@@ -40,7 +40,8 @@
 }
 
 .hero-visual {
-  overflow: hidden;
+  /* visible: si es hidden, la sombra del chip “Online · En directo” se corta en línea */
+  overflow: visible;
   max-width: 100%;
 }
 
@@ -86,7 +87,7 @@
 
 .hero-chip--hours {
   top: 4%;
-  left: 0;
+  left: 0.35rem;
   z-index: 30;
   max-width: min(100%, 10.5rem);
   padding: 0.35rem 0.6rem;

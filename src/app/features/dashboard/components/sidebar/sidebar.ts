@@ -1,6 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { APP_NAME, APP_TAGLINE } from '@core/constants/app/app.constants';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { finalize } from 'rxjs';
 import { DASHBOARD_NAV, STUDENT_NAV } from '../../constants';
@@ -24,6 +25,9 @@ export class DashboardSidebar {
   private readonly auth = inject(AuthApiService);
   private readonly router = inject(Router);
 
+  readonly brandName = APP_NAME;
+  readonly brandTag = APP_TAGLINE;
+
   readonly groups = computed(() => {
     const roles = this.auth.user()?.roles ?? [];
 
@@ -32,7 +36,7 @@ export class DashboardSidebar {
   readonly homePath = computed(() => {
     const roles = this.auth.user()?.roles ?? [];
 
-    return roles.includes('student') && !roles.includes('administrator') ? '/student' : '/dashboard';
+    return roles.includes('student') && !roles.includes('administrator') ? '/alumno' : '/dashboard';
   });
   readonly open = input(false);
   readonly closed = output<void>();

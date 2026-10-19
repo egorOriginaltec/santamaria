@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { APP_NAME, APP_TAGLINE } from '@core/constants/app/app.constants';
 import { AuthApiService } from '@core/services/auth-api.service';
 import { finalize } from 'rxjs';
 import { StudentCampusService } from '../data/student-campus.service';
@@ -17,6 +18,8 @@ export class StudentLayout {
   private readonly campus = inject(StudentCampusService);
   private readonly router = inject(Router);
 
+  readonly brandName = APP_NAME;
+  readonly brandTag = APP_TAGLINE;
   readonly menuOpen = signal(false);
   readonly loggingOut = signal(false);
   readonly firstName = computed(() => firstName(this.auth.user()?.name ?? this.auth.user()?.email ?? ''));

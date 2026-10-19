@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AcademicCalendar } from '../../components/academic-calendar/academic-calendar';
+import { COURSES_GUIDE } from '../../data/courses-guide';
 
 @Component({
   selector: 'app-schedule',
@@ -9,4 +10,6 @@ import { AcademicCalendar } from '../../components/academic-calendar/academic-ca
   styleUrl: './schedule.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SchedulePage {}
+export class SchedulePage {
+  readonly coursesGuide = COURSES_GUIDE;
+}

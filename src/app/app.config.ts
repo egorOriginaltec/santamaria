@@ -5,7 +5,7 @@ import {
   withXsrfConfiguration,
 } from '@angular/common/http';
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 import { credentialsInterceptor } from '@core/interceptors/credentials.interceptor';
 import { errorToastInterceptor } from '@core/interceptors/error-toast.interceptor';
@@ -23,7 +23,8 @@ export const appConfig: ApplicationConfig = {
         scrollPositionRestoration: 'enabled',
       }),
     ),
-    provideAnimations(),
+    // Noop: menos JS en runtime; las páginas públicas no usan animaciones Angular.
+    provideNoopAnimations(),
     provideHttpClient(
       withFetch(),
       withXsrfConfiguration({

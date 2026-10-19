@@ -14,7 +14,7 @@
           }
         </p>
       </div>
-      <a routerLink="/dashboard/payments/new" class="payments-btn payments-btn--primary">
+      <a routerLink="/dashboard/pagos/nuevo" class="payments-btn payments-btn--primary">
         Nuevo pago
       </a>
     </div>
@@ -79,7 +79,7 @@
       <p class="payments-empty-text">
         Cambia la búsqueda o registra un pago de un estudiante matriculado.
       </p>
-      <a routerLink="/dashboard/payments/new" class="payments-btn payments-btn--primary">
+      <a routerLink="/dashboard/pagos/nuevo" class="payments-btn payments-btn--primary">
         Crear pago
       </a>
     </div>
@@ -140,7 +140,7 @@
                   <div class="flex justify-end gap-1.5 max-lg:w-full">
                     <a
                       class="payments-btn payments-btn--small max-lg:flex-1"
-                      [routerLink]="['/dashboard/payments', payment.uuid, 'edit']"
+                      [routerLink]="['/dashboard/pagos', payment.uuid, 'editar']"
                     >
                       Editar
                     </a>

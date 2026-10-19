@@ -1,12 +1,12 @@
-export const LOGIN_EYEBROW = 'Área de alumnos';
+export const LOGIN_EYEBROW = 'Santamaria Learn';
 
 export const LOGIN_TITLE = 'Accede a tu cuenta';
 
 export const LOGIN_INTRO =
-  'Entra con el email y la contraseña que te enviamos al confirmar la plaza.';
+  'Entra en santamarialearn.com con el email y la contraseña que te enviamos al confirmar la plaza.';
 
 export const LOGIN_HELP =
-  '¿Sin acceso todavía? Escribe a admisiones y te ayudamos.';
+  '¿Sin acceso todavía? Escribe a hola@santamarialearn.com y te ayudamos.';
 
 export const LOGIN_HELP_PATH = '/contacto';
 

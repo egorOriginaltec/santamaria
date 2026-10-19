@@ -1,17 +1,17 @@
 <article class="schedule-page">
   <section class="schedule-section relative overflow-hidden">
     <div class="schedule-shell relative mx-auto w-full max-w-[1320px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
-      <header class="max-w-2xl min-w-0" data-aos="fade-up">
+      <header class="max-w-2xl min-w-0">
         <p class="section-kicker mb-4">Horarios</p>
         <h1 class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink sm:text-3xl md:text-4xl">
           <span class="schedule-marker">Horarios y precios</span>
         </h1>
         <p class="mt-4 max-w-xl text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
-          Nueve grupos online, de lunes a viernes. Sesiones de 90 minutos.
+          Ocho grupos online de lunes a viernes (90 min) y clases particulares a demanda cualquier día.
         </p>
       </header>
 
-      <div class="schedule-pricing" data-aos="fade-up" data-aos-delay="60">
+      <div class="schedule-pricing">
         <aside class="schedule-bundle" aria-label="Descuento para hermanos o varios cursos">
           <div class="schedule-bundle-prices" role="list">
             <div class="schedule-bundle-price" role="listitem">
@@ -42,13 +42,25 @@
         </a>
       </div>
 
-      <div class="mt-10 sm:mt-12" data-aos="fade-up" data-aos-delay="100">
+      <div class="mt-10 sm:mt-12">
         <app-academic-calendar [plain]="true" />
       </div>
 
-      <p class="mt-5 text-xs leading-5 text-[#9694a4]" data-aos="fade-up" data-aos-delay="180">
-        Sábado y domingo no hay clase. En vacaciones escolares se hace clase igual.
+      <p class="mt-5 text-xs leading-5 text-[#9694a4]">
+        Particular a demanda cualquier día. En vacaciones escolares los grupos siguen.
+      </p>
+
+      <p class="schedule-download">
+        <a
+          class="schedule-download-link"
+          [href]="coursesGuide.href"
+          [attr.download]="coursesGuide.downloadName"
+        >
+          Descargar guía de cursos
+        </a>
+        <span class="schedule-download-hint">PDF con cursos, edades, horarios y precios.</span>
       </p>
     </div>
   </section>
 </article>
+

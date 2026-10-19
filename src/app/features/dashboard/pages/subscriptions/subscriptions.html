@@ -14,7 +14,7 @@
           }
         </p>
       </div>
-      <a routerLink="/dashboard/subscriptions/new" class="students-btn students-btn--primary">
+      <a routerLink="/dashboard/suscripciones/nuevo" class="students-btn students-btn--primary">
         Nueva suscripción
       </a>
     </div>
@@ -89,7 +89,7 @@
       <p class="students-empty-text">
         Cada alumno puede tener una sola cuota mensual. Crea la primera o cambia los filtros.
       </p>
-      <a routerLink="/dashboard/subscriptions/new" class="students-btn students-btn--primary">
+      <a routerLink="/dashboard/suscripciones/nuevo" class="students-btn students-btn--primary">
         Crear suscripción
       </a>
     </div>
@@ -144,7 +144,7 @@
                   <div class="flex justify-end gap-1.5 max-lg:w-full">
                     <a
                       class="students-btn students-btn--small max-lg:flex-1"
-                      [routerLink]="['/dashboard/subscriptions', subscription.uuid, 'edit']"
+                      [routerLink]="['/dashboard/suscripciones', subscription.uuid, 'editar']"
                     >
                       Editar
                     </a>

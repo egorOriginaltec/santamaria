@@ -1,5 +1,5 @@
 /** Guía de cursos en PDF (archivo estático en /public). */
 export const COURSES_GUIDE = {
-  href: '/assets/guides/santamaria-club-cursos.pdf?v=12',
-  downloadName: 'santamaria-club-cursos.pdf',
+  href: '/assets/guides/santamaria-learn-cursos.pdf?v=15',
+  downloadName: 'santamaria-learn-cursos.pdf',
 } as const;

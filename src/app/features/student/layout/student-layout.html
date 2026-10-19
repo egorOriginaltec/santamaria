@@ -1,7 +1,7 @@
 <div class="student-shell">
   <header class="student-top">
     <div class="student-top-inner">
-      <a routerLink="/student" class="student-brand" (click)="closeMenu()">
+      <a routerLink="/alumno" class="student-brand" (click)="closeMenu()">
         <span class="student-logo" aria-hidden="true">
           <svg viewBox="0 0 44 44" fill="none">
             <circle cx="22" cy="22" r="22" fill="currentColor" />
@@ -13,15 +13,15 @@
           </svg>
         </span>
         <span class="student-brand-text">
-          <span class="student-brand-name">Santamaria</span>
-          <span class="student-brand-tag">Club</span>
+          <span class="student-brand-name">{{ brandName }}</span>
+          <span class="student-brand-tag">{{ brandTag }}</span>
         </span>
       </a>
 
       <nav class="student-nav" aria-label="Alumno">
-        <a routerLink="/student" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
-        <a routerLink="/student/calendar" routerLinkActive="is-active">Calendario</a>
-        <a routerLink="/student/contenido" routerLinkActive="is-active">Contenido</a>
+        <a routerLink="/alumno" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        <a routerLink="/alumno/calendario" routerLinkActive="is-active">Calendario</a>
+        <a routerLink="/alumno/contenido" routerLinkActive="is-active">Contenido</a>
       </nav>
 
       <div class="student-top-actions">
@@ -45,11 +45,11 @@
 
     @if (menuOpen()) {
       <nav class="student-nav-mobile" aria-label="Alumno">
-        <a routerLink="/student" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
+        <a routerLink="/alumno" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">
           Inicio
         </a>
-        <a routerLink="/student/calendar" routerLinkActive="is-active" (click)="closeMenu()">Calendario</a>
-        <a routerLink="/student/contenido" routerLinkActive="is-active" (click)="closeMenu()">Contenido</a>
+        <a routerLink="/alumno/calendario" routerLinkActive="is-active" (click)="closeMenu()">Calendario</a>
+        <a routerLink="/alumno/contenido" routerLinkActive="is-active" (click)="closeMenu()">Contenido</a>
       </nav>
     }
   </header>

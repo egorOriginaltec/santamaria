@@ -93,6 +93,34 @@
   line-height: 1.45;
 }
 
+.schedule-download {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+  margin: 1.5rem 0 0;
+  max-width: 36rem;
+}
+
+.schedule-download-link {
+  color: var(--color-brand, #e7353d);
+  font-size: 0.9rem;
+  font-weight: 750;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.schedule-download-hint {
+  color: #8b8998;
+  font-size: 0.8125rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .schedule-download-link:hover {
+    color: var(--color-brand-hover, #cf2932);
+  }
+}
+
 @media (min-width: 640px) {
   .schedule-pricing {
     flex-direction: row;

@@ -63,9 +63,9 @@
 .student-brand-tag {
   margin-top: 0.15rem;
   font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: #7a7a8c;
 }
 

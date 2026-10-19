@@ -1,10 +1,9 @@
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
 
 export const AUTH_ROUTES: Routes = [
   {
     path: '',
-    component: Login,
-    title: 'Login · Santamaria Club',
+    loadComponent: () => import('./pages/login/login').then((m) => m.Login),
+    title: 'Acceso · Santamaria Learn',
   },
 ];

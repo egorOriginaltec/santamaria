@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /cursos/
+Allow: /horarios
+Allow: /contacto
+
+Disallow: /acceso
+Disallow: /login
+Disallow: /dashboard
+Disallow: /student
+Disallow: /alumno
+Disallow: /legal/
+Disallow: /calendario
+Disallow: /contact
+Disallow: /horario
+
+Sitemap: https://santamarialearn.com/sitemap.xml

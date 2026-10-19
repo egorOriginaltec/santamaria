@@ -15,7 +15,7 @@
         }
       </p>
     </div>
-    <a routerLink="/dashboard/payments" class="payment-form-back">Volver al listado</a>
+    <a routerLink="/dashboard/pagos" class="payment-form-back">Volver al listado</a>
   </header>
 
   @if (loading()) {
@@ -45,7 +45,7 @@
         <p class="payment-form-empty-text">
           Puede que se haya eliminado o que no tengas permiso para verlo.
         </p>
-        <a routerLink="/dashboard/payments" class="payment-btn payment-btn--primary">
+        <a routerLink="/dashboard/pagos" class="payment-btn payment-btn--primary">
           Volver al listado
         </a>
       </div>
@@ -158,7 +158,7 @@
         </div>
 
         <div class="payment-form-actions">
-          <a routerLink="/dashboard/payments" class="payment-btn payment-btn--ghost">Cancelar</a>
+          <a routerLink="/dashboard/pagos" class="payment-btn payment-btn--ghost">Cancelar</a>
           <button type="submit" class="payment-btn payment-btn--primary" [disabled]="saving()">
             {{ saving() ? 'Guardando…' : isEdit() ? 'Guardar cambios' : 'Crear pago' }}
           </button>

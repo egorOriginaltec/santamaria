@@ -23,12 +23,12 @@
   } @else if (exercises().length === 0) {
     <div class="exs-empty student-reveal">
       <p>Ahora mismo no hay ejercicios abiertos en tus cursos.</p>
-      <a routerLink="/student">Volver al inicio</a>
+      <a routerLink="/alumno">Volver al inicio</a>
     </div>
   } @else {
     <div class="exs-list student-reveal student-reveal-2">
       @for (exercise of exercises(); track exercise.uuid) {
-        <a class="exs-card" [routerLink]="['/student/exercises', exercise.uuid]">
+        <a class="exs-card" [routerLink]="['/alumno/ejercicios', exercise.uuid]">
           <p class="exs-course">{{ exercise.course?.title || 'Tu curso' }}</p>
           <h2 class="exs-name">{{ exercise.title }}</h2>
           <p class="exs-meta">

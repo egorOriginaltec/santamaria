@@ -16,7 +16,7 @@
         </span>
 
         <a
-          href="mailto:hola@santamariaclub.com"
+          [href]="'mailto:' + email"
           class="hidden items-center gap-1.5 whitespace-nowrap transition-opacity hover:opacity-80 xl:inline-flex"
         >
           <svg class="size-3.5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
@@ -25,7 +25,7 @@
               d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
             />
           </svg>
-          <span>hola@santamariaclub.com</span>
+          <span>{{ email }}</span>
         </a>
       </div>
 
@@ -128,10 +128,10 @@
           </svg>
         </span>
         <span class="flex min-w-0 flex-col leading-none">
-          <span class="truncate text-[1.35rem] font-bold tracking-tight text-ink sm:text-[1.45rem]">
-            Santamaria
+          <span class="truncate text-[1.2rem] font-bold tracking-tight text-ink sm:text-[1.35rem]">
+            {{ brandName }}
           </span>
-          <span class="mt-1 truncate text-[10px] font-medium tracking-[0.18em] text-[#a0a0b0] uppercase">
+          <span class="mt-1 truncate text-[10px] font-medium tracking-normal text-[#a0a0b0] lowercase">
             {{ tagline }}
           </span>
         </span>

@@ -2,7 +2,7 @@
   <article class="legal-page">
     <section class="legal-section relative">
       <div class="legal-shell relative mx-auto w-full min-w-0 max-w-[720px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
-        <header class="min-w-0 text-left" data-aos="fade-up">
+        <header class="min-w-0 text-left">
           <p class="section-kicker mb-4">{{ page.kicker }}</p>
           <h1
             class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink min-[375px]:text-[1.65rem] sm:text-3xl md:text-4xl"
@@ -19,7 +19,7 @@
           </p>
         </header>
 
-        <div class="legal-body mt-10 min-w-0 sm:mt-12" data-aos="fade-up" data-aos-delay="100">
+        <div class="legal-body mt-10 min-w-0 sm:mt-12">
           @for (section of page.sections; track section.id) {
             <section class="legal-block" [attr.id]="section.id">
               <h2>{{ section.title }}</h2>
@@ -54,7 +54,7 @@
           </div>
         </div>
 
-        <p class="mt-10 text-left" data-aos="fade-up" data-aos-delay="140">
+        <p class="mt-10 text-left">
           <a routerLink="/" class="text-sm font-bold text-brand transition-opacity hover:opacity-80">
             Volver al inicio <span aria-hidden="true">→</span>
           </a>

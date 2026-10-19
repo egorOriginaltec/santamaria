@@ -1,12 +1,11 @@
 <section
-  id="calendar"
+  id="calendario"
   class="relative overflow-hidden"
   [class.calendar-section]="!plain()"
 >
   <div
     class="relative mx-auto w-full min-w-0"
     [class.calendar-shell]="!plain()"
-    data-aos="fade-up"
   >
     @if (!plain()) {
       <header class="mx-auto max-w-2xl text-center">
@@ -17,7 +16,7 @@
           <span class="calendar-marker">Horario de clases</span>
         </h2>
         <p class="mx-auto mt-4 max-w-prose text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
-          Clases online y en directo de lunes a viernes. Sábado y domingo, fiesta.
+          Grupos online de lunes a viernes. Particular a demanda cualquier día.
         </p>
       </header>
     }
@@ -45,10 +44,27 @@
       }
       <div class="calendar-day-card calendar-day-card--weekend">
         <h3 class="calendar-day-title">Sábado y domingo</h3>
-        <div class="calendar-lesson calendar-lesson--mobile" data-tone="muted">
-          <strong>Fiesta</strong>
-          <span>Sin clases</span>
-        </div>
+        <a
+          class="calendar-lesson calendar-lesson--mobile"
+          data-tone="red"
+          [routerLink]="['/cursos', 'clases-particulares']"
+        >
+          <em>La hora que quieras</em>
+          <strong>Clase particular</strong>
+          <span>Solo tú y el profesor · desde 40 €/h</span>
+        </a>
+      </div>
+      <div class="calendar-day-card">
+        <h3 class="calendar-day-title">Lunes a viernes</h3>
+        <a
+          class="calendar-lesson calendar-lesson--mobile"
+          data-tone="red"
+          [routerLink]="['/cursos', 'clases-particulares']"
+        >
+          <em>La hora que quieras</em>
+          <strong>Clase particular</strong>
+          <span>Solo tú y el profesor · desde 40 €/h</span>
+        </a>
       </div>
     </div>
 
@@ -78,10 +94,15 @@
                 @if (isWeekend(day)) {
                   @if (slot === '17:30') {
                     <td class="calendar-weekend" rowspan="2">
-                      <div class="calendar-lesson" data-tone="muted">
-                        <strong>Fiesta</strong>
-                        <span>Sin clases</span>
-                      </div>
+                      <a
+                        class="calendar-lesson"
+                        data-tone="red"
+                        [routerLink]="['/cursos', 'clases-particulares']"
+                      >
+                        <em>La hora que quieras</em>
+                        <strong>Clase particular</strong>
+                        <span>Solo tú y el profesor · desde 40 €/h</span>
+                      </a>
                     </td>
                   }
                 } @else {
@@ -98,13 +119,30 @@
               }
             </tr>
           }
+          <tr>
+            <th scope="row">
+              <strong>Particular</strong>
+            </th>
+            <td colspan="5" class="calendar-private-span">
+              <a
+                class="calendar-lesson calendar-lesson--span"
+                data-tone="red"
+                [routerLink]="['/cursos', 'clases-particulares']"
+              >
+                <em>La hora que quieras</em>
+                <strong>Clase particular</strong>
+                <span>Solo tú y el profesor · desde 40 €/h</span>
+              </a>
+            </td>
+            <td class="calendar-weekend calendar-private-skip" colspan="2"></td>
+          </tr>
         </tbody>
       </table>
     </div>
 
     @if (!plain()) {
       <p class="mx-auto mt-5 max-w-3xl text-center text-xs leading-5 text-[#9694a4]">
-        Sábado y domingo no hay clase. En vacaciones escolares se hace clase igual.
+        Particular a demanda cualquier día. En vacaciones escolares los grupos siguen.
       </p>
       @if (showPageLink()) {
         <p class="mt-4 text-center">
