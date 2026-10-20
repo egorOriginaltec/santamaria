@@ -52,7 +52,7 @@ export class AcademicCalendar {
     '17:30': {
       Lunes: {
         title: 'Programación con Scratch',
-        ages: '8–12 años',
+        ages: '12–14 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'scratch',
@@ -60,7 +60,7 @@ export class AcademicCalendar {
       },
       Martes: {
         title: 'Crea tus propias aplicaciones móviles',
-        ages: '10–14 años',
+        ages: '12–14 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'aplicaciones-moviles',
@@ -68,7 +68,7 @@ export class AcademicCalendar {
       },
       Miércoles: {
         title: 'Robótica y Programación con Arduino',
-        ages: '11–15 años',
+        ages: '12–15 años',
         hours: '17:30–19:00',
         price: '59 €/mes',
         slug: 'robotica-arduino',

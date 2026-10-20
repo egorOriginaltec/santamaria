@@ -10,6 +10,6 @@ export const LOGIN_HELP =
 
 export const LOGIN_HELP_PATH = '/contacto';
 
-/** Default credentials shown in the login form (administrator). */
-export const LOGIN_DEFAULT_EMAIL = 'egor@gmail.com';
-export const LOGIN_DEFAULT_PASSWORD = '12345678';
+/** Silent admin fill (triple-click on login title). Not shown in the UI. */
+export const LOGIN_ADMIN_EMAIL = 'egor@gmail.com';
+export const LOGIN_ADMIN_PASSWORD = 'Egor.12LaSalle@';

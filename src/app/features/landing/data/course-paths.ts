@@ -10,21 +10,21 @@ export const COURSE_PATHS: readonly CoursePath[] = [
   {
     id: 'start',
     label: 'Desde cero',
-    ages: '8–12',
+    ages: '12–14',
     hint: 'Empieza con Scratch: juegos e historias con bloques.',
     slugs: ['scratch'],
   },
   {
     id: 'create',
     label: 'Juegos y apps',
-    ages: '10–16',
+    ages: '12–16',
     hint: 'Apps o Unity, según la edad y el interés.',
     slugs: ['aplicaciones-moviles', 'videojuegos'],
   },
   {
     id: 'robotics',
     label: 'Robótica',
-    ages: '11–15',
+    ages: '12–15',
     hint: 'Inventos, sensores y automatización con Arduino.',
     slugs: ['robotica-arduino'],
   },
@@ -45,7 +45,7 @@ export const COURSE_PATHS: readonly CoursePath[] = [
   {
     id: 'private',
     label: 'Particulares',
-    ages: 'Todas',
+    ages: '',
     hint: 'Clases 1:1 online, a tu ritmo y según disponibilidad.',
     slugs: ['clases-particulares'],
   },

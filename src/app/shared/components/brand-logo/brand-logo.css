@@ -1,0 +1,46 @@
+:host {
+  --brand-logo-size: 3rem;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: var(--brand-logo-size);
+  height: var(--brand-logo-size);
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(22, 20, 57, 0.08),
+    0 4px 14px rgba(231, 53, 61, 0.2);
+}
+
+:host.brand-logo--sm {
+  --brand-logo-size: 2.5rem;
+}
+
+:host.brand-logo--md {
+  --brand-logo-size: 3rem;
+}
+
+:host.brand-logo--lg {
+  --brand-logo-size: 3.35rem;
+}
+
+.brand-logo__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Dark surfaces: soft cream ring */
+:host-context(footer),
+:host-context(.dashboard-sidebar),
+:host-context(.student-shell) {
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.18),
+    0 6px 18px rgba(0, 0, 0, 0.28);
+}

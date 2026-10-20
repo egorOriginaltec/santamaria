@@ -8,7 +8,7 @@
         <span class="modules-marker">Nuestros cursos</span>
       </h2>
       <p class="mx-auto mt-4 max-w-prose text-pretty text-[14px] leading-relaxed text-[#6b6b80] sm:text-[15px] md:text-base">
-        Ocho grupos semanales de 8 a 18 años, más clases particulares 1:1. De Scratch a apps, robótica, Unity, código, web e IA.
+        Ocho grupos semanales de 12 a 18 años, más clases particulares 1:1. De Scratch a apps, robótica, Unity, código, web e IA.
         Online y en directo.
       </p>
     </header>
@@ -45,7 +45,9 @@
           [class.is-active]="activePathId() === path.id"
           (click)="selectPath(path.id)"
         >
-          <span class="modules-filter-ages">{{ path.ages }}</span>
+          @if (path.ages) {
+            <span class="modules-filter-ages">{{ path.ages }}</span>
+          }
           {{ path.label }}
         </button>
       }
@@ -86,7 +88,12 @@
           <div class="flex flex-1 flex-col px-4 py-4 sm:px-5">
             <span class="text-xs font-bold tracking-[0.08em] text-brand tabular-nums">{{ course.id }}</span>
             <h3 class="mt-1 text-pretty text-[15px] leading-snug font-semibold text-ink">{{ course.title }}</h3>
-            <p class="mt-0.5 text-sm text-[#6b6b80]">{{ course.ages }} · {{ course.schedule }}</p>
+            <p class="mt-0.5 text-sm text-[#6b6b80]">
+              @if (course.ages) {
+                {{ course.ages }} ·
+              }
+              {{ course.schedule }}
+            </p>
             <div class="course-card-footer">
               <p class="course-card-price">{{ course.price }}<span>/{{ course.priceUnit ?? 'mes' }}</span></p>
               <a class="course-more" [routerLink]="['/cursos', course.slug]">Ver más</a>

@@ -5,6 +5,7 @@ import {
   Component,
   inject,
   input,
+  OnInit,
   signal,
 } from '@angular/core';
 import {
@@ -58,7 +59,6 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
   if (value.length < 2) {
     return { minlength: { requiredLength: 2, actualLength: value.length } };
   }
-  // Letters (incl. accents), spaces, hyphen, apostrophe
   if (!/^[\p{L}\s'’-]+$/u.test(value)) {
     return { name: true };
   }
@@ -76,7 +76,7 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
     '[class.theme-dark]': 'theme() === "dark"',
   },
 })
-export class ContactForm {
+export class ContactForm implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly leadsApi = inject(LeadsApiService);
   private readonly document = inject(DOCUMENT);
@@ -92,7 +92,10 @@ export class ContactForm {
 
   readonly submitted = signal(false);
   readonly submitting = signal(false);
+  readonly challengeLoading = signal(true);
   readonly errorMessage = signal<string | null>(null);
+  readonly captchaQuestion = signal('');
+  private captchaToken = '';
 
   readonly form = this.fb.nonNullable.group({
     name: ['', [Validators.required, nameValidator]],
@@ -100,10 +103,32 @@ export class ContactForm {
     phone: ['', [phoneValidator]],
     message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(5000)]],
     accepted: [false, [Validators.requiredTrue]],
+    captcha_answer: ['', [Validators.required, Validators.pattern(/^\d{1,2}$/)]],
+    /** Honeypot — humans never see/fill this. */
+    website: [''],
   });
 
+  ngOnInit(): void {
+    this.loadChallenge();
+  }
+
+  resetForm(): void {
+    this.submitted.set(false);
+    this.errorMessage.set(null);
+    this.form.reset({
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+      accepted: false,
+      captcha_answer: '',
+      website: '',
+    });
+    this.loadChallenge();
+  }
+
   fieldInvalid(
-    controlName: 'name' | 'email' | 'phone' | 'message' | 'accepted',
+    controlName: 'name' | 'email' | 'phone' | 'message' | 'accepted' | 'captcha_answer',
   ): boolean {
     const control = this.form.controls[controlName];
     return control.invalid && (control.dirty || control.touched);
@@ -136,7 +161,6 @@ export class ContactForm {
   }
 
   onPhoneKeydown(event: KeyboardEvent): void {
-    // User never types spaces — formatting inserts them.
     if (event.key === ' ' || event.code === 'Space') {
       event.preventDefault();
     }
@@ -153,6 +177,15 @@ export class ContactForm {
     this.form.controls.message.setValue(cleaned, { emitEvent: false });
   }
 
+  onCaptchaInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const cleaned = input.value.replace(/\D+/g, '').slice(0, 2);
+    if (cleaned !== input.value) {
+      input.value = cleaned;
+    }
+    this.form.controls.captcha_answer.setValue(cleaned, { emitEvent: false });
+  }
+
   onSubmit(): void {
     this.form.patchValue({
       name: normalizePersonName(this.form.controls.name.value),
@@ -161,16 +194,23 @@ export class ContactForm {
       phone: formatPhoneDisplay(this.form.controls.phone.value),
     });
 
-    if (this.form.invalid) {
+    if (this.form.invalid || !this.captchaToken) {
       this.form.markAllAsTouched();
-      this.showError('Revisa los campos marcados en rojo.');
+      this.showError(
+        this.captchaToken
+          ? 'Revisa los campos marcados en rojo.'
+          : 'Espera un segundo a que cargue la verificación.',
+      );
+      if (!this.captchaToken) {
+        this.loadChallenge();
+      }
       return;
     }
 
     this.submitting.set(true);
     this.errorMessage.set(null);
 
-    const { name, email, phone, message } = this.form.getRawValue();
+    const { name, email, phone, message, captcha_answer, website } = this.form.getRawValue();
     const allowedSources = new Set(['landing', 'contact', 'website']);
     const source = allowedSources.has(this.source()) ? this.source() : 'website';
 
@@ -181,6 +221,9 @@ export class ContactForm {
         phone: normalizePhoneForApi(phone),
         message: normalizeMessage(stripUnsafeMessageChars(message)),
         source,
+        website: website.trim(),
+        captcha_token: this.captchaToken,
+        captcha_answer: Number(captcha_answer),
       })
       .pipe(finalize(() => this.submitting.set(false)))
       .subscribe({
@@ -193,14 +236,48 @@ export class ContactForm {
             phone: '',
             message: '',
             accepted: false,
+            captcha_answer: '',
+            website: '',
           });
+          this.captchaToken = '';
+          this.captchaQuestion.set('');
         },
         error: (err: HttpErrorResponse) => {
-          this.showError(
-            readApiError(err, 'No se pudo enviar el mensaje. Inténtalo de nuevo en un momento.'),
-          );
+          if (err.status === 429) {
+            this.showError('Has enviado demasiados mensajes. Espera un momento e inténtalo de nuevo.');
+          } else {
+            this.showError(
+              readApiError(
+                err,
+                'No se pudo enviar el mensaje. Inténtalo de nuevo en un momento.',
+              ),
+            );
+          }
+          // Refresh challenge after failed verification / expired token.
+          this.loadChallenge(true);
         },
       });
+  }
+
+  private loadChallenge(keepAnswer = false): void {
+    this.challengeLoading.set(true);
+    if (!keepAnswer) {
+      this.form.controls.captcha_answer.setValue('');
+    }
+
+    this.leadsApi.challenge().subscribe({
+      next: (challenge) => {
+        this.captchaToken = challenge.token;
+        this.captchaQuestion.set(challenge.question);
+        this.challengeLoading.set(false);
+      },
+      error: () => {
+        this.captchaToken = '';
+        this.captchaQuestion.set('');
+        this.challengeLoading.set(false);
+        this.showError('No se pudo cargar la verificación. Recarga la página.');
+      },
+    });
   }
 
   private showError(message: string): void {

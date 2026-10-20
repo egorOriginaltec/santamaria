@@ -2,13 +2,14 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { APP_NAME, APP_TAGLINE } from '@core/constants/app/app.constants';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { BrandLogo } from '@shared/components/brand-logo/brand-logo';
 import { finalize } from 'rxjs';
 import { StudentCampusService } from '../data/student-campus.service';
 import { firstName } from '../student-schedule';
 
 @Component({
   selector: 'app-student-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, BrandLogo],
   templateUrl: './student-layout.html',
   styleUrl: './student-layout.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

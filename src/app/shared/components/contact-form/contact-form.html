@@ -39,7 +39,7 @@
             <button
               type="button"
               class="mt-6 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              (click)="submitted.set(false)"
+              (click)="resetForm()"
             >
               Enviar otro mensaje
             </button>
@@ -49,6 +49,22 @@
             @if (errorMessage(); as err) {
               <app-alert>{{ err }}</app-alert>
             }
+
+            <!-- Honeypot: leave empty. Hidden from humans / AT. -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="contact-website">Sitio web</label>
+              <input
+                id="contact-website"
+                type="text"
+                formControlName="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+            </div>
+
             <div>
               <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="contact-name">
                 Nombre
@@ -170,10 +186,41 @@
               }
             </div>
 
+            <div class="contact-captcha">
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="contact-captcha">
+                Verificación
+              </label>
+              <div class="contact-captcha-row">
+                <p class="contact-captcha-q" aria-live="polite">
+                  @if (challengeLoading()) {
+                    Cargando…
+                  } @else {
+                    {{ captchaQuestion() }}
+                  }
+                </p>
+                <input
+                  id="contact-captcha"
+                  type="text"
+                  inputmode="numeric"
+                  formControlName="captcha_answer"
+                  autocomplete="off"
+                  maxlength="2"
+                  class="contact-input contact-captcha-input"
+                  [class.is-invalid]="fieldInvalid('captcha_answer')"
+                  [attr.aria-label]="captchaQuestion() || 'Verificación'"
+                  placeholder="?"
+                  (input)="onCaptchaInput($event)"
+                />
+              </div>
+              @if (fieldInvalid('captcha_answer')) {
+                <app-field-error>Escribe el resultado de la suma.</app-field-error>
+              }
+            </div>
+
             <button
               type="submit"
               class="mt-1 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
-              [disabled]="submitting()"
+              [disabled]="submitting() || challengeLoading()"
             >
               {{ submitting() ? 'Enviando…' : 'Enviar consulta' }}
             </button>

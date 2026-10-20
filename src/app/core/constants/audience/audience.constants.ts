@@ -5,7 +5,7 @@ export const AUDIENCE_EYEBROW = 'Por qué Santamaria Learn';
 export const AUDIENCE_TITLE = '¿Por qué elegirnos?';
 
 export const AUDIENCE_INTRO =
-  'Cursos online y en directo para jóvenes de 8 a 18 años. Grupos reducidos, acompañamiento cercano y un proyecto real en cada etapa.';
+  'Cursos online y en directo para jóvenes de 12 a 18 años. Grupos reducidos, acompañamiento cercano y un proyecto real en cada etapa.';
 
 export const AUDIENCE_REASONS: readonly AudienceReason[] = [
   {

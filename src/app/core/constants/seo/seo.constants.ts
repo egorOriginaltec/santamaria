@@ -6,10 +6,10 @@ export const SITE_ORIGIN = APP_ORIGIN;
 export const SITE_NAME = APP_NAME;
 
 export const DEFAULT_SEO = {
-  title: 'Santamaria Learn · Cursos de programación online para niños y jóvenes',
+  title: 'Santamaria Learn · Cursos de programación online para jóvenes',
   description:
-    'Clases online en directo de programación, videojuegos, robótica, Python, web e IA para niños y jóvenes de 8 a 18 años. Grupos reducidos en España.',
-  image: `${SITE_ORIGIN}/assets/courses/computer.png`,
+    'Clases online en directo de programación, videojuegos, robótica, Python, web e IA para jóvenes de 12 a 18 años. Grupos reducidos en España.',
+  image: `${SITE_ORIGIN}/assets/brand/logo.png?v=6`,
   locale: 'es_ES',
 } as const;
 

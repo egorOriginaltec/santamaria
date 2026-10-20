@@ -6,6 +6,8 @@ export {
   APP_DOMAIN,
   APP_ORIGIN,
   APP_EMAIL,
+  BRAND_LOGO_SRC,
+  BRAND_LOGO_ALT,
 } from './app/app.constants';
 export { PRIMARY_NAV } from './primary-nav/primary-nav.constants';
 export { LEGAL_NAV } from './legal/legal-nav.constants';
@@ -62,8 +64,8 @@ export {
   LOGIN_INTRO,
   LOGIN_HELP,
   LOGIN_HELP_PATH,
-  LOGIN_DEFAULT_EMAIL,
-  LOGIN_DEFAULT_PASSWORD,
+  LOGIN_ADMIN_EMAIL,
+  LOGIN_ADMIN_PASSWORD,
 } from './login/login.constants';
 export { API_BASE_URL, SWAGGER_DOCS_URL } from './api/api.constants';
 export {

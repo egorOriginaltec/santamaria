@@ -8,10 +8,11 @@ import {
   PRIMARY_NAV,
   SOCIAL_LINKS,
 } from '@core/index';
+import { BrandLogo } from '@shared/components/brand-logo/brand-logo';
 
 @Component({
   selector: 'app-footer',
-  imports: [RouterLink],
+  imports: [RouterLink, BrandLogo],
   templateUrl: './footer.html',
   styleUrl: './footer.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

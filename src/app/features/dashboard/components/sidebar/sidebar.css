@@ -57,14 +57,9 @@
 }
 
 .sidebar-brand-icon {
-  display: block;
-  width: 2.5rem;
-  height: 2.5rem;
+  --brand-logo-size: 2.5rem;
   flex-shrink: 0;
-  color: var(--color-brand, #e7353d);
-  transition:
-    width var(--sidebar-duration) var(--sidebar-ease),
-    height var(--sidebar-duration) var(--sidebar-ease);
+  transition: --brand-logo-size var(--sidebar-duration) var(--sidebar-ease);
 }
 
 .sidebar-brand-text {
@@ -323,8 +318,7 @@
   }
 
   .dashboard-sidebar.is-collapsed .sidebar-brand-icon {
-    width: 2.35rem;
-    height: 2.35rem;
+    --brand-logo-size: 2.35rem;
   }
 
   .dashboard-sidebar.is-collapsed .sidebar-head {

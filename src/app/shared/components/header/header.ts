@@ -21,11 +21,12 @@ import {
   SOCIAL_LINKS,
   type CountdownParts,
 } from '@core/index';
+import { BrandLogo } from '@shared/components/brand-logo/brand-logo';
 import { interval, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, BrandLogo],
   templateUrl: './header.html',
   styleUrl: './header.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

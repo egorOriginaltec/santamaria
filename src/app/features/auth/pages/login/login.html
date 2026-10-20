@@ -7,7 +7,9 @@
           {{ eyebrow }}
         </p>
         <h1
-          class="text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink min-[375px]:text-[1.65rem] sm:text-3xl"
+          class="login-title-hit text-balance text-[1.5rem] leading-[1.15] font-bold tracking-tight text-ink min-[375px]:text-[1.65rem] sm:text-3xl"
+          (click)="onTitleActivate($event)"
+          (keydown.enter)="onTitleActivate($event)"
         >
           <span class="login-marker">{{ title }}</span>
         </h1>
@@ -33,7 +35,7 @@
               autocomplete="email"
               class="login-input"
               [class.is-invalid]="fieldInvalid('email')"
-              placeholder="tu@email.com"
+              placeholder=""
               (input)="onEmailInput()"
             />
             @if (fieldInvalid('email')) {
@@ -53,7 +55,7 @@
                 autocomplete="current-password"
                 class="login-input pr-12"
                 [class.is-invalid]="fieldInvalid('password')"
-                placeholder="Tu contraseña"
+                placeholder=""
                 (input)="onPasswordInput()"
               />
               <button

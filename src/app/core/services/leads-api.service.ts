@@ -1,12 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { API_BASE_URL } from '@core/constants/api/api.constants';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'closed';
 export type LeadPeriod = 'week' | 'month' | 'all';
 export type LeadSort = 'priority' | 'latest';
 export type LeadSource = 'landing' | 'contact' | 'website';
+
+export interface LeadChallenge {
+  readonly question: string;
+  readonly token: string;
+}
 
 export interface CreateLeadPayload {
   readonly name: string;
@@ -14,6 +19,10 @@ export interface CreateLeadPayload {
   readonly phone?: string;
   readonly message: string;
   readonly source?: string;
+  /** Honeypot — must stay empty. */
+  readonly website?: string;
+  readonly captcha_token: string;
+  readonly captcha_answer: number;
 }
 
 export interface UpdateLeadPayload {
@@ -85,6 +94,10 @@ interface UpdateLeadResponse {
   };
 }
 
+interface LeadChallengeResponse {
+  readonly data: LeadChallenge;
+}
+
 export interface LeadsListResponse {
   readonly data: readonly LeadDto[];
   readonly meta?: {
@@ -103,6 +116,12 @@ export interface LeadsListResponse {
 export class LeadsApiService {
   private readonly http = inject(HttpClient);
   private readonly endpoint = `${API_BASE_URL}/api/v1/leads`;
+
+  challenge(): Observable<LeadChallenge> {
+    return this.http
+      .get<LeadChallengeResponse>(`${this.endpoint}/challenge`)
+      .pipe(map((response) => response.data));
+  }
 
   create(payload: CreateLeadPayload): Observable<CreateLeadResponse> {
     return this.http.post<CreateLeadResponse>(this.endpoint, payload);

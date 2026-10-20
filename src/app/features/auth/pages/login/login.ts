@@ -13,8 +13,8 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { AppFieldError } from '@shared/components/field-error/field-error';
 import {
-  LOGIN_DEFAULT_EMAIL,
-  LOGIN_DEFAULT_PASSWORD,
+  LOGIN_ADMIN_EMAIL,
+  LOGIN_ADMIN_PASSWORD,
   LOGIN_EYEBROW,
   LOGIN_HELP,
   LOGIN_HELP_PATH,
@@ -25,6 +25,9 @@ import { AuthApiService } from '@core/services/auth-api.service';
 import { readApiError } from '@core/services/course-sessions-api.service';
 import { ToastService } from '@core/services/toast.service';
 import { finalize } from 'rxjs';
+
+const TITLE_TAP_WINDOW_MS = 650;
+const TITLE_TAP_TARGET = 3;
 
 @Component({
   selector: 'app-login',
@@ -48,14 +51,36 @@ export class Login {
   readonly showPassword = signal(false);
   readonly submitting = signal(false);
 
+  private titleTapCount = 0;
+  private titleTapTimer: ReturnType<typeof setTimeout> | null = null;
+
   readonly form = this.fb.nonNullable.group({
-    email: [LOGIN_DEFAULT_EMAIL, [Validators.required, Validators.email]],
-    password: [
-      LOGIN_DEFAULT_PASSWORD,
-      [Validators.required, Validators.minLength(6)],
-    ],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
     remember: [true],
   });
+
+  onTitleActivate(event: Event): void {
+    event.preventDefault();
+
+    if (this.titleTapTimer) {
+      clearTimeout(this.titleTapTimer);
+      this.titleTapTimer = null;
+    }
+
+    this.titleTapCount += 1;
+
+    if (this.titleTapCount >= TITLE_TAP_TARGET) {
+      this.titleTapCount = 0;
+      this.fillAdminCredentials();
+      return;
+    }
+
+    this.titleTapTimer = setTimeout(() => {
+      this.titleTapCount = 0;
+      this.titleTapTimer = null;
+    }, TITLE_TAP_WINDOW_MS);
+  }
 
   fieldInvalid(controlName: 'email' | 'password'): boolean {
     const control = this.form.controls[controlName];
@@ -135,6 +160,18 @@ export class Login {
           this.toast.error(this.loginErrorMessage(err));
         },
       });
+  }
+
+  private fillAdminCredentials(): void {
+    this.form.patchValue({
+      email: LOGIN_ADMIN_EMAIL,
+      password: LOGIN_ADMIN_PASSWORD,
+      remember: true,
+    });
+    this.clearServerError('email');
+    this.clearServerError('password');
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
   }
 
   private loginErrorMessage(err: HttpErrorResponse): string {

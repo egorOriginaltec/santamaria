@@ -3225,7 +3225,7 @@ export class CoursePage {
 
   readonly privateOutcomes = {
     title: '¿En qué podemos ayudarte?',
-    text: 'Trabajamos con niños, adolescentes, estudiantes de FP, universitarios y adultos. Si necesitas algo concreto, cuéntanos tu caso y valoramos si podemos ayudarte.',
+    text: 'Trabajamos con adolescentes, estudiantes de FP, universitarios y adultos. Si necesitas algo concreto, cuéntanos tu caso y valoramos si podemos ayudarte.',
     points: [
       'Empezar desde cero o reforzar fundamentos.',
       'Aprender una tecnología concreta (web, Angular, Laravel, Python, Java…).',
@@ -3310,7 +3310,7 @@ export class CoursePage {
         summary: 'Individuales · Online · Entre semana, sábados y domingos · Desde 40 €/hora',
         introTitle: 'Programación a tu medida',
         introText:
-          'Tanto si quieres empezar desde cero como si necesitas ayuda con tus estudios o mejorar como desarrollador, ofrecemos clases particulares adaptadas a tu nivel, tus objetivos y tu ritmo. Trabajamos con niños, adolescentes, estudiantes de FP, universitarios y adultos.',
+          'Tanto si quieres empezar desde cero como si necesitas ayuda con tus estudios o mejorar como desarrollador, ofrecemos clases particulares adaptadas a tu nivel, tus objetivos y tu ritmo. Trabajamos con adolescentes, estudiantes de FP, universitarios y adultos.',
         introNote:
           'Sin matrícula. Puedes reservar 1 clase o un pack de 4 u 8. Horarios flexibles entre semana, sábados y domingos, según disponibilidad.',
         skills: this.privateSkills,
@@ -3444,7 +3444,7 @@ export class CoursePage {
 
     if (this.slug() === 'roblox') {
       return {
-        category: 'Roblox Studio · Luau · 10–14 años',
+        category: 'Roblox Studio · Luau · 12–14 años',
         heading: 'Crea tus propios',
         accent: 'videojuegos con Roblox Studio',
         schedule: this.course()?.schedule ?? 'Martes · 17:30–19:00',
@@ -3472,7 +3472,7 @@ export class CoursePage {
 
     if (this.slug() === 'aplicaciones-moviles') {
       return {
-        category: 'Apps Android · Kodular · 10–14 años',
+        category: 'Apps Android · Kodular · 12–14 años',
         heading: 'Crea tus propias',
         accent: 'aplicaciones móviles',
         schedule: this.course()?.schedule ?? 'Martes · 17:30–19:00',
@@ -3500,7 +3500,7 @@ export class CoursePage {
 
     if (this.slug() === 'robotica-arduino') {
       return {
-        category: 'Arduino UNO · 11–15 años',
+        category: 'Arduino UNO · 12–15 años',
         heading: 'Robótica y Programación',
         accent: 'con Arduino',
         schedule: this.course()?.schedule ?? 'Miércoles · 17:30–19:00',
@@ -3556,7 +3556,7 @@ export class CoursePage {
 
     if (this.slug() === 'scratch') {
       return {
-        category: 'Programación visual · 8–12 años',
+        category: 'Programación visual · 12–14 años',
         heading: 'Scratch: programación',
         accent: 'desde cero',
         schedule: this.course()?.schedule ?? 'Lunes · 17:30–19:00',

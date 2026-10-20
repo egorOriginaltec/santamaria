@@ -1,9 +1,11 @@
 <div class="toast-host" aria-live="polite" aria-relevant="additions">
-  @for (toast of toasts(); track toast.id) {
+  @for (toast of views(); track toast.id) {
     <article
       class="toast"
+      [class.is-enter]="toast.phase === 'enter'"
+      [class.is-shown]="toast.phase === 'shown'"
+      [class.is-leave]="toast.phase === 'leave'"
       [attr.data-tone]="toast.tone"
-      [@toast]
       role="status"
     >
       <div class="toast-body">

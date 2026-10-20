@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input, output, si
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { APP_NAME, APP_TAGLINE } from '@core/constants/app/app.constants';
 import { AuthApiService } from '@core/services/auth-api.service';
+import { BrandLogo } from '@shared/components/brand-logo/brand-logo';
 import { finalize } from 'rxjs';
 import { DASHBOARD_NAV, STUDENT_NAV } from '../../constants';
 
@@ -16,7 +17,7 @@ function readSidebarCollapsed(): boolean {
 
 @Component({
   selector: 'app-dashboard-sidebar',
-  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive],
+  imports: [NgTemplateOutlet, RouterLink, RouterLinkActive, BrandLogo],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

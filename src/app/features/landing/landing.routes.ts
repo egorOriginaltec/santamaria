@@ -4,7 +4,7 @@ export const LANDING_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () => import('./pages/landing/landing').then((m) => m.Landing),
-    title: 'Santamaria Learn · Cursos de programación online para niños y jóvenes',
+    title: 'Santamaria Learn · Cursos de programación online para jóvenes',
   },
   {
     path: 'horarios',

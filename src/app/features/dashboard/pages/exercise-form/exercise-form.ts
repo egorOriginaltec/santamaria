@@ -264,9 +264,7 @@ export class DashboardExerciseForm implements OnInit {
           ]);
         },
         error: (err: unknown) => {
-          if (err instanceof TimeoutError || !(err instanceof HttpErrorResponse)) {
-            this.toast.error(this.generateError(err));
-          }
+          this.toast.error(this.generateError(err));
         },
       });
   }

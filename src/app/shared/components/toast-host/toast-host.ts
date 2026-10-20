@@ -1,80 +1,147 @@
-import { animate, style, transition, trigger } from '@angular/animations';
 import {
   ChangeDetectionStrategy,
   Component,
   effect,
   inject,
   OnDestroy,
+  signal,
+  untracked,
 } from '@angular/core';
-import { ToastService } from '@core/services/toast.service';
+import { ToastItem, ToastService } from '@core/services/toast.service';
+
+interface ToastView extends ToastItem {
+  readonly phase: 'enter' | 'shown' | 'leave';
+}
 
 @Component({
   selector: 'app-toast-host',
   templateUrl: './toast-host.html',
   styleUrl: './toast-host.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [
-    trigger('toast', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(18px) scale(0.98)' }),
-        animate(
-          '320ms cubic-bezier(0.16, 1, 0.3, 1)',
-          style({ opacity: 1, transform: 'none' }),
-        ),
-      ]),
-      transition(':leave', [
-        animate(
-          '220ms ease-in',
-          style({ opacity: 0, transform: 'translateY(12px) scale(0.98)' }),
-        ),
-      ]),
-    ]),
-  ],
 })
 export class AppToastHost implements OnDestroy {
   private readonly toastService = inject(ToastService);
-  private readonly timers = new Map<number, ReturnType<typeof setTimeout>>();
+  private readonly dismissTimers = new Map<number, ReturnType<typeof setTimeout>>();
+  private readonly enterTimers = new Map<number, ReturnType<typeof setTimeout>>();
+  private readonly leaveTimers = new Map<number, ReturnType<typeof setTimeout>>();
 
-  readonly toasts = this.toastService.toasts;
+  /** Local view-model so leave CSS can finish before removal. */
+  readonly views = signal<readonly ToastView[]>([]);
 
   constructor() {
     effect(() => {
-      const list = this.toasts();
-      const alive = new Set(list.map((toast) => toast.id));
+      const source = this.toastService.toasts();
+      const current = untracked(() => this.views());
+      const sourceIds = new Set(source.map((toast) => toast.id));
+      const currentIds = new Set(current.map((toast) => toast.id));
 
-      for (const id of this.timers.keys()) {
-        if (!alive.has(id)) {
-          clearTimeout(this.timers.get(id));
-          this.timers.delete(id);
-        }
-      }
+      let next = current.filter(
+        (view) => sourceIds.has(view.id) || view.phase === 'leave',
+      );
 
-      for (const toast of list) {
-        if (this.timers.has(toast.id)) {
+      for (const toast of source) {
+        if (currentIds.has(toast.id)) {
           continue;
         }
 
-        this.timers.set(
-          toast.id,
-          setTimeout(() => this.dismiss(toast.id), toast.durationMs),
+        next = [...next, { ...toast, phase: 'enter' }];
+        this.scheduleEnter(toast.id);
+        this.scheduleAutoDismiss(toast);
+      }
+
+      next = next.map((view) => {
+        if (!sourceIds.has(view.id) && view.phase !== 'leave') {
+          this.clearAutoDismiss(view.id);
+          this.scheduleLeaveCleanup(view.id);
+          return { ...view, phase: 'leave' as const };
+        }
+        return view;
+      });
+
+      const changed =
+        next.length !== current.length ||
+        next.some(
+          (view, index) =>
+            view.id !== current[index]?.id || view.phase !== current[index]?.phase,
         );
+
+      if (changed) {
+        this.views.set(next);
       }
     });
   }
 
   ngOnDestroy(): void {
-    for (const timer of this.timers.values()) {
-      clearTimeout(timer);
-    }
-    this.timers.clear();
+    for (const timer of this.dismissTimers.values()) clearTimeout(timer);
+    for (const timer of this.enterTimers.values()) clearTimeout(timer);
+    for (const timer of this.leaveTimers.values()) clearTimeout(timer);
+    this.dismissTimers.clear();
+    this.enterTimers.clear();
+    this.leaveTimers.clear();
   }
 
   dismiss(id: number): void {
-    const timer = this.timers.get(id);
+    this.beginLeave(id);
+    this.toastService.dismiss(id);
+  }
+
+  private scheduleEnter(id: number): void {
+    // Next frame → flip to "shown" so CSS transition runs.
+    const timer = setTimeout(() => {
+      this.enterTimers.delete(id);
+      this.views.update((list) =>
+        list.map((view) =>
+          view.id === id && view.phase === 'enter'
+            ? { ...view, phase: 'shown' }
+            : view,
+        ),
+      );
+    }, 16);
+    this.enterTimers.set(id, timer);
+  }
+
+  private scheduleAutoDismiss(toast: ToastItem): void {
+    if (this.dismissTimers.has(toast.id)) {
+      return;
+    }
+
+    this.dismissTimers.set(
+      toast.id,
+      setTimeout(() => this.dismiss(toast.id), toast.durationMs),
+    );
+  }
+
+  private clearAutoDismiss(id: number): void {
+    const timer = this.dismissTimers.get(id);
     if (timer) {
       clearTimeout(timer);
-      this.timers.delete(id);
+      this.dismissTimers.delete(id);
     }
-    this.toastService.dismiss(id);
+  }
+
+  private beginLeave(id: number): void {
+    this.clearAutoDismiss(id);
+    this.views.update((list) =>
+      list.map((view) =>
+        view.id === id && view.phase !== 'leave'
+          ? { ...view, phase: 'leave' }
+          : view,
+      ),
+    );
+    this.scheduleLeaveCleanup(id);
+  }
+
+  private scheduleLeaveCleanup(id: number): void {
+    if (this.leaveTimers.has(id)) {
+      return;
+    }
+
+    this.leaveTimers.set(
+      id,
+      setTimeout(() => {
+        this.leaveTimers.delete(id);
+        this.views.update((list) => list.filter((view) => view.id !== id));
+      }, 320),
+    );
   }
 }
