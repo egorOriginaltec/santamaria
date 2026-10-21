@@ -3,9 +3,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
+  OnInit,
   inject,
   input,
-  OnInit,
   signal,
 } from '@angular/core';
 import {
@@ -24,6 +24,7 @@ import {
 } from '@core/index';
 import { readApiError } from '@core/services/course-sessions-api.service';
 import { LeadsApiService } from '@core/services/leads-api.service';
+import { ToastService } from '@core/services/toast.service';
 import {
   normalizeEmail,
   normalizeMessage,
@@ -79,6 +80,7 @@ function nameValidator(control: AbstractControl): ValidationErrors | null {
 export class ContactForm implements OnInit {
   private readonly fb = inject(FormBuilder);
   private readonly leadsApi = inject(LeadsApiService);
+  private readonly toast = inject(ToastService);
   private readonly document = inject(DOCUMENT);
 
   readonly theme = input<ContactFormTheme>('light');
@@ -213,15 +215,16 @@ export class ContactForm implements OnInit {
     const { name, email, phone, message, captcha_answer, website } = this.form.getRawValue();
     const allowedSources = new Set(['landing', 'contact', 'website']);
     const source = allowedSources.has(this.source()) ? this.source() : 'website';
+    const phoneForApi = normalizePhoneForApi(phone);
 
     this.leadsApi
       .create({
         name: normalizePersonName(stripUnsafeNameChars(name)),
         email: normalizeEmail(email),
-        phone: normalizePhoneForApi(phone),
+        ...(phoneForApi ? { phone: phoneForApi } : {}),
         message: normalizeMessage(stripUnsafeMessageChars(message)),
         source,
-        website: website.trim(),
+        website: website.trim() || undefined,
         captcha_token: this.captchaToken,
         captcha_answer: Number(captcha_answer),
       })
@@ -253,7 +256,6 @@ export class ContactForm implements OnInit {
               ),
             );
           }
-          // Refresh challenge after failed verification / expired token.
           this.loadChallenge(true);
         },
       });
@@ -275,7 +277,8 @@ export class ContactForm implements OnInit {
         this.captchaToken = '';
         this.captchaQuestion.set('');
         this.challengeLoading.set(false);
-        this.showError('No se pudo cargar la verificación. Recarga la página.');
+        this.errorMessage.set(null);
+        this.toast.error('No se pudo cargar la verificación. Recarga la página.');
       },
     });
   }

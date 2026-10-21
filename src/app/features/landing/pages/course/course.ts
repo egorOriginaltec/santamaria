@@ -1,7 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, effect, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import {
+  CourseCurriculumApiService,
+  CourseUnitDto,
+} from '@core/services/course-curriculum-api.service';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { courseBySlug } from '../../data/courses';
 
 @Component({
@@ -14,6 +18,7 @@ import { courseBySlug } from '../../data/courses';
 export class CoursePage {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly curriculumApi = inject(CourseCurriculumApiService);
 
   readonly slug = toSignal(
     this.route.paramMap.pipe(map((params) => params.get('slug') ?? '')),
@@ -21,6 +26,22 @@ export class CoursePage {
   );
 
   readonly course = computed(() => courseBySlug(this.slug()));
+
+  private readonly apiCurriculum = toSignal(
+    toObservable(this.slug).pipe(
+      switchMap((slug) => {
+        if (!slug) {
+          return of(null);
+        }
+
+        return this.curriculumApi.getPublicBySlug(slug).pipe(
+          map((data) => data.curriculum),
+          catchError(() => of(null)),
+        );
+      }),
+    ),
+    { initialValue: null as readonly CourseUnitDto[] | null },
+  );
 
   readonly digitalSkills = [
     'Moverse con soltura por el escritorio, las ventanas, las carpetas y los archivos',
@@ -136,29 +157,6 @@ export class CoursePage {
       title: 'Proyecto final',
       text: 'En junio cada uno elige su juego, lo termina y lo presenta en el Santamaria Game Fest.',
       tone: 'green',
-    },
-  ] as const;
-
-  readonly scratchRhythm = [
-    {
-      minutes: '10 min',
-      title: 'Reto sorpresa',
-      text: 'Una misión o juego rápido para despertar la curiosidad.',
-    },
-    {
-      minutes: '15 min',
-      title: 'Descubrir una mecánica',
-      text: 'Una idea nueva con una demostración corta y visual.',
-    },
-    {
-      minutes: '45 min',
-      title: 'Construir y experimentar',
-      text: 'Crear el juego, probarlo, equivocarse y añadir mejoras.',
-    },
-    {
-      minutes: '20 min',
-      title: 'Jugar y enseñar',
-      text: 'Probar las creaciones, compartirlas y plantear un reto extra.',
     },
   ] as const;
 
@@ -821,29 +819,6 @@ export class CoursePage {
       title: 'Proyecto final',
       text: 'En junio eligen su app, la construyen y la presentan en el Santamaria App Fest.',
       tone: 'green',
-    },
-  ] as const;
-
-  readonly mobileRhythm = [
-    {
-      minutes: '10 min',
-      title: 'Enganche',
-      text: 'Demo, reto o concurso rápido para abrir la clase con energía.',
-    },
-    {
-      minutes: '10 min',
-      title: 'Idea nueva',
-      text: 'Una mecánica o componente con una demostración corta.',
-    },
-    {
-      minutes: '45 min',
-      title: 'Construir',
-      text: 'Montar la app, probarla, equivocarse y mejorar.',
-    },
-    {
-      minutes: '15+10 min',
-      title: 'Probar y reto',
-      text: 'Depurar, jugar por parejas y un reto extra según el nivel.',
     },
   ] as const;
 
@@ -1858,29 +1833,6 @@ export class CoursePage {
     },
   ] as const;
 
-  readonly pythonAdvancedRhythm = [
-    {
-      minutes: '90 min',
-      title: 'En directo',
-      text: 'Explicación, práctica guiada y resolución de dudas cada semana.',
-    },
-    {
-      minutes: 'Proyectos',
-      title: 'Acumulativos',
-      text: 'Algunas aplicaciones se desarrollan en varias sesiones para construir software de verdad.',
-    },
-    {
-      minutes: 'Stack',
-      title: 'Herramientas reales',
-      text: 'Python, SQLite, Tkinter, Flask, APIs y librerías de uso habitual.',
-    },
-    {
-      minutes: 'Máx. 10',
-      title: 'Grupo reducido',
-      text: 'Progresión práctica: de aplicaciones organizadas a un proyecto propio.',
-    },
-  ] as const;
-
   readonly pythonAdvancedOutcomes = {
     title: '¿Qué aprenderás?',
     text: 'Al finalizar las 30 sesiones, habrás pasado de scripts sueltos a aplicaciones con datos, interfaz, web e integración con APIs.',
@@ -2194,29 +2146,6 @@ export class CoursePage {
       title: 'Proyecto final',
       text: 'Diseñan, construyen y presentan su programa en el Python Fest.',
       tone: 'green',
-    },
-  ] as const;
-
-  readonly pythonRhythm = [
-    {
-      minutes: '90 min',
-      title: 'Cada sesión',
-      text: 'Explicación breve, programación guiada y tiempo para experimentar.',
-    },
-    {
-      minutes: 'Práctica',
-      title: 'Aprender haciendo',
-      text: 'Cada clase tiene un resultado práctico; los proyectos grandes se construyen en varias sesiones.',
-    },
-    {
-      minutes: 'Desde cero',
-      title: 'Sin experiencia previa',
-      text: 'Avanzamos paso a paso. No hace falta haber programado nunca.',
-    },
-    {
-      minutes: 'Máx. 10',
-      title: 'Grupos reducidos',
-      text: 'Para resolver dudas y ayudar a cada participante. Material y ejercicios para practicar entre clases.',
     },
   ] as const;
 
@@ -3298,7 +3227,7 @@ export class CoursePage {
     },
   ] as const;
 
-  readonly pageContent = computed(() => {
+  private readonly staticPageContent = computed(() => {
     if (this.slug() === 'clases-particulares') {
       return {
         category: 'Clases 1:1 · Online',
@@ -3402,7 +3331,6 @@ export class CoursePage {
         areas: this.pythonLearningAreas,
         areasText:
           'El objetivo es que entiendas cómo funciona la programación y puedas crear tus propias ideas, no simplemente copiar código.',
-        rhythm: this.pythonRhythm,
         outcomes: this.pythonOutcomes,
         curriculum: this.pythonCurriculum,
         curriculumText:
@@ -3430,7 +3358,6 @@ export class CoursePage {
         areas: this.pythonAdvancedLearningAreas,
         areasText:
           'OOP, SQLite, Tkinter, APIs, pandas, Flask, automatización e integración con IA.',
-        rhythm: this.pythonAdvancedRhythm,
         outcomes: this.pythonAdvancedOutcomes,
         curriculum: this.pythonAdvancedCurriculum,
         curriculumText:
@@ -3486,7 +3413,6 @@ export class CoursePage {
         areas: this.mobileLearningAreas,
         areasText:
           'Pantallas, lógica, TinyDB, Firebase, APIs y un proyecto final propio.',
-        rhythm: this.mobileRhythm,
         outcomes: this.mobileOutcomes,
         curriculum: this.mobileCurriculum,
         curriculumText:
@@ -3566,12 +3492,11 @@ export class CoursePage {
         introText:
           'De diciembre de 2026 a junio de 2027: 30 sesiones de 90 minutos. No es teoría: es divertido, con aprendizaje real de lógica de programación y matrícula abierta todo el año gracias a proyectos mensuales independientes.',
         introNote:
-          'Todos los lunes · 17:30–19:00 · Del 7 de diciembre de 2026 al 28 de junio de 2027. También en festivos locales y autonómicos (incluido el 29/03/2027). Guía flexible: si están enganchados creando, alargamos el proyecto.',
+          'Todos los lunes · 17:30–19:00 · Del 7 de diciembre de 2026 al 28 de junio de 2027. También en festivos locales y autonómicos (incluido el 29/03/2027).',
         skills: this.scratchSkills,
         areas: this.scratchLearningAreas,
         areasText:
           'Tres pilares del curso: diversión, lógica real y entrada posible cualquier mes.',
-        rhythm: this.scratchRhythm,
         outcomes: this.scratchOutcomes,
         curriculum: this.scratchCurriculum,
         curriculumText:
@@ -3611,6 +3536,36 @@ export class CoursePage {
     }
 
     return undefined;
+  });
+
+  readonly pageContent = computed(() => {
+    const base = this.staticPageContent();
+    if (!base) {
+      return undefined;
+    }
+
+    const api = this.apiCurriculum();
+    if (!api || api.length === 0) {
+      return base;
+    }
+
+    return {
+      ...base,
+      curriculum: api.map((unit) => ({
+        phase: unit.phase,
+        period: unit.period,
+        title: unit.title,
+        text: unit.text,
+        sessions: (unit.classes ?? unit.sessions ?? []).map((courseClass) => ({
+          date: courseClass.date_label || courseClass.date,
+          label: courseClass.label,
+          title: courseClass.title,
+          text: courseClass.body || courseClass.text,
+          learns: courseClass.learns,
+          result: courseClass.result ?? undefined,
+        })),
+      })),
+    };
   });
 
   constructor() {

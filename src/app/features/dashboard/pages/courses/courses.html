@@ -169,9 +169,15 @@
                   <div class="flex flex-wrap justify-end gap-1.5 max-lg:grid max-lg:w-full max-lg:grid-cols-2">
                     <a
                       class="courses-btn courses-btn--small"
+                      [routerLink]="['/dashboard/cursos', course.uuid, 'programa']"
+                    >
+                      Programa
+                    </a>
+                    <a
+                      class="courses-btn courses-btn--small"
                       [routerLink]="['/dashboard/cursos', course.uuid, 'clases']"
                     >
-                      Clases
+                      Sesiones
                     </a>
                     <a
                       class="courses-btn courses-btn--small"

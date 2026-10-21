@@ -19,6 +19,11 @@ export const routes: Routes = [
           import('@features/contact/contact.routes').then((m) => m.CONTACT_ROUTES),
       },
       {
+        path: 'trabaja-con-nosotros',
+        loadChildren: () =>
+          import('@features/careers/careers.routes').then((m) => m.CAREERS_ROUTES),
+      },
+      {
         path: 'acceso',
         loadChildren: () =>
           import('@features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
@@ -30,6 +35,8 @@ export const routes: Routes = [
       },
       // Legacy English paths
       { path: 'contact', redirectTo: 'contacto', pathMatch: 'full' },
+      { path: 'careers', redirectTo: 'trabaja-con-nosotros', pathMatch: 'full' },
+      { path: 'empleo', redirectTo: 'trabaja-con-nosotros', pathMatch: 'full' },
       { path: 'login', redirectTo: 'acceso', pathMatch: 'full' },
       { path: 'horario', redirectTo: 'horarios', pathMatch: 'full' },
       { path: 'terminos', redirectTo: 'legal/terminos', pathMatch: 'full' },

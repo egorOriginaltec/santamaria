@@ -98,7 +98,13 @@ export const DASHBOARD_ROUTES: Routes = [
         path: 'cursos/:uuid/clases',
         loadComponent: () =>
           import('./pages/course-classes/course-classes').then((m) => m.DashboardCourseClasses),
-        title: 'Clases · Santamaria Learn',
+        title: 'Sesiones · Santamaria Learn',
+      },
+      {
+        path: 'cursos/:uuid/programa',
+        loadComponent: () =>
+          import('./pages/course-program/course-program').then((m) => m.DashboardCourseProgram),
+        title: 'Programa · Santamaria Learn',
       },
       {
         path: 'cursos/:uuid/ejercicios',
@@ -150,6 +156,14 @@ export const DASHBOARD_ROUTES: Routes = [
         loadComponent: () => import('./pages/leads/leads').then((m) => m.DashboardLeads),
         title: 'Contactos · Santamaria Learn',
       },
+      {
+        path: 'curriculums',
+        loadComponent: () =>
+          import('./pages/job-applications/job-applications').then(
+            (m) => m.DashboardJobApplications,
+          ),
+        title: 'Currículums · Santamaria Learn',
+      },
 
       {
         path: 'festivos',
@@ -195,6 +209,8 @@ export const DASHBOARD_ROUTES: Routes = [
       { path: 'courses/:uuid/edit', redirectTo: 'cursos/:uuid/editar' },
       { path: 'courses/:uuid/editar', redirectTo: 'cursos/:uuid/editar' },
       { path: 'courses/:uuid/classes', redirectTo: 'cursos/:uuid/clases' },
+      { path: 'courses/:uuid/program', redirectTo: 'cursos/:uuid/programa' },
+      { path: 'courses/:uuid/programa', redirectTo: 'cursos/:uuid/programa' },
       { path: 'courses/:uuid/exercises', redirectTo: 'cursos/:uuid/ejercicios' },
       { path: 'courses/:uuid/exercises/new', redirectTo: 'cursos/:uuid/ejercicios/nuevo' },
       {
@@ -209,6 +225,8 @@ export const DASHBOARD_ROUTES: Routes = [
 
       { path: 'leads', redirectTo: 'contactos', pathMatch: 'full' },
       { path: 'messages', redirectTo: 'contactos', pathMatch: 'full' },
+      { path: 'job-applications', redirectTo: 'curriculums', pathMatch: 'full' },
+      { path: 'candidaturas', redirectTo: 'curriculums', pathMatch: 'full' },
 
       { path: 'holidays', redirectTo: 'festivos', pathMatch: 'full' },
       { path: 'holidays/new', redirectTo: 'festivos/nuevo', pathMatch: 'full' },

@@ -1,0 +1,235 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.careers-section {
+  min-width: 0;
+  background: #fff;
+  color: var(--color-ink, #161439);
+}
+
+.careers-glow {
+  background: none;
+}
+
+.careers-marker {
+  background-image: linear-gradient(transparent 62%, #ffc224 62%);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.careers-eyebrow {
+  color: #e7353d;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.careers-heading {
+  color: var(--color-ink, #161439);
+}
+
+.careers-intro {
+  color: #6b6b80;
+}
+
+.careers-email {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.careers-card {
+  border-color: #e4e4ec;
+  box-shadow: 0 10px 32px rgba(22, 20, 57, 0.06);
+}
+
+.careers-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e4e4ec;
+  background: #f7f7fb;
+  padding: 0.7rem 0.9rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--color-ink, #161439);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+@media (min-width: 640px) {
+  .careers-input {
+    font-size: 0.875rem;
+  }
+}
+
+.careers-input::placeholder {
+  color: #b0b0bc;
+}
+
+.careers-input:hover {
+  border-color: #d0d0da;
+}
+
+.careers-input:focus {
+  border-color: var(--color-brand, #e7353d);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgb(231 53 61 / 14%);
+}
+
+.careers-input.is-invalid {
+  border-color: #f87171;
+}
+
+select.careers-input {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 10l5 5 5-5' stroke='%236b6b80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.4rem;
+}
+
+.careers-file {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  border-radius: 0.75rem;
+  border: 1px dashed #d5d5e0;
+  background: #fafafc;
+  padding: 0.85rem 0.95rem;
+}
+
+.careers-file.is-invalid {
+  border-color: #f87171;
+}
+
+.careers-file-input {
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.8125rem;
+  color: #6b6b80;
+}
+
+.careers-file-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.careers-file-name {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: #6b6b80;
+}
+
+.careers-file-clear {
+  flex-shrink: 0;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-brand, #e7353d);
+}
+
+.careers-file-clear:hover {
+  opacity: 0.8;
+}
+
+.careers-accept {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  cursor: pointer;
+  color: #6b6b80;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.careers-check {
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  border-radius: 0.25rem;
+  accent-color: var(--color-brand, #e7353d);
+  cursor: pointer;
+}
+
+.careers-check.is-invalid {
+  outline: 1px solid #f87171;
+  outline-offset: 1px;
+}
+
+.careers-legal-link {
+  font-weight: 700;
+  color: var(--color-brand, #e7353d);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.careers-legal-link:hover {
+  opacity: 0.85;
+}
+
+.hp-field {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.careers-captcha-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 5.5rem;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.careers-captcha-q {
+  margin: 0;
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e4e4ec;
+  background: #fafafc;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--color-ink, #161439);
+}
+
+.careers-captcha-input {
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .careers-input {
+    transition: none;
+  }
+}
+

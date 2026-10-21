@@ -80,6 +80,10 @@ export interface LeadsListOptions {
   readonly per_page_options: readonly number[];
 }
 
+interface LeadChallengeResponse {
+  readonly data: LeadChallenge;
+}
+
 interface CreateLeadResponse {
   readonly message: string;
   readonly data: {
@@ -92,10 +96,6 @@ interface UpdateLeadResponse {
   readonly data: {
     readonly lead: LeadDto;
   };
-}
-
-interface LeadChallengeResponse {
-  readonly data: LeadChallenge;
 }
 
 export interface LeadsListResponse {

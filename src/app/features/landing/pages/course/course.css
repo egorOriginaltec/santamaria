@@ -610,59 +610,6 @@
   }
 }
 
-.course-rhythm {
-  display: grid;
-  gap: 0.75rem;
-}
-
-@media (min-width: 640px) {
-  .course-rhythm {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.85rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .course-rhythm {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-}
-
-.course-rhythm-card {
-  min-width: 0;
-  border: 1px solid #e4e3ef;
-  border-radius: 1.1rem;
-  padding: 1rem 1.05rem;
-  background: #fff;
-  box-shadow: 0 8px 24px rgb(22 20 57 / 4%);
-}
-
-.course-rhythm-time {
-  display: inline-flex;
-  border-radius: 9999px;
-  padding: 0.28rem 0.65rem;
-  color: var(--color-brand);
-  background: #fff1f2;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.course-rhythm-title {
-  margin: 0.7rem 0 0;
-  color: var(--color-ink, #161439);
-  font-size: 0.98rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-}
-
-.course-rhythm-text {
-  margin: 0.4rem 0 0;
-  color: #68677c;
-  font-size: 0.84rem;
-  line-height: 1.45;
-}
-
 .course-sessions {
   display: grid;
   gap: 0.75rem;

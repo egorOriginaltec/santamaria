@@ -142,36 +142,6 @@
               </article>
             }
           </div>
-
-          @if (slug() !== 'clases-particulares' && 'rhythm' in content && content.rhythm; as rhythm) {
-            <div class="mt-14 max-w-2xl">
-              <p class="course-kicker">En clase</p>
-              <h2 class="course-heading mt-3">
-                {{
-                  slug() === 'python'
-                    ? 'Cómo funcionarán las clases'
-                    : slug() === 'python-avanzado'
-                      ? 'Cómo serán las clases'
-                      : 'Cómo será cada sesión'
-                }}
-              </h2>
-              @if (slug() !== 'python' && slug() !== 'python-avanzado') {
-                <p class="mt-4 leading-7 text-[#68677c]">
-                  Guía flexible de 90 minutos: si están muy enganchados creando, alargamos el proyecto y
-                  acortamos la explicación.
-                </p>
-              }
-            </div>
-            <div class="course-rhythm mt-8">
-              @for (step of rhythm; track step.title) {
-                <article class="course-rhythm-card">
-                  <span class="course-rhythm-time">{{ step.minutes }}</span>
-                  <h3 class="course-rhythm-title">{{ step.title }}</h3>
-                  <p class="course-rhythm-text">{{ step.text }}</p>
-                </article>
-              }
-            </div>
-          }
         </div>
       </section>
 

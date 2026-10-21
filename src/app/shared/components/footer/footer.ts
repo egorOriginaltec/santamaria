@@ -4,6 +4,7 @@ import {
   APP_EMAIL,
   APP_NAME,
   APP_TAGLINE,
+  CAREERS_PATH,
   LEGAL_NAV,
   PRIMARY_NAV,
   SOCIAL_LINKS,
@@ -33,6 +34,7 @@ export class Footer {
       fragment: item.fragment,
     })),
     { label: 'Contacto', path: '/contacto' },
+    { label: 'Trabaja con nosotros', path: CAREERS_PATH },
     { label: 'Acceso', path: '/acceso' },
   ];
 }

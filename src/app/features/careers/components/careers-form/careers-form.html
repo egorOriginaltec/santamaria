@@ -1,0 +1,371 @@
+<section id="careers" class="careers-section relative">
+  <div class="careers-glow pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true"></div>
+
+  <div class="relative mx-auto w-full min-w-0 max-w-[1320px] px-4 py-10 sm:px-6 sm:py-16 lg:py-20">
+    <div
+      class="mx-auto grid w-full min-w-0 max-w-5xl gap-8 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start lg:gap-14"
+    >
+      <header class="min-w-0 lg:pt-2">
+        <p class="careers-eyebrow mb-4">{{ eyebrow }}</p>
+        <h1
+          class="careers-heading text-balance text-[1.35rem] leading-[1.15] font-bold tracking-tight min-[375px]:text-[1.5rem] sm:text-3xl md:text-4xl"
+        >
+          <span class="careers-marker">{{ title }}</span>
+        </h1>
+        <p
+          class="careers-intro mt-4 max-w-md text-pretty text-[14px] leading-relaxed sm:text-[15px] md:text-base"
+        >
+          {{ intro }}
+        </p>
+
+        <ul class="careers-highlights mt-6 flex flex-col gap-3" aria-label="Por qué unirte">
+          @for (item of highlights; track item) {
+            <li class="flex items-start gap-2.5 text-sm leading-relaxed text-[#6b6b80]">
+              <span class="mt-1.5 size-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true"></span>
+              <span>{{ item }}</span>
+            </li>
+          }
+        </ul>
+
+        <a
+          [href]="'mailto:' + email"
+          class="careers-email mt-6 inline-flex min-h-11 max-w-full items-center gap-2 text-sm font-semibold text-brand transition-opacity hover:opacity-80"
+        >
+          {{ email }}
+        </a>
+      </header>
+
+      <div class="careers-card min-w-0 w-full rounded-2xl border bg-white p-4 text-ink min-[375px]:p-5 sm:p-7">
+        @if (submitted()) {
+          <div class="py-6 text-center sm:py-8" role="status">
+            <p class="text-lg font-bold text-ink">Candidatura enviada</p>
+            <p class="mx-auto mt-3 max-w-sm text-pretty text-sm leading-relaxed text-[#6b6b80]">
+              {{ successMessage }}
+            </p>
+            <button
+              type="button"
+              class="mt-6 inline-flex min-h-11 cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              (click)="resetForm()"
+            >
+              Enviar otra candidatura
+            </button>
+          </div>
+        } @else {
+          <form class="flex flex-col gap-4" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            @if (errorMessage(); as err) {
+              <app-alert>{{ err }}</app-alert>
+            }
+
+            <div class="hp-field" aria-hidden="true">
+              <label for="careers-website">Sitio web</label>
+              <input
+                id="careers-website"
+                type="text"
+                formControlName="website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-name">
+                Nombre
+              </label>
+              <input
+                id="careers-name"
+                type="text"
+                formControlName="name"
+                autocomplete="name"
+                maxlength="100"
+                class="careers-input"
+                [class.is-invalid]="fieldInvalid('name')"
+                placeholder="Tu nombre"
+                (input)="onNameInput($event)"
+              />
+              @if (fieldInvalid('name')) {
+                <app-field-error>Usa solo letras (mín. 2 caracteres).</app-field-error>
+              }
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="min-w-0">
+                <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-email">
+                  Email
+                </label>
+                <input
+                  id="careers-email"
+                  type="email"
+                  formControlName="email"
+                  autocomplete="email"
+                  maxlength="255"
+                  class="careers-input"
+                  [class.is-invalid]="fieldInvalid('email')"
+                  placeholder="tu@email.com"
+                  (input)="onEmailInput($event)"
+                />
+                @if (fieldInvalid('email')) {
+                  <app-field-error>Email no válido.</app-field-error>
+                }
+              </div>
+
+              <div class="min-w-0">
+                <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-phone">
+                  Teléfono <span class="text-[#b0b0bc]">(opcional)</span>
+                </label>
+                <input
+                  id="careers-phone"
+                  type="tel"
+                  formControlName="phone"
+                  autocomplete="tel"
+                  inputmode="tel"
+                  maxlength="22"
+                  class="careers-input"
+                  [class.is-invalid]="fieldInvalid('phone')"
+                  placeholder="696 91 92 28"
+                  (input)="onPhoneInput($event)"
+                  (keydown)="onPhoneKeydown($event)"
+                />
+                @if (fieldInvalid('phone')) {
+                  <app-field-error>Teléfono ES o LATAM no válido.</app-field-error>
+                }
+              </div>
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-position">
+                Puesto de interés
+              </label>
+              <select
+                id="careers-position"
+                formControlName="position"
+                class="careers-input"
+                [class.is-invalid]="fieldInvalid('position')"
+              >
+                <option value="" disabled>Selecciona un puesto</option>
+                @for (option of positions; track option.value) {
+                  <option [value]="option.value">{{ option.label }}</option>
+                }
+              </select>
+              @if (fieldInvalid('position')) {
+                <app-field-error>Selecciona un puesto.</app-field-error>
+              }
+            </div>
+
+            <div class="grid gap-4 md:grid-cols-2">
+              <div class="min-w-0">
+                <label
+                  class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                  for="careers-linkedin"
+                >
+                  LinkedIn <span class="text-[#b0b0bc]">(opcional)</span>
+                </label>
+                <input
+                  id="careers-linkedin"
+                  type="url"
+                  formControlName="linkedin_url"
+                  autocomplete="url"
+                  maxlength="500"
+                  class="careers-input"
+                  [class.is-invalid]="fieldInvalid('linkedin_url')"
+                  placeholder="https://linkedin.com/in/..."
+                />
+                @if (fieldInvalid('linkedin_url')) {
+                  <app-field-error>URL no válida.</app-field-error>
+                }
+              </div>
+
+              <div class="min-w-0">
+                <label
+                  class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                  for="careers-portfolio"
+                >
+                  Portfolio <span class="text-[#b0b0bc]">(opcional)</span>
+                </label>
+                <input
+                  id="careers-portfolio"
+                  type="url"
+                  formControlName="portfolio_url"
+                  autocomplete="url"
+                  maxlength="500"
+                  class="careers-input"
+                  [class.is-invalid]="fieldInvalid('portfolio_url')"
+                  placeholder="https://..."
+                />
+                @if (fieldInvalid('portfolio_url')) {
+                  <app-field-error>URL no válida.</app-field-error>
+                }
+              </div>
+            </div>
+
+            <div>
+              <label
+                class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                for="careers-cover-letter"
+              >
+                Carta de presentación
+              </label>
+              <textarea
+                id="careers-cover-letter"
+                formControlName="cover_letter"
+                rows="5"
+                maxlength="8000"
+                class="careers-input min-h-[8rem] resize-y"
+                [class.is-invalid]="fieldInvalid('cover_letter')"
+                placeholder="Cuéntanos tu experiencia, motivación y disponibilidad."
+                (input)="onCoverLetterInput($event)"
+              ></textarea>
+              @if (fieldInvalid('cover_letter')) {
+                <app-field-error>Escribe al menos 40 caracteres.</app-field-error>
+              }
+            </div>
+
+            <div>
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-cv">
+                CV <span class="text-[#b0b0bc]">(PDF o Word, máx. 5 MB)</span>
+              </label>
+              <div class="careers-file" [class.is-invalid]="!!cvError()">
+                <input
+                  #cvInput
+                  id="careers-cv"
+                  type="file"
+                  class="careers-file-input"
+                  [accept]="cvAccept"
+                  (change)="onCvChange($event)"
+                />
+                <div class="careers-file-meta">
+                  <span class="careers-file-name">{{ fileLabel(cvFile()) }}</span>
+                  @if (cvFile()) {
+                    <button
+                      type="button"
+                      class="careers-file-clear"
+                      (click)="clearCv(cvInput)"
+                    >
+                      Quitar
+                    </button>
+                  }
+                </div>
+              </div>
+              @if (cvError(); as err) {
+                <app-field-error>{{ err }}</app-field-error>
+              }
+            </div>
+
+            <div>
+              <label
+                class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]"
+                for="careers-attachments"
+              >
+                Adjuntos
+                <span class="text-[#b0b0bc]">(opcional, hasta 3 · PDF, Word o imagen)</span>
+              </label>
+              <div class="careers-file" [class.is-invalid]="!!attachmentsError()">
+                <input
+                  #attachmentsInput
+                  id="careers-attachments"
+                  type="file"
+                  class="careers-file-input"
+                  multiple
+                  [accept]="attachmentAccept"
+                  (change)="onAttachmentsChange($event)"
+                />
+                <div class="careers-file-meta">
+                  <span class="careers-file-name">
+                    @if (attachmentFiles().length === 0) {
+                      Ningún archivo seleccionado
+                    } @else {
+                      {{ attachmentFiles().length }} archivo(s) seleccionado(s)
+                    }
+                  </span>
+                  @if (attachmentFiles().length > 0) {
+                    <button
+                      type="button"
+                      class="careers-file-clear"
+                      (click)="clearAttachments(attachmentsInput)"
+                    >
+                      Quitar
+                    </button>
+                  }
+                </div>
+              </div>
+              @if (attachmentsError(); as err) {
+                <app-field-error>{{ err }}</app-field-error>
+              }
+            </div>
+
+            <div>
+              <label class="careers-accept" for="careers-accepted">
+                <input
+                  id="careers-accepted"
+                  type="checkbox"
+                  formControlName="accepted"
+                  class="careers-check"
+                  [class.is-invalid]="fieldInvalid('accepted')"
+                />
+                <span>
+                  Acepto los
+                  <a
+                    routerLink="/legal/terminos"
+                    class="careers-legal-link"
+                    (click)="$event.stopPropagation()"
+                  >términos de uso</a>
+                  y la
+                  <a
+                    routerLink="/legal/privacidad"
+                    class="careers-legal-link"
+                    (click)="$event.stopPropagation()"
+                  >política de privacidad</a>.
+                </span>
+              </label>
+              @if (fieldInvalid('accepted')) {
+                <app-field-error>Debes aceptar para enviar la candidatura.</app-field-error>
+              }
+            </div>
+
+            <div class="careers-captcha">
+              <label class="mb-1.5 block text-[12px] font-medium text-[#6b6b80]" for="careers-captcha">
+                Verificación
+              </label>
+              <div class="careers-captcha-row">
+                <p class="careers-captcha-q" aria-live="polite">
+                  @if (challengeLoading()) {
+                    Cargando…
+                  } @else {
+                    {{ captchaQuestion() }}
+                  }
+                </p>
+                <input
+                  id="careers-captcha"
+                  type="text"
+                  inputmode="numeric"
+                  formControlName="captcha_answer"
+                  autocomplete="off"
+                  maxlength="2"
+                  class="careers-input careers-captcha-input"
+                  [class.is-invalid]="fieldInvalid('captcha_answer')"
+                  [attr.aria-label]="captchaQuestion() || 'Verificación'"
+                  placeholder="?"
+                  (input)="onCaptchaInput($event)"
+                />
+              </div>
+              @if (fieldInvalid('captcha_answer')) {
+                <app-field-error>Escribe el resultado de la suma.</app-field-error>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="mt-1 inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-xl bg-brand px-5 text-sm font-semibold text-white shadow-[0_6px_0_var(--color-brand-dark)] transition-[transform,box-shadow,opacity] hover:translate-y-0.5 hover:shadow-[0_4px_0_var(--color-brand-dark)] disabled:cursor-not-allowed disabled:opacity-60"
+              [disabled]="submitting() || challengeLoading()"
+            >
+              {{ submitting() ? 'Enviando…' : 'Enviar candidatura' }}
+            </button>
+
+          </form>
+        }
+      </div>
+    </div>
+  </div>
+</section>

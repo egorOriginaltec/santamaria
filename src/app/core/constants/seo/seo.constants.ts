@@ -51,6 +51,13 @@ export const PAGE_SEO: Readonly<Record<string, PageSeo>> = {
     robots: 'index,follow',
     priority: 0.7,
   },
+  '/trabaja-con-nosotros': {
+    title: 'Trabaja con nosotros · Santamaria Learn',
+    description:
+      'Envía tu CV y candidatura para unirte al equipo de Santamaria Learn. Clases online, equipo cercano y proceso sencillo.',
+    robots: 'index,follow',
+    priority: 0.6,
+  },
   '/acceso': {
     title: 'Acceso alumnos · Santamaria Learn',
     description: 'Acceso al campus de Santamaria Learn para alumnos y familias.',

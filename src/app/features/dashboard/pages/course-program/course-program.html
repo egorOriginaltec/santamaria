@@ -1,0 +1,229 @@
+<section class="leads-card">
+  <header class="leads-header">
+    <div class="program-heading">
+      <div>
+        <h2 class="leads-title">{{ course()?.title || 'Programa' }}</h2>
+        <p class="leads-subtitle">
+          @if (loading()) {
+            Cargando programa…
+          } @else if (loadFailed()) {
+            No se pudo cargar el programa
+          } @else if (units().length === 0) {
+            Sin unidades todavía
+          } @else {
+            {{ units().length }} unidades · plan de estudios de la ficha pública
+          }
+        </p>
+      </div>
+      <div class="program-heading-actions">
+        <a routerLink="/dashboard/cursos" class="leads-btn leads-btn--ghost">Volver</a>
+        @if (course(); as current) {
+          <a
+            [routerLink]="['/dashboard/cursos', current.uuid, 'clases']"
+            class="leads-btn leads-btn--ghost"
+          >
+            Sesiones
+          </a>
+          <button
+            type="button"
+            class="leads-btn leads-btn--primary"
+            (click)="openCreateUnit()"
+            [disabled]="saving()"
+          >
+            Nueva unidad
+          </button>
+        }
+      </div>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="leads-loader" aria-busy="true" aria-live="polite">
+      <div class="leads-loader-line" aria-hidden="true"></div>
+      <div class="leads-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="leads-skeleton-row">
+            <span class="sk sk-avatar"></span>
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-line sk-w-20"></span>
+            <span class="sk sk-pill"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (loadFailed()) {
+    <div class="leads-empty leads-reveal">
+      <p class="leads-empty-title">Programa no disponible</p>
+      <p class="leads-empty-text">
+        Puede que el curso se haya eliminado o que no tengas permiso para gestionarlo.
+      </p>
+      <button type="button" class="leads-btn leads-btn--primary mt-4" (click)="reload()">
+        Reintentar
+      </button>
+    </div>
+  } @else {
+    <div class="program-layout leads-reveal">
+      <aside class="program-units">
+        <p class="program-aside-label">Unidades</p>
+        @if (units().length === 0) {
+          <p class="program-aside-empty">Crea la primera unidad (Diciembre, Enero…).</p>
+        }
+        <ul class="program-unit-list">
+          @for (unit of units(); track unit.uuid) {
+            <li>
+              <button
+                type="button"
+                class="program-unit-item"
+                [class.is-active]="selectedUnitUuid() === unit.uuid"
+                (click)="selectUnit(unit.uuid)"
+              >
+                <span class="program-unit-order">{{ unit.sort_order }}</span>
+                <span class="program-unit-copy">
+                  <strong>{{ unit.phase }}</strong>
+                  <small>{{ unit.title }}</small>
+                </span>
+              </button>
+            </li>
+          }
+        </ul>
+      </aside>
+
+      <div class="program-main">
+        @if (showUnitForm()) {
+          <form class="program-panel" [formGroup]="unitForm" (ngSubmit)="saveUnit()">
+            <div class="program-panel-head">
+              <h3>{{ editingUnitUuid() ? 'Editar unidad' : 'Nueva unidad' }}</h3>
+            </div>
+            <div class="program-grid">
+              <label class="program-field">
+                <span class="leads-field-label">Fase</span>
+                <input class="leads-input" formControlName="phase" placeholder="Diciembre" />
+              </label>
+              <label class="program-field">
+                <span class="leads-field-label">Periodo</span>
+                <input class="leads-input" formControlName="period" placeholder="Diciembre 2026" />
+              </label>
+              <label class="program-field program-field--full">
+                <span class="leads-field-label">Título</span>
+                <input class="leads-input" formControlName="title" placeholder="Primeras aplicaciones" />
+              </label>
+              <label class="program-field program-field--full">
+                <span class="leads-field-label">Objetivo / texto</span>
+                <textarea class="leads-input program-textarea" formControlName="text" rows="3"></textarea>
+              </label>
+              <label class="program-field">
+                <span class="leads-field-label">Orden</span>
+                <input class="leads-input" type="number" formControlName="sort_order" min="0" />
+              </label>
+            </div>
+            <div class="program-actions">
+              <button type="button" class="leads-btn leads-btn--ghost" (click)="cancelUnitForm()">Cancelar</button>
+              <button type="submit" class="leads-btn leads-btn--primary" [disabled]="saving()">
+                {{ saving() ? 'Guardando…' : 'Guardar unidad' }}
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (selectedUnit(); as unit) {
+          <section class="program-panel">
+            <div class="program-panel-head">
+              <div>
+                <p class="program-kicker">{{ unit.phase }} · {{ unit.period }}</p>
+                <h3>{{ unit.title }}</h3>
+                <p class="program-objective">{{ unit.text }}</p>
+              </div>
+              <div class="program-actions">
+                <button type="button" class="leads-btn leads-btn--ghost" (click)="openEditUnit(unit)">Editar</button>
+                <button type="button" class="delete-btn" (click)="deleteUnit(unit)">Eliminar</button>
+                <button type="button" class="leads-btn leads-btn--primary" (click)="openCreateClass()">
+                  Nueva clase
+                </button>
+              </div>
+            </div>
+
+            @if (showClassForm()) {
+              <form class="program-nested-form" [formGroup]="classForm" (ngSubmit)="saveClass()">
+                <h4>{{ editingClassUuid() ? 'Editar clase' : 'Nueva clase' }}</h4>
+                <div class="program-grid">
+                  <label class="program-field">
+                    <span class="leads-field-label">Fecha</span>
+                    <input class="leads-input" formControlName="date_label" placeholder="01/12" />
+                  </label>
+                  <label class="program-field">
+                    <span class="leads-field-label">Etiqueta</span>
+                    <input class="leads-input" formControlName="label" placeholder="Clase 1" />
+                  </label>
+                  <label class="program-field program-field--full">
+                    <span class="leads-field-label">Título</span>
+                    <input class="leads-input" formControlName="title" />
+                  </label>
+                  <label class="program-field program-field--full">
+                    <span class="leads-field-label">Descripción</span>
+                    <textarea class="leads-input program-textarea" formControlName="body" rows="4"></textarea>
+                  </label>
+                  <label class="program-field program-field--full">
+                    <span class="leads-field-label">Qué aprendes</span>
+                    <textarea class="leads-input program-textarea" formControlName="learns" rows="3"></textarea>
+                  </label>
+                  <label class="program-field program-field--full">
+                    <span class="leads-field-label">Resultado</span>
+                    <textarea class="leads-input program-textarea" formControlName="result" rows="2"></textarea>
+                  </label>
+                  <label class="program-field">
+                    <span class="leads-field-label">Orden</span>
+                    <input class="leads-input" type="number" formControlName="sort_order" min="0" />
+                  </label>
+                </div>
+                <div class="program-actions">
+                  <button type="button" class="leads-btn leads-btn--ghost" (click)="cancelClassForm()">Cancelar</button>
+                  <button type="submit" class="leads-btn leads-btn--primary" [disabled]="saving()">
+                    {{ saving() ? 'Guardando…' : 'Guardar clase' }}
+                  </button>
+                </div>
+              </form>
+            }
+
+            <div class="program-classes">
+              @for (courseClass of unitClasses(unit); track courseClass.uuid) {
+                <article class="program-class">
+                  <div class="program-class-meta">
+                    <span>{{ courseClass.date_label || courseClass.date }}</span>
+                    <span>{{ courseClass.label }}</span>
+                  </div>
+                  <div class="program-class-body">
+                    <h4>{{ courseClass.title }}</h4>
+                    <p>{{ courseClass.body || courseClass.text }}</p>
+                    <p><span>Qué aprendes</span> {{ courseClass.learns }}</p>
+                    @if (courseClass.result) {
+                      <p><span>Resultado</span> {{ courseClass.result }}</p>
+                    }
+                    <div class="program-actions">
+                      <button type="button" class="leads-btn leads-btn--ghost" (click)="openEditClass(courseClass)">
+                        Editar
+                      </button>
+                      <button type="button" class="delete-btn" (click)="deleteClass(courseClass)">Eliminar</button>
+                    </div>
+                  </div>
+                </article>
+              } @empty {
+                <div class="leads-empty">
+                  <p class="leads-empty-title">Sin clases en esta unidad</p>
+                  <p class="leads-empty-text">Añade la primera clase del mes.</p>
+                </div>
+              }
+            </div>
+          </section>
+        } @else if (!showUnitForm()) {
+          <div class="leads-empty">
+            <p class="leads-empty-title">Selecciona una unidad</p>
+            <p class="leads-empty-text">O crea la primera para empezar el plan de estudios.</p>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</section>

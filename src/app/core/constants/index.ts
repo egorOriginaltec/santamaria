@@ -58,6 +58,7 @@ export {
   CONTACT_FORM_EMAIL,
   CONTACT_FORM_SUCCESS,
 } from './contact-form/contact-form.constants';
+export { CAREERS_PATH } from './careers/careers.constants';
 export {
   LOGIN_EYEBROW,
   LOGIN_TITLE,

@@ -1,0 +1,388 @@
+<section class="leads-card">
+  <header class="leads-header">
+    <div>
+      <h2 class="leads-title">Currículums</h2>
+      <p class="leads-subtitle">
+        @if (loading() && initialLoad()) {
+          Cargando candidaturas…
+        } @else if (total() === 0) {
+          Sin resultados con estos filtros
+        } @else {
+          {{ from() }}–{{ to() }} de {{ total() }} candidaturas
+        }
+      </p>
+    </div>
+
+    <div class="leads-filters">
+      <label class="leads-field leads-field--search">
+        <span class="leads-field-label">Buscar</span>
+        <input
+          type="search"
+          class="leads-input"
+          placeholder="Nombre, email, puesto…"
+          [formControl]="searchControl"
+        />
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Periodo</span>
+        <select class="leads-input" [formControl]="periodControl">
+          @for (period of options().periods; track period) {
+            <option [value]="period">{{ periodLabel(period) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Estado</span>
+        <select class="leads-input" [formControl]="statusControl">
+          <option value="">Todos</option>
+          @for (status of options().statuses; track status) {
+            <option [value]="status">{{ statusLabel(status) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field">
+        <span class="leads-field-label">Orden</span>
+        <select class="leads-input" [formControl]="sortControl">
+          @for (sort of options().sorts; track sort) {
+            <option [value]="sort">{{ sortLabel(sort) }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="leads-field leads-field--narrow">
+        <span class="leads-field-label">Por página</span>
+        <select class="leads-input" [formControl]="perPageControl">
+          @for (size of options().per_page_options; track size) {
+            <option [value]="size">{{ size }}</option>
+          }
+        </select>
+      </label>
+
+      <button
+        type="button"
+        class="leads-btn leads-btn--ghost"
+        (click)="reload(currentPage())"
+        [disabled]="loading()"
+      >
+        Actualizar
+      </button>
+    </div>
+  </header>
+
+  @if (loading()) {
+    <div class="leads-loader" aria-busy="true" aria-live="polite">
+      <div class="leads-loader-line" aria-hidden="true"></div>
+      <div class="leads-skeleton-table">
+        @for (row of skeletonRows; track row) {
+          <div class="leads-skeleton-row">
+            <span class="sk sk-avatar"></span>
+            <span class="sk sk-line sk-w-40"></span>
+            <span class="sk sk-line sk-w-24"></span>
+            <span class="sk sk-pill"></span>
+            <span class="sk sk-line sk-w-48"></span>
+            <span class="sk sk-line sk-w-20"></span>
+            <span class="sk sk-pill"></span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else if (applications().length === 0) {
+    <div class="leads-empty leads-reveal">
+      <p class="leads-empty-title">No hay candidaturas en este periodo</p>
+      <p class="leads-empty-text">
+        Prueba “Último mes” o “Todo”, o envía una solicitud desde /trabaja-con-nosotros.
+      </p>
+    </div>
+  } @else {
+    <div class="leads-reveal">
+      <div class="leads-table-scroll max-xl:overflow-visible">
+        <table class="w-full min-w-0 border-collapse text-left text-[13px] max-xl:block xl:min-w-[62rem]">
+          <thead class="max-xl:hidden">
+            <tr>
+              <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Candidato</th>
+              <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Puesto</th>
+              <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">CV</th>
+              <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Fecha</th>
+              <th class="pr-4 pb-3 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">Estado</th>
+              <th class="pb-3"></th>
+            </tr>
+          </thead>
+          <tbody class="max-xl:block">
+            @for (application of applications(); track application.uuid) {
+              <tr
+                class="max-xl:mb-3 max-xl:block max-xl:rounded-2xl max-xl:border max-xl:border-[#efeff3] max-xl:px-3.5 max-xl:pt-3 max-xl:pb-2 max-xl:last:mb-0"
+                [class.opacity-60]="updatingUuid() === application.uuid"
+              >
+                <td
+                  data-label="Candidato"
+                  class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-xl:flex max-xl:w-full max-xl:flex-col max-xl:items-stretch max-xl:gap-1 max-xl:border-0 max-xl:px-0 max-xl:py-1.5 max-xl:text-left max-xl:before:text-[10px] max-xl:before:font-bold max-xl:before:tracking-[0.08em] max-xl:before:text-[#8a8a9a] max-xl:before:uppercase max-xl:before:content-[attr(data-label)]"
+                >
+                  <div class="flex min-w-0 items-center gap-3">
+                    <span class="grid size-9 shrink-0 place-items-center rounded-full bg-brand-soft text-[11px] font-bold text-brand">
+                      {{ initials(application.name) }}
+                    </span>
+                    <span class="min-w-0">
+                      <span class="block truncate text-[13px] leading-snug font-semibold text-ink max-xl:break-words max-xl:whitespace-normal">
+                        {{ application.name }}
+                      </span>
+                      <span class="block truncate text-[13px] text-[#8a8a9a] max-xl:break-words max-xl:whitespace-normal">
+                        {{ application.email }}
+                      </span>
+                      @if (application.phone) {
+                        <span class="mt-0.5 block text-[12px] text-[#8a8a9a]">{{ application.phone }}</span>
+                      }
+                    </span>
+                  </div>
+                </td>
+                <td
+                  data-label="Puesto"
+                  class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-xl:flex max-xl:w-full max-xl:items-center max-xl:justify-between max-xl:gap-3 max-xl:border-0 max-xl:px-0 max-xl:py-1.5 max-xl:before:shrink-0 max-xl:before:text-[10px] max-xl:before:font-bold max-xl:before:tracking-[0.08em] max-xl:before:text-[#8a8a9a] max-xl:before:uppercase max-xl:before:content-[attr(data-label)]"
+                >
+                  <span class="inline-flex items-center rounded-full bg-[#f4f4f8] px-2.5 py-1 text-[11px] font-bold text-[#4a4a5c]">
+                    {{ application.position || 'Sin especificar' }}
+                  </span>
+                </td>
+                <td
+                  data-label="CV"
+                  class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-xl:flex max-xl:w-full max-xl:items-center max-xl:justify-between max-xl:gap-3 max-xl:border-0 max-xl:px-0 max-xl:py-1.5 max-xl:before:shrink-0 max-xl:before:text-[10px] max-xl:before:font-bold max-xl:before:tracking-[0.08em] max-xl:before:text-[#8a8a9a] max-xl:before:uppercase max-xl:before:content-[attr(data-label)]"
+                >
+                  @if (application.cv; as cv) {
+                    <div class="file-actions">
+                      <button
+                        type="button"
+                        class="leads-btn leads-btn--ghost !min-h-8 !px-3 !text-[11px]"
+                        [disabled]="isPreviewing(application.uuid, cv.uuid)"
+                        (click)="previewFile(application, cv)"
+                      >
+                        {{ isPreviewing(application.uuid, cv.uuid) ? 'Abriendo…' : 'Previsualizar' }}
+                      </button>
+                      <button
+                        type="button"
+                        class="leads-btn leads-btn--ghost !min-h-8 !px-3 !text-[11px]"
+                        [disabled]="isDownloading(application.uuid, cv.uuid)"
+                        (click)="downloadFile(application, cv)"
+                      >
+                        {{ isDownloading(application.uuid, cv.uuid) ? 'Descargando…' : 'Descargar' }}
+                      </button>
+                    </div>
+                  } @else {
+                    <span class="text-[#8a8a9a]">—</span>
+                  }
+                </td>
+                <td
+                  data-label="Fecha"
+                  class="border-t border-[#f0f0f5] py-4 pr-4 align-top text-[13px] whitespace-nowrap text-[#8a8a9a] max-xl:flex max-xl:w-full max-xl:items-center max-xl:justify-between max-xl:gap-3 max-xl:border-0 max-xl:px-0 max-xl:py-1.5 max-xl:whitespace-normal max-xl:before:shrink-0 max-xl:before:text-[10px] max-xl:before:font-bold max-xl:before:tracking-[0.08em] max-xl:before:text-[#8a8a9a] max-xl:before:uppercase max-xl:before:content-[attr(data-label)]"
+                >
+                  {{ application.created_at | date: 'dd MMM yyyy · HH:mm' }}
+                </td>
+                <td
+                  data-label="Estado"
+                  class="border-t border-[#f0f0f5] py-4 pr-4 align-top max-xl:flex max-xl:w-full max-xl:items-center max-xl:justify-between max-xl:gap-3 max-xl:border-0 max-xl:px-0 max-xl:py-1.5 max-xl:before:shrink-0 max-xl:before:text-[10px] max-xl:before:font-bold max-xl:before:tracking-[0.08em] max-xl:before:text-[#8a8a9a] max-xl:before:uppercase max-xl:before:content-[attr(data-label)]"
+                >
+                  <div class="status-menu" [class.is-open]="openStatusMenuUuid() === application.uuid">
+                    <button
+                      type="button"
+                      class="status-pill"
+                      [attr.data-status]="application.status"
+                      [disabled]="updatingUuid() === application.uuid"
+                      (click)="toggleStatusMenu(application.uuid, $event)"
+                    >
+                      {{ statusLabel(application.status) }}
+                    </button>
+
+                    @if (openStatusMenuUuid() === application.uuid) {
+                      <div class="status-dropdown" role="menu" (click)="$event.stopPropagation()">
+                        @for (status of options().statuses; track status) {
+                          <button
+                            type="button"
+                            class="status-pill status-option"
+                            [attr.data-status]="status"
+                            [class.is-active]="application.status === status"
+                            role="menuitem"
+                            (click)="setStatus(application, status, $event)"
+                          >
+                            {{ statusLabel(status) }}
+                          </button>
+                        }
+                      </div>
+                    }
+                  </div>
+                </td>
+                <td class="border-t border-[#f0f0f5] py-4 align-top max-xl:block max-xl:w-full max-xl:border-0 max-xl:px-0 max-xl:pt-2 max-xl:pb-1">
+                  <div class="flex flex-col gap-2 max-xl:w-full sm:flex-row sm:items-center">
+                    <button
+                      type="button"
+                      class="leads-btn leads-btn--ghost !min-h-9 max-xl:w-full"
+                      (click)="toggleExpanded(application.uuid)"
+                    >
+                      {{ expandedUuid() === application.uuid ? 'Ocultar' : 'Ver' }}
+                    </button>
+                    <button
+                      type="button"
+                      class="delete-btn max-xl:w-full"
+                      [disabled]="updatingUuid() === application.uuid"
+                      (click)="onDelete(application)"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              @if (expandedUuid() === application.uuid) {
+                <tr class="max-xl:block">
+                  <td colspan="6" class="border-t border-[#f0f0f5] px-0 py-3 max-xl:border-0 max-xl:pt-1">
+                    <div class="rounded-xl border border-[#efeff3] bg-[#fafafc] p-4 text-[13px] leading-relaxed text-[#4a4a5c]">
+                      <p class="m-0 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">
+                        Carta de presentación
+                      </p>
+                      <p class="mt-2 mb-0 whitespace-pre-wrap break-words">{{ application.cover_letter }}</p>
+
+                      <div class="mt-4 flex flex-wrap gap-3">
+                        @if (application.linkedin_url) {
+                          <a
+                            [href]="application.linkedin_url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-semibold text-brand underline underline-offset-2"
+                          >
+                            LinkedIn
+                          </a>
+                        }
+                        @if (application.portfolio_url) {
+                          <a
+                            [href]="application.portfolio_url"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="font-semibold text-brand underline underline-offset-2"
+                          >
+                            Portfolio
+                          </a>
+                        }
+                      </div>
+
+                      @if ((application.attachments ?? []).length > 0) {
+                        <p class="mt-4 mb-2 text-[11px] font-bold tracking-[0.08em] text-[#8a8a9a] uppercase">
+                          Adjuntos
+                        </p>
+                        <ul class="m-0 flex list-none flex-col gap-2 p-0">
+                          @for (file of application.attachments ?? []; track file.uuid) {
+                            <li class="file-actions">
+                              <span class="file-name">{{ file.name }}</span>
+                              <button
+                                type="button"
+                                class="leads-btn leads-btn--ghost !min-h-8 !px-3 !text-[11px]"
+                                [disabled]="isPreviewing(application.uuid, file.uuid)"
+                                (click)="previewFile(application, file)"
+                              >
+                                {{ isPreviewing(application.uuid, file.uuid) ? 'Abriendo…' : 'Previsualizar' }}
+                              </button>
+                              <button
+                                type="button"
+                                class="leads-btn leads-btn--ghost !min-h-8 !px-3 !text-[11px]"
+                                [disabled]="isDownloading(application.uuid, file.uuid)"
+                                (click)="downloadFile(application, file)"
+                              >
+                                {{ isDownloading(application.uuid, file.uuid) ? 'Descargando…' : 'Descargar' }}
+                              </button>
+                            </li>
+                          }
+                        </ul>
+                      }
+                    </div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="leads-pager">
+        <p class="leads-pager-meta">
+          Página {{ currentPage() }} de {{ lastPage() }}
+        </p>
+        <div class="leads-pager-controls">
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() <= 1 || loading()"
+            (click)="goToPage(currentPage() - 1)"
+          >
+            Anterior
+          </button>
+          @for (page of pageNumbers(); track page) {
+            <button
+              type="button"
+              class="pager-btn"
+              [class.is-active]="page === currentPage()"
+              [disabled]="loading()"
+              (click)="goToPage(page)"
+            >
+              {{ page }}
+            </button>
+          }
+          <button
+            type="button"
+            class="pager-btn"
+            [disabled]="currentPage() >= lastPage() || loading()"
+            (click)="goToPage(currentPage() + 1)"
+          >
+            Siguiente
+          </button>
+        </div>
+      </footer>
+    </div>
+  }
+
+  @if (preview(); as activePreview) {
+    <div class="preview-overlay" role="dialog" aria-modal="true" aria-label="Previsualización de archivo">
+      <button type="button" class="preview-backdrop" aria-label="Cerrar previsualización" (click)="closePreview()"></button>
+      <div class="preview-panel">
+        <header class="preview-header">
+          <div class="min-w-0">
+            <p class="preview-kicker">{{ activePreview.application.name }}</p>
+            <h3 class="preview-title">{{ activePreview.media.name }}</h3>
+          </div>
+          <div class="preview-header-actions">
+            <button type="button" class="leads-btn leads-btn--ghost !min-h-9" (click)="downloadFromPreview()">
+              Descargar
+            </button>
+            <button type="button" class="leads-btn leads-btn--ghost !min-h-9" (click)="closePreview()">
+              Cerrar
+            </button>
+          </div>
+        </header>
+
+        <div class="preview-body">
+          @if (activePreview.kind === 'pdf') {
+            <iframe
+              class="preview-frame"
+              [src]="activePreview.safeUrl"
+              title="Previsualización del CV"
+            ></iframe>
+          } @else if (activePreview.kind === 'image') {
+            <img
+              class="preview-image"
+              [src]="activePreview.objectUrl"
+              [alt]="activePreview.media.name"
+            />
+          } @else {
+            <div class="preview-unsupported">
+              <p class="preview-unsupported-title">No se puede previsualizar este formato</p>
+              <p class="preview-unsupported-text">
+                Los archivos Word (.doc / .docx) hay que descargarlos para abrirlos.
+              </p>
+              <button type="button" class="leads-btn" (click)="downloadFromPreview()">
+                Descargar archivo
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+</section>

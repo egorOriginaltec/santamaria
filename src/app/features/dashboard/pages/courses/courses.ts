@@ -208,6 +208,8 @@ export class DashboardCourses implements OnInit {
         return 'Inicio ↓';
       case 'title':
         return 'Título';
+      case 'sort_order':
+        return 'Orden web';
     }
   }
 

@@ -11,7 +11,7 @@
         } @else if (loadFailed()) {
           No se pudo abrir este curso.
         } @else {
-          Título, fechas, días, horario y precio mensual (49 € o 59 €).
+          Datos del curso y apariencia de la card en la web (icono, color, orden, precio…).
         }
       </p>
     </div>
@@ -72,6 +72,35 @@
           }
         </label>
 
+        <label class="course-field">
+          <span class="course-field-label">Slug (URL /cursos/…)</span>
+          <input
+            type="text"
+            class="course-input"
+            formControlName="slug"
+            maxlength="120"
+            placeholder="scratch"
+            (input)="onSlugInput()"
+            [class.is-invalid]="fieldInvalid('slug')"
+          />
+          @if (fieldInvalid('slug')) {
+            <app-field-error>Solo minúsculas, números y guiones.</app-field-error>
+          }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Orden en la web (01, 02…)</span>
+          <input
+            type="number"
+            class="course-input"
+            formControlName="sort_order"
+            min="0"
+            max="999"
+            step="1"
+            [class.is-invalid]="fieldInvalid('sort_order')"
+          />
+        </label>
+
         <label class="course-field course-field--full">
           <span class="course-field-label">Descripción</span>
           <textarea
@@ -85,6 +114,40 @@
           @if (fieldInvalid('description')) {
             <app-field-error>La descripción debe tener al menos 10 caracteres.</app-field-error>
           }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Edades (card)</span>
+          <input
+            type="text"
+            class="course-input"
+            formControlName="age_range"
+            maxlength="50"
+            placeholder="12–14 años"
+          />
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Horario en la card</span>
+          <input
+            type="text"
+            class="course-input"
+            formControlName="card_schedule_line"
+            maxlength="160"
+            placeholder="Lunes · 17:30–19:00"
+          />
+          <span class="course-field-hint">Si lo dejas vacío, se genera con días y horario.</span>
+        </label>
+
+        <label class="course-field course-field--full">
+          <span class="course-field-label">Resumen corto (opcional)</span>
+          <input
+            type="text"
+            class="course-input"
+            formControlName="card_summary"
+            maxlength="255"
+            placeholder="30 clases · videojuegos y lógica desde cero."
+          />
         </label>
 
         <label class="course-field">
@@ -161,7 +224,7 @@
         </label>
 
         <label class="course-field">
-          <span class="course-field-label">Precio (€/mes)</span>
+          <span class="course-field-label">Precio (€)</span>
           <input
             type="number"
             class="course-input"
@@ -169,12 +232,88 @@
             min="0.01"
             max="999.99"
             step="0.01"
-            placeholder="49"
+            placeholder="59"
             [class.is-invalid]="fieldInvalid('price')"
           />
           @if (fieldInvalid('price')) {
-            <app-field-error>Indica el precio mensual (ej. 49 o 59).</app-field-error>
+            <app-field-error>Indica el precio (ej. 59 o 40).</app-field-error>
           }
+        </label>
+
+        <label class="course-field">
+          <span class="course-field-label">Unidad de precio</span>
+          <select class="course-input" formControlName="price_unit">
+            @for (unit of priceUnits; track unit) {
+              <option [value]="unit">/{{ unit }}</option>
+            }
+          </select>
+        </label>
+
+        <div class="course-field course-field--full">
+          <span class="course-field-label">Color de fondo de la card</span>
+          <div class="course-cover-row">
+            <input
+              type="color"
+              class="course-color"
+              formControlName="cover_color"
+              [class.is-invalid]="fieldInvalid('cover_color')"
+            />
+            <input
+              type="text"
+              class="course-input course-cover-hex"
+              formControlName="cover_color"
+              maxlength="7"
+              placeholder="#fff0ea"
+              [class.is-invalid]="fieldInvalid('cover_color')"
+            />
+            <div class="course-cover-presets" role="group" aria-label="Colores sugeridos">
+              @for (color of coverPresets; track color) {
+                <button
+                  type="button"
+                  class="course-cover-swatch"
+                  [style.background]="color"
+                  [attr.title]="color"
+                  (click)="setCoverColor(color)"
+                ></button>
+              }
+            </div>
+          </div>
+          @if (fieldInvalid('cover_color')) {
+            <app-field-error>Usa un color hex (#rrggbb).</app-field-error>
+          }
+        </div>
+
+        <div class="course-field course-field--full">
+          <span class="course-field-label">Icono de la card (Spatie Media Library)</span>
+          <div class="course-icon-row">
+            <div
+              class="course-icon-preview"
+              [style.--course-cover]="form.controls.cover_color.value"
+            >
+              @if (previewIconSrc(); as src) {
+                <img [src]="src" alt="" width="96" height="96" />
+              } @else {
+                <span>Sin icono</span>
+              }
+            </div>
+            <div class="course-icon-actions">
+              <label class="course-btn course-btn--ghost course-file-btn">
+                Subir icono
+                <input type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif" (change)="onIconSelected($event)" />
+              </label>
+              @if (previewIconSrc()) {
+                <button type="button" class="course-btn course-btn--ghost" (click)="clearIconSelection()">
+                  Quitar icono
+                </button>
+              }
+              <p class="course-field-hint">PNG, JPG, WEBP, SVG o GIF · máx. 5 MB</p>
+            </div>
+          </div>
+        </div>
+
+        <label class="course-field course-field--check">
+          <input type="checkbox" formControlName="show_on_landing" />
+          <span>Mostrar en la landing (Nuestros cursos)</span>
         </label>
 
         <label class="course-field course-field--check">

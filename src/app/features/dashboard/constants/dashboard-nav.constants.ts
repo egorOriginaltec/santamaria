@@ -15,6 +15,7 @@ export interface DashboardNavItem {
     | 'planner'
     | 'analytics'
     | 'messages'
+    | 'cv'
     | 'settings'
     | 'swagger'
     | 'calculator';
@@ -55,6 +56,7 @@ export const DASHBOARD_NAV: readonly DashboardNavGroup[] = [
       },
       { id: 'payments', label: 'Pagos', path: '/dashboard/pagos', icon: 'payments' },
       { id: 'leads', label: 'Contactos', path: '/dashboard/contactos', icon: 'messages' },
+      { id: 'curriculums', label: 'Currículums', path: '/dashboard/curriculums', icon: 'cv' },
     ],
   },
   {
